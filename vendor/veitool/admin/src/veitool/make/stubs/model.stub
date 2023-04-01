@@ -1,0 +1,62 @@
+<?php
+/**
+ * ===========================================================================
+ * Veitool 快捷开发框架系统
+ * Author: Niaho 26843818@qq.com
+ * Copyright (c)2019-2023 www.veitool.com All rights reserved.
+ * Licensed: 这不是一个自由软件，不允许对程序代码以任何形式任何目的的再发行
+ * ---------------------------------------------------------------------------
+ */
+namespace {%namespace%};
+
+use app\model\Base;
+
+/**
+ *【{%remarks%}模型】
+ */
+class {%className%} extends Base
+{
+    /**
+     *定义主键
+     * @var string 
+     */
+    protected $pk = 'id';
+    
+    /**
+	 * 列表（分页）
+     * @param  array   $where    条件
+     * @param  array   $order    排序
+     * @param  string  $fields   字段
+     * @param  int     $limit    条数
+     * @return array
+	 */
+	public function listQuerys($where=[], $order=['id'=>'desc'], $fields = '*', $limit=0){
+        $d = input('','','trim');
+        $kw = $d['kw'] ?? '';
+        $fds = ['title','username'];
+        $field = isset($d['fields']) && isset($fds[$d['fields']]) ? $d['fields'] : -1;
+		$sotime = $d['sotime'] ?? '';
+        $type  = $data['type'] ?? '';
+        $state = isset($data['state']) ? intval($data['state']) : -1;
+        $limit = $limit>0 ? $limit : (isset($d['limit']) ? intval($d['limit']) : 10);
+        if($kw!=''){
+            $kw = strip_sql($kw);
+            if($field>-1){
+                // 单字段模糊和指定搜索
+                $where[] = $field>1 ? [$fds[$field],'LIKE', '%'.$kw.'%'] : [$fds[$field],'=',$kw];
+            }else{
+                // 多字段模糊搜索
+                $where[] = [implode('|',$fds),'LIKE', '%'.$kw.'%'];
+            }
+        }
+        if(strpos($sotime,' - ')!==false){
+            $t = explode(' - ',$sotime);
+            $where[] = ['addtime','>=',strtotime($t[0]." 00:00:00")];
+            $where[] = ['addtime','<=',strtotime($t[1]." 23:59:59")];
+        }
+        if($type)     $where[] = ['type','=',$type];
+        if($state>-1) $where[] = ['state','=',$state];
+        return $this->where($where)->order($order)->field($fields)->paginate($limit);
+	}
+
+}

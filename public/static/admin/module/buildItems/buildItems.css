@@ -1,0 +1,9 @@
+/*图片*/
+.imgs_item{float:left;width:100px;height:100px;cursor:pointer;position:relative;margin:10px 20px 0 0;padding:4px;border:1px solid #ddd;background:#fff;display:flex;display:-webkit-box;align-items:center;-moz-box-align:center;-webkit-box-align:center;-moz-box-pack:center;-webkit-box-pack:center;}
+.imgs_item .item-edit{position:absolute;top:-10px;left:-10px;cursor:pointer;height:22px;width:22px;line-height:22px;background:rgba(153,153,153,.7);border-radius:50%;text-align:center;color:#fff!important;display:none}
+.imgs_item:hover .item-edit{display:block}
+.imgs_item .item-edit:hover{background:#000}
+.imgs_item .item-delete{position:absolute;top:-10px;right:-10px;cursor:pointer;height:22px;width:22px;line-height:22px;background:rgba(153,153,153,.7);border-radius:50%;text-align:center;color:#fff!important;display:none}
+.imgs_item:hover .item-delete{display:block}
+.imgs_item .item-delete:hover{background:#000}
+.imgs_item img{max-width:100px;max-height:100px;border:0}

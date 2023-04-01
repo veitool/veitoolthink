@@ -1,0 +1,24 @@
+{
+    "name": "veitool/admin",
+    "type": "library",
+    "description": "Admin Package for Veitool PHP System",
+    "keywords": ["veitool", "admin"],
+    "homepage": "http://www.veitool.com",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Niaho",
+            "email": "26843818@qq.com",
+            "homepage": "http://www.veitool.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.1.0"
+    },
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "veitool\\": "src/veitool"
+        }
+    }
+}

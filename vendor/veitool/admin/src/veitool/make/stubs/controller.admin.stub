@@ -1,0 +1,66 @@
+<?php
+/**
+ * ===========================================================================
+ * Veitool 快捷开发框架系统
+ * Author: Niaho 26843818@qq.com
+ * Copyright (c)2019-2023 www.veitool.com All rights reserved.
+ * Licensed: 这不是一个自由软件，不允许对程序代码以任何形式任何目的的再发行
+ * ---------------------------------------------------------------------------
+ */
+namespace {%namespace%};
+
+use app\admin\controller\AdminBase;
+
+/**
+ *【{%remarks%}控制器】
+ */
+class {%className%} extends AdminBase
+{
+    /**
+     * 主页
+     * @param  string  $do  操作参数
+     * @return mixed
+     */
+    public function index{%actionSuffix%}($do='')
+    {
+        if($do=='json'){
+            return $this->returnMsg('Ajax请求反馈的数据');
+        }
+        $this->assign([
+            'limit'=>10,
+            'jsons'=> json_encode([])
+        ]);
+        return $this->fetch();
+    }
+
+    /**
+     * 添加
+     *
+     * @return mixed
+     */
+    public function add{%actionSuffix%}()
+    {
+    	return $this->returnMsg('添加');
+    }
+
+    /**
+     * 编辑
+     *
+     * @return mixed
+     */
+    public function edit{%actionSuffix%}()
+    {
+    	return $this->returnMsg('编辑');
+    }
+
+    /**
+     * 删除
+     *
+     * @return mixed
+     */
+    public function del()
+    {
+    	return $this->returnMsg('删除');
+    }
+
+}

@@ -1,0 +1,36 @@
+.file-library .layui-layer-title{background-color:#fff;border-bottom:none;font-size:16px;}
+.file-library .file-group{float:left;width:150px;padding-top:35px}
+.file-library .file-group .nav-new{overflow-y:auto;max-height:350px}
+.file-library .file-group .nav-new li{position:relative;margin:.1rem 0;padding:.8rem 2.1rem}
+.file-library .file-group .nav-new li a i.iconfont{font-size:1.4rem}
+.file-library .file-group .nav-new li a.group-name{color:#595961;font-size:.7rem}
+.file-library .file-group .nav-new li a.group-edit{display:none;position:absolute;left:.5rem}
+.file-library .file-group .nav-new li a.group-delete{display:none;position:absolute;right:.5rem}
+.file-library .file-group .nav-new li:hover,.file-library .file-group .nav-new li.active{background:rgba(0,150,136,0.3);}
+.file-library .file-group .nav-new li:hover .group-name,.file-library .file-group .nav-new li.active .group-name{color:#fff}
+.file-library .file-group .nav-new li:hover .group-delete,.file-library .file-group .nav-new li:hover .group-edit{display:inline;color:#fff}
+.file-library .file-group .nav-new li:hover .group-delete:hover,.file-library .file-group .nav-new li:hover .group-edit:hover{color:#009688}
+.file-library .file-group a.group-add{display:block;margin-top:.9rem;font-size:.7rem;color:#0e90d2;padding:0 2.1rem}
+
+.file-library .file-list{margin:0 20px 10px 150px;display:block;}
+.file-library .file-list .file-list-header{margin:0 0 5px 10px;display:block;}
+.file-library .file-list .file-list-header .file-right{float:right;}
+
+.file-library #file-list-body{width:660px;}
+.file-library #file-list-body ul.file-list-item{overflow-y:auto;height:360px}
+.file-library #file-list-body ul.file-list-item li{position:relative;cursor:pointer;border-radius:2px;padding:10px;border:1px solid rgba(0,0,0,.05);float:left;margin:9px;-webkit-transition:All .2s ease-in-out;-moz-transition:All .2s ease-in-out;-o-transition:All .2s ease-in-out;transition:All .2s ease-in-out}
+.file-library #file-list-body ul.file-list-item li:hover{border:1px solid #009688}
+.file-library #file-list-body ul.file-list-item li .img-cover{width:120px;height:120px;background:no-repeat center center/100%}
+.file-library #file-list-body ul.file-list-item li p.file-name{margin:5px 0 0 0;width:120px;height:18px;font-size:12px;text-align:center;word-wrap:normal;text-overflow:ellipsis;white-space:nowrap;overflow:hidden}
+.file-library #file-list-body ul.file-list-item li.active .select-mask{display:block;}
+.file-library #file-list-body ul.file-list-item li .select-mask{display:none;position:absolute;top:0;bottom:0;left:0;right:0;background:rgba(0,150,136,.5);text-align:center;border-radius:2px}
+.file-library #file-list-body ul.file-list-item li .select-mask .layui-icon{color:#fff;font:60px/140px serif;}
+
+.file-page-box{margin:0;padding:0;position:relative;height:20px;}
+.pagination{position:absolute;right:0;top:10px;}
+.pagination li{display:inline;}
+.pagination li a{padding:2px 5px;font:10px/16px SimSun;color:#00bbaa;text-decoration:none;background-color:#fff;border:1px solid #ddd;border-radius:2px;margin:0 2px}
+.pagination li a:hover{color:red;}
+
+.cf:after{clear:both}
+.cf:after,.cf:before{content:" ";display:table}

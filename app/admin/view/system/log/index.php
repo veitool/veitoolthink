@@ -99,13 +99,13 @@ layui.use(['vinfo'],function(){
     //位置选择
     $('#search_log_select').html(log_select);
     //渲染登录日志搜索元素
-	form.render(null,'loginlog-form-search');
+    form.render(null,'loginlog-form-search');
     laydate.render({elem:'#loginlog-search-time',range:true,format:'yyyy/MM/dd'});
     //渲染管理日志搜索元素
-	form.render(null, 'managerlog-form-search');
+    form.render(null, 'managerlog-form-search');
     laydate.render({elem:'#managerlog-search-time',range:true,format:'yyyy/MM/dd'});
     //渲染网站日志搜索元素
-	form.render(null, 'weblog-form-search');
+    form.render(null, 'weblog-form-search');
     laydate.render({elem:'#weblog-search-time',range:true,format:'yyyy/MM/dd'});
     /*初始选中选卡*/
     $('*[lay-id="'+ mtab +'"]').addClass('layui-this');

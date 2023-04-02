@@ -3,11 +3,11 @@
 .category_item img{max-width:24px;max-height:24px;border:0}
 </style>
 <div style="padding:20px;">
-	<div class="layui-btn-group">
-		<button class="layui-btn" id="top-category-add"><i class="layui-icon layui-icon-add-circle"></i> 添加类别</button>
+    <div class="layui-btn-group">
+        <button class="layui-btn" id="top-category-add"><i class="layui-icon layui-icon-add-circle"></i> 添加类别</button>
         <button class="layui-btn" id="top-category-del"><i class="layui-icon layui-icon-delete"></i> 删除类别</button>
     </div>
-	<table id="category_table" lay-filter="category_table"></table>
+    <table id="category_table" lay-filter="category_table"></table>
 </div>
 <!--JS部分-->
 <script>
@@ -22,8 +22,8 @@ layui.use(['buildItems'], function(){
         data: cats,
         css: 'td .layui-table-cell{height:50px;line-height:50px;padding:0 5px;}',
         cols: [[
-        	{type:"checkbox",fixed:"left"},
-        	{field:"icon",title:"类图",align:'center',width:50,templet:function(d){return '<div class="category_item"><img src="'+ (d.icon ? d.icon : '') +'" lay-event="category-event-image"/></div>';}},
+            {type:"checkbox",fixed:"left"},
+            {field:"icon",title:"类图",align:'center',width:50,templet:function(d){return '<div class="category_item"><img src="'+ (d.icon ? d.icon : '') +'" lay-event="category-event-image"/></div>';}},
             {field:"catid",align:'center',width:60,title: "ID"},
             {field:"new_title",title: "类别名称"},
             {field:'sign',edit:'text',width:100,align:'center',title:'扩展标识'},

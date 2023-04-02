@@ -243,7 +243,7 @@ layui.use(['vinfo', 'xmSelect', 'buildItems'], function(){
             {field:"username",title:"帐号",toolbar:'<div><a style="cursor:pointer;" lay-event="info">{{d.username}}</a></div>'},
             {field:"truename",edit:'text',title:"姓名"},
             {field:"mobile",width:110,edit:'text',title:"手机"},
-            {field:"email",edit:'text',title:"邮箱"	},
+            {field:"email",edit:'text',title:"邮箱"},
             {field:"roleid",width:80,align:'center',title:"角色",templet:function(d){return Roles[d.roleid]}},
             {field:"logins",width:68,align:'center',title:"登录次数"},
             {field:"loginip",width:110,align:'center',title:"登录IP",toolbar:'<div><a style="cursor:pointer;" lay-event="showip">{{d.loginip}}</a></div>'},
@@ -256,17 +256,17 @@ layui.use(['vinfo', 'xmSelect', 'buildItems'], function(){
         limit:{$limit}
     });
     /*监听搜索*/
-	form.on('submit(top-manager-search)', function(data){
+    form.on('submit(top-manager-search)', function(data){
         data.field.groupid = groupid;
         table.reloadData('manager',{where:data.field,page:{curr:1}});
         return false;
-	});/**/
+    });/**/
     /*监听全部按钮*/
-	form.on('submit(top-manager-all)', function(){
+    form.on('submit(top-manager-all)', function(){
         groupid = ''
-		table.reloadData('manager',{where:'',page:{curr:1}});
+        table.reloadData('manager',{where:'',page:{curr:1}});
         return false;
-	});/**/
+    });/**/
     /*顶部添加按钮*/
     $('#top-manager-add').on('click',function(){managerOpen();});/**/
     /*顶部删除按钮*/

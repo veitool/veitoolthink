@@ -188,13 +188,13 @@ layui.use(function(){
         }
     });/**/
     /*渲染搜索元素*/
-	form.render(null, 'addon-form-search');
+    form.render(null, 'addon-form-search');
     /*监听搜索*/
-	form.on('submit(top-addon-search)', function(data){
-		var field = data.field;field.catid = catid;field.version = version;
+    form.on('submit(top-addon-search)', function(data){
+        var field = data.field;field.catid = catid;field.version = version;
         table.reloadData('addon',{where:field,page:{curr:1}});
         return false;
-	});/**/
+    });/**/
     /*监听快捷按钮*/
     $("[id^='Taddon-']").on('click',function(){
         var $this = $(this),id = $this.attr('id').split('-')[1];

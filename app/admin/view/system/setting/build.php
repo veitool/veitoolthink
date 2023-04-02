@@ -18,7 +18,7 @@
 <script>
 layui.use(['buildItems'],function(){
     var app_root = layui.cache.maps + 'system.setting/';
-	var table=layui.table,form=layui.form,admin=layui.admin;
+    var table=layui.table,form=layui.form,admin=layui.admin;
     var datas = <?=$datas?>;
     /*解析顶部分组选项*/
     var tab = $("#settings_tab");
@@ -33,15 +33,15 @@ layui.use(['buildItems'],function(){
         where:{group:group},
         cols: [[
             {type:'checkbox',fixed:'left'},
-			{field:"name",edit:'text',title:"名称",width:180},
-			{field:"title",edit:'text',title:"标题"},
+            {field:"name",edit:'text',title:"名称",width:180},
+            {field:"title",edit:'text',title:"标题"},
             {field:"relation",edit:'text',title:"关联"},
-			{field:"typename",align:'center',width:120,title:"类型",sort:!0},
+            {field:"typename",align:'center',width:120,title:"类型",sort:!0},
             {field:"addtime",align:'center',title:"添加时间",width:160,sort:!0,templet:function(d){return layui.util.toDateString(d.addtime*1000)}},
-			{field:'listorder',edit:'text',width:60,align:'center',title:'排序'},
+            {field:'listorder',edit:'text',width:60,align:'center',title:'排序'},
             {field:'private',width:80,align:'center',templet:function(d){return '<input type="checkbox" name="private" lay-skin="switch" lay-text="是|否" lay-filter="settings-chang" value="'+d.private+'" data-json="'+encodeURIComponent(JSON.stringify(d))+'"'+(d.private==1 ? ' checked' : '')+'>';},unresize:true,title:'文本隐私'},
             {field:'state',width:80,align:'center',templet:function(d){return '<input type="checkbox" name="state" lay-skin="switch" lay-text="启用|禁用" lay-filter="settings-chang" value="'+d.state+'" data-json="'+encodeURIComponent(JSON.stringify(d))+'"'+(d.state==1 ? ' checked' : '')+'>';},unresize:true,title:'启用状态'},
-			{fixed:'right',width:95,align:'center',toolbar:'<div><a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a><a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a></div>',title:'操作'}
+            {fixed:'right',width:95,align:'center',toolbar:'<div><a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a><a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a></div>',title:'操作'}
         ]],
         page: true,
         limit:{$limit}

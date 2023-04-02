@@ -33,8 +33,8 @@
 .user-info-item .user-bd-list-img + .user-bd-list-content{margin-left:68px;}
 </style>
 <div class="layui-fluid">   
-	<div class="layui-row layui-col-space15">
-		<!-- left -->
+    <div class="layui-row layui-col-space15">
+        <!-- left -->
         <div class="layui-col-sm12 layui-col-md3">
             <div class="layui-card">
                 <div class="layui-card-body" style="padding:25px;min-height:-webkit-calc(100vh - 215px);min-height:-moz-calc(100vh - 215px);min-height:calc(100vh - 215px)">
@@ -164,7 +164,7 @@
                 <!-- //选项卡结束 -->
             </div>
         </div>
-	</div>
+    </div>
 </div>
 <script type="text/javascript" src="{STATIC__PATH}script/cityData.js"></script>
 <script>

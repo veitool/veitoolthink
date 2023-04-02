@@ -46,8 +46,8 @@ layui.use(['buildItems'], function(){
             gid: 1
         });
     };/**/
-	/*监听提交*/
-	layui.form.on('submit(setting-edit-submit)', function(data){
+    /*监听提交*/
+    layui.form.on('submit(setting-edit-submit)', function(data){
         var btn = $(this);data.field.__g = group;
         if (btn.attr('stop')){return false;}else{btn.attr('stop',1);}
         layui.admin.req(app_root+"edit",data.field,function(res){
@@ -55,6 +55,6 @@ layui.use(['buildItems'], function(){
             btn.removeAttr('stop');
         },'post');
         return false;
-	});/**/
+    });/**/
 });
 </script>

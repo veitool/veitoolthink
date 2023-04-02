@@ -40,8 +40,8 @@ layui.use(['buildItems'], function(){
             para: {addon:addon,group:group}
         });
     };/**/
-	/*监听提交*/
-	layui.form.on('submit(seting_addon_submit)', function(data){
+    /*监听提交*/
+    layui.form.on('submit(seting_addon_submit)', function(data){
         var btn = $(this),field = data.field;
         if (btn.attr('stop')){return false;}else{btn.attr('stop',1);}
         field.__g = group;field.__a = addon;
@@ -50,6 +50,6 @@ layui.use(['buildItems'], function(){
             btn.removeAttr('stop');
         },'post');
         return false;
-	});/**/
+    });/**/
 });
 </script>

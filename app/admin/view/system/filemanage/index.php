@@ -53,7 +53,7 @@ layui.use(function(){
     var filemanage_select = '<option value="">文件分组</option><option value="0">尚未分组</option>'; $.each(Group,function(k,v){filemanage_select += '<option value="'+ k +'">'+ v +'</option>';});
     $('#search_filemanage_select').html(filemanage_select);
     //渲染搜索元素
-	form.render(null, 'filemanage-form-search');
+    form.render(null, 'filemanage-form-search');
     layui.laydate.render({elem:'#filemanage-search-time',range:true,format:'yyyy/MM/dd'});
     /*渲染数据*/
     table.render({
@@ -62,29 +62,29 @@ layui.use(function(){
         css: 'td .layui-table-cell{height:80px;line-height:80px;padding:0 5px;}',
         cols: [[
             {type:'checkbox',fixed:'left'},
-			{field:"fileurl",align:'center',title:"预览图",width:80,templet:function(d){return '<div class="files_item"><img src="'+ get_icon(d.fileurl,d.filetype,d.fileext) +'" alt="'+d.filename+'" lay-event="file-event-image"/></div>';}},
+            {field:"fileurl",align:'center',title:"预览图",width:80,templet:function(d){return '<div class="files_item"><img src="'+ get_icon(d.fileurl,d.filetype,d.fileext) +'" alt="'+d.filename+'" lay-event="file-event-image"/></div>';}},
             {field:"filename",title:"文件名"},
             {field:"username",align:'center',width:100,title:"用户",templet:function(d){return d.admin==1 ? '<font color=red>'+d.username+'</font>' : d.username;}},
             {field:"groupname",align:'center',width:80,title:"分组",templet:function(d){return d.groupname ? d.groupname : '尚未分组';}},
-			{field:"filesize",align:'center',width:80,title:"大小(Kb)"},
+            {field:"filesize",align:'center',width:80,title:"大小(Kb)"},
             {field:"filetype",align:'center',width:80,title:"类型"},
             {field:"isdel",align:'center',width:60,title:"软删",templet:function(d){return d.isdel==1 ? '<font color=red>已删</font>' : '-';}},
-			{field:"addtime",align:'center',width:150,title:"上传时间",sort:!0,templet:function(d){return layui.util.toDateString(d.addtime*1000)}},
-			{fixed:'right',width:100,align:'center',toolbar:'<div><a class="layui-btn layui-btn-xs" lay-event="reset">恢复</a><a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a></div>',title:'操作'}
+            {field:"addtime",align:'center',width:150,title:"上传时间",sort:!0,templet:function(d){return layui.util.toDateString(d.addtime*1000)}},
+            {fixed:'right',width:100,align:'center',toolbar:'<div><a class="layui-btn layui-btn-xs" lay-event="reset">恢复</a><a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a></div>',title:'操作'}
         ]],
         page: true,
         limit:{$limit}
     });/**/
     /*监听搜索*/
-	form.on('submit(top-filemanage-search)', function(data){
+    form.on('submit(top-filemanage-search)', function(data){
         table.reloadData('filemanage',{where:data.field,page:{curr:1}});
         return false;
-	});/**/
+    });/**/
     /*监听全部按钮*/
-	form.on('submit(top-filemanage-all)', function(){
-		table.reloadData('filemanage',{where:'',page:{curr:1}});
+    form.on('submit(top-filemanage-all)', function(){
+        table.reloadData('filemanage',{where:'',page:{curr:1}});
         return false;
-	});/**/
+    });/**/
     /*顶部删除按钮*/
     $('#top-filemanage-del').on('click', function(){
         var checkRows = table.checkStatus('filemanage').data;

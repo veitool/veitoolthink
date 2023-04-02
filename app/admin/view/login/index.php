@@ -14,8 +14,8 @@
 <script type="text/javascript" src="{STATIC__PATH}script/md5.js"></script>
 </head>
 <body>
-	<div class="login-layout">
-    	<div class="logo"></div>
+    <div class="login-layout">
+        <div class="logo"></div>
         <div class="login-form" style="position:relative">
             <form class="formContent">
                 <div class="title">管理员登录</div>
@@ -28,7 +28,7 @@
                     </div>
                     <div class="formText submitDiv">
                         {if vconfig('admin_captcha',1)}
-						<div class="code"><div class="arrow"></div><div class="code-img"><img src=""/></div></div>
+                        <div class="code"><div class="arrow"></div><div class="code-img"><img src=""/></div></div>
                         <span class="text_span"><input type="text" name="captcha" id="captcha" value="" maxlength="5" placeholder="验证码"/></span>
                         <span class="submit_span"><button class="sub" id="login_btn">登 录</button></span>
                         {else}

@@ -50,29 +50,29 @@ layui.use(['buildItems'],function(){
         url: app_root+"index?do=json",
         cols: [[
             {type:'checkbox',fixed:'left'},
-			{field:"itemid",fixed:"left",width:60,align:'center',title:"ID",sort:!0},
-			{field:"mobile",width:120,title:"手机号"},
-			{field:"message",title:"内容"},
-			{field:"word",width:80,align:'center',title:"字数"},
+            {field:"itemid",fixed:"left",width:60,align:'center',title:"ID",sort:!0},
+            {field:"mobile",width:120,title:"手机号"},
+            {field:"message",title:"内容"},
+            {field:"word",width:80,align:'center',title:"字数"},
             {field:"sendtime",align:'center',width:150,title:"发送时间",sort:!0,templet:function(d){return layui.util.toDateString(d.sendtime*1000)}},
             {field:"editor",width:100,align:'center',title:"发送人"},
-			{field:"code",width:80,align:'center',title:"发送结果"},
-			{fixed:'right',width:68,align:'center',toolbar:'<div><a class="layui-btn layui-btn-xs" lay-event="del">删除</a></div>',title:'操作'}
+            {field:"code",width:80,align:'center',title:"发送结果"},
+            {fixed:'right',width:68,align:'center',toolbar:'<div><a class="layui-btn layui-btn-xs" lay-event="del">删除</a></div>',title:'操作'}
         ]],
         page: true,
         limit:{$limit}
     });/**/
     /*监听搜索*/
-	form.on('submit(top-sms-search)', function(data){
-		var field = data.field;
+    form.on('submit(top-sms-search)', function(data){
+        var field = data.field;
         table.reloadData('sms',{where:field,page:{curr:1}});
         return false;
-	});/**/
+    });/**/
     /*监听全部按钮*/
-	form.on('submit(top-sms-all)', function(){
-		table.reloadData('sms',{where:'',page:{curr:1}});
+    form.on('submit(top-sms-all)', function(){
+        table.reloadData('sms',{where:'',page:{curr:1}});
         return false;
-	});/**/
+    });/**/
     /*顶部发送短信*/
     $('#top-sms-send').on('click', function(){
         admin.open({

@@ -21,23 +21,23 @@ layui.use(function(){
     var table=layui.table,admin=layui.admin,layer=layui.layer;
     /*数据表渲染*/
     table.render({
-		elem: '#database',
-		cols: [[
-			{type:"checkbox",fixed:"left"},
-			{field:"name",title: "表名"},
-			{field:"comment",edit:'text',title:"备注"},
+        elem: '#database',
+        cols: [[
+            {type:"checkbox",fixed:"left"},
+            {field:"name",title: "表名"},
+            {field:"comment",edit:'text',title:"备注"},
             {field:"engine",align:'center',width:100,title:"类型"},
-			{field:"data_length",align:'center',width:100,title:"数据(Mb)",sort:true},
-			{field:"index_length",align:'center',width:100,title:"索引(Mb)",sort:true},
-			{field:"data_total",align:'center',width:100,title:"合计(Mb)",sort:true},
-			{field:"rows",align:'center',width:100,title:"记录数",sort:true},
-			{fixed:'right',width:80,align:'center',toolbar:'<div><a class="layui-btn layui-btn-xs" lay-event="zidian">查看字典</a></div>',title:'操作'}
-		]],
-		data: {$list|raw},
-		even: true,
-		page: false,
-		limit: 500
-	});/**/
+            {field:"data_length",align:'center',width:100,title:"数据(Mb)",sort:true},
+            {field:"index_length",align:'center',width:100,title:"索引(Mb)",sort:true},
+            {field:"data_total",align:'center',width:100,title:"合计(Mb)",sort:true},
+            {field:"rows",align:'center',width:100,title:"记录数",sort:true},
+            {fixed:'right',width:80,align:'center',toolbar:'<div><a class="layui-btn layui-btn-xs" lay-event="zidian">查看字典</a></div>',title:'操作'}
+        ]],
+        data: {$list|raw},
+        even: true,
+        page: false,
+        limit: 500
+    });/**/
     /*顶部备份数据按钮*/
     $('#top-database-backup').on('click',function(){
         var checkData = table.checkStatus('database').data;
@@ -211,10 +211,10 @@ layui.use(function(){
         if(obj.event === 'zidian'){
             admin.open({
                 type: 1,
-				title: '数据表字典 - ' + data.name + ' - ' + data.comment,
-				area: ['800px', '600px'],
-				content: '<div class="layui-form" lay-filter="database_open_dict_info" id="database_open_dict_info" style="padding:10px 20px;"><table lay-filter="database_dict" id="database_dict"></table></div>',
-				success: function(){
+                title: '数据表字典 - ' + data.name + ' - ' + data.comment,
+                area: ['800px', '600px'],
+                content: '<div class="layui-form" lay-filter="database_open_dict_info" id="database_open_dict_info" style="padding:10px 20px;"><table lay-filter="database_dict" id="database_dict"></table></div>',
+                success: function(){
                     table.render({
                         elem: '#database_dict',
                         url: app_root + 'dict?table=' + data.name,
@@ -230,8 +230,8 @@ layui.use(function(){
                         page: false,
                         limit: 0
                     });
-				}
-			});
+                }
+            });
         }
     });/**/
 });

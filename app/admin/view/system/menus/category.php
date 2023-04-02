@@ -1,9 +1,9 @@
 <div style="padding:20px;">
-	<div class="layui-btn-group">
-		<button class="layui-btn" id="top-category-add"><i class="layui-icon layui-icon-add-circle"></i> 添加类别</button>
+    <div class="layui-btn-group">
+        <button class="layui-btn" id="top-category-add"><i class="layui-icon layui-icon-add-circle"></i> 添加类别</button>
         <button class="layui-btn" id="top-category-del"><i class="layui-icon layui-icon-delete"></i> 删除类别</button>
     </div>
-	<table id="category_table" lay-filter="category_table"></table>
+    <table id="category_table" lay-filter="category_table"></table>
 </div>
 <!--JS部分-->
 <script>
@@ -15,8 +15,8 @@ layui.use(['iconPicker','buildItems'], function(){
     table.render({
         elem: '#category_table',
         cols: [[
-        	{type:"checkbox",fixed:"left"},
-        	{field:"catid",align:'center',width:60,title:"ID"},
+            {type:"checkbox",fixed:"left"},
+            {field:"catid",align:'center',width:60,title:"ID"},
             {field:"title",edit:'text',title: "类别名称"},
             {field:'icon',width:60,align:'center',templet:function(d){return d.icon ? '<i class="layui-icon '+ d.icon +'"></i>' : '';},title:'图标'},
             {field:'listorder',edit:'text',width:60,align:'center',title:'排序'},

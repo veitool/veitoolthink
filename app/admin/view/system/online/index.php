@@ -55,8 +55,8 @@ layui.use(['vinfo'],function(){
         url: app_root+"index?do=json",
         cols: [[
             {type:'checkbox',fixed:'left'},
-			{field:"username",width:120,title:"用户",templet:function(d){return '<a style="cursor:pointer;" lay-event="userinfo"><font'+ (!d.type && d.ip==ip ? ' color=blue' : '') +'>'+ d.username +'</font></a>'}},
-			{field:"url",title:"路径"},
+            {field:"username",width:120,title:"用户",templet:function(d){return '<a style="cursor:pointer;" lay-event="userinfo"><font'+ (!d.type && d.ip==ip ? ' color=blue' : '') +'>'+ d.username +'</font></a>'}},
+            {field:"url",title:"路径"},
             {field:"type",width:80,align:'center',title:"类型",templet:function(d){return d.type==1 ? '会员': '后台'}},
             {field:"ip",width:150,align:'center',title:"IP",toolbar:'<div><a style="cursor:pointer;" lay-event="showip">{{d.ip}}</a></div>'},
             {field:"etime",align:'center',width:150,title:"时间",sort:!0,templet:function(d){return layui.util.toDateString(d.etime*1000)}}
@@ -70,15 +70,15 @@ layui.use(['vinfo'],function(){
         limit:{$limit}
     });/**/
     /*监听搜索*/
-	form.on('submit(top-online-search)', function(data){
+    form.on('submit(top-online-search)', function(data){
         table.reloadData('online',{where:data.field,page:{curr:1}});
         return false;
-	});/**/
+    });/**/
     /*监听全部按钮*/
-	form.on('submit(top-online-all)', function(){
-		table.reloadData('online',{where:'',page:{curr:1}});
+    form.on('submit(top-online-all)', function(){
+        table.reloadData('online',{where:'',page:{curr:1}});
         return false;
-	});/**/
+    });/**/
     /*工具条监听*/
     table.on('tool(online)', function(obj){
         var data = obj.data;

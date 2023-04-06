@@ -87,7 +87,7 @@ class Menus extends AdminBase
      */
     public function edit($do='')
     {
-        $d = $this->only($do ? ['menuid/d/参数错误','av/h','af'] : ['menuid/d/参数错误','catid/d','ocatid/d','menu_name/*/{2,20}/菜单名称','role_name/*/{2,20}/权限名称','link_url/u','menu_url/u','role_url/u','icon/u','parent_id/d','listorder/d','ismenu/d','state/d']);
+        $d = $this->only($do ? ['menuid/d/参数错误','av/u','af'] : ['menuid/d/参数错误','catid/d','ocatid/d','menu_name/*/{2,20}/菜单名称','role_name/*/{2,20}/权限名称','link_url/u','menu_url/u','role_url/u','icon/u','parent_id/d','listorder/d','ismenu/d','state/d']);
         $menuid = $d['menuid'];
         $Myobj = M::get("menuid = $menuid");
         if(!$Myobj) return $this->returnMsg("数据不存在");

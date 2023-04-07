@@ -243,7 +243,7 @@ INSERT INTO `vt_menus` VALUES ('100', '1', '', '用户列表', '用户列表', '
 -- ----------------------------
 DROP TABLE IF EXISTS `vt_online`;
 CREATE TABLE `vt_online` (
-  `userid` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '会员ID',
+  `userid` varchar(20) NOT NULL DEFAULT '0' COMMENT '会员ID',
   `username` varchar(30) NOT NULL DEFAULT '' COMMENT '会员帐号',
   `url` varchar(100) NOT NULL DEFAULT '' COMMENT '所在路径',
   `ip` varchar(30) NOT NULL DEFAULT '' COMMENT 'IP地址',

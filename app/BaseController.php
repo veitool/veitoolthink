@@ -87,7 +87,24 @@ abstract class BaseController
      * @access  protected
      * @param   sting   $tip   提示
      */
-    protected function logon(string $tip = ''){}
+    protected function logon(string $tip = ''){
+        $flag1 = vconfig('web_log',0);
+        $flag2 = in_array(vconfig('online_on',0),[2,3]);
+        if($flag1 || $flag2) $url = substr(addslashes(vhtmlspecialchars(strip_sql($this->request->url()))),0,200);
+        /*访问日志*/
+        if($flag1){
+            \app\model\system\WebLog::add(['url'=>$url,'username'=>$this->memUser['username'] ?? '','ip'=>VT_IP]);
+        }/**/
+        /*在线统计【0:关闭全部 1:开启后台 2:开启会员 3:开启全部】模型中支持 replace 为 create 的第3个参数设为 true 或者 \think\facade\Db::name('online')->replace()->insert([数据集])*/
+        if($flag2){
+            $Online = $this->memUser ? ['userid'=>'m'.$this->memUser['userid'],'username'=>$this->memUser['username']] : session('VT_ONLINE');
+            if(!$Online){
+                $Online = ['userid'=>uniqid(),'username'=>'游客'];
+                session('VT_ONLINE',$Online);
+            }
+            \app\model\system\Online::create(['userid'=>$Online['userid'],'username'=>$Online['username'],'url'=>$url,'etime'=>VT_TIME,'ip'=>VT_IP,'type'=>1],['userid','username','url','etime','ip','type'],true);
+        }/**/
+    }
 
     /**
      * 模板赋值

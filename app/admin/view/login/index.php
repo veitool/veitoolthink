@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
 <link rel="shortcut icon" href="{PUBLIC__PATH}/favicon.ico"/>
-<link href="{STATIC__PATH}login/login.css" rel="stylesheet" type="text/css"/>
+<link href="{STATIC__PATH}admin/login/login.css" rel="stylesheet" type="text/css"/>
 <link href="{STATIC__PATH}layui/css/layui.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="{STATIC__PATH}layui/layui.js"></script>
 <script type="text/javascript">var $=layui.$,jQuery=layui.jquery;</script>
@@ -41,8 +41,8 @@
     </div>
     <div id="bannerBox">
         <ul id="slideBanner" class="slideBanner">
-            <li><img src="{STATIC__PATH}login/banner_1.jpg"></li>
-            <li><img src="{STATIC__PATH}login/banner_2.jpg"></li>
+            <li><img src="{STATIC__PATH}admin/login/banner_1.jpg"></li>
+            <li><img src="{STATIC__PATH}admin/login/banner_2.jpg"></li>
         </ul>
     </div>
 <script type="text/javascript">

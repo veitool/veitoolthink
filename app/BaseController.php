@@ -39,6 +39,12 @@ abstract class BaseController
     protected $middleware = [];
 
     /**
+     * 前台会员信息
+     * @var array
+     */
+    protected $memUser = [];
+
+    /**
      * 构造方法
      * @param App $app
      */
@@ -50,6 +56,8 @@ abstract class BaseController
         $this->request = $this->app->request;
         // 映射路径
         defined('APP_MAP') or define('APP_MAP', $this->request->root());
+        // 获取会员身份 无会员系统可注释掉
+        $this->memUser = session(VT_MEMBER);
         // 验证（登录、权限）
         $this->__auth();
         // 控制器初始化

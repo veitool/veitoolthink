@@ -108,8 +108,7 @@ layui.use(['treeTable','xmSelect','iconPicker','buildItems'],function(){
         if (btn.attr('stop')) return false;
         var checkRows = menusTb.checkStatus();
         var menuid = checkRows.length > 0 ? checkRows[0].menuid : 0;
-        layer.confirm('确定要导出菜单吗？<br/>将将导出在文件 /runtime/sysMenus.php', function(index){
-            layer.close(index);
+        layer.confirm('确定要导出菜单吗？<br/>将将导出在文件 /runtime/sysMenus.php', function(){
             btn.attr('stop',1);
             admin.req(app_root+"out",{menuid:menuid},function(res){
                 layer.msg(res.msg);
@@ -121,8 +120,7 @@ layui.use(['treeTable','xmSelect','iconPicker','buildItems'],function(){
     $('#top-menus-up').on('click', function(){
         var btn = $(this);
         if (btn.attr('stop')) return false;
-        layer.confirm('确定要导入菜单吗？<br/>请确保存在文件 /runtime/sysMenus.php', function(index){
-            layer.close(index);
+        layer.confirm('确定要导入菜单吗？<br/>请确保存在文件 /runtime/sysMenus.php', function(){
             btn.attr('stop',1);
             admin.req(app_root+"up",function(res){
                 layer.msg(res.msg,{shade:[0.4,'#000'],time:1500},function(){

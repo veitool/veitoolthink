@@ -1,5 +1,5 @@
 <style>
-#seting_addon{padding-right:80px;}
+#seting_addon{padding-right:80px;line-height:24px;}
 #seting_addon .layui-form-label{width:130px}
 #seting_addon .layui-input-block{margin-left:160px}
 #seting_addon .layui-word-aux{color:#ccc!important;}

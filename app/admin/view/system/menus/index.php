@@ -124,7 +124,7 @@ layui.use(['treeTable','xmSelect','iconPicker','buildItems'],function(){
             btn.attr('stop',1);
             admin.req(app_root+"up",function(res){
                 layer.msg(res.msg,{shade:[0.4,'#000'],time:1500},function(){
-                    if(res.code==1){menusTb.refresh();}
+                    if(res.code==1) menusTb.refresh();
                     btn.removeAttr('stop');
                 });
             },'post');

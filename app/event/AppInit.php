@@ -50,6 +50,7 @@ class AppInit extends Service
         $arr = explode('/', $url);
         $addon = $arr[0];
         $module = '';
+
         /* 非系统应用定位到插件目录为应用目录 app.php 配置中需设置 'app_express' => false */
         $excl = array_merge(config('veitool.sys_app', ['admin','index','api','']), array_flip(config('app.app_map')));
         if(!in_array($addon,$excl)){
@@ -59,6 +60,7 @@ class AppInit extends Service
             $method = isset($arr[2]) && $arr[2] ? $arr[2] : 'index';
             $this->app->setNamespace("addons\\" . $module);
             $this->app->setAppPath($this->app->getRootPath() . 'addons' . VT_DS . $module . VT_DS);
+            is_file($file = ADDON_PATH . $addon . VT_DS . 'data' . VT_DS . 'route.php') && require_once($file);
             Route::rule($url, $module . '/' . $contr . '/' . $method);
             $module .= '/';
         }/**/

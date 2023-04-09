@@ -45,9 +45,9 @@ class AppInit extends Service
         define('VT_DIR', config('view.tpl_replace_string.{PUBLIC__PATH}'));
 
         /* 路由处理 旧模式不兼容nginx：$url = request()->pathinfo(); */
-        $url = ltrim(request()->url(), '/');
+        $url = str_replace(".".config('route.url_html_suffix'), '',ltrim($this->app->request->url(), '/'));
         $url = strpos($url, '?') ? strstr($url, '?', true) : $url;
-        $arr = explode('/', str_replace(".html", '', $url));
+        $arr = explode('/', $url);
         $addon = $arr[0];
 
         /* 非系统应用定位到插件目录为应用目录 app.php 配置中需设置 'app_express' => false */

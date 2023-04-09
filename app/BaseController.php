@@ -88,7 +88,7 @@ abstract class BaseController
      * @param   sting   $tip   提示
      */
     protected function logon(string $tip = ''){
-        $flag1 = vconfig('web_log',0);
+        $flag1 = vconfig('home_log',0);
         $flag2 = in_array(vconfig('online_on',0),[2,3]);
         if($flag1 || $flag2) $url = substr(addslashes(vhtmlspecialchars(strip_sql($this->request->url()))),0,200);
         /*访问日志*/

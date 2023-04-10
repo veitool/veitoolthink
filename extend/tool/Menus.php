@@ -57,7 +57,7 @@ class Menus
      */
     private static function menuUpdate($newMenu, $parentid = 0, $name = '')
     {
-        $allow = ['catid'=>'1','name'=>'','menu_name'=>'莫名菜单','role_name'=>'','link_url'=>'','menu_url'=>'','role_url'=>'','link_url'=>'','icon'=>'','ismenu'=>'0','state'=>'0','type'=>'1'];
+        $allow = ['catid'=>'1','name'=>'','menu_name'=>'莫名菜单','role_name'=>'','link_url'=>'','menu_url'=>'','role_url'=>'','link_url'=>'','icon'=>'','ismenu'=>'0','listorder'=>10,'state'=>'0','type'=>'1'];
         foreach($newMenu as $k => $v){
             $data = array_intersect_key($v, $allow);
             $data = array_merge($allow, $data);
@@ -86,9 +86,10 @@ class Menus
         foreach ($_MES as $v){
             if($v['parent_id']==$menuid){
                 $v['sublist'] = self::menuOut($v['menuid']);
-                if(!$v['sublist']){
-                    unset($v['sublist']);
-                }
+                if(!$v['icon']) unset($v['icon']);
+                if(!$v['link_url']) unset($v['link_url']);
+                if(!$v['menu_url']) unset($v['menu_url']);
+                if(!$v['sublist']) unset($v['sublist']);
                 unset($v['menuid'],$v['addtime'],$v['parent_id']);
                 $data[] = $v;
             }

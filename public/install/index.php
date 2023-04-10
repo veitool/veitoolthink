@@ -46,6 +46,10 @@ if($s == 2){
     if(!$isOK) header("Location: ?s=2");
     $currentHost = ($_SERVER['SERVER_PORT'] == 443 ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . '/';
 }elseif($s == 4){
+    // 设置无缓冲输出
+    header('X-Accel-Buffering: no');
+    ob_implicit_flush(true);
+    // 引入模板页
     require_once(INSTALL_PATH . '/tpl/step_4.php');
     // 初始化信息
     $dbhost = $_GET['dbhost'] ?? '';
@@ -103,7 +107,6 @@ if($s == 2){
     echo str_repeat(' ', $buffer + 1);
     tipMsg("数据库连接文件创建完成！");
     ob_flush();
-    flush();
     time_nanosleep(0,500000000);
 
     // 导入安装数据
@@ -115,14 +118,12 @@ if($s == 2){
             $txt = str_replace(['COMMENT=','\'',';'],['','',''],$txt);
             tipMsg("创建【{$txt}】表完成！");
             ob_flush();
-            flush();
             time_nanosleep(0,50000000);
         }
     }
 
     tipMsg("系统初始数据导入完成！");
     ob_flush();
-    flush();
     time_nanosleep(0,500000000);
 
     // 更新管理员信息
@@ -133,7 +134,6 @@ if($s == 2){
 
     tipMsg("管理员信息设置完成！");
     ob_flush();
-    flush();
 
     // 结束缓存区
     ob_end_flush();
@@ -351,7 +351,7 @@ EOT;
 function getEnvs()
 {
     return <<<EOT
-APP_DEBUG = false
+APP_DEBUG = true
 APP_TRACE = false
 
 [APP]

@@ -108,7 +108,7 @@ layui.use(['treeTable','xmSelect','iconPicker','buildItems'],function(){
         if (btn.attr('stop')) return false;
         var checkRows = menusTb.checkStatus();
         var menuid = checkRows.length > 0 ? checkRows[0].menuid : 0;
-        layer.confirm('确定要导出菜单吗？<br/>将将导出在文件 /runtime/sysMenus.php', function(){
+        layer.confirm('确定要导出菜单吗？<br/>将将导出在文件 /runtime/sysMenus_*.php', function(){
             btn.attr('stop',1);
             admin.req(app_root+"out",{menuid:menuid},function(res){
                 layer.msg(res.msg);

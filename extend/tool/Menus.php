@@ -81,11 +81,14 @@ class Menus
     public static function menuOut($menuid = 0, $where = '')
     {
         global $_MES;
-        $_MES = $_MES ? $_MES : ($where ? M::where($where)->column('*') : M::column('*'));
+        $_MES = $_MES ?: M::where($where)->order('listorder', 'asc')->column('*');
         $data = [];
         foreach ($_MES as $v){
             if($v['parent_id']==$menuid){
                 $v['sublist'] = self::menuOut($v['menuid']);
+                if(!$v['sublist']){
+                    unset($v['sublist']);
+                }
                 unset($v['menuid'],$v['addtime'],$v['parent_id']);
                 $data[] = $v;
             }

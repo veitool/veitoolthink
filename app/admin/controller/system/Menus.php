@@ -161,9 +161,12 @@ class Menus extends AdminBase
         }
         $msg = '无数据导出';
         if($data){
+            $file = 'sysMenus_'.$menuid.'.php';
             $content = "<?php\nreturn ".var_export($data,true).";";
-            @file_put_contents(RUNTIME_PATH.'sysMenus.php', $content);
-            $msg = '导出成功位置:/runtime/sysMenus.php';
+            $content = preg_replace('/(?<==> \n).*?(?=array)/si', '', $content);
+            $content = str_replace(["array (", "),", ");", "=> \n"], ["[", "],", "];", "=> "], $content);
+            @file_put_contents(RUNTIME_PATH.$file, $content);
+            $msg = '导出成功位置:/runtime/'.$file;
         }
         return $this->returnMsg($msg);
     }

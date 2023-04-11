@@ -55,11 +55,11 @@
             });
         }});
         //获取焦点
-        $(".item .input-text").focus(function(){
+        $(".login-item input").focus(function(){
             $(this).parent().addClass("focus");
         });
         //失去焦点
-        $(".item .input-text").blur(function(){
+        $(".login-item input").blur(function(){
             $(this).parent().removeClass("focus");
         });
         //提示验证码

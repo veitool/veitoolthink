@@ -6,10 +6,10 @@ ul,li{margin:0;padding:0;border:0;list-style-image:none;list-style-type:none}
 a{color:#31b4e1;text-decoration:none}
 a:hover{color:#ec5051;text-decoration:none}
 input{outline:0}
-input[type=text],input[type=password]{font-size:14px;font-family:"Microsoft YaHei";height:28px;background:#fff;border:0;border-radius:50px;box-shadow:0 2px 7px 0 #939292 inset;padding:6px 6px 6px 43px;opacity:.8;filter:alpha(opacity=80);border-bottom:1px solid #fff;color:#666}
 input:-moz-placeholder{color:#ccc}
 input:-ms-input-placeholder{color:#ccc}
 input::-webkit-input-placeholder{color:#ccc}
+input[type=text],input[type=password]{font-size:14px;font-family:"Microsoft YaHei";height:28px;background:#fff;border:0;border-radius:50px;box-shadow:0 2px 7px 0 #939292 inset;padding:6px 6px 6px 43px;opacity:.8;filter:alpha(opacity=80);border-bottom:1px solid #fff;color:#666}
 input[type=text]:focus,input[type=password]:focus{filter:progid:DXImageTransform.Microsoft.gradient(enabled='true',startColorstr='#3F000000',endColorstr='#3F000000');background:#fff;outline:0;border-color:rgba(255,255,255,.5);-moz-box-shadow:0 2px 7px 0 #939292 inset,0 0 0 2px rgba(255,255,255,.15);-webkit-box-shadow:0 2px 7px 0 #939292 inset,0 0 0 2px rgba(255,255,255,.15);box-shadow:0 2px 7px 0 #939292 inset,0 0 0 5px rgba(255,255,255,.15);opacity:1;filter:alpha(opacity=100)}
 input[type=text]:focus::-webkit-input-placeholder,input[type=password]:focus::-webkit-input-placeholder{color:#fff}
 #bgBox{display:block;position:fixed;left:0;top:0;overflow:hidden;z-index:-999;height:100%;width:100%}

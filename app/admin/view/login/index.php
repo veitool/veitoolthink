@@ -14,33 +14,31 @@
 <script type="text/javascript" src="{STATIC__PATH}script/md5.js"></script>
 </head>
 <body>
-    <div class="login-layout">
+    <div class="login">
         <div class="logo"></div>
-        <div class="login-form" style="position:relative">
-            <form class="formContent">
-                <div class="title">管理员登录</div>
-                <div class="formInfo">
-                    <div class="formText">
-                        <i class="icon icon-user"></i><input type="text" name="username" id="username" value="" autocomplete="off" class="input-text" placeholder="用户名" />
-                    </div>
-                    <div class="formText">
-                        <i class="icon icon-pwd"></i><input type="password" name="password" id="password" value="" autocomplete="off" class="input-text" placeholder="密  码" />
-                    </div>
-                    <div class="formText submitDiv">
-                        {if vconfig('admin_captcha',1)}
-                        <div class="code"><div class="arrow"></div><div class="code-img"><img src=""/></div></div>
-                        <span class="text_span"><input type="text" name="captcha" id="captcha" value="" maxlength="5" placeholder="验证码"/></span>
-                        <span class="submit_span"><button class="sub" id="login_btn">登 录</button></span>
-                        {else}
-                        <span class="submit_span"><button class="sub" id="login_btn" style="border-radius:50px;width:100%;display:block;">登 录</button></span>
-                        {/if}
-                    </div>
+        <form>
+            <div class="title">管理员登录</div>
+            <div class="main">
+                <div class="login-item">
+                    <i class="layui-icon">&#xe66f;</i><input type="text" name="username" id="username" value="" autocomplete="off" placeholder="用户名" />
                 </div>
-            </form>
-        </div>
+                <div class="login-item">
+                    <i class="layui-icon">&#xe673;</i><input type="password" name="password" id="password" value="" autocomplete="off" placeholder="密  码" />
+                </div>
+                <div class="login-item sub">
+                    {if vconfig('admin_captcha',1)}
+                    <div class="code"><div class="arrow"></div><div class="code-img"><img src=""/></div></div>
+                    <span class="captcha"><input type="text" name="captcha" id="captcha" value="" maxlength="5" placeholder="验证码"/></span>
+                    <span><button id="login_btn">登 录</button></span>
+                    {else}
+                    <span><button id="login_btn" style="border-radius:50px;width:100%;display:block;">登 录</button></span>
+                    {/if}
+                </div>
+            </div>
+        </form>
     </div>
-    <div id="bannerBox">
-        <ul id="slideBanner" class="slideBanner">
+    <div id="bgBox">
+        <ul class="slideBg">
             <li><img src="{STATIC__PATH}admin/login/banner_1.jpg"></li>
             <li><img src="{STATIC__PATH}admin/login/banner_2.jpg"></li>
         </ul>
@@ -49,19 +47,19 @@
     layui.use(function(){
         var layer = layui.layer;
         //背景切换
-        $("#bannerBox").slide({mainCell:".slideBanner",effect:"fold",interTime:3500,delayTime:500,autoPlay:true,autoPage:true,endFun:function(i,c,s){
+        $("#bgBox").slide({mainCell:".slideBg",effect:"fold",interTime:3500,delayTime:500,autoPlay:true,autoPage:true,endFun:function(i,c,s){
             $(window).resize(function(){
                 var width = $(window).width();
                 var height = $(window).height();
-                s.find(".slideBanner,.slideBanner li").css({"width":width,"height":height});
+                s.find(".slideBg,.slideBg li").css({"width":width,"height":height});
             });
         }});
         //获取焦点
-        $(".formText .input-text").focus(function(){
+        $(".item .input-text").focus(function(){
             $(this).parent().addClass("focus");
         });
         //失去焦点
-        $(".formText .input-text").blur(function(){
+        $(".item .input-text").blur(function(){
             $(this).parent().removeClass("focus");
         });
         //提示验证码
@@ -73,7 +71,7 @@
         $('.code-img img').on('click',function(){getCaptcha();});
         //隐藏验证码提示层
         $(document).click(function(e){
-            if(e.target.name != 'captcha' && !$(e.target).parents("div").is(".submitDiv")){
+            if(e.target.name != 'captcha' && !$(e.target).parents("div").is(".sub")){
                 $('.code').hide();
             }
         });
@@ -134,7 +132,7 @@
         };
         var tip = function(t,o,f){layer.tips(t,o,{tips:[f,'#ff7c3a']});o.focus();return false;};
         //获取验证码
-        var getCaptcha = function(){$('.code-img img').attr("src","{:url('api/captcha/admin')}?t="+Math.random());};
+        var getCaptcha = function(){$('.code-img img').attr("src","/api/captcha/admin?t="+Math.random());};
     });
 </script>
 </body>

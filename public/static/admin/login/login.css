@@ -2,60 +2,35 @@
 *{word-wrap:break-word;outline:0}
 body,html{height:100%;margin:0;-webkit-text-size-adjust:none}
 body{background:#555;font-family:"Microsoft YaHei";-webkit-background-size:cover;-moz-background-size:cover;-o-background-size:cover;background-size:cover;width:100%;height:100%}
-h2,h5,h6{margin:0}
-input{outline:0}
-li,ul{margin:0;padding:0;border:0;list-style-image:none;list-style-type:none}
+ul,li{margin:0;padding:0;border:0;list-style-image:none;list-style-type:none}
 a{color:#31b4e1;text-decoration:none}
 a:hover{color:#ec5051;text-decoration:none}
+input{outline:0}
 input[type=text],input[type=password]{font-size:14px;font-family:"Microsoft YaHei";height:28px;background:#fff;border:0;border-radius:50px;box-shadow:0 2px 7px 0 #939292 inset;padding:6px 6px 6px 43px;opacity:.8;filter:alpha(opacity=80);border-bottom:1px solid #fff;color:#666}
 input:-moz-placeholder{color:#ccc}
 input:-ms-input-placeholder{color:#ccc}
 input::-webkit-input-placeholder{color:#ccc}
 input[type=text]:focus,input[type=password]:focus{filter:progid:DXImageTransform.Microsoft.gradient(enabled='true',startColorstr='#3F000000',endColorstr='#3F000000');background:#fff;outline:0;border-color:rgba(255,255,255,.5);-moz-box-shadow:0 2px 7px 0 #939292 inset,0 0 0 2px rgba(255,255,255,.15);-webkit-box-shadow:0 2px 7px 0 #939292 inset,0 0 0 2px rgba(255,255,255,.15);box-shadow:0 2px 7px 0 #939292 inset,0 0 0 5px rgba(255,255,255,.15);opacity:1;filter:alpha(opacity=100)}
-input[type=text]:focus::-webkit-input-placeholder{color:#fff}
-#bannerBox{display:block;position:fixed;left:0;top:0;overflow:hidden;z-index:-999;height:100%;width:100%}
-#bannerBox .slideBanner{height:100%;width:100%}
-#bannerBox .slideBanner li{display:block;list-style:none;z-index:-30;position:fixed;overflow:hidden;top:0;left:0;width:100%;height:100%;background:#111}
-#bannerBox .slideBanner li img{height:100%;width:100%}
-.login-layout{width:418px;position:absolute;z-index:3;top:50%;left:50%;margin:-300px auto auto -209px}
-.login-layout .logo{text-align:center;height:40px;}
-.login-form{position:relative;z-index:9;width:395px;height:389px;padding:11px;background:url(form_bg.png) no-repeat;margin-top:30px}
-.formContent{width:395px;height:389px}
-.formContent .title{color:#fff;font-size:24px;text-align:center;padding:25px 0;background:url(line_bg.png) bottom no-repeat}
-.formInfo{width:228px;margin:28px auto}
-.formText{position:relative;z-index:2;margin-bottom:15px}
-.formText:after,.formText:before{content:".";display:block;height:0;clear:both;visibility:hidden}
-.formText .input-text{width:178px}
-.icon{background:url(login_icon.png) no-repeat;position:absolute;top:14px;left:18px;width:14px;height:13px;z-index:9}
-.icon-user{background-position:-5px -8px}
-.icon-pwd{background-position:-3px -38px}
-.focus .icon-user{background-position:-33px -8px}
-.focus .icon-pwd{background-position:-31px -38px}
-.checkbox,.cur{background:url(login_icon.png) no-repeat;float:left;cursor:pointer}
-.checkbox{width:32px;height:18px;background-position:-105px -50px;position:relative;margin:2px 0 0 15px}
-.checkbox .cur{width:18px;height:18px;transition:.4s;background-position:-153px -10px}
-.checked{background-position:-105px -10px}
-.checked .cur{-webkit-transform:translateX(85%);transform:translateX(85%)}
-.formText .span{font-size:12px;line-height:20px;float:left;margin-left:7px;color:#fff}
-.forget_pwd{float:right;font-size:12px;color:#fff;display:block;margin:2px 25px 0 0}
-.submitDiv{padding:10px 0 0}
-.submitDiv .text_span{width:115px;overflow:hidden;float:left;margin:0px 0 -10px 0px}
-.submitDiv .text_span input{border-radius:50px 0 0 50px;padding-left:22px;width:100px;float:left}
-.submitDiv .sub{width:113px;height:41px;border:0;background:#ff7c3a;color:#FFF;border-radius:0 50px 50px 0;padding:0;font-size:14px;font-weight:700;cursor:pointer;font-family:"Microsoft YaHei"}
+input[type=text]:focus::-webkit-input-placeholder,input[type=password]:focus::-webkit-input-placeholder{color:#fff}
+#bgBox{display:block;position:fixed;left:0;top:0;overflow:hidden;z-index:-999;height:100%;width:100%}
+.slideBg{height:100%;width:100%}
+.slideBg li{display:block;list-style:none;z-index:-30;position:fixed;overflow:hidden;top:0;left:0;width:100%;height:100%;background:#111}
+.slideBg li img{height:100%;width:100%}
+.login{width:418px;position:absolute;z-index:3;top:50%;left:50%;margin:-300px auto auto -209px}
+.login .logo{text-align:center;height:40px;}
+.login form{position:relative;z-index:9;width:395px;height:389px;padding:11px;background:url(form_bg.png) no-repeat;margin-top:30px}
+.login form .title{color:#fff;font-size:24px;text-align:center;padding:25px 0;background:url(line_bg.png) bottom no-repeat}
+.login form .main{width:228px;margin:28px auto}
+.login-item{position:relative;z-index:2;margin-bottom:15px}
+.login-item:after,.login-item:before{content:".";display:block;height:0;clear:both;visibility:hidden}
+.login-item input{width:178px}
+.login-item .layui-icon{position:absolute;top:12px;left:18px;width:14px;height:13px;z-index:9;color:#ccc;}
+.login-item.focus .layui-icon{color:#666;}
+.sub{padding-top:10px}
+.sub .captcha{width:115px;overflow:hidden;margin:0px 0 -10px 0px;float:left}
+.sub #captcha{border-radius:50px 0 0 50px;padding-left:22px;float:left}
+.sub button{width:113px;height:41px;border:0;background:#ff7c3a;color:#FFF;border-radius:0 50px 50px 0;padding:0;font-size:14px;font-weight:700;cursor:pointer;font-family:"Microsoft YaHei"}
+.sub button:hover{box-shadow:2px 3px 6px 0 rgba(0,0,0,.3) inset}
 .code{background-color:#FFF;width:100px;height:34px;border-radius:4px;position:absolute;z-index:9;top:-24px;left:10px;display:none;box-shadow:0 2px 2px 2px rgba(0,0,0,.25)}
 .code .arrow{width:0;height:0;border:7px solid transparent;border-top-color:#fff;position:absolute;bottom:-14px;left:18px}
 .code img{width:90px;height:26px;position:absolute;z-index:1;top:4px;left:4px;cursor:pointer;}
-.submitDiv .sub:hover{box-shadow:2px 3px 6px 0 rgba(0,0,0,.3) inset}
-.backPwd_layout{padding-bottom:15px;width:327px;height:321px;background:#fff;border-radius:5px;margin:-160px auto auto -162px;position:absolute;z-index:3;top:50%;left:50%}
-.backPwd_form{width:226px;margin:0 auto}
-.backPwd_form .title{text-align:center;font-size:24px;margin:20px 0 20px}
-.backPwd_form .error_msg{color:#666;font-size:12px;line-height:12px;margin:5px 0}
-.backPwd_form .formInfo{width:226px}
-.backPwd_form .btn_div{padding-top:15px}
-.btn_div .sub{width:113px;height:41px;border:0;background:#ff7c3a;color:#fff;border-radius:50px 0 0 50px;padding:0;font-size:14px;font-weight:700;cursor:pointer;font-family:"Microsoft YaHei";float:left}
-.btn_div .cancel{width:113px;height:41px;border:0;background:#cecece;color:#fff;border-radius:0 50px 50px 0;padding:0;font-size:14px;font-weight:700;cursor:pointer;font-family:"Microsoft YaHei";float:left}
-.btn_div .cancel:hover,.btn_div .sub:hover{box-shadow:2px 3px 6px 0 rgba(0,0,0,.3) inset}
-.formText .return{font-size:12px;color:#999;float:right;margin-right:10px}
-.formText .return:hover{color:#ec5151}
-.backPwd_form .formText .input-text{padding-left:20px;width:200px}
-.error{display:inline-block;padding-top:5px;font-size:12px;color:#ec5051;position:absolute;left:0px;bottom:30px;text-align:center;width:395px;}

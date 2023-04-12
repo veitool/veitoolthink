@@ -31,6 +31,11 @@ abstract class AdminBase extends BaseController
     protected $routeUri = '';
 
     /**
+     * 覆盖前台首要业务
+     */
+    protected function __home(){}
+
+    /**
      * 后台控制器验证初始化
      */
     protected function __auth()
@@ -82,7 +87,6 @@ abstract class AdminBase extends BaseController
                     $this->exitMsg('您的帐号已在其他终端登录！',303,['url'=>$url]);
                 }
             }
-            //获取用户信息
             $us = $rs->toArray();
             session(VT_MANAGER,$us);
             $us['role_menuid'] = '';

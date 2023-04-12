@@ -56,12 +56,25 @@ abstract class BaseController
         $this->request = $this->app->request;
         // 映射路径
         defined('APP_MAP') or define('APP_MAP', $this->request->root());
-        // 获取会员身份 无会员系统可注释掉
-        $this->memUser = session(VT_MEMBER);
+        // 前台集中业务
+        $this->__home();
         // 验证（登录、权限）
         $this->__auth();
         // 控制器初始化
         $this->__init();
+    }
+
+    /**
+     * 前台集中业务
+     */
+    protected function __home()
+    {
+        // 前台统一开关 需后台配置参数 site_close 和 site_close_tip
+        if(vconfig('site_close')) $this->exitMsg(vconfig('site_close_tip','系统升级维护中，请稍后访问！'),400);
+        // 获取会员信息
+        $this->memUser = session(VT_MEMBER);
+        // 赋予模板数据
+        $this->assign(['User' => $this->memUser]);
     }
 
     /**

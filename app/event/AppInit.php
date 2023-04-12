@@ -47,7 +47,7 @@ class AppInit extends Service
         /* 路由处理 旧模式不兼容nginx：$url = request()->pathinfo(); */
         $url = str_replace(".".config('route.url_html_suffix'), '', ltrim($this->app->request->url(), '/'));
         $url = strpos($url, '?') ? strstr($url, '?', true) : $url;
-        $arr = explode('/', str_replace('.', '/', $url));
+        $arr = explode('/', $url);
         $addon = $arr[0];
         $module = '';
 

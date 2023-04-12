@@ -31,7 +31,7 @@ abstract class AdminBase extends BaseController
     protected $routeUri = '';
 
     /**
-     * 覆盖前台首要业务
+     * 覆盖无需业务
      */
     protected function __home(){}
 

@@ -172,7 +172,7 @@ class Addon extends AdminBase
      */
     public function setting($do='', $addon='', $group='')
     {
-        $groups = vconfig('@'.$addon.'.'.'group',[]);
+        $groups = (array) vconfig('@'.$addon.'.'.'group',[]);
         reset($groups);
         if($do=='json'){
             $group = $group ? $group : key($groups);

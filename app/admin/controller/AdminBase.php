@@ -49,7 +49,7 @@ abstract class AdminBase extends BaseController
         //合取方法
         $url = $controller."/".$this->request->action();
         //构组路由: 控制器 + 方法 + （参数action的传值）
-        $this->routeUri = strtolower(ADDON_APP.$url.(($action=$this->request->get('action')) ? '/'.$action : ''));
+        $this->routeUri = strtolower(ADDON_APP.$url.($action = $this->request->get('action') ? '/'.$action : ''));
         //验证权限
         $this->isPower();
     }

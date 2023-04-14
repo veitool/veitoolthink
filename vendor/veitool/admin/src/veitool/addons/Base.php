@@ -106,6 +106,26 @@ abstract class Base
         return true;
     }
 
+    /**
+     * 追加/剔除系统应用标识（非插件标识）
+     * @param  array   $data   要追加/剔除的标识集
+     * @param  bool    $type   方式true表追加/false表剔除 默认true
+     * @return mixed
+     */
+    final public function setSysApp($data = [], $type = true)
+    {
+        if(is_array($data) && $data){
+            $arr = config('veitool.sys_app',[]);
+            $val = $type ? array_unique(array_merge($arr, $data)) : array_diff($arr, $data);
+            $val = "['".implode("', '", $val)."'";
+            $str = file_get_contents(ROOT_PATH . '/config/veitool.php');
+            $str = preg_replace('/sys_app(.*?)]/', "sys_app' => {$val}]", $str);
+            $fop = fopen(ROOT_PATH . '/config/veitool.php', 'w');
+            fwrite($fop, $str);
+            fclose($fop);
+        }
+    }
+
     abstract public function install();
 
     abstract public function uninstall();

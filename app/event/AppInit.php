@@ -51,9 +51,8 @@ class AppInit extends Service
         $addon = $arr[0];
         $module = '';
 
-        /* 非系统应用定位到插件目录为应用目录 app.php 配置中需设置 'app_express' => false */
-        $excl = array_merge(config('veitool.sys_app', ['admin','index','api','']), array_flip(config('app.app_map')));
-        if(!in_array($addon,$excl)){
+        /* 插件应用处理 */
+        if(in_array($addon,config('veitool.addons'))){
             $this->app->config->set(['app_express'=>false], 'app');
             $module = $addon ?: 'index';
             $contr  = isset($arr[1]) && $arr[1] ? $arr[1] : 'index';

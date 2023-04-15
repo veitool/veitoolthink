@@ -13,6 +13,6 @@ return [
     'unknown' => false,
     //插件卸载时是否删除相关数据表和配置
     'ddata'   => true,
-    //保留的系统应用 用于区分插件应用
-    'sys_app' => ['admin', 'index', 'api', '']
+    //插件应用路由
+    'addons' => ['']
 ];

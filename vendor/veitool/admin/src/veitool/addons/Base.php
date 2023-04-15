@@ -117,9 +117,9 @@ abstract class Base
         if(is_array($data) && $data){
             $arr = config('veitool.addons',[]);
             $val = $type ? array_unique(array_merge($arr, $data)) : array_diff($arr, $data);
-            $val = "['".implode("', '", $val)."'";
+            $val = $val ? "'".implode("', '", $val)."'" : '';
             $str = file_get_contents(ROOT_PATH . '/config/veitool.php');
-            $str = preg_replace('/addons(.*?)]/', "addons' => {$val}]", $str);
+            $str = preg_replace('/addons(.*?)]/', "addons' => [{$val}]", $str);
             $fop = fopen(ROOT_PATH . '/config/veitool.php', 'w');
             fwrite($fop, $str);
             fclose($fop);

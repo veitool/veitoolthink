@@ -73,8 +73,6 @@ abstract class BaseController
         if(vconfig('site_close')) $this->exitMsg(vconfig('site_close_tip','系统升级维护中，请稍后访问！'),400);
         // 获取会员信息
         $this->memUser = session(VT_MEMBER);
-        // 赋予模板数据
-        $this->assign(['User' => $this->memUser]);
     }
 
     /**

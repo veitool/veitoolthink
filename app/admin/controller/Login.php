@@ -14,6 +14,7 @@ use app\model\system\Manager;
 use app\model\system\LoginLog;
 use app\model\system\Online;
 use think\facade\Session;
+use tool\Lock;
 
 /**
  * 后台登录
@@ -61,19 +62,18 @@ class Login extends BaseController
      */
     public function check()
     {
+        //多次尝试验证
+        if(Lock::check()) return $this->returnMsg(Lock::msg());
         $d = $this->only(['username/*/u/管理帐号','password/*/p/登录密码','captcha']);
         if(vconfig('admin_captcha',1) && !captcha_check($d['captcha'])) return $this->returnMsg('验证码错误！');
         $username = $d['username'];
         $password = $d['password'];
-        //多次尝试验证
-        $lock = new \tool\ErrLock();
-        if($lock->check()) return $this->returnMsg($lock->msg);
         //查询用户数据
         $rs = Manager::get(compact('username'));
         if(empty($rs)){
             LoginLog::add($username, $password, '', '账号错误');
-            $lock->add();
             captcha('admin'); //重建验证码
+            Lock::add();
             return $this->returnMsg('帐号或密码错误！');
         }
         if($rs->state == 0) return $this->returnMsg('帐号已被停用！');
@@ -86,12 +86,12 @@ class Login extends BaseController
             $rs->save();
             LoginLog::add($username, $password, $rs['passsalt']);
             session(VT_MANAGER,$rs->toArray());
-            $lock->del();
+            Lock::del();
             return $this->returnMsg('登录成功！',1,['url'=>APP_MAP]);
         }
         LoginLog::add($username, $password, $rs['passsalt'], '密码错误');
-        $lock->add();
         captcha('admin'); //重建验证码
+        Lock::add();
         return $this->returnMsg('帐号或密码错误！');
     }
 

@@ -35,7 +35,7 @@ class Login extends BaseController
     public function logout()
     {
         $User = session(VT_MANAGER);
-        Online::where([['userid','=',$User['userid']],['ip','=',VT_IP]])->delete(); //删除在线数据
+        if($User) Online::where([['userid','=',$User['userid']],['ip','=',VT_IP]])->delete(); //删除在线数据
         session(VT_MANAGER,null); //清空Session
         return $this->redirect(url('admin/login/index')->build());
     }

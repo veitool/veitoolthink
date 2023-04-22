@@ -14,7 +14,7 @@ namespace think;
 if(version_compare(PHP_VERSION,'8.0.2','<')) die('require PHP >= 8.0.2!');
 
 // 安装引导
-if (!is_file(__DIR__ . '/install/install.lock')) exit(header('Location: install/'));
+if (!is_file(__DIR__ . '/install/install.lock')) exit(header('Location:/install'));
 
 // 引入自动加载类
 require __DIR__ . '/../vendor/autoload.php';

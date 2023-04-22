@@ -71,7 +71,7 @@ class Menus extends Base
         $k = 'VMENUS_'.$t;
         $r = cache($k);
         if(!$r || $s){
-            $r = self::where("type=$t")->order(['parent_id'=>'asc','listorder'=>'asc'])->column('menuid,menu_name,role_name,link_url,menu_url,role_url,icon,catid,parent_id,state','menuid');
+            $r = self::where("type=$t")->order(['parent_id'=>'asc','listorder'=>'asc','menuid'=>'asc'])->column('menuid,menu_name,role_name,link_url,menu_url,role_url,icon,catid,parent_id,state','menuid');
             cache($k,$r);
         }
         return $r;

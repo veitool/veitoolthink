@@ -28,7 +28,7 @@ class Menus extends AdminBase
     {
         if($do=='json'){
             $catid = $this->request->get('catid/d',0);
-            return $this->returnMsg(M::where("type=1 AND catid=$catid")->order('listorder', 'asc')->select());
+            return $this->returnMsg(M::where("type=1 AND catid=$catid")->order(['listorder'=>'asc','menuid'=>'asc'])->select());
         }
         $this->assign([
             'category' => json_encode(C::catList('01',0,'title,catid'))

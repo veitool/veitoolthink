@@ -36,6 +36,9 @@
 .main .upform h2{padding:20px 10px;font-size:16px;font-weight:bold;margin-left:-50px;}
 .main .upform .layui-form-item .layui-input-inline{width:300px;}
 
+.main .text{line-height:25px;color:#666;}
+.main .text h1{text-align:center;font-size:20px;color:#333;}
+.main .text h3{margin:6px 0;font-size:16px;color:#333;}
 .main .note{width:400px;margin:100px auto 0}
 .main .note .isok{width:400px;padding:150px 0 0 0;line-height:50px;background:url(ok.png) no-repeat;text-align:center;}
 .footer{margin-top:20px;height:100px;border-top:1px solid #d2d2d2;background:#fff;position:relative}

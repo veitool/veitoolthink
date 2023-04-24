@@ -21,10 +21,10 @@
 </div>
 <!--JS部分-->
 <script type="text/javascript">
-layui.use(['treeTable','xmSelect','iconPicker','buildItems'],function(){
+layui.use(['trTable','xmSelect','iconPicker','buildItems'],function(){
     var map_root = layui.cache.maps;
     var app_root = map_root + 'system.menus/';
-    var layer = layui.layer,form = layui.form,admin = layui.admin,treeTable = layui.treeTable;
+    var layer = layui.layer,form = layui.form,admin = layui.admin,treeTable = layui.trTable;
     var category = <?=$category?>,cates = {};
     /*解析顶部分组选项*/
     var tab = $("#menus_tab");

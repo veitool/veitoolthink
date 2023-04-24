@@ -22,7 +22,7 @@
             <li class="layui-nav-item" lay-unselect><a v-event="refresh" title="刷新"><i class="layui-icon layui-icon-refresh-3"></i></a></li>
         </ul>
         <ul class="layui-nav layui-layout-right">
-            <li class="layui-nav-item" lay-unselect><a v-event="clearCache" title="缓存" data-url="{:VT_DIR}{:url('admin/index/clear')}"><i class="layui-icon layui-icon-rate-half"></i></a></li>
+            <li class="layui-nav-item" lay-unselect><a v-event="clearCache" title="缓存" data-url="{:VT_DIR}{:url('admin/index/clear')}"><i class="layui-icon layui-icon-clear"></i></a></li>
             <li class="layui-nav-item" lay-unselect><a href="{:VT_DIR}/" target="_blank" title="前台"><i class="layui-icon layui-icon-website"></i></a></li>
             <li class="layui-nav-item" lay-unselect><a v-event="lockScreen" data-url="{:VT_DIR}/static/admin/page/tpl/lock.html" title="锁屏"><i class="layui-icon layui-icon-password"></i></a></li>
             <li class="layui-nav-item" lay-unselect><a v-event="fullScreen" title="全屏"><i class="layui-icon layui-icon-screen-full"></i></a></li>

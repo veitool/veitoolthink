@@ -111,7 +111,7 @@ layui.use(['buildItems'],function(){
                     data: [
                         {name:"id",type:"hidden"},
                         {name:"group",title:"配置分组",type:"radio",options:datas.groups,value:group,must:true},
-                        {name:"type",title:"配置类型",type:"select",options:datas.types,value:'',verify:'types',must:true},
+                        {name:"type",title:"配置类型",type:"select",options:datas.types,value:'',verify:'required',reqtext:'请选择配置类型',must:true},
                         {name:"name",title:"配置名称",type:"text",value:'',verify:'required',placeholder:"请输入配置名称",must:true},
                         {name:"title",title:"配置标题",type:"text",value:'',verify:'required',placeholder:"请输入配置标题",must:true},
                         {name:"value",title:"配置初值",type:"textarea",value:'',placeholder:"请输入配置初值"},
@@ -121,9 +121,6 @@ layui.use(['buildItems'],function(){
                     ]
                 });
                 form.val('settings_items_form',Dt);
-                form.verify({
-                    types:function(v){ if(!v) return "请选择配置类型";}
-                });
                 /*输入框内容监测 判断配置名称是否已被占用*/
                 $("input").blur(function(){
                     var o = $(this);

@@ -10,7 +10,7 @@
             <form class="layui-form" lay-filter="addon-form-search">
                 <div class="layui-form-item">
                     <div class="layui-inline" style="width:160px;">
-                        <input type="text" name="kw" id="addon-kw" placeholder="搜索" autocomplete="off" class="layui-input"/>
+                        <input type="text" name="kw" id="addon-kw" placeholder="搜索" autocomplete="off" class="layui-input" lay-affix="clear"/>
                     </div>
                     <div class="layui-inline">
                         <button lay-submit lay-filter="top-addon-search" style="display:none">搜索</button>
@@ -74,6 +74,7 @@ layui.use(function(){
     var map_root = layui.cache.maps;
     var app_root = map_root + 'addon/';
     var app_api  = "{:config('veitool.api_url')}/";
+    form.render(null, 'addon-form-search');
     /*本地上传安装*/
     var uIndex;
     layui.upload.render({

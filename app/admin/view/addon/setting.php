@@ -35,9 +35,8 @@ layui.use(['buildItems'], function(){
         layui.buildItems.build({
             gid: 1,
             bid: 'seting_addon',
-            url: app_root + 'setting?do=json',
-            map: layui.cache.maps + 'system.upload/',
-            para: {addon:addon,group:group}
+            url: app_root + 'setting?do=json&addon='+ addon +'&group='+ group,
+            map: layui.cache.maps + 'system.upload/'
         });
     };/**/
     /*监听提交*/

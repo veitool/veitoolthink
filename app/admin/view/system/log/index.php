@@ -19,9 +19,9 @@
                             <option value="3">终端</option>
                         </select>
                     </div>
-                    <div class="layui-inline" style="width:110px;"><input type="text" name="kw" placeholder="关键词" autocomplete="off" class="layui-input"></div>
-                    <div class="layui-inline" style="width:80px;"><input type="text" name="message" placeholder="结果" autocomplete="off" class="layui-input"></div>
-                    <div class="layui-inline" style="margin-right:0;"><div class="layui-input-inline" style="width:172px;"><input type="text" name="sotime" id="loginlog-search-time" placeholder="登录时间" autocomplete="off" class="layui-input"></div></div>
+                    <div class="layui-inline" style="width:110px;"><input type="text" name="kw" placeholder="关键词" autocomplete="off" class="layui-input" lay-affix="clear"></div>
+                    <div class="layui-inline" style="width:80px;"><input type="text" name="message" placeholder="结果" autocomplete="off" class="layui-input" lay-affix="clear"></div>
+                    <div class="layui-inline" style="margin-right:0;"><div class="layui-input-inline" style="width:192px;"><input type="text" name="sotime" id="loginlog-search-time" placeholder="登录时间" autocomplete="off" class="layui-input" lay-affix="clear"></div></div>
                     <div class="layui-inline" style="width:72px;"><select name="admin" id="search_log_select"></select></div>
                     <div class="layui-inline">
                         <div class="layui-btn-group">
@@ -42,9 +42,9 @@
                             <option value="2">路径</option>
                         </select>
                     </div>
-                    <div class="layui-inline" style="width:120px;"><input type="text" name="kw" placeholder="关键词" autocomplete="off" class="layui-input"></div>
+                    <div class="layui-inline" style="width:120px;"><input type="text" name="kw" placeholder="关键词" autocomplete="off" class="layui-input" lay-affix="clear"></div>
                     <div class="layui-inline" style="margin-right:0;">
-                        <div class="layui-input-inline" style="width:172px;"><input type="text" name="sotime" id="managerlog-search-time" placeholder="操作时间" autocomplete="off" class="layui-input"></div>
+                        <div class="layui-input-inline" style="width:192px;"><input type="text" name="sotime" id="managerlog-search-time" placeholder="操作时间" autocomplete="off" class="layui-input" lay-affix="clear"></div>
                     </div>
                     <div class="layui-inline">
                         <div class="layui-btn-group">
@@ -66,9 +66,9 @@
                             <option value="3">终端</option>
                         </select>
                     </div>
-                    <div class="layui-inline" style="width:120px;"><input type="text" name="kw" placeholder="关键词" autocomplete="off" class="layui-input"></div>
+                    <div class="layui-inline" style="width:120px;"><input type="text" name="kw" placeholder="关键词" autocomplete="off" class="layui-input" lay-affix="clear"></div>
                     <div class="layui-inline" style="margin-right:0;">
-                        <div class="layui-input-inline" style="width:172px;"><input type="text" name="sotime" id="weblog-search-time" placeholder="操作时间" autocomplete="off" class="layui-input"></div>
+                        <div class="layui-input-inline" style="width:192px;"><input type="text" name="sotime" id="weblog-search-time" placeholder="操作时间" autocomplete="off" class="layui-input" lay-affix="clear"></div>
                     </div>
                     <div class="layui-inline">
                         <div class="layui-btn-group">

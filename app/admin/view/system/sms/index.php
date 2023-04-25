@@ -12,9 +12,9 @@
                             <option value="3">结果</option>
                         </select>
                     </div>
-                    <div class="layui-inline" style="width:120px;"><input type="text" name="kw" placeholder="关键词" autocomplete="off" class="layui-input"></div>
+                    <div class="layui-inline" style="width:120px;"><input type="text" name="kw" placeholder="关键词" autocomplete="off" class="layui-input" lay-affix="clear"></div>
                     <div class="layui-inline" style="margin-right:0">
-                        <div class="layui-input-inline" style="width:172px;"><input type="text" name="sotime" id="sms-search-time" placeholder="时间" autocomplete="off" class="layui-input"></div>
+                        <div class="layui-input-inline" style="width:192px;"><input type="text" name="sotime" id="sms-search-time" placeholder="时间" autocomplete="off" class="layui-input" lay-affix="clear"></div>
                     </div>
                     <div class="layui-inline">
                         <div class="layui-btn-group">
@@ -85,14 +85,10 @@ layui.use(['buildItems'],function(){
                 layui.buildItems.build({
                     bid: 'sms_items',
                     data: [
-                        {name:"mobile",title:"接收号码",type:"text",value:'',verify:'mobile',placeholder:"请输入接收手机号",must:true},
-                        {name:"message",title:"短信内容",type:"textarea",value:'',verify:'message',placeholder:"请输入短信内容",must:true},
+                        {name:"mobile",title:"接收号码",type:"text",value:'',verify:'phone',placeholder:"请输入接收手机号",must:true},
+                        {name:"message",title:"短信内容",type:"textarea",value:'',verify:'required',placeholder:"请输入短信内容",must:true},
                         {name:"sign",title:"短信签名",type:"text",value:'【微特】'}
                     ]
-                });
-                form.verify({
-                    mobile: [/^1[3|4|5|6|7|8|9]{1}[0-9]{9}$/, '请输入正确的手机号码'],
-                    message: [/(.+){1,70}$/, '请输入短信内容不多于70字']
                 });
                 form.on('submit(sms_items)',function(data){
                     var btn = $(this);

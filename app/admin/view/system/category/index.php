@@ -82,8 +82,8 @@ layui.use(['buildItems'], function(){
                         {name:"icon",title:"类别图片",type:"image",value:Dt ? Dt.icon : ''},
                         {name:"listorder",title:"排序编号",type:"number",value:10,placeholder:"请输入排序编号"}
                     ],
-                    gid: 3,
-                    map: map_root + 'system.upload/'
+                    map: map_root + 'system.upload/',
+                    gid: 3
                 });
                 form.val('category_items_form',Dt);
                 form.on('submit(category_items)',function(data){

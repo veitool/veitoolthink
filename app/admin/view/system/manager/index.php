@@ -36,9 +36,9 @@
                                     <option value="3">IP</option>
                                 </select>
                             </div>
-                            <div class="layui-inline" style="width:120px;"><input type="text" name="kw" placeholder="关键词" autocomplete="off" class="layui-input"></div>
+                            <div class="layui-inline" style="width:120px;"><input type="text" name="kw" placeholder="关键词" autocomplete="off" class="layui-input" lay-affix="clear"></div>
                             <div class="layui-inline" style="margin-right:0;">
-                                <div class="layui-input-inline" style="width:172px;"><input type="text" name="sotime" id="manager-search-time" placeholder="登录时间" autocomplete="off" class="layui-input"></div>
+                                <div class="layui-input-inline" style="width:192px;"><input type="text" name="sotime" id="manager-search-time" placeholder="登录时间" autocomplete="off" class="layui-input" lay-affix="clear"></div>
                             </div>
                             <div class="layui-inline" style="width:110px;"><select name="roleid" id="search_roles_select"></select></div>
                             <div class="layui-inline" style="width:72px;">

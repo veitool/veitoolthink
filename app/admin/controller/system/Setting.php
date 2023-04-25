@@ -21,7 +21,7 @@ class Setting extends AdminBase
     private $ptype  = 'type/*/v/配置类型';
     private $pgroup = 'group/?/v/配置组名';
     private $ptitle = 'title/*/{2,30}/配置标题';
-    private $ptips  = 'tips/?/{2,100}/配置说明/0/,，';
+    private $ptips  = 'tips/?/{2,100}/配置说明/0/,，:：.。';
     private $prelation = 'av/?/v/关联项';
 
     /**

@@ -15,7 +15,7 @@ layui.define(['tagsInput','fileLibrary','cascader'], function(e){
     c.inline_html = '<div class="layui-input-inline"';
     c.item_html = '<div class="layui-form-item" id="item-{{ d.relation ? d.relation + "-" : "" }}{{ d.name }}" style="{{# if(d.style){ }}{{ d.style }}{{# } }}{{# if(d.hide || (d.relation && d.relation.indexOf("_")!=-1)){ }}display:none;{{# } }}">' + c.label_html;
     c.tips_html = '{{# if(d.tips){ }}<div class="layui-form-mid layui-word-aux"><i class="layui-icon">&#xe748;</i> {{ d.tips }}</div>{{# } }}';
-    c.vers_html = '{{# if(d.verify){ }}lay-verify="{{ d.verify }}" lay-vertype="{{ d.vertype || \'\' }}" lay-reqtext="{{ d.reqtext || \'\' }}" {{# } }}';
+    c.vers_html = '{{# if(d.verify){ }}lay-verify="{{ d.verify }}" lay-vertype="{{ d.vertype || \'\' }}" lay-reqtext="{{ d.reqtext || d.placeholder || \'\' }}" {{# } }}';
     c.plac_html = '{{# if(d.placeholder){ }}placeholder="{{ d.placeholder }}" {{# } }}';
     c.affix_html = '{{# if(d.affix){ }}lay-affix="{{ d.affix }}" {{# } }}';
     //表单元素

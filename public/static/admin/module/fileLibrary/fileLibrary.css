@@ -9,7 +9,7 @@
 .file-library .file-group .nav-new li:hover,.file-library .file-group .nav-new li.active{background:rgba(0,150,136,0.3);}
 .file-library .file-group .nav-new li:hover .group-name,.file-library .file-group .nav-new li.active .group-name{color:#fff}
 .file-library .file-group .nav-new li:hover .group-delete,.file-library .file-group .nav-new li:hover .group-edit{display:inline;color:#fff}
-.file-library .file-group .nav-new li:hover .group-delete:hover,.file-library .file-group .nav-new li:hover .group-edit:hover{color:#009688}
+.file-library .file-group .nav-new li:hover .group-delete:hover,.file-library .file-group .nav-new li:hover .group-edit:hover{color:#16baaa}
 .file-library .file-group a.group-add{display:block;margin-top:.9rem;font-size:.7rem;color:#0e90d2;padding:0 2.1rem}
 
 .file-library .file-list{margin:0 20px 10px 150px;display:block;}
@@ -19,7 +19,7 @@
 .file-library #file-list-body{width:660px;}
 .file-library #file-list-body ul.file-list-item{overflow-y:auto;height:360px}
 .file-library #file-list-body ul.file-list-item li{position:relative;cursor:pointer;border-radius:2px;padding:10px;border:1px solid rgba(0,0,0,.05);float:left;margin:9px;-webkit-transition:All .2s ease-in-out;-moz-transition:All .2s ease-in-out;-o-transition:All .2s ease-in-out;transition:All .2s ease-in-out}
-.file-library #file-list-body ul.file-list-item li:hover{border:1px solid #009688}
+.file-library #file-list-body ul.file-list-item li:hover{border:1px solid #16baaa}
 .file-library #file-list-body ul.file-list-item li .img-cover{width:120px;height:120px;background:no-repeat center center/100%}
 .file-library #file-list-body ul.file-list-item li p.file-name{margin:5px 0 0 0;width:120px;height:18px;font-size:12px;text-align:center;word-wrap:normal;text-overflow:ellipsis;white-space:nowrap;overflow:hidden}
 .file-library #file-list-body ul.file-list-item li.active .select-mask{display:block;}

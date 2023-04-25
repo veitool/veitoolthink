@@ -1,1 +1,0 @@
-var cityData = [{text:"fff",value:"1"}];

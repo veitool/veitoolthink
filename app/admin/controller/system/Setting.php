@@ -37,7 +37,7 @@ class Setting extends AdminBase
             $where[] = ['state','=',1];
             $where[] = ['addon','=',''];
             if($group) $where[] = ['group','=',strip_sql($group)];
-            $rs = (new S())->listArray($where);
+            $rs = (new S())->listArray($where,'name,title,value,type,options,private,relation,tips');
             foreach($rs as &$v){
                 if($v['type']=='checkbox'){
                     $v['value'] = explode(',', $v['value']);

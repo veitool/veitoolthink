@@ -180,7 +180,7 @@ class Addon extends AdminBase
             $where[] = ['state','=',1];
             $where[] = ['addon','=',$addon];
             if($group) $where[] = ['group','=',$group];
-            $rs = (new S())->listArray($where);
+            $rs = (new S())->listArray($where,'name,title,value,type,options,private,relation,tips');
             foreach($rs as &$v){
                 if($v['type']=='checkbox'){
                     $v['value'] = explode(',', $v['value']);

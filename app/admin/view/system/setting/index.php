@@ -40,9 +40,8 @@ layui.use(['buildItems'], function(){
     function build(group){
         layui.buildItems.build({
             bid: 'seting_box',
-            url: app_root + 'index?do=json',
+            url: app_root + 'index?do=json&group='+ group,
             map: layui.cache.maps + 'system.upload/',
-            para: {group:group},
             gid: 1
         });
     };/**/

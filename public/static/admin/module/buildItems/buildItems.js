@@ -68,13 +68,13 @@ layui.define(['tagsInput','fileLibrary','cascader'], function(e){
     //上传单图
     c.image = c.item_html + c.block_html + '><div id="image-show-{{ d.name }}" data-type="image" data-verify="{{ d.verify || \'\' }}">{{# if (d.value) { }}' +
               '<div class="imgs_item"><img src="{{ d.value }}"/><input type="hidden" name="{{ d.name }}" value="{{ d.value }}"/>'+
-              '<i class="layui-icon layui-icon-edit item-edit"></i><i class="layui-icon layui-icon-close item-delete"></i></div>{{# }else{ }}<input type="hidden" name="{{ d.name }}" lay-verify="{{ d.verify || \'\' }}"/>{{# } }}</div>'+
+              '<i class="layui-icon layui-icon-edit item-edit"></i><i class="layui-icon layui-icon-close item-delete"></i></div>{{# }else{ }}<input type="hidden" name="{{ d.name }}" lay-verify="{{ d.verify || \'\' }}" lay-reqtext="{{ d.reqtext || \'\' }}"/>{{# } }}</div>'+
               '<div class="imgs_item layui-upload-drag" style="background:#efefef;" id="up-image-btn-{{ d.name }}" data-type="image" data-name="{{ d.name }}" data-thum="{{ d.thum || 0 }}"><i class="layui-icon">&#xe67c;</i><br/>上传图片</div>'+
               '<div style="clear:both"></div>' + c.tips_html + '</div></div>';
     //上传多图
     c.images = c.item_html + c.block_html + '><div id="image-show-{{ d.name }}" data-type="images" data-verify="{{ d.verify || \'\' }}">{{# var i = 0;layui.each(d.value, function(key, url){ i=1; }}'+
               '<div class="imgs_item"><img src="{{ url }}"/><input type="hidden" name="{{ d.name }}[]" value="{{ url }}"/>'+
-              '<i class="layui-icon layui-icon-edit item-edit"></i><i class="layui-icon layui-icon-close item-delete"></i></div>{{# }); }}{{# if (i == 0) { }}<input type="hidden" name="{{ d.name }}" lay-verify="{{ d.verify || \'\' }}"/>{{# } }}</div>'+
+              '<i class="layui-icon layui-icon-edit item-edit"></i><i class="layui-icon layui-icon-close item-delete"></i></div>{{# }); }}{{# if (i == 0) { }}<input type="hidden" name="{{ d.name }}" lay-verify="{{ d.verify || \'\' }}" lay-reqtext="{{ d.reqtext || \'\' }}"/>{{# } }}</div>'+
               '<div class="imgs_item layui-upload-drag" style="background:#efefef;" id="up-image-btn-{{ d.name }}" data-type="images" data-name="{{ d.name }}" data-thum="{{ d.thum || 0 }}"><i class="layui-icon">&#xe67c;</i><br/>上传图片</div>'+
               '<div style="clear:both"></div>' + c.tips_html + '</div></div>';
     //上传文件

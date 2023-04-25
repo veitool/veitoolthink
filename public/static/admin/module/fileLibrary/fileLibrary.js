@@ -18,7 +18,7 @@ layui.define(function(g){
                    '{{#  }); }}';
     c.item_html =  '{{# layui.each(d.file_list.data, function(k,v){ }}'+
                    '<li class="ng-scope" title="{{ v.filename }}" data-file-id="{{ v.fileid }}" data-file-path="{{ v.fileurl }}">'+
-	               '<div class="img-cover" style="background-image:url({{ v.fileurl }})"></div>'+
+                   '<div class="img-cover" style="background-image:url({{ v.fileurl }})"></div>'+
                    '<p class="file-name">{{ v.filename }}</p>'+
                    '<div class="select-mask"><i class="layui-icon">&#xe605;</i></div></li>'+
                    '{{#  }); }}';

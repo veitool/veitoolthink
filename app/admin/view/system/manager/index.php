@@ -368,8 +368,8 @@ layui.use(['vinfo', 'xmSelect', 'buildItems'], function(){
                         {name:"groupid",title:"所属机构",type:"html",html:'<div id="organ-list-tree" class="v-xmselect-tree"></div>',must:true},
                         {name:"roleid",title:"所属角色",type:"html",html:'<select name="roleid" lay-verify="mroleid">'+roles_select+'</select>',must:true},
                         {name:"username",title:"管理帐号",type:"text",value:'',verify:'username',placeholder:"请输入4-30位管理帐号",must:true},
-                        {name:"password",title:"登录密码",type:"password",tid:'m_pwd',value:'',verify:'pass',placeholder:"请输入6-16位登录密码",must:true},
-                        {name:"repassword",title:"确认密码",type:"password",tid:'m_repwd',value:'',verify:'repass',placeholder:"请重复登录密码",must:true},
+                        {name:"password",title:"登录密码",type:"password",id:'m_pwd',value:'',verify:'pass',placeholder:"请输入6-16位登录密码",must:true},
+                        {name:"repassword",title:"确认密码",type:"password",id:'m_repwd',value:'',verify:'repass',placeholder:"请重复登录密码",must:true},
                         {name:"truename",title:"真实姓名",type:"text",value:''},
                         {name:"mobile",title:"手机/电话",type:"text",value:''},
                         {name:"email",title:"电子邮箱",type:"text",value:''}

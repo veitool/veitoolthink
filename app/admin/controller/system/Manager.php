@@ -38,7 +38,7 @@ class Manager extends AdminBase
         $organ = Organ::order(['listorder'=>'asc'])->column('*');
         if($do){
             if($do=='json'){ //异步管理员列表数据
-                return $this->returnMsg((new M())->listQuery());
+                return $this->returnMsg((new M())->listQuery([],'password,passsalt,token'));
             }elseif($do=='organ'){ //组织机构JSON数据
                 return $organ;
             }elseif($do=='info'){ //用户信息

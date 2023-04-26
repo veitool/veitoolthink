@@ -24,13 +24,13 @@ class Manager extends Base
 
     /**
      * 管理员列表（分页）
-     * @param  array   $where    条件
-     * @param  array   $order    排序
-     * @param  string  $fields   字段
-     * @param  int     $limit    条数
+     * @param  array   $where    查询条件
+     * @param  string  $fields   排除字段
+     * @param  int     $limit    查询条数
+     * @param  array   $order    查询排序
      * @return array
      */
-    public function listQuery($where=[], $order=['userid'=>'asc'], $fields = '*', $limit=0)
+    public function listQuery($where = [], $fields = '', $limit = 0, $order = ['userid'=>'asc'])
     {
         $d = request()->get('','','strip_sql');
         $kw = $d['kw'] ?? '';
@@ -57,8 +57,8 @@ class Manager extends Base
         if($roleid) $where[] = ['roleid','=',$roleid];
         if($areaid) $where[] = [\think\facade\Db::raw("CONCAT(areaid,',')"), 'LIKE', $areaid.',%'];
         if(is_numeric($groupid)) $where[] = ['groupid','IN', Organ::getChild($groupid)];
-        if(is_numeric($state)) $where[] = ['state','=',$state];
-        return $this->where($where)->order($order)->field($fields)->paginate($limit);
+        if(is_numeric($state))   $where[] = ['state','=',$state];
+        return $this->where($where)->order($order)->withoutField($fields)->paginate($limit);
     }
 
 }

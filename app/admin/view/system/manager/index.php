@@ -229,7 +229,7 @@ layui.use(['vinfo', 'xmSelect', 'buildItems'], function(){
     $('#search_roles_select').html(roles_select);
     //渲染搜索元素
     form.render(null, 'manager-form-search');
-    layui.laydate.render({elem:'#manager-search-time',range:true,format:'yyyy/MM/dd'});
+    layui.laydate.render({elem:'#manager-search-time',range:true,format:'yyyy/MM/dd',done:function(){$('#manager-search-time').trigger('input')}});
     /*渲染数据*/
     table.render({
         elem: '#manager',

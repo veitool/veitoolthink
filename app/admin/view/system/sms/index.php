@@ -43,7 +43,7 @@ layui.use(['buildItems'],function(){
     var table=layui.table,form=layui.form,admin=layui.admin;
     //渲染搜索元素
     form.render(null, 'sms-form-search');
-    layui.laydate.render({elem:'#sms-search-time',range:true,format:'yyyy/MM/dd'});
+    layui.laydate.render({elem:'#sms-search-time',range:true,format:'yyyy/MM/dd',done:function(){$('#sms-search-time').trigger('input')}});
     /*渲染数据*/
     table.render({
         elem: '#sms',

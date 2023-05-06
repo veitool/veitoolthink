@@ -54,7 +54,7 @@ layui.use(function(){
     $('#search_filemanage_select').html(filemanage_select);
     //渲染搜索元素
     form.render(null, 'filemanage-form-search');
-    layui.laydate.render({elem:'#filemanage-search-time',range:true,format:'yyyy/MM/dd'});
+    layui.laydate.render({elem:'#filemanage-search-time',range:true,format:'yyyy/MM/dd',done:function(){$('#filemanage-search-time').trigger('input')}});
     /*渲染数据*/
     table.render({
         elem: '#filemanage',

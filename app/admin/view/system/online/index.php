@@ -48,7 +48,7 @@ layui.use(['vinfo'],function(){
     var ip = '{:VT_IP}';
     //渲染搜索元素
     form.render(null, 'online-form-search');
-    layui.laydate.render({elem:'#online-search-time',range:true,format:'yyyy/MM/dd'});
+    layui.laydate.render({elem:'#online-search-time',range:true,format:'yyyy/MM/dd',done:function(){$('#online-search-time').trigger('input')}});
     /*渲染数据*/
     table.render({
         elem: '#online',

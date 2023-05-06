@@ -100,13 +100,13 @@ layui.use(['vinfo'],function(){
     $('#search_log_select').html(log_select);
     //渲染登录日志搜索元素
     form.render(null,'loginlog-form-search');
-    laydate.render({elem:'#loginlog-search-time',range:true,format:'yyyy/MM/dd'});
+    laydate.render({elem:'#loginlog-search-time',range:true,format:'yyyy/MM/dd',done:function(){$('#loginlog-search-time').trigger('input')}});
     //渲染管理日志搜索元素
     form.render(null, 'managerlog-form-search');
-    laydate.render({elem:'#managerlog-search-time',range:true,format:'yyyy/MM/dd'});
+    laydate.render({elem:'#managerlog-search-time',range:true,format:'yyyy/MM/dd',done:function(){$('#managerlog-search-time').trigger('input')}});
     //渲染网站日志搜索元素
     form.render(null, 'weblog-form-search');
-    laydate.render({elem:'#weblog-search-time',range:true,format:'yyyy/MM/dd'});
+    laydate.render({elem:'#weblog-search-time',range:true,format:'yyyy/MM/dd',done:function(){$('#weblog-search-time').trigger('input')}});
     /*初始选中选卡*/
     $('*[lay-id="'+ mtab +'"]').addClass('layui-this');
     /*定义开关防重复请求*/

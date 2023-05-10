@@ -85,7 +85,7 @@ layui.use(function(){
     $('#top-database-imports').on('click', function(){
         admin.open({
             type: 1,
-            area: ['68%', '75%'],
+            area: ['70%', '75%'],
             title: '数据恢复',
             content: [
                 '<div style="padding:20px;">',

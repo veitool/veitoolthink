@@ -14,7 +14,7 @@
                             <option value="1">用户名</option>
                         </select>
                     </div>
-                    <div class="layui-inline" style="width:120px;"><input type="text" name="kw" placeholder="关键词" autocomplete="off" class="layui-input" lay-affix="clear"></div>
+                    <div class="layui-inline" style="width:150px;"><input type="text" name="kw" placeholder="关键词" autocomplete="off" class="layui-input" lay-affix="clear"></div>
                     <div class="layui-inline" style="margin-right:0;">
                         <div class="layui-input-inline" style="width:192px;"><input type="text" name="sotime" id="filemanage-search-time" placeholder="上传时间" autocomplete="off" class="layui-input" lay-affix="clear"></div>
                     </div>

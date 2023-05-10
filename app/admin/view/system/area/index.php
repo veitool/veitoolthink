@@ -116,8 +116,7 @@ layui.use(['buildItems'], function(){
     });/**/
     /*删除*/
     function del(ids){
-        layer.confirm('确定删除所选地区吗？？', function(index){
-            layer.close(index);
+        layer.confirm('确定删除所选地区吗？？', function(){
             admin.req(app_root+"del",{areaid:ids},function(res){
                 layer.msg(res.msg,{shade:[0.4,'#000'],time:1500},function(){
                     if(res.code==1){pname = ''; redata();}

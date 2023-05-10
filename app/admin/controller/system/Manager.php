@@ -53,7 +53,7 @@ class Manager extends AdminBase
                     return $this->returnMsg('用户不存在');
                 }
             }elseif($do=='check'){ //判断用户名称是否已被占用
-                $userid   = $this->request->post('userid',0,'trim');
+                $userid   = $this->request->post('userid',0,'intval');
                 $username = $this->request->post('username','','trim');
                 $where[]  = ['username','=',$username];
                 if($userid) $where[] = ['userid','<>',$userid];

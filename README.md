@@ -13,6 +13,9 @@ https://www.veitool.com/ask
 ## 演示地址
 https://demo.veitool.com/admin
 
+## 反馈邮箱
+veitoolphp@gmail.com
+
 ## 系统要求
 运行环境支持Nginx、Apache、IIS，要求PHP>=8.0.2。
 
@@ -30,4 +33,3 @@ https://demo.veitool.com/admin
 
 ## 版权信息
 版权所有Copyright © 2023 by https://www.veitool.com All rights reserved。
-

@@ -162,9 +162,9 @@ abstract class BaseController
     protected function exitMsg($m, $c = 0, $d = [], $h = [])
     {
         if($c==400){
-            $re = Response::create(app()->getRootPath().'app/v_close.tpl','view')->assign(['msg'=>$m,'site'=>vconfig('site_title')])->header($h);
+            $re = Response::create(ROOT_PATH . 'app/v_msg.tpl','view')->assign(['msg'=>$m,'site'=>vconfig('site_title')])->header($h);
         }else if($c==303){
-            $re = Response::create(app()->getRootPath().'app/v_close.tpl','view')->assign(['msg'=>$m,'site'=>vconfig('site_title'),'url'=>$d['url']])->header($h);
+            $re = Response::create(ROOT_PATH . 'app/v_msg.tpl','view')->assign(['msg'=>$m,'site'=>vconfig('site_title'),'url'=>$d['url']])->header($h);
         }else{
             $rs = json_encode(['code'=>$c,'msg'=>$m,'data'=>$d]);
             $re = Response::create($rs)->header($h);
@@ -216,8 +216,9 @@ abstract class BaseController
      * @param    int       $tpl    提示模板 默认 /404
      * @param    string    $url    跳转的地址
      */
-    protected function returnTpl($msg = '', $tpl = '/404', $url = '')
+    protected function returnTpl($msg = '', $tpl = '', $url = '')
     {
+        $tpl = $tpl ?: ROOT_PATH . 'app/v_msg.tpl';
         $this->assign(['msg'=>$msg,'url'=>$url]);
         return $this->fetch($tpl);
     }

@@ -21,7 +21,7 @@ class Error
      * 空方法
      */ 
     public function __call($method, $args){
-        $re = Response::create(app()->getRootPath().'app/v_close.tpl','view')->assign(['msg'=>'Controller does not exist!','site'=>vconfig('site_title')])->header();
+        $re = Response::create(app()->getRootPath().'app/v_msg.tpl','view')->assign(['msg'=>'Controller does not exist!','site'=>vconfig('site_title')])->header();
         throw new HttpResponseException($re);
     }
 

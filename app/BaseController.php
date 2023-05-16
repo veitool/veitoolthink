@@ -218,7 +218,7 @@ abstract class BaseController
      */
     protected function returnTpl($msg = '', $tpl = '', $url = '')
     {
-        $tpl = $tpl ?: ROOT_PATH . 'app/v_msg.tpl';
+        $tpl = $tpl ?: ($this->request->isMobile() ? 'err' : ROOT_PATH . 'app/v_msg.tpl');
         $this->assign(['msg'=>$msg,'url'=>$url]);
         return $this->fetch($tpl);
     }

@@ -366,7 +366,7 @@ layui.use(['vinfo', 'xmSelect', 'buildItems'], function(){
                     data: [
                         {name:"userid",type:"hidden"},
                         {name:"groupid",title:"所属机构",type:"html",html:'<div id="organ-list-tree" class="v-xmselect-tree"></div>',must:true},
-                        {name:"roleid",title:"所属角色",type:"html",html:'<select name="roleid" lay-verify="mroleid">'+roles_select+'</select>',must:true},
+                        {name:"roleid",title:"所属角色",type:"html",html:'<select name="roleid" lay-verify="required" lay-reqText="请选择所属角色">'+roles_select+'</select>',must:true},
                         {name:"username",title:"管理帐号",type:"text",value:'',verify:'username',placeholder:"请输入4-30位管理帐号",must:true},
                         {name:"password",title:"登录密码",type:"password",id:'m_pwd',value:'',verify:'pass',placeholder:"请输入6-16位登录密码",must:true},
                         {name:"repassword",title:"确认密码",type:"password",id:'m_repwd',value:'',verify:'repass',placeholder:"请重复登录密码",must:true},
@@ -382,8 +382,6 @@ layui.use(['vinfo', 'xmSelect', 'buildItems'], function(){
                     $('#m_repwd').parent().parent().hide();
                 }
                 form.verify({
-                    mgroupid: function(v){ if(!v) return "请选择所属机构";},
-                    mroleid: function(v){ if(!v) return "请选择所属角色";},
                     username: function(v){ if(!/^[\S]{4,30}$/.test(v)){return '请输入4-30位管理帐号';}},
                     pass: function(v){ if(!/^[\S]{6,16}$/.test(v) && !Dt){return '密码必须6-16位，且不能出现空格';}},
                     repass: function(v){ if (v !== $("#m_pwd").val() && !Dt) return "两次密码输入不一致";}
@@ -413,7 +411,8 @@ layui.use(['vinfo', 'xmSelect', 'buildItems'], function(){
                     filterable: true,
                     radio: true,
                     clickClose: true,
-                    layVerify: 'mgroupid',
+                    layVerify: 'required',
+                    layReqText: '请选择所属机构',
                     model: {label:{type:'text'}},
                     initValue: [Dt ? Dt.groupid : 0],
                     prop: {name:'title',value:'id',disabled:'disabled'},

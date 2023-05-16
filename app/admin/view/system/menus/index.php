@@ -229,7 +229,7 @@ layui.use(['trTable','xmSelect','iconPicker','buildItems'],function(){
                         {name:"menuid",type:"hidden"},
                         {name:"catid",title:"配置分组",type:"radio",options:cates,value:catid,must:true},
                         {name:"parent_id",title:"上级菜单",type:"html",html:'<div id="menus-list-tree" class="v-xmselect-tree"></div>',must:true},
-                        {name:"menu_name",title:"菜单名称",type:"html",html:'<div class="layui-input-inline" style="width:82px;float:left;"><input type="text" name="icon" value="" id="menusIconPicker" lay-filter="menusIconPicker" autocomplete="off" class="layui-input"></div><div class="layui-input-block" style="margin-left:105px;margin-right:0;"><input type="text" name="menu_name" value="" lay-verify="required" placeholder="请输入菜单名称" autocomplete="off" class="layui-input"></div>',must:true},
+                        {name:"menu_name",title:"菜单名称",type:"html",html:'<div class="layui-input-inline" style="width:82px;float:left;"><input type="text" name="icon" value="" id="menusIconPicker" lay-filter="menusIconPicker" autocomplete="off" class="layui-input"></div><div class="layui-input-block" style="margin-left:105px;margin-right:0;"><input type="text" name="menu_name" value="" lay-verify="required" lay-reqtext="请输入菜单名称" placeholder="请输入菜单名称" autocomplete="off" class="layui-input"></div>',must:true},
                         {name:"role_name",title:"权限名称",type:"text",value:'',verify:'required',placeholder:"请输入权限名称",must:true},
                         {name:"menu_url",title:"菜单标识",type:"text",value:'',placeholder:"请输入菜单标识"},
                         {name:"role_url",title:"权限路径",type:"textarea",value:'',placeholder:"多个以逗号隔开"},

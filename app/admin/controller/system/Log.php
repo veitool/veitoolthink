@@ -79,8 +79,8 @@ class Log extends AdminBase
     public function manager()
     {
         $list = (new ManagerLog())->listQuery()->toArray();
-        foreach($list['data'] as &$v){
-            if($this->manUser['userid']>1){
+        if($this->manUser['userid']>1){
+            foreach($list['data'] as &$v){
                 $ip = explode('.', $v['ip']);
                 $v['ip'] = $ip[0].'. *** .'.$ip[3];
             }
@@ -101,7 +101,7 @@ class Log extends AdminBase
             return $this->returnMsg("没有满足条件的管理日志可清理！");
         }
     }
-    
+
     /**
      * 网站日志
      * @return json
@@ -109,8 +109,8 @@ class Log extends AdminBase
     public function web()
     {
         $list = (new WebLog())->listQuery()->toArray();
-        foreach($list['data'] as &$v){
-            if($this->manUser['userid']>1){
+        if($this->manUser['userid']>1){
+            foreach($list['data'] as &$v){
                 $ip = explode('.', $v['ip']);
                 $v['ip'] = $ip[0].'. *** .'.$ip[3];
             }

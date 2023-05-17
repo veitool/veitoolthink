@@ -26,8 +26,8 @@ class Online extends AdminBase
     {
         if($do=='json'){
             $list = (new OL())->listQuery();
-            foreach($list['data'] as &$v){
-                if($this->manUser['userid']>1){
+            if($this->manUser['userid']>1){
+                foreach($list['data'] as &$v){
                     $ip = explode('.', $v['ip']);
                     $v['ip'] = $ip[0].'. *** .'.$ip[3];
                 }

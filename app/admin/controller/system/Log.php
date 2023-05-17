@@ -49,8 +49,10 @@ class Log extends AdminBase
         $list = $Log->listQuery()->toArray();
         foreach($list['data'] as &$v){
             $v['password'] = substr($v['password'], 0, 6).'******'.substr($v['password'], 26);
-            $iarr = explode('.', $v['loginip']);
-            if($this->manUser['userid']>1) $v['loginip'] = $iarr[0].'. *** .'.$iarr[3];
+            if($this->manUser['userid']>1){
+                $ip = explode('.', $v['loginip']);
+                $v['loginip'] = $ip[0].'. *** .'.$ip[3];
+            }
             unset($v['passsalt']);
         }
         return $this->returnMsg($list);
@@ -78,8 +80,10 @@ class Log extends AdminBase
     {
         $list = (new ManagerLog())->listQuery()->toArray();
         foreach($list['data'] as &$v){
-            $iarr = explode('.', $v['ip']);
-            if($this->manUser['userid']>1) $v['ip'] = $iarr[0].'. *** .'.$iarr[3];
+            if($this->manUser['userid']>1){
+                $ip = explode('.', $v['ip']);
+                $v['ip'] = $ip[0].'. *** .'.$ip[3];
+            }
         }
         return $this->returnMsg($list);
     }
@@ -106,8 +110,10 @@ class Log extends AdminBase
     {
         $list = (new WebLog())->listQuery()->toArray();
         foreach($list['data'] as &$v){
-            $iarr = explode('.', $v['ip']);
-            if($this->manUser['userid']>1) $v['ip'] = $iarr[0].'. *** .'.$iarr[3];
+            if($this->manUser['userid']>1){
+                $ip = explode('.', $v['ip']);
+                $v['ip'] = $ip[0].'. *** .'.$ip[3];
+            }
         }
         return $this->returnMsg($list);
     }

@@ -25,7 +25,14 @@ class Online extends AdminBase
     public function index($do='')
     {
         if($do=='json'){
-            return $this->returnMsg((new OL())->listQuery());
+            $list = (new OL())->listQuery();
+            foreach($list['data'] as &$v){
+                if($this->manUser['userid']>1){
+                    $ip = explode('.', $v['ip']);
+                    $v['ip'] = $ip[0].'. *** .'.$ip[3];
+                }
+            }
+            return $this->returnMsg($list);
         }
         $this->assign([
             'limit' => 10

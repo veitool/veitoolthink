@@ -144,15 +144,15 @@
                             <form class="layui-form userInfoForm" lay-filter="userPassForm">
                                 <div class="layui-form-item">
                                     <label class="layui-form-label layui-form-required">原登录密码：</label>
-                                    <div class="layui-input-block"><input type="password" name="oldPassword" placeholder="请输入原始密码" class="layui-input" lay-verType="tips" lay-verify="required" autocomplete="off"/></div>
+                                    <div class="layui-input-block"><input type="password" name="oldPassword" placeholder="请输入原始密码" class="layui-input" lay-verType="tips" lay-verify="required" lay-affix="eye" autocomplete="off"/></div>
                                 </div>
                                 <div class="layui-form-item">
                                     <label class="layui-form-label layui-form-required">新登录密码：</label>
-                                    <div class="layui-input-block"><input type="password" name="newPassword" placeholder="请输入新设密码" class="layui-input" lay-verType="tips" lay-verify="nepass" autocomplete="off" id="npass" /></div>
+                                    <div class="layui-input-block"><input type="password" name="newPassword" placeholder="请输入新设密码" class="layui-input" lay-verType="tips" lay-verify="nepass" lay-affix="eye" autocomplete="off" id="npass" /></div>
                                 </div>
                                 <div class="layui-form-item">
                                     <label class="layui-form-label layui-form-required">重复新密码：</label>
-                                    <div class="layui-input-block"><input type="password" name="rePassword" placeholder="请再次输入新密码" class="layui-input" lay-verType="tips" lay-verify="repass" autocomplete="off"/></div>
+                                    <div class="layui-input-block"><input type="password" name="rePassword" placeholder="请再次输入新密码" class="layui-input" lay-verType="tips" lay-verify="repass" lay-affix="eye" autocomplete="off"/></div>
                                 </div>
                                 <div class="layui-form-item">
                                     <div class="layui-input-block"><button class="layui-btn" lay-filter="userPassSubmit" lay-submit>确认修改</button></div>
@@ -179,6 +179,7 @@ layui.use(['fileLibrary', 'cascader'], function () {
         id = this.getAttribute("id");
         if(id=='infoEdit'){
             form.render(null,'userInfoForm');
+            form.render(null,'userPassForm');
             /*渲染所属地区*/
             layui.cascader.render({
                 elem: "#user_show_areas",

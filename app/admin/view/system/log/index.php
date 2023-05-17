@@ -154,8 +154,7 @@ layui.use(['vinfo'],function(){
             });/**/
             /*日志清理*/
             $('.top-loginlog-clear').on('click',function(){
-                layer.confirm('为系统安全，系统仅能删除30天之前的日志！', function(index){
-                    layer.close(index);
+                layer.confirm('为系统安全，系统仅能删除30天之前的日志！', function(){
                     admin.req(app_root+"ldel",function(res){
                         layer.msg(res.msg,{shade:[0.4,'#000'],time:1500},function(){
                             if(res.code==1) table.reloadData('loginlog');
@@ -220,8 +219,7 @@ layui.use(['vinfo'],function(){
             });/**/
             /*日志清理*/
             $('.top-managerlog-clear').on('click',function(){
-                layer.confirm('为系统安全，系统仅能删除7天之前的日志！', function(index){
-                    layer.close(index);
+                layer.confirm('为系统安全，系统仅能删除7天之前的日志！', function(){
                     admin.req(app_root+"mdel",function(res){
                         layer.msg(res.msg,{shade:[0.4,'#000'],time:1500},function(){
                             if(res.code==1) table.reloadData('managerlog');
@@ -266,8 +264,7 @@ layui.use(['vinfo'],function(){
             });/**/
             /*日志清理*/
             $('.top-weblog-clear').on('click',function(){
-                layer.confirm('确定要清理前台访问日志吗？', function(index){
-                    layer.close(index);
+                layer.confirm('确定要清理前台访问日志吗？', function(){
                     admin.req(app_root+"wdel",function(res){
                         layer.msg(res.msg,{shade:[0.4,'#000'],time:1500},function(){
                             if(res.code==1) table.reloadData('weblog');

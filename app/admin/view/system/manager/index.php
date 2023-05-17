@@ -315,7 +315,7 @@ layui.use(['vinfo', 'xmSelect', 'buildItems'], function(){
                     layui.buildItems.build({
                         bid: 'manager_reset',
                         data: [
-                            {name:"newPassword",title:"新设密码",type:"password",tid:'npass',value:'',verify:'nepass',vertype:'tips',placeholder:"请输入6-16位新设密码",must:true},
+                            {name:"newPassword",title:"新设密码",type:"password",id:'npass',value:'',verify:'nepass',vertype:'tips',placeholder:"请输入6-16位新设密码",must:true},
                             {name:"rePassword",title:"确认密码",type:"password",value:'',verify:'repass',vertype:'tips',placeholder:"请再次输入新密码",must:true}
                         ]
                     });

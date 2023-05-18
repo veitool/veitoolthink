@@ -88,7 +88,6 @@ layui.use(['buildItems'], function(){
         layer.confirm('确定要导入内置地区数据吗？？', function(index){
             $("#layui-layer"+index+" .layui-layer-content").html('数据导入中，请勿关闭...');
             admin.req(app_root+"import",function(res){
-                layer.close(index);
                 layer.msg(res.msg,{shade:[0.4,'#000'],time:1500},function(){
                     if(res.code==1){pname = ''; redata();}
                 });
@@ -138,7 +137,7 @@ layui.use(['buildItems'], function(){
                     data: [
                         {name:"pname",title:"上级地区",type:"html",html:'<div class="layui-form-mid">'+area+'</div><input type="hidden" name="parentid" value="'+pid+'"/>'},
                         {name:"areaname",title:"地区名称",type:"textarea",value:'',verify:'required',placeholder:"允许批量添加，一行一个，点回车换行",must:true},
-                        {name:"listorder",title:"排序编号",type:"number",value:100,verify:'required',placeholder:"请输入排序数字"}
+                        {name:"listorder",title:"排序编号",type:"number",value:100,verify:'required',placeholder:"请输入排序数字",must:true}
                     ]
                 });
                 form.on('submit(areas_items)',function(data){

@@ -81,7 +81,7 @@ layui.use(['vinfo', 'xmSelect', 'buildItems'], function(){
     var Roles = {$roles|raw};
     var roles_select = '<option value="">选择角色</option>'; $.each(Roles,function(k,v){roles_select += '<option value="'+ k +'">'+ v +'</option>';});
     /*==============左树结构===============*/
-    var organObj,organData; //左树 选中数据 和 总树数据
+    var organObj,organData; /*左树 选中数据 和 总树数据*/
     function renderTree(data){
         if(data){
             organData = toTree(data);
@@ -119,8 +119,7 @@ layui.use(['vinfo', 'xmSelect', 'buildItems'], function(){
     /*左树删除按钮*/
     $('#organ-del').on('click', function(){
         if(!organObj) return layer.msg('未选择机构');
-        layer.confirm('确定要删除所选机构吗？',function(index){
-            layer.close(index);
+        layer.confirm('确定要删除所选机构吗？',function(){
             admin.req(app_root+"odel",{id:organObj.data.id},function(res){
                 layer.msg(res.msg,{shade:[0.4,'#000'],time:1500},function(){
                     if(res.code==1){
@@ -148,7 +147,7 @@ layui.use(['vinfo', 'xmSelect', 'buildItems'], function(){
                         {name:"title",title:"机构简称",type:"text",value:'',verify:'required',placeholder:"请输入机构简称",must:true},
                         {name:"titles",title:"机构全称",type:"text",value:'',verify:'required',placeholder:"请输入机构全称",must:true},
                         {name:"note",title:"备注说明",type:"textarea",value:'',placeholder:"请输入备注说明(选填)"},
-                        {name:"listorder",title:"排序编号",type:"number",value:'100',verify:'required',placeholder:"请输入排序数字"}
+                        {name:"listorder",title:"排序编号",type:"number",value:'100',verify:'required',placeholder:"请输入排序数字",must:true}
                     ]
                 });
                 form.val('organ_items_form',Dt);
@@ -223,11 +222,10 @@ layui.use(['vinfo', 'xmSelect', 'buildItems'], function(){
                 if(data[a].hasOwnProperty('children')) Exitem(data[a].children, id, false);
             }
         }
-    }/**/
-    /*==============左树结构END==============*/
-    //顶部类别
+    }/*==============左树结构END==============*/
+    /*顶部类别*/
     $('#search_roles_select').html(roles_select);
-    //渲染搜索元素
+    /*渲染搜索元素*/
     form.render(null, 'manager-form-search');
     layui.laydate.render({elem:'#manager-search-time',range:true,format:'yyyy/MM/dd',done:function(){$('#manager-search-time').trigger('input')}});
     /*渲染数据*/
@@ -315,13 +313,13 @@ layui.use(['vinfo', 'xmSelect', 'buildItems'], function(){
                     layui.buildItems.build({
                         bid: 'manager_reset',
                         data: [
-                            {name:"newPassword",title:"新设密码",type:"password",id:'npass',value:'',verify:'nepass',vertype:'tips',placeholder:"请输入6-16位新设密码",affix:'eye',must:true},
-                            {name:"rePassword",title:"确认密码",type:"password",value:'',verify:'repass',vertype:'tips',placeholder:"请再次输入新密码",affix:'eye',must:true}
+                            {name:"newPassword",title:"新设密码",type:"password",id:'npass',value:'',verify:'required|npass',vertype:'tips',placeholder:"请输入6-16位新设密码",affix:'eye',must:true},
+                            {name:"rePassword",title:"确认密码",type:"password",value:'',verify:'required|rpass',vertype:'tips',placeholder:"请再次输入新密码",affix:'eye',must:true}
                         ]
                     });
                     form.verify({
-                        nepass: function(v){if(!/^[\S]{6,16}$/.test(v)){ return '密码必须6-16位，且不能出现空格';}},
-                        repass: function(v){if(!v){return "请再次输入新密码";}else if(v !== $("#npass").val()){return "两次密码输入不一致";}}
+                        npass: function(v){if(!/^[\S]{6,16}$/.test(v)){ return '密码必须6-16位，且不能出现空格';}},
+                        rpass: function(v){if(!v){return "请再次输入新密码";}else if(v !== $("#npass").val()){return "两次密码输入不一致";}}
                     });
                     form.on('submit(manager_reset)',function(data){
                         var btn = $(this);
@@ -343,8 +341,7 @@ layui.use(['vinfo', 'xmSelect', 'buildItems'], function(){
     });/**/
     /*删除*/
     function del(ids){
-        layer.confirm('确定要删除所选管理帐号吗？', function(index){
-            layer.close(index);
+        layer.confirm('确定要删除所选管理帐号吗？', function(){
             admin.req(app_root+"del",{userid:ids},function(res){
                 layer.msg(res.msg,{shade:[0.4,'#000'],time:1500},function(){
                     if(res.code==1) table.reloadData('manager');
@@ -366,10 +363,10 @@ layui.use(['vinfo', 'xmSelect', 'buildItems'], function(){
                     data: [
                         {name:"userid",type:"hidden"},
                         {name:"groupid",title:"所属机构",type:"html",html:'<div id="organ-list-tree" class="v-xmselect-tree"></div>',must:true},
-                        {name:"roleid",title:"所属角色",type:"html",html:'<select name="roleid" lay-verify="required" lay-reqText="请选择所属角色">'+roles_select+'</select>',must:true},
-                        {name:"username",title:"管理帐号",type:"text",value:'',verify:'username',placeholder:"请输入4-30位管理帐号",must:true},
-                        {name:"password",title:"登录密码",type:"password",id:'m_pwd',value:'',verify:'pass',placeholder:"请输入6-16位登录密码",affix:'eye',must:true},
-                        {name:"repassword",title:"确认密码",type:"password",id:'m_repwd',value:'',verify:'repass',placeholder:"请重复登录密码",affix:'eye',must:true},
+                        {name:"roleid",title:"所属角色",type:"html",html:'<select name="roleid" lay-verify="required" lay-reqText="请选择所属角色" lay-verType="tips">'+roles_select+'</select>',must:true},
+                        {name:"username",title:"管理帐号",type:"text",value:'',verify:'required|user',vertype:'tips',placeholder:"请输入4-30位管理帐号",must:true},
+                        {name:"password",title:"登录密码",type:"password",id:'m_pwd',value:'',verify:'required|pass',vertype:'tips',placeholder:"请输入6-16位登录密码",affix:'eye',must:true},
+                        {name:"repassword",title:"确认密码",type:"password",id:'m_rpwd',value:'',verify:'required|rpass',vertype:'tips',placeholder:"请再次输入登录密码",affix:'eye',must:true},
                         {name:"truename",title:"真实姓名",type:"text",value:''},
                         {name:"mobile",title:"手机/电话",type:"text",value:''},
                         {name:"email",title:"电子邮箱",type:"text",value:''}
@@ -379,12 +376,12 @@ layui.use(['vinfo', 'xmSelect', 'buildItems'], function(){
                 /*密码处理*/
                 if(Dt){
                     $('#m_pwd').parent().parent().hide();
-                    $('#m_repwd').parent().parent().hide();
+                    $('#m_rpwd').parent().parent().hide();
                 }
                 form.verify({
-                    username: function(v){ if(!/^[\S]{4,30}$/.test(v)){return '请输入4-30位管理帐号';}},
-                    pass: function(v){ if(!/^[\S]{6,16}$/.test(v) && !Dt){return '密码必须6-16位，且不能出现空格';}},
-                    repass: function(v){ if (v !== $("#m_pwd").val() && !Dt) return "两次密码输入不一致";}
+                    user: function(v){if(!/^[\S]{4,30}$/.test(v)){return '管理帐号必须4-30位非空字符';}},
+                    pass: function(v){if(!/^[\S]{6,16}$/.test(v) && !Dt){return '登录密码必须6-16位非空字符';}},
+                    rpass: function(v){if(v !== $("#m_pwd").val() && !Dt){return "两次密码输入不一致";}}
                 });
                 /*判断帐号是否已被占用*/
                 $("input").blur(function(){
@@ -412,6 +409,7 @@ layui.use(['vinfo', 'xmSelect', 'buildItems'], function(){
                     radio: true,
                     clickClose: true,
                     layVerify: 'required',
+                    layVerType: 'tips',
                     layReqText: '请选择所属机构',
                     model: {label:{type:'text'}},
                     initValue: [Dt ? Dt.groupid : 0],

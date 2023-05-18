@@ -107,8 +107,7 @@ layui.use(['buildItems'], function(){
     };/**/
     /*删除*/
     var del = function(ids){
-        layer.confirm('确定要删除所选类别吗？', function(index){
-            layer.close(index);
+        layer.confirm('确定要删除所选类别吗？', function(){
             admin.req(cat_root+"catdel",{catid:ids},function(res){
                 layer.msg(res.msg,{shade:[0.4,'#000'],time:1500},function(){
                     if(res.code==1){

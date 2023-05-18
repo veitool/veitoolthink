@@ -14,6 +14,7 @@ layui.use(['iconPicker','buildItems'], function(){
     /*类列表*/
     table.render({
         elem: '#category_table',
+        data: <?=$list?>,
         cols: [[
             {type:"checkbox",fixed:"left"},
             {field:"catid",align:'center',width:60,title:"ID"},
@@ -22,8 +23,7 @@ layui.use(['iconPicker','buildItems'], function(){
             {field:'listorder',edit:'text',width:60,align:'center',title:'排序'},
             {field:'state',width:80,align:'center',templet:function(d){return '<input type="checkbox" name="state" lay-skin="switch" lay-text="是|否" lay-filter="category-state-chang" value="'+d.state+'" data-json="'+encodeURIComponent(JSON.stringify(d))+'"'+(d.state==1 ? ' checked' : '')+'>';},unresize:true,title:'启用'},
             {fixed:'right',width:120,align:'center',toolbar:'<div><a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a><a class="layui-btn layui-btn-xs" lay-event="del">删除</a></div>',title:'操作'}
-        ]],
-        data: <?=$list?>
+        ]]
     });/**/
     /*顶部添加按钮*/
     $('#top-category-add').on('click', function(){categoryOpen();});/**/
@@ -58,10 +58,6 @@ layui.use(['iconPicker','buildItems'], function(){
             categoryOpen(data);
         }else if(ob.event === 'del'){
             del(data.catid);
-        }else if(ob.event === 'event-image'){
-            var src = $(this).attr('src');
-            var alt = data.title;
-            layer.photos({photos:{data:[{alt:alt,src:src}],start:'0'},anim:5,shade:[0.4,'#000']});
         }
     });/**/
     /*添加、编辑弹出窗*/
@@ -77,8 +73,8 @@ layui.use(['iconPicker','buildItems'], function(){
                     bid: 'category_items',
                     data: [
                         {name:"catid",type:"hidden"},
-                        {name:"title",title:"类别名称",type:"html",html:'<div class="layui-input-inline" style="width:82px;float:left;"><input type="text" name="icon" value="" id="catIconPicker" lay-filter="catIconPicker" autocomplete="off" class="layui-input"></div><div class="layui-input-block" style="margin-left:105px;margin-right:0;"><input type="text" name="title" value="" lay-verify="required" placeholder="请输入类别名称" autocomplete="off" class="layui-input"></div>',must:true},
-                        {name:"listorder",title:"排序编号",type:"number",value:'100',verify:'required',placeholder:"请输入排序数字"}
+                        {name:"title",title:"类别名称",type:"html",html:'<div class="layui-input-inline" style="width:82px;float:left;"><input type="text" name="icon" value="" id="catIconPicker" lay-filter="catIconPicker" autocomplete="off" class="layui-input"></div><div class="layui-input-block" style="margin-left:105px;margin-right:0;"><input type="text" name="title" value="" lay-verify="required" lay-reqText="请输入类别名称" placeholder="请输入类别名称" autocomplete="off" class="layui-input"></div>',must:true},
+                        {name:"listorder",title:"排序编号",type:"number",value:'100',verify:'required',placeholder:"请输入排序数字",must:true}
                     ]
                 });
                 form.val('category_items_form',Dt);
@@ -110,8 +106,7 @@ layui.use(['iconPicker','buildItems'], function(){
     }/**/
     /*删除*/
     function del(ids){
-        layer.confirm('确定要删除所选类别吗？', function(index){
-            layer.close(index);
+        layer.confirm('确定要删除所选类别吗？', function(){
             admin.req(cat_root+"catdel",{catid:ids},function(res){
                 layer.msg(res.msg,{shade:[0.4,'#000'],time:1500},function(){
                     if(res.code==1) table.reloadData('category_table',{data:res.data});

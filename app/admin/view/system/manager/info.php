@@ -104,13 +104,13 @@
                                 </div>
                                 <div class="layui-form-item">
                                     <label class="layui-form-label layui-form-required">用户昵称:</label>
-                                    <div class="layui-input-block"><input type="text" name="nickname" id="nickname" value="{$User.nickname}" class="layui-input" lay-verType="tips" lay-verify="infoNickame" placeholder="请输入用户昵称"/></div>
+                                    <div class="layui-input-block"><input type="text" name="nickname" id="nickname" value="{$User.nickname}" class="layui-input" lay-verType="tips" lay-verify="required|infoNickame" placeholder="请输入用户昵称"/></div>
                                 </div>
                                 <div class="layui-form-item">
                                     <label class="layui-form-label layui-form-required">真实姓名:</label>
                                     <div class="layui-input-block">
                                         <div class="layui-inline">
-                                            <input type="text" name="truename" id="truename" value="{$User.truename}" class="layui-input" lay-verType="tips" lay-verify="infoTruename" placeholder="请输入真实姓名" style="width:260px;"/>
+                                            <input type="text" name="truename" id="truename" value="{$User.truename}" class="layui-input" lay-verType="tips" lay-verify="required|infoTruename" placeholder="请输入真实姓名" style="width:260px;"/>
                                         </div>
                                         <div class="layui-inline">
                                             <input type="radio" name="gender" value="1" title="男"{$User.gender==1 ? " checked" : ""} >
@@ -120,7 +120,7 @@
                                 </div>
                                 <div class="layui-form-item">
                                     <label class="layui-form-label">邮箱地址:</label>
-                                    <div class="layui-input-block"><input type="text" name="email" id="email" value="{$User.email}" class="layui-input" lay-verType="tips" lay-verify="infoEmail" placeholder="请输入邮箱地址"/></div>
+                                    <div class="layui-input-block"><input type="text" name="email" id="email" value="{$User.email}" class="layui-input" lay-verType="tips" lay-verify="email" placeholder="请输入邮箱地址"/></div>
                                 </div>
                                 <div class="layui-form-item">
                                     <label class="layui-form-label">用户手机:</label>
@@ -144,15 +144,15 @@
                             <form class="layui-form userInfoForm" lay-filter="userPassForm">
                                 <div class="layui-form-item">
                                     <label class="layui-form-label layui-form-required">原登录密码：</label>
-                                    <div class="layui-input-block"><input type="password" name="oldPassword" placeholder="请输入原始密码" class="layui-input" lay-verType="tips" lay-verify="required" lay-affix="eye" autocomplete="off"/></div>
+                                    <div class="layui-input-block"><input type="password" name="oldPassword" placeholder="请输入原始密码" class="layui-input" lay-verType="tips" lay-verify="required|opass" lay-affix="eye" autocomplete="off"/></div>
                                 </div>
                                 <div class="layui-form-item">
                                     <label class="layui-form-label layui-form-required">新登录密码：</label>
-                                    <div class="layui-input-block"><input type="password" name="newPassword" placeholder="请输入新设密码" class="layui-input" lay-verType="tips" lay-verify="nepass" lay-affix="eye" autocomplete="off" id="npass" /></div>
+                                    <div class="layui-input-block"><input type="password" name="newPassword" placeholder="请输入新设密码" class="layui-input" lay-verType="tips" lay-verify="required|npass" lay-affix="eye" autocomplete="off" id="npass" /></div>
                                 </div>
                                 <div class="layui-form-item">
                                     <label class="layui-form-label layui-form-required">重复新密码：</label>
-                                    <div class="layui-input-block"><input type="password" name="rePassword" placeholder="请再次输入新密码" class="layui-input" lay-verType="tips" lay-verify="repass" lay-affix="eye" autocomplete="off"/></div>
+                                    <div class="layui-input-block"><input type="password" name="rePassword" placeholder="请再次输入新密码" class="layui-input" lay-verType="tips" lay-verify="required|rpass" lay-affix="eye" autocomplete="off"/></div>
                                 </div>
                                 <div class="layui-form-item">
                                     <div class="layui-input-block"><button class="layui-btn" lay-filter="userPassSubmit" lay-submit>确认修改</button></div>
@@ -202,7 +202,7 @@ layui.use(['fileLibrary', 'cascader'], function () {
         admin.cropImg({
             title: '头像编辑',
             imgSrc: $img.attr('src'),
-            aspectRatio: 1, //裁剪比例
+            aspectRatio: 1, /*裁剪比例*/
             acceptMime: 'image/*',
             onCrop: function (base64){
                 var formData = new FormData();
@@ -248,11 +248,11 @@ layui.use(['fileLibrary', 'cascader'], function () {
     });/**/
     //验证表单数据
     form.verify({
-        infoNickame: function(v){if(!/^[\w\u4e00-\u9fa5]{1,10}$/.test(v)){return '请输入会员昵称：1-10位数字、字母、汉字或下划线组成'}},
-        infoTruename: function(v){if(!/^[\w\u4e00-\u9fa5]{2,10}$/.test(v)){return '请输入真实姓名：2-10位数字、字母、汉字或下划线组成'}},
-        infoEmail: function(v){if(v && !/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/.test(v)){return '请输入正确的邮箱地址'}},
-        nepass: function(v){if(!/^[\S]{6,16}$/.test(v)){ return '密码必须6-16位，且不能出现空格';}},
-        repass: function(v){if(!v){return "请再次输入新密码";}else if(v !== $("#npass").val()){return "两次密码输入不一致";}}
+        infoNickame: function(v){if(!/^[\w\u4e00-\u9fa5]{2,10}$/.test(v)){return '昵称必须为：2-10位数字、字母、汉字或下划线组成'}},
+        infoTruename: function(v){if(!/^[\w\u4e00-\u9fa5]{2,10}$/.test(v)){return '姓名必须为：2-10位数字、字母、汉字或下划线组成'}},
+        opass: function(v){if(!/^[\S]{6,16}$/.test(v)){return '原登录密码必须为6-16位非空字符';}},
+        npass: function(v){if(!/^[\S]{6,16}$/.test(v)){return '新登录密码必须为6-16位非空字符';}},
+        rpass: function(v){if(!v){return "请再次输入新登录密码";}else if(v !== $("#npass").val()){return "两次登录密码输入不一致";}}
     });/**/
     /*会员信息表单提交*/
     form.on('submit(userInfoSubmit)',function(data){

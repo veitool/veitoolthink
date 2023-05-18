@@ -12,7 +12,6 @@
         <div class="layui-card-body">
             <form class="layui-form" lay-filter="seting_box_form" style="padding-top:30px;">
                 <div id="seting_box"></div>
-                <!--保存按钮-->
                 <div class="layui-form-item text-center">
                     <button class="layui-btn" lay-submit lay-filter="setting-edit-submit">确认保存</button>
                 </div>

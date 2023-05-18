@@ -114,14 +114,13 @@ layui.use(function(){
                         title: '会员信息',
                         content: [
                             '<div style="padding:20px 20px 0 20px;">',
-                            '<p style="background:#009688;padding:15px 10px;color:#fff;margin-bottom:20px;border-radius:3px;line-height:28px;position:relative;">',
-                            '<b style="font-size:16px;">您好，{{ d.nickname }}</b><br/>您的帐号：{{ d.username }} 当前已经登录<br/>Veitool 平台将同步记录您所购买的插件</p>',
+                            '<p style="background:#009688;padding:15px 10px;color:#fff;margin-bottom:20px;border-radius:3px;line-height:28px;position:relative;"><b style="font-size:16px;">您好，{{ d.nickname }}</b><br/>您的帐号：{{ d.username }} 当前已经登录<br/>Veitool 平台将同步记录您所购买的插件</p>',
                             '<p style="margin-bottom:20px;"><i class="layui-icon" style="color:#009688">&#xe67b;</i> <a href="#" id="my-addon-url" target="_blank" style="color:#009688">我购买的插件</a></p>',
                             '<input type="submit" style="display:none;" id="addon_logout_submit" lay-submit></div>'
                         ].join(''),
                         success: function(l,index){
                             $('#my-addon-url').on('click',function(){
-                                return $(this).attr('href',app_api + 'member.index#/member.addon/index');
+                                return $(this).attr('href',app_api + 'member.index#/member.addon/order');
                             });
                             $('#addon_logout_submit').on("click",function(){
                                 $.getJSON(app_api + 'api/addon/logout',userInfo,function(res){
@@ -153,21 +152,15 @@ layui.use(function(){
                 title: '会员登录',
                 content: [
                     '<form class="layui-form model-form" lay-filter="addon_userlogin_form">',
-                    '<h2 style="margin:10px 0 30px 30px;color:#009688;text-align:center;"><fieldset class="layui-elem-field layui-field-title">',
-                    '<legend style="font-size:16px;margin-left:0px;">温馨提示：此处登录帐号为 <a href="'+ app_api +'" style="color:#dd4b39" target="_blank">Veitool官网账号</a></legend>',
-                    '</fieldset></h2>',
-                    '<div class="layui-form-item"><label class="layui-form-label layui-form-required">登录帐号:</label>',
-                    '<div class="layui-input-block"><input type="text" name="username" id="username" class="layui-input" lay-verify="login_user" lay-verType="tips" placeholder="您的用户名、手机号或邮箱" autocomplete="off"/></div>',
-                    '</div>',
-                    '<div class="layui-form-item"><label class="layui-form-label layui-form-required">登录密码:</label>',
-                    '<div class="layui-input-block"><input type="password" name="password" id="password" class="layui-input" lay-verify="login_pass" lay-verType="tips" placeholder="请输入登录密码" autocomplete="off"/></div>',
-                    '</div>',
+                    '<h2 style="margin:10px 0 30px 30px;color:#009688;text-align:center;"><fieldset class="layui-elem-field layui-field-title"><legend style="font-size:16px;margin-left:0px;">温馨提示：此处登录帐号为 <a href="'+ app_api +'" style="color:#dd4b39" target="_blank">Veitool官网账号</a></legend></fieldset></h2>',
+                    '<div class="layui-form-item"><label class="layui-form-label layui-form-required">登录帐号:</label><div class="layui-input-block"><input type="text" name="username" id="username" class="layui-input" lay-verify="required|user" lay-verType="tips" lay-reqText="请输入登录帐号" placeholder="您的用户名、手机号或邮箱" autocomplete="off"/></div></div>',
+                    '<div class="layui-form-item"><label class="layui-form-label layui-form-required">登录密码:</label><div class="layui-input-block"><input type="password" name="password" id="password" class="layui-input" lay-verify="required|pass" lay-verType="tips" lay-reqText="请输入登录密码" placeholder="请输入登录密码" autocomplete="off"/></div></div>',
                     '<input type="submit" style="display:none;" lay-filter="addon_userlogin_submit" lay-submit></form>'
                 ].join(''),
                 success: function(l,index){
                     form.verify({
-                        login_user: function(v){if(!/^[\S]{4,20}$/.test(v)){return '请输入4-20位登录帐号';}},
-                        login_pass: function(v){if(!/^[\S]{6,12}$/.test(v)){return '请输入6-12位登录密码';}}
+                        user: function(v){if(!/^[\S]{4,20}$/.test(v)){return '请输入4-20位登录帐号';}},
+                        pass: function(v){if(!/^[\S]{6,12}$/.test(v)){return '请输入6-12位登录密码';}}
                     });
                     form.on('submit(addon_userlogin_submit)',function(data){
                         var btn = $(this);
@@ -263,8 +256,7 @@ layui.use(function(){
             if(addons[data.name].state==1){
                 return layer.msg('请先禁用插件再进行卸载',{shade:[0.4,'#000'],time:2000});
             }
-            layer.confirm('确定要卸载该插件吗？',function(index){
-                layer.close(index);
+            layer.confirm('确定要卸载该插件吗？',function(){
                 var loadIndex = layer.load(2);
                 admin.req(app_root + "uninstall",{name:data.name},function(res){
                     layer.close(loadIndex);
@@ -303,8 +295,7 @@ layui.use(function(){
     function doReq(name,version,way){
         if(way === 'upgrade'){
             if(addons[name].state==1) return layer.msg('请先禁用插件再进行升级',{shade:[0.4,'#000'],time:2000});
-            layer.confirm('确认执行《<b>在线升级</b>》？<font color=red><br/>1、请务必做好代码和数据备份！<br/>2、升级后如出现冗余数据，请根据需要移除即可！<br/>3、不建议帐生产环境升级，请在本地完成升级测试！</font><br/>如有重要数据请备份后再操作！',function(index){
-                layer.close(index);
+            layer.confirm('确认执行《<b>在线升级</b>》？<font color=red><br/>1、请务必做好代码和数据备份！<br/>2、升级后如出现冗余数据，请根据需要移除即可！<br/>3、不建议帐生产环境升级，请在本地完成升级测试！</font><br/>如有重要数据请备份后再操作！',function(){
                 sendReq(name,version,'upgrade');
             });
         }else{

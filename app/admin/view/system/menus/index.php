@@ -35,8 +35,8 @@ layui.use(['trTable','xmSelect','iconPicker','buildItems'],function(){
     var menusTb = treeTable.render({
         elem: '#menus',
         checkdd: false,
+        where: {catid:catid},
         url: app_root+"index?do=json",
-        where:{catid:catid},
         toolbar: [
             '<p><span class="layui-inline"><input class="layui-input" id="edtSearch" placeholder="输入关键字" style="width:140px;margin-right:5px;height:30px;"></span>',
             '<button id="btnSearch" class="layui-btn layui-btn-sm layui-btn-primary layui-inline"><i class="layui-icon"></i>搜索</button>',
@@ -170,8 +170,7 @@ layui.use(['trTable','xmSelect','iconPicker','buildItems'],function(){
     });/**/
     /*删除*/
     function del(ids){
-        layer.confirm('确定要删除所选菜单吗？', function(index){
-            layer.close(index);
+        layer.confirm('确定要删除所选菜单吗？', function(){
             admin.req(app_root+"del",{menuid:ids},function(res){
                 layer.msg(res.msg,{shade:[0.4,'#000'],time:1500},function(){
                     if(res.code==1) menusTb.refresh();

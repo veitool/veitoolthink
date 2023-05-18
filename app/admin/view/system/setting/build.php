@@ -88,8 +88,7 @@ layui.use(['buildItems'],function(){
     });/**/
     /*删除*/
     function del(ids){
-        layer.confirm('确定要删除所选配置项吗？',function(index){
-            layer.close(index);
+        layer.confirm('确定要删除所选配置项吗？',function(){
             admin.req(app_root+"bdel",{id:ids},function(res){
                 layer.msg(res.msg,{shade:[0.4,'#000'],time:1500},function(){
                     if(res.code===1) table.reloadData('settings');
@@ -117,12 +116,11 @@ layui.use(['buildItems'],function(){
                         {name:"value",title:"配置初值",type:"textarea",value:'',placeholder:"请输入配置初值"},
                         {name:"options",title:"配置选项",type:"textarea",value:'',placeholder:"用于单选、多选、下拉、联动等类型时请输入，时间选择器时用于配置range参数"},
                         {name:"tips",title:"配置说明",type:"text",value:'',placeholder:"请输入配置说明"},
-                        {name:"listorder",title:"排序编号",type:"number",value:10,verify:'required',placeholder:"请输入排序数字"}
+                        {name:"listorder",title:"排序编号",type:"number",value:10,verify:'required',placeholder:"请输入排序数字",must:true}
                     ]
                 });
                 form.val('settings_items_form',Dt);
-                /*输入框内容监测 判断配置名称是否已被占用*/
-                $("input").blur(function(){
+                $("input").blur(function(){ /*输入框内容监测 判断配置名称是否已被占用*/
                     var o = $(this);
                     var obj = o.attr('name');
                     var val = o.val();

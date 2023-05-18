@@ -101,8 +101,7 @@ layui.use(function(){
     });/**/
     /*顶部清理按钮*/
     $('#top-filemanage-clear').on('click', function(){
-        layer.confirm('确定要清理软删除的文件吗，清理后将不可恢复！', function(index){
-            layer.close(index);
+        layer.confirm('确定要清理软删除的文件吗，清理后将不可恢复！', function(){
             admin.req(app_root+"clear",function(res){
                 layer.msg(res.msg,{shade:[0.4,'#000'],time:1500},function(){
                     if(res.code==1) table.reloadData('filemanage');
@@ -126,8 +125,7 @@ layui.use(function(){
     /*删除 恢复*/
     function doup(ids,type){
         var tip = type==='del' ? '删除' : '恢复';
-        layer.confirm('确定要'+ tip +'所选文件吗？', function(index){
-            layer.close(index);
+        layer.confirm('确定要'+ tip +'所选文件吗？', function(){
             admin.req(app_root + type,{fileid:ids},function(res){
                 layer.msg(res.msg,{shade:[0.4,'#000'],time:1500},function(){
                     if(res.code==1) table.reloadData('filemanage');

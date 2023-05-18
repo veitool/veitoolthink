@@ -41,7 +41,7 @@
 layui.use(['buildItems'],function(){
     var app_root = layui.cache.maps + 'system.sms/';
     var table=layui.table,form=layui.form,admin=layui.admin;
-    //渲染搜索元素
+    /*渲染搜索元素*/
     form.render(null, 'sms-form-search');
     layui.laydate.render({elem:'#sms-search-time',range:true,format:'yyyy/MM/dd',done:function(){$('#sms-search-time').trigger('input')}});
     /*渲染数据*/
@@ -85,7 +85,7 @@ layui.use(['buildItems'],function(){
                 layui.buildItems.build({
                     bid: 'sms_items',
                     data: [
-                        {name:"mobile",title:"接收号码",type:"text",value:'',verify:'phone',placeholder:"请输入接收手机号",must:true},
+                        {name:"mobile",title:"接收号码",type:"text",value:'',verify:'required|phone',placeholder:"请输入接收手机号",must:true},
                         {name:"message",title:"短信内容",type:"textarea",value:'',verify:'required',placeholder:"请输入短信内容",must:true},
                         {name:"sign",title:"短信签名",type:"text",value:'【微特】'}
                     ]
@@ -123,8 +123,7 @@ layui.use(['buildItems'],function(){
     });/**/
     /*删除*/
     function del(ids){
-        layer.confirm('确定要删除所选短信记录吗？', function(index){
-            layer.close(index);
+        layer.confirm('确定要删除所选短信记录吗？', function(){
             admin.req(app_root+"del",{itemid:ids},function(res){
                 layer.msg(res.msg,{shade:[0.4,'#000'],time:1500},function(){
                     if(res.code==1) table.reloadData('sms');

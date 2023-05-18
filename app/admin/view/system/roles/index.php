@@ -68,8 +68,7 @@ layui.use(['zTree','buildItems'], function(){
     });/**/
     /*删除*/
     function del(ids){
-        layer.confirm('确定要删除所选角色吗？', function(index){
-            layer.close(index);
+        layer.confirm('确定要删除所选角色吗？', function(){
             admin.req(app_root+"del",{roleid:ids},function(res){
                 layer.msg(res.msg,{shade:[0.4,'#000'],time:1500},function(){
                     if(res.code==1) table.reloadData('roles');
@@ -111,7 +110,7 @@ layui.use(['zTree','buildItems'], function(){
                     if (btn.attr('stop')){return false}else{btn.attr('stop',1)}
                     var field = data.field; field.roleid = roleid;
                     var post_url = field.roleid ? app_root+'edit' : app_root+'add';
-                        field.state  = field.hasOwnProperty('state') ? field.state : '0';
+                        field.state = field.hasOwnProperty('state') ? field.state : '0';
                     var insTree = $.fn.zTree.getZTreeObj('rolesTree');
                     var checkedRows = insTree.getCheckedNodes(true);
                         field.role_menuid = checkedRows.map(function(d){return d.id;});

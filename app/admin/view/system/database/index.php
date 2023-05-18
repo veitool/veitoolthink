@@ -22,6 +22,8 @@ layui.use(function(){
     /*数据表渲染*/
     table.render({
         elem: '#database',
+        even: true,
+        data: {$list|raw},
         cols: [[
             {type:"checkbox",fixed:"left"},
             {field:"name",title: "表名"},
@@ -32,11 +34,7 @@ layui.use(function(){
             {field:"data_total",align:'center',width:100,title:"合计(Mb)",sort:true},
             {field:"rows",align:'center',width:100,title:"记录数",sort:true},
             {fixed:'right',width:80,align:'center',toolbar:'<div><a class="layui-btn layui-btn-xs" lay-event="zidian">查看字典</a></div>',title:'操作'}
-        ]],
-        data: {$list|raw},
-        even: true,
-        page: false,
-        limit: 500
+        ]]
     });/**/
     /*顶部备份数据按钮*/
     $('#top-database-backup').on('click',function(){
@@ -44,18 +42,13 @@ layui.use(function(){
         if (checkData.length === 0){return layer.msg('请选择需备份的数据表');}
         var tables = {}, sizes = {};
         for (var i=0;i<checkData.length;i++){tables[i]=checkData[i].name;sizes[checkData[i].name]=checkData[i].data_total;}
-        layer.confirm('确定备份所选数据表吗？',{title:'备份数据'}, function(index){
-            layer.close(index);
+        layer.confirm('确定备份所选数据表吗？',{title:'备份数据'}, function(){
             var str = '<div style="padding:20px 10px;width:300px">' + 
                       '<div class="layui-progress layui-progress-big" lay-showpercent="true">' +
                       '<div class="layui-progress-bar layui-bg-green" style="width:0%;">' +
                       '<span class="layui-progress-text">0%</span>'+
                       '</div></div><p class="ts" style="text-align:center;padding:5px 0;"></p></div>';
-            var layid = layer.open({
-                type: 1,
-                title: '数据备份中请勿关闭...',
-                content: str
-            });
+            var layid = layer.open({type:1, title:'数据备份中请勿关闭...', content:str});
             var getBack = function(data){
                 admin.req(app_root+"backup",data,function(res){
                     if(res.code == -1 || res.code == 401){
@@ -97,6 +90,7 @@ layui.use(function(){
                 table.render({
                     elem: '#database_open_imports_table',
                     url: app_root + 'imports',
+                    even: true,
                     cols: [[
                         {type:"checkbox",fixed:"left"},
                         {field:"filename",title: "备份系列"},
@@ -104,18 +98,14 @@ layui.use(function(){
                         {field:"filesize",align:'center',width:120,title: "数据大小(Mb)",sort:true},
                         {field:"number",align:'center',width:80,title:"卷数"},
                         {fixed:'right',width:100,align:'center',toolbar:'<div><a class="layui-btn layui-btn-xs" lay-event="impt">导入</a><a class="layui-btn layui-btn-xs" lay-event="down">下载</a></div>',title:'操作'}
-                    ]],
-                    even: true,
-                    page: false,
-                    limit:0
+                    ]]
                 });/**/
                 /*删除备份*/
                 $('#database-open-imports-del').on('click', function(){
                     var checkData = table.checkStatus('database_open_imports_table').data;
                     if (checkData.length === 0){return layer.msg('请选择备份系列');}
                     var filenames = checkData.map(function(d){return d.filename;});
-                    layer.confirm('确定删除所选备份吗？', function(delId){
-                        layer.close(delId);
+                    layer.confirm('确定删除所选备份吗？', function(){
                         admin.req(app_root+"del",{filenames:filenames},function(res){
                             layer.msg(res.msg,{shade:[0.4,'#000'],time:1500},function(){
                                 if(res.code==1){
@@ -129,18 +119,13 @@ layui.use(function(){
                 table.on('tool(database_open_imports_table)',function(ob){
                     if(ob.event === 'impt'){
                         var filename = ob.data.filename, totaltid = ob.data.number;
-                        layer.confirm('即将导入：' + filename, {icon:3, title:'数据导入', maxWidth: '200px'}, function(i){
-                            layer.close(i);
+                        layer.confirm('即将导入：' + filename, {icon:3, title:'数据导入', maxWidth: '200px'}, function(){
                             var str = '<div style="padding:20px 10px;width:300px">' + 
                                       '<div class="layui-progress layui-progress-big" lay-showpercent="true">' +
                                       '<div class="layui-progress-bar layui-bg-green" style="width:0%;">' +
                                       '<span class="layui-progress-text">0%</span>'+
                                       '</div></div><p class="ts" style="text-align:center;padding:5px 0;"></p></div>';
-                            var layid = layer.open({
-                                type: 1,
-                                title: '数据导入中请勿关闭...',
-                                content: str
-                            });
+                            var layid = layer.open({type:1, title:'数据导入中请勿关闭...', content:str});
                             var Imports = function(data){
                                 admin.req(app_root+"import",data,function(res){
                                     $(".layui-progress-bar").css("width",res.data.p+"%");
@@ -200,9 +185,7 @@ layui.use(function(){
     /*快编监听*/
     table.on('edit(database)', function(obj){
         admin.req(app_root+"edit",{table:obj.data.name,note:obj.value},function(res){
-            layer.msg(res.msg,{shade:[0.4,'#000'],time:1500},function(){
-                //if(res.code==1 && obj.field=='note') redata();
-            });
+            layer.msg(res.msg,{shade:[0.4,'#000'],time:1500});
         },'post');
     });/**/
     /*工具条监听*/
@@ -226,9 +209,7 @@ layui.use(function(){
                             {field:"null",align:'center',width:80,title:"允许非空"},
                             {field:"extra",align:'center',width:80,title:"自动递增",templet:function(d){return d.extra=='auto_increment'?'是':''}},
                             {field:"comment",title:"备注"}
-                        ]],
-                        page: false,
-                        limit: 0
+                        ]]
                     });
                 }
             });

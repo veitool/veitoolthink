@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>管理员登录 - {:vconfig('site_title','微特管理系统')}</title>
+<title>管理员登录 - {:vconfig('site_title','VEITOOL快捷开发框架')}</title>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
 <link rel="shortcut icon" href="{PUBLIC__PATH}/favicon.ico"/>

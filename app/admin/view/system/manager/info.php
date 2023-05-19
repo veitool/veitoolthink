@@ -10,10 +10,8 @@
 .user-info-head .item-chang{top:-3px;right:-8px;}
 .user-info-head:hover .item-chang{display:block}
 .user-info-head .item-chang:hover{background:#000}
-
 .user-info-left p{border-bottom:1px solid #eee;padding:15px 0 5px 0;}
 .user-info-left p span{color:#aaa;margin-right:5px;}
-
 .user-info-list-item{position:relative;padding-bottom:8px}
 .user-info-list-item>.layui-icon{position:absolute}
 .user-info-list-item>p{padding-left:30px}
@@ -104,14 +102,12 @@
                                 </div>
                                 <div class="layui-form-item">
                                     <label class="layui-form-label layui-form-required">用户昵称:</label>
-                                    <div class="layui-input-block"><input type="text" name="nickname" id="nickname" value="{$User.nickname}" class="layui-input" lay-verType="tips" lay-verify="required|infoNickame" placeholder="请输入用户昵称"/></div>
+                                    <div class="layui-input-block"><input type="text" name="nickname" id="nickname" value="{$User.nickname}" class="layui-input" lay-verify="required|nickname" lay-verType="tips" placeholder="请输入用户昵称"/></div>
                                 </div>
                                 <div class="layui-form-item">
                                     <label class="layui-form-label layui-form-required">真实姓名:</label>
                                     <div class="layui-input-block">
-                                        <div class="layui-inline">
-                                            <input type="text" name="truename" id="truename" value="{$User.truename}" class="layui-input" lay-verType="tips" lay-verify="required|infoTruename" placeholder="请输入真实姓名" style="width:260px;"/>
-                                        </div>
+                                        <div class="layui-inline"><input type="text" name="truename" id="truename" value="{$User.truename}" class="layui-input" lay-verify="required|truename" lay-verType="tips" placeholder="请输入真实姓名" style="width:260px;"/></div>
                                         <div class="layui-inline">
                                             <input type="radio" name="gender" value="1" title="男"{$User.gender==1 ? " checked" : ""} >
                                             <input type="radio" name="gender" value="2" title="女"{$User.gender==2 ? " checked" : ""} >
@@ -124,7 +120,7 @@
                                 </div>
                                 <div class="layui-form-item">
                                     <label class="layui-form-label">用户手机:</label>
-                                    <div class="layui-input-block"><input type="text" name="mobile" id="mobile" value="{$User.mobile}" class="layui-input" placeholder="请输入用户手机"/></div>
+                                    <div class="layui-input-block"><input type="text" name="mobile" id="mobile" value="{$User.mobile}" class="layui-input" lay-verType="tips" lay-verify="phone" placeholder="请输入用户手机"/></div>
                                 </div>
                                 <div class="layui-form-item">
                                     <label class="layui-form-label">所属地区:</label>
@@ -135,27 +131,28 @@
                                     <div class="layui-input-block"><input type="text" name="address" id="address" value="{$User.address}" class="layui-input" placeholder="请输入详细地址"/></div>
                                 </div>
                                 <div class="layui-form-item">
-                                    <div class="layui-input-block"><button class="layui-btn" lay-filter="userInfoSubmit" lay-submit>确认修改</button></div>
+                                    <div class="layui-input-block"><button class="layui-btn" lay-filter="userInfoSubmit" data-url="edits" lay-submit>确认修改</button></div>
                                 </div>
                             </form>
                         </div>
                         <!-- tab3 -->
                         <div class="layui-tab-item">
-                            <form class="layui-form userInfoForm" lay-filter="userPassForm">
+                            <!-- 修改登录密码 -->
+                            <form class="layui-form userInfoForm" lay-filter="userInfoForm">
                                 <div class="layui-form-item">
                                     <label class="layui-form-label layui-form-required">原登录密码：</label>
-                                    <div class="layui-input-block"><input type="password" name="oldPassword" placeholder="请输入原始密码" class="layui-input" lay-verType="tips" lay-verify="required|opass" lay-affix="eye" autocomplete="off"/></div>
+                                    <div class="layui-input-block"><input type="password" name="oldPassword" id="oldpassword" class="layui-input" lay-verify="required|password" lay-verType="tips" data-tip="原登录" lay-affix="eye" autocomplete='off' placeholder="请输入原登录密码"/></div>
                                 </div>
                                 <div class="layui-form-item">
                                     <label class="layui-form-label layui-form-required">新登录密码：</label>
-                                    <div class="layui-input-block"><input type="password" name="newPassword" placeholder="请输入新设密码" class="layui-input" lay-verType="tips" lay-verify="required|npass" lay-affix="eye" autocomplete="off" id="npass" /></div>
+                                    <div class="layui-input-block"><input type="password" name="newPassword" id="password" class="layui-input" lay-verify="required|password" lay-verType="tips" data-tip="新登录" lay-affix="eye" autocomplete='off' placeholder="请输入新登录设密码"/></div>
                                 </div>
                                 <div class="layui-form-item">
                                     <label class="layui-form-label layui-form-required">重复新密码：</label>
-                                    <div class="layui-input-block"><input type="password" name="rePassword" placeholder="请再次输入新密码" class="layui-input" lay-verType="tips" lay-verify="required|rpass" lay-affix="eye" autocomplete="off"/></div>
+                                    <div class="layui-input-block"><input type="password" name="rePassword" id="passwords" class="layui-input" lay-verify="required|password" lay-verType="tips" data-tip="重复登录" lay-affix="eye" data-pass="password" autocomplete='off' placeholder="请再次输入新登录密码"/></div>
                                 </div>
                                 <div class="layui-form-item">
-                                    <div class="layui-input-block"><button class="layui-btn" lay-filter="userPassSubmit" lay-submit>确认修改</button></div>
+                                    <div class="layui-input-block"><button class="layui-btn" lay-filter="userInfoSubmit" data-url="changpwd" lay-submit>确认修改</button></div>
                                 </div>
                             </form>
                         </div>
@@ -174,14 +171,17 @@ layui.use(['fileLibrary', 'cascader'], function () {
     var map_root = layui.cache.maps;
     var app_root = map_root + 'system.manager/';
     var layer=layui.layer,form=layui.form,admin=layui.admin;
+    form.render(null,'userInfoForm');
+    /*自定义验证*/
+    form.verify({
+        nickname: [/^[\w\u4e00-\u9fa5]{2,10}$/, '昵称必须为2-10位数字、字母、汉字或下划线组成'],
+        truename: [/^[\w\u4e00-\u9fa5]{2,30}$/, '姓名必须为2-30位数字、字母、汉字或下划线组成'],
+        password: function(v,i){if(!/^[\S]{6,16}$/.test(v)){return $(i).data('tip')+'密码必须为6-16位非空字符组成';} if($(i).data('pass')){if(v!=$('#'+$(i).data('pass')).val())return '两次密码输入不一致';}}
+    });
     /*顶部选项卡监听*/
     layui.element.on('tab(userInfoTab)', function(){
-        id = this.getAttribute("id");
-        if(id=='infoEdit'){
-            form.render(null,'userInfoForm');
-            form.render(null,'userPassForm');
-            /*渲染所属地区*/
-            layui.cascader.render({
+        if(this.getAttribute("id") == 'infoEdit'){
+            layui.cascader.render({ /*渲染所属地区*/
                 elem: "#user_show_areas",
                 data: cityData,
                 itemHeight: '260px',
@@ -246,33 +246,13 @@ layui.use(['fileLibrary', 'cascader'], function () {
             },'post');
         });
     });/**/
-    //验证表单数据
-    form.verify({
-        infoNickame: function(v){if(!/^[\w\u4e00-\u9fa5]{2,10}$/.test(v)){return '昵称必须为：2-10位数字、字母、汉字或下划线组成'}},
-        infoTruename: function(v){if(!/^[\w\u4e00-\u9fa5]{2,10}$/.test(v)){return '姓名必须为：2-10位数字、字母、汉字或下划线组成'}},
-        opass: function(v){if(!/^[\S]{6,16}$/.test(v)){return '原登录密码必须为6-16位非空字符';}},
-        npass: function(v){if(!/^[\S]{6,16}$/.test(v)){return '新登录密码必须为6-16位非空字符';}},
-        rpass: function(v){if(!v){return "请再次输入新登录密码";}else if(v !== $("#npass").val()){return "两次登录密码输入不一致";}}
-    });/**/
-    /*会员信息表单提交*/
+    /*会员修改表单提交*/
     form.on('submit(userInfoSubmit)',function(data){
         var btn = $(this);
-        if (btn.attr('stop')){return false}else{btn.attr('stop',1)}
-        admin.req(app_root+"edits",data.field,function(res){
+        if(btn.attr('stop')){return false;}else{btn.attr('stop',1);}
+        admin.req(app_root + btn.data('url'),data.field,function(res){
             layer.msg(res.msg,{shade:[0.4,'#000'],time:1500},function(){
-                if(res.code==1) layui.admin.refresh();
-                btn.removeAttr('stop');
-            });
-        },'post');
-        return false;
-    });/**/
-    /*修改密码表单提交*/
-    form.on('submit(userPassSubmit)',function(data){
-        var btn = $(this);
-        if (btn.attr('stop')){return false}else{btn.attr('stop',1)}
-        admin.req(app_root+"changpwd",data.field,function(res){
-            layer.msg(res.msg,{shade:[0.4,'#000'],time:1500},function(){
-                if(res.code==1) layui.admin.refresh();
+                if(res.code==1) admin.refresh();
                 btn.removeAttr('stop');
             });
         },'post');

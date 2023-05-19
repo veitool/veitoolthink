@@ -133,7 +133,7 @@ class Manager extends AdminBase
      */
     public function edits()
     {
-        $d = $this->only(['nickname/*/n/昵称','truename/*/n','email/?/e','areaid/?/i/地区','address/?/{2,100}/详细地址','gender/d']);
+        $d = $this->only(['nickname/*/n/昵称','truename/*/n','email/?/e','mobile/?/m','areaid/?/i/地区','address/?/{2,100}/详细地址','gender/d']);
         $d["userid"] = $this->manUser['userid'];
         $d['gender'] = in_array($d['gender'],[1,2]) ? $d['gender'] : 1;
         $d["edittime"] = VT_TIME;

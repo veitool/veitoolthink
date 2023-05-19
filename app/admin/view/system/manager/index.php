@@ -318,7 +318,7 @@ layui.use(['vinfo', 'xmSelect', 'buildItems'], function(){
                         ]
                     });
                     form.verify({
-                        npass: function(v){if(!/^[\S]{6,16}$/.test(v)){ return '密码必须6-16位，且不能出现空格';}},
+                        npass: function(v){if(!/^[\S]{6,16}$/.test(v)){ return '密码必须为6-16位非空字符组成';}},
                         rpass: function(v){if(!v){return "请再次输入新密码";}else if(v !== $("#npass").val()){return "两次密码输入不一致";}}
                     });
                     form.on('submit(manager_reset)',function(data){

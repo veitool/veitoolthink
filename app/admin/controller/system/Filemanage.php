@@ -36,7 +36,6 @@ class Filemanage extends AdminBase
             $limit = $d['limit'];
             $where = [];
             if($kw!=''){
-                $kw = strip_sql(trim($kw));
                 if($field>-1){
                     $where[] = $field>0 ? [$fds[$field],'=',$kw] : [$fds[$field],'LIKE', '%'.$kw.'%'];
                 }else{

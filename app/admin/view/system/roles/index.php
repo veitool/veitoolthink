@@ -82,16 +82,16 @@ layui.use(['zTree','buildItems'], function(){
             type: 1,
             bid: 'roles_items',
             btn: ['保存', '取消'],
-            area: ['660px', '660px'],
+            area: ['660px', '90%'],
             title: Dt ? '编辑角色' : '添加角色',
             success: function(l,index){
-                $(l).children('.layui-layer-content').css('overflow','visible');
+                var height = l.height() - 260;
                 layui.buildItems.build({
                     bid: 'roles_items',
                     data: [
                         {name:"role_name",title:"角色名称",type:"text",value:'',verify:'required',placeholder:"请输入角色名称",must:true},
                         {name:"listorder",title:"排序编号",type:"html",html:'<div class="layui-input-inline"><input type="number" name="listorder" value="10" lay-verify="required" placeholder="请输入排序数字" autocomplete="off" class="layui-input"></div><div class="layui-input-block"><input type="checkbox" name="state" lay-verify="required" lay-skin="switch" lay-text="启用|禁用" value="1" checked/></div>',must:true},
-                        {name:"parent_id",title:"权限列表",type:"html",html:'<div style="padding-top:10px;height:410px;overflow:auto;"><ul id="rolesTree" class="ztree"></ul></div>'}
+                        {name:"parent_id",title:"权限列表",type:"html",html:'<div style="padding-top:10px;height:'+ height +'px;overflow:auto;"><ul id="rolesTree" class="ztree"></ul></div>'}
                     ]
                 });
                 form.val('roles_items_form', Dt);

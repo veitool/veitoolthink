@@ -1481,11 +1481,10 @@ class Request implements ArrayAccess
      * @access public
      * @param  array        $name 变量名
      * @param  mixed        $data 数据或者变量类型
-     * @param  mixed        $default 默认值
      * @param  string|array $filter 过滤方法
      * @return array
      */
-    public function only(array $name, $data = 'param', $filter = '', $default = ''): array
+    public function only(array $name, $data = 'param', $filter = ''): array
     {
         $data = is_array($data) ? $data : $this->$data();
 
@@ -1493,9 +1492,9 @@ class Request implements ArrayAccess
         foreach ($name as $key => $val) {
 
             if (is_int($key)) {
-                $key = $val;
+                $default = null;
+                $key     = $val;
                 if (!key_exists($key, $data)) {
-                    $item[$key] = $default;
                     continue;
                 }
             } else {

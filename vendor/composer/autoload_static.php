@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit07b49b107655f084e2a81837f28a0a38
+class ComposerStaticInit755c21d3f72b3cb77b8987889b6a0489
 {
     public static $files = array (
         '9b552a3cc426e3287cc811caefa3cf53' => __DIR__ . '/..' . '/topthink/think-helper/src/helper.php',
@@ -130,8 +130,8 @@ class ComposerStaticInit07b49b107655f084e2a81837f28a0a38
             4 => __DIR__ . '/..' . '/topthink/think-helper/src',
             5 => __DIR__ . '/..' . '/topthink/think-image/src',
             6 => __DIR__ . '/..' . '/topthink/think-log/src',
-            7 => __DIR__ . '/..' . '/topthink/think-orm/src',
-            8 => __DIR__ . '/..' . '/topthink/think-template/src',
+            7 => __DIR__ . '/..' . '/topthink/think-template/src',
+            8 => __DIR__ . '/..' . '/topthink/think-orm/src',
         ),
         'app\\' => 
         array (
@@ -286,11 +286,11 @@ class ComposerStaticInit07b49b107655f084e2a81837f28a0a38
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit07b49b107655f084e2a81837f28a0a38::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit07b49b107655f084e2a81837f28a0a38::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit07b49b107655f084e2a81837f28a0a38::$prefixesPsr0;
-            $loader->fallbackDirsPsr0 = ComposerStaticInit07b49b107655f084e2a81837f28a0a38::$fallbackDirsPsr0;
-            $loader->classMap = ComposerStaticInit07b49b107655f084e2a81837f28a0a38::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit755c21d3f72b3cb77b8987889b6a0489::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit755c21d3f72b3cb77b8987889b6a0489::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit755c21d3f72b3cb77b8987889b6a0489::$prefixesPsr0;
+            $loader->fallbackDirsPsr0 = ComposerStaticInit755c21d3f72b3cb77b8987889b6a0489::$fallbackDirsPsr0;
+            $loader->classMap = ComposerStaticInit755c21d3f72b3cb77b8987889b6a0489::$classMap;
 
         }, null, ClassLoader::class);
     }

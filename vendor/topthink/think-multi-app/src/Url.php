@@ -73,7 +73,7 @@ class Url extends UrlBuild
         return $url;
     }
 
-    public function build()
+    public function build(): string
     {
         // 解析URL
         $url     = $this->url;

@@ -22,7 +22,7 @@
     "require": {
         "php": ">=7.2.5",
         "topthink/framework": "^6.1.0",
-        "topthink/think-orm": "^2.0",
+        "topthink/think-orm": "^3.0",
         "topthink/think-filesystem": "^1.0",
         "topthink/think-view": "^2.0",
         "topthink/think-cache": "^2.0",
@@ -33,7 +33,7 @@
         "topthink/think-log": "^2.0",
         "aliyuncs/oss-sdk-php": "^2.6",
         "qcloud/cos-sdk-v5": "^2.6",
-        "qiniu/php-sdk": "^7.7",
+        "qiniu/php-sdk": "^7.9",
         "phpoffice/phpexcel": "^1.8",
         "nelexa/zip": "^4.0",
         "veitool/admin": "^3.0",

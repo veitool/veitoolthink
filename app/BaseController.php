@@ -101,7 +101,7 @@ abstract class BaseController
     protected function logon(string $tip = ''){
         $flag1 = vconfig('home_log',0);
         $flag2 = in_array(vconfig('online_on',0),[2,3]);
-        if($flag1 || $flag2) $url = substr(addslashes(vhtmlspecialchars(strip_sql($this->request->url()))),0,200);
+        if($flag1 || $flag2) $url = substr(vhtmlspecialchars(strip_sql($this->request->url())),0,200);
         /*访问日志*/
         if($flag1){
             \app\model\system\WebLog::add(['url'=>$url,'username'=>$this->memUser['username'] ?? '','ip'=>VT_IP]);

@@ -32,4 +32,5 @@ veitoolphp@gmail.com
 
 ## 版权信息
 Veitool 采用 [MIT](https://opensource.org/licenses/MIT) 开源协议发布，并免费提供使用《[免责声明](https://gitee.com/veitool/veitool/blob/master/DISCLAIMER.md)》。
+
 版权所有Copyright © 2023 by https://www.veitool.com All rights reserved。

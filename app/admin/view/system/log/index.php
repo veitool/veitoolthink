@@ -64,8 +64,8 @@
                             <option value="3">终端</option>
                         </select>
                     </div>
-                    <div class="layui-inline" style="width:150px;"><input type="text" name="kw" placeholder="关键词" autocomplete="off" class="layui-input" lay-affix="clear"></div>
-                    <div class="layui-inline" style="width:192px;"><input type="text" name="sotime" id="weblog-search-time" placeholder="操作时间" autocomplete="off" class="layui-input" lay-affix="clear"></div>
+                    <div class="layui-inline" style="width:150px;"><input type="text" name="kw" placeholder="关键词" autocomplete="off" class="layui-input" lay-affix="clear"/></div>
+                    <div class="layui-inline" style="width:192px;"><input type="text" name="sotime" id="weblog-search-time" placeholder="操作时间" autocomplete="off" class="layui-input" lay-affix="clear"/></div>
                     <div class="layui-inline">
                         <div class="layui-btn-group">
                             <button class="layui-btn" lay-submit lay-filter="top-weblog-search"><i class="layui-icon layui-icon-search layuiadmin-button-btn"></i> 搜索</button>

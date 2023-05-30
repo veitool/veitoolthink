@@ -11,8 +11,8 @@
                             <option value="2">IP</option>
                         </select>
                     </div>
-                    <div class="layui-inline" style="width:150px;"><input type="text" name="kw" placeholder="关键词" autocomplete="off" class="layui-input" lay-affix="clear"></div>
-                    <div class="layui-inline" style="width:192px;"><input type="text" name="sotime" id="online-search-time" placeholder="访问时间" autocomplete="off" class="layui-input" lay-affix="clear"></div>
+                    <div class="layui-inline" style="width:150px;"><input type="text" name="kw" placeholder="关键词" autocomplete="off" class="layui-input" lay-affix="clear"/></div>
+                    <div class="layui-inline" style="width:192px;"><input type="text" name="sotime" id="online-search-time" placeholder="访问时间" autocomplete="off" class="layui-input" lay-affix="clear"/></div>
                     <div class="layui-inline" style="width:72px;">
                         <select name="type">
                             <option value="" selected="">类型</option>

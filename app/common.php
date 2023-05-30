@@ -23,7 +23,7 @@ function is_md5($w){
  * @param   string   $f   正则类型 ip,mobile,email 或者 允许有的位数范围,如:{1,3}
  * @param   array    $t   合法的字符集0:字母数字汉字下划线 1:数字 2:小写字母 3:大写字母 4:汉字 5:任何非空白字符
  * @param   string   $o   允许有字符
- * @return type
+ * @return  bool
  */
 function is_preg($s,$f='',$t=[0],$o=''){
     if($s=='' || is_array($s)) return false;
@@ -78,7 +78,7 @@ function set_password($p,$s){
 }
 
 /**
- * 设置Toke
+ * 设置Token
  * @param   $key   标识
  * @retrun  string 
  */
@@ -293,7 +293,7 @@ function idstoname($ids,$arr){
     $str = '';
     $a = explode(',', $ids);
     foreach($a as $i){
-        $t = isset($arr[$i]) ? $arr[$i] : '';
+        $t = $arr[$i] ?? '';
         if($t) $str .= $str ? '，'.$t : $t;
     }
     return $str;
@@ -307,7 +307,7 @@ function idstoname($ids,$arr){
  */
 function vconfig($name='',$default=''){
     global $_VCF;
-    $_VCF = $_VCF ? $_VCF : \app\model\system\Setting::cache();
+    $_VCF = $_VCF ?: \app\model\system\Setting::cache();
     if($name){
         $dt = explode('.', $name);
         $rs = isset($_VCF[$dt[0]]) ? $_VCF[$dt[0]] : '';

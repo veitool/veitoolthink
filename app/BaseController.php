@@ -210,7 +210,7 @@ abstract class BaseController
     }
 
     /**
-     * 返提示信息(带模板)
+     * 带模板反馈提示
      * @access   protected
      * @param    string    $msg    提示信息
      * @param    int       $tpl    提示模板 默认 /404

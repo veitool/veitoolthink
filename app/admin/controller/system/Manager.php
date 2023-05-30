@@ -29,9 +29,9 @@ class Manager extends AdminBase
     public function index($do='', $action='')
     {
         if($action=='info'){ //个人中心
+            if(!Area::cache()) $this->exitMsg('请到地区管理设置或导入地区数据',400);
             $User = $this->manUser;
             $User['areaname'] = Area::getAreaStr($User['areaid'], ' - ');
-            if(empty($User['areaname'])) $this->exitMsg('请到地区管理设置或导入地区数据',400);
             $this->assign("User",$User);
             return $this->fetch('info');
         }

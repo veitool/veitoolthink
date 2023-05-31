@@ -392,10 +392,10 @@ layui.define(['tagsInput','fileLibrary','cascader'], function(e){
                         let name = eid.split("-")[1],k = i;
                         obj[i] = new Cherry({
                             id:eid,
-                            editor:{height:heg+'px',ename:name,value:$('#temp-'+name).val(),codemirror:{autofocus:false}},
-                            callback:{afterInit:function(){$("textarea[name='"+name+"']")[0].value=$('#temp-'+name).val();},afterChange:function(){$("textarea[name='"+name+"']")[0].value=obj[k].getValue();}},
+                            editor:{height:heg+'px',id:name,name:name,value:$('#temp-'+name).val(),autoSave2Textarea:true,codemirror:{autofocus:false}},
                             toolbars:{
                                 toolbar: ['bold','italic','strikethrough','|','header','list','graph','|','vimg',{insert:['vado','vido','br','code','table','line-table','bar-table','link','hr']},'settings'],
+                                toolbarRight: ['fullScreen'],
                                 customMenu:{
                                     vimg:Cherry.createMenuHook('图库',{onClick:function(){
                                         fileLibrary.open({title:'图片管理',groupid:c.gid,url:c.map},function(res){

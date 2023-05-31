@@ -394,8 +394,9 @@ layui.define(['tagsInput','fileLibrary','cascader'], function(e){
                             id:eid,
                             editor:{height:heg+'px',id:name,name:name,value:$('#temp-'+name).val(),autoSave2Textarea:true,codemirror:{autofocus:false}},
                             toolbars:{
-                                toolbar: ['bold','italic','strikethrough','|','header','list','graph','|','vimg',{insert:['vado','vido','br','code','table','line-table','bar-table','link','hr']},'settings'],
+                                toolbar: ['bold','italic','strikethrough','justify','|','header','list','panel','graph','|','vimg',{insert:['vado','vido','br','code','table','line-table','bar-table','link','hr','detail']},'settings'],
                                 toolbarRight: ['fullScreen'],
+                                sidebar: ['mobilePreview', 'copy', 'theme'],
                                 customMenu:{
                                     vimg:Cherry.createMenuHook('图库',{onClick:function(){
                                         fileLibrary.open({title:'图片管理',groupid:c.gid,url:c.map},function(res){

@@ -126,7 +126,7 @@ class Log extends AdminBase
     {
         $pre = config('database.connections.'.config('database.default').'.prefix');
         \think\facade\Db::query("truncate {$pre}web_log");
-        return $this->returnMsg("清理管理日志成功！", 1);
+        return $this->returnMsg("清理访问日志成功！", 1);
     }
 
 }

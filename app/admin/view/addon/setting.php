@@ -8,7 +8,7 @@
     <div class="layui-tab layui-tab-admin" lay-filter="setting_addon_tab" style="display:none"><ul class="layui-tab-title" id="setting_addon_ul"></ul></div>
     <form class="layui-form" lay-filter="seting_addon_form" style="padding-top:30px;">
         <div id="seting_addon"></div>
-        <input type="submit" style="display:none;" lay-filter="seting_addon_submit" lay-submit>
+        <input type="submit" style="display:none;" lay-filter="seting_addon_submit" lay-submit/>
     </form>
 </div>
 <script>

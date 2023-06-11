@@ -1,3 +1,9 @@
+<style>
+#addon + .layui-table-view .layui-table-body tbody > tr > td{padding:0;}
+#addon + .layui-table-view .layui-table-body tbody > tr > td > .layui-table-cell{height:50px;line-height:50px;padding:0 5px;}
+.addon_item{width:30px;height:30px;line-height:10px;cursor:pointer;position:relative;margin:10px 0px 0 2px;padding:0px;border:1px solid #ddd;background:#fff;display:-webkit-box;-moz-box-align:center;-webkit-box-align:center;-moz-box-pack:center;-webkit-box-pack:center;}
+.addon_item img{max-width:24px;max-height:24px;border:0}
+</style>
 <div class="layui-fluid">
     <div class="layui-card">
         <div class="layui-tab layui-tab-admin" lay-filter="addon_top_tab">
@@ -212,12 +218,13 @@ layui.use(function(){
         where:{catid:catid,type:type,version:version,first:1},
         css: '.layui-table[lay-size=sm] td .layui-table-cell{height:auto;line-height:28px;}',
         cols: [[
-            {field:"itemid",width:50,align:'center',title:"已买",templet:function(d){return d.isbuy ? '<i class="layui-icon" style="color:#009688">&#xe679;</i>' : '-';}},
+            {field:"img",title:"配图",align:'center',width:60,templet:function(d){return '<div class="addon_item"><img src="'+ (d.img ? app_api + d.img : '') +'" lay-event="addon-event-image"/></div>';}},
             {field:'title',title:'名称',templet:function(d){return '<a href="'+ app_api + 'addon/'+ d.name +'" target="_blank">'+ d.title +'</a>';}},
             {field:'intro',title:'介绍',templet:function(d){return d.intro;}},
             {field:'author',width:100,align:'center',title:'作者',templet:function(d){return '<a href="'+ app_api +'" target="_blank">'+ d.author +'</a>';}},
             {field:'price',width:100,align:'center',title:'价格',templet:function(d){return d.price>0 ? '<font color=red>￥'+d.price+'</font>' : '<font color=green>免费</font>'}},
             {field:"down",width:100,align:'center',title:"下载",sort:!0},
+            {field:"itemid",width:50,align:'center',title:"已买",templet:function(d){return d.isbuy ? '<i class="layui-icon" style="color:#009688">&#xe679;</i>' : '-';}},
             {field:'version',width:100,align:'center',title:'版本',templet:function(d){return (typeof addons[d.name] != 'undefined' && addons[d.name].version !== d.version) ? '<a href="'+ app_api + 'addon/'+ d.name +'?version='+d.version+'" target="_blank" lay-tips ="发现新版本:'+d.version+' 点击查看更新日志">'+addons[d.name].version + ' <i class="layui-badge-dot"></i></a>' : d.version}},
             {field:'homeweb',width:60,align:'center',title:'前台',templet:function(d){return (typeof addons[d.name] != 'undefined' && addons[d.name].home) ? '<a href="'+ addons[d.name].home + '" target="_blank"><span class="layui-badge layui-bg-green">查看</span></a>' : '-';}},
             {field:'demo',width:60,align:'center',title:'演示',templet:function(d){return d.demo ? '<a href="'+ d.demo + '" target="_blank"><span class="layui-badge">演示</span></a>' : '-';}},
@@ -279,6 +286,9 @@ layui.use(function(){
                 },
                 style: 'width:40px;margin-left:-35px;text-align:center;'
             });
+        }else if(obj.event === 'addon-event-image'){
+            var src = $(this).attr('src');
+            layer.photos({photos:{data:[{alt:data.title,src:src}],start:'0'},anim:5,shade:[0.4,'#000']});
         }
     });/**/
     /*启用状态*/

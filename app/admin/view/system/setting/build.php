@@ -114,7 +114,7 @@ layui.use(['buildItems'],function(){
                         {name:"name",title:"配置名称",type:"text",value:'',verify:'required',placeholder:"请输入配置名称",must:true},
                         {name:"title",title:"配置标题",type:"text",value:'',verify:'required',placeholder:"请输入配置标题",must:true},
                         {name:"value",title:"配置初值",type:"textarea",value:'',placeholder:"请输入配置初值"},
-                        {name:"options",title:"配置选项",type:"textarea",value:'',placeholder:"用于单选、多选、下拉、联动等类型时请输入，时间选择器时用于配置range参数"},
+                        {name:"options",title:"配置选项",type:"textarea",value:'',placeholder:"用于单选、多选、下拉、联动等类型时请输入；时间选择器时用于配置range参数；文件上传时用于filetype[image、file、video、audio]参数"},
                         {name:"tips",title:"配置说明",type:"text",value:'',placeholder:"请输入配置说明"},
                         {name:"listorder",title:"排序编号",type:"number",value:10,verify:'required',placeholder:"请输入排序数字",must:true}
                     ]

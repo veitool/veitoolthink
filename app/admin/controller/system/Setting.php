@@ -43,8 +43,10 @@ class Setting extends AdminBase
                     $v['value'] = explode(',', $v['value']);
                 }elseif($v['type'] == 'images'){
                     $v['value'] = $v['value'] ? json_decode($v['value']) : [];
+                }elseif($v['type'] == 'upfile'){
+                    $v['filetype'] = $v['options']; $v['options'] = '';
                 }elseif(in_array($v['type'],['year','month','date','time','datetime'])){
-                    $v['range'] = $v['options'];
+                    $v['range'] = $v['options']; $v['options'] = '';
                 }elseif($v['private']){
                     $v['value'] = half_replace($v['value']);
                 }

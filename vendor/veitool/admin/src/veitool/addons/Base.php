@@ -128,12 +128,12 @@ abstract class Base
 
     /**
      * 合并函数库
+     * @param   string   $addon    插件标识
      * @param   string   $tofile   目标文件
      * @param   string   $form     来源文件【为空时则会清空 相关合并的函数库】
-     * @param   string   $addon    插件标识
      */
-    final public function mergeFun($tofile, $form = '', $addon = ''){
-        if(!is_file($tofile) || $addon == '') return;
+    final public function mergeFun($addon = '', $tofile = '', $form = ''){
+        if($addon == '' || !is_file($tofile)) return;
         $f1 = file_get_contents($tofile);
         $f2 = $form && is_file($form) ? str_replace(['<?php',"<?php\n"],['',''],file_get_contents($form)) : '';
         $sin1 = '/*====插件'.$addon.'公共函数====*/';

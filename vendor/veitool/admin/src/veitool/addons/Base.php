@@ -126,6 +126,29 @@ abstract class Base
         }
     }
 
+    /**
+     * 合并函数库
+     * @param   string   $tofile   目标文件
+     * @param   string   $form     来源文件【为空时则会清空 相关合并的函数库】
+     * @param   string   $addon    插件标识
+     */
+    final public function mergeFun($tofile, $form = '', $addon = ''){
+        if(!is_file($tofile) || $addon == '') return;
+        $f1 = file_get_contents($tofile);
+        $f2 = $form && is_file($form) ? str_replace(['<?php',"<?php\n"],['',''],file_get_contents($form)) : '';
+        $sin1 = '/*====插件'.$addon.'公共函数====*/';
+        $sin2 = '/*====插件'.$addon.'公共函数END====*/';
+        if(strpos($f1, $sin1) === false){
+            if(!$f2) return;
+            $f1 .= "\n".$sin1.$f2."\n".$sin2;
+        }else{
+            $f1 = preg_replace("/(\n\/\*)====插件".$addon."([\s\S]*)插件".$addon."公共函数END====(\*\/)/", $f2 ? "\n".$sin1.$f2."\n".$sin2 : '', $f1);
+        }
+        $fop = fopen($tofile, 'w');
+        fwrite($fop, $f1);
+        fclose($fop);
+    }
+
     abstract public function install();
 
     abstract public function uninstall();

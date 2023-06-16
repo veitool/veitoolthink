@@ -395,7 +395,7 @@ layui.define(['tagsInput','fileLibrary','cascader'], function(e){
                             editor:{height:heg+'px',id:name,name:name,value:$('#temp-'+name).val(),autoSave2Textarea:true,codemirror:{autofocus:false}},
                             callback:{afterInit:function(){$("textarea[name='"+name+"']")[0].value=$('#temp-'+name).val();}},
                             toolbars:{
-                                toolbar: ['bold','italic','strikethrough','justify','|','header','list','panel','graph','|','vimg',{insert:['vado','vido','br','code','table','line-table','bar-table','link','hr','detail']},'settings'],
+                                toolbar: ['bold','italic','strikethrough','justify','|','header','list','panel','graph','|','vimg',{insert:['vado','vido','br','code','table','line-table','bar-table','link','hr','detail']},'export','settings'],
                                 toolbarRight: ['fullScreen'],
                                 sidebar: ['mobilePreview', 'copy', 'theme'],
                                 customMenu:{

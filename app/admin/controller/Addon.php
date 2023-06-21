@@ -182,9 +182,7 @@ class Addon extends AdminBase
             if($group) $where[] = ['group','=',$group];
             $rs = (new S())->listArray($where,'name,title,value,type,options,private,relation,tips');
             foreach($rs as &$v){
-                if($v['type']=='checkbox'){
-                    $v['value'] = explode(',', $v['value']);
-                }elseif($v['type'] == 'images'){
+                if($v['type'] == 'images'){
                     $v['value'] = $v['value'] ? json_decode($v['value']) : [];
                 }elseif(in_array($v['type'],['year','month','date','time','datetime'])){
                     $v['range'] = $v['options'];
@@ -226,11 +224,11 @@ class Addon extends AdminBase
                 if($v['type'] == 'checkbox'){
                     $data['value'] = isset($d[$name]) && is_array($d[$name]) ? implode(',', $d[$name]) : '';
                 }elseif($v['type'] == 'image'){
-                    $data['value'] = isset($d[$name]) ? $d[$name] : '';
+                    $data['value'] = $d[$name] ?? '';
                 }elseif($v['type'] == 'images'){
                     $data['value'] = isset($d[$name]) && is_array($d[$name]) ? json_encode($d[$name]) : '';
                 }else{
-                    $data['value'] = isset($d[$name]) ? $d[$name] : 0;
+                    $data['value'] = $d[$name] ?? 0;
                     if($v['private'] && strpos($data['value'], '***') !== false) continue; //隐私项含星号不可更新
                 }
                 S::where("name='$name'")->update($data);

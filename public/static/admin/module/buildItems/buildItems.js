@@ -38,7 +38,7 @@ layui.define(['tagsInput','fileLibrary','cascader'], function(e){
     //静态文本
     c.static = c.item_html + c.block_html + '>' + '<div class="layui-form-mid layui-word-aux">{{ d.value }}</div></div></div>';
     //密码
-    c.password = c.item_html + c.block_html + '>' + c.password_html + '{{# if(d.id){ }}id="{{ d.id }}"{{# } }} class="layui-input"/>' + c.tips_html + '</div></div>';
+    c.password = c.item_html + c.block_html + '>' + c.password_html + '{{# if(d.id){ }}id="{{ d.id }}"{{# } }} class="layui-input" lay-affix="eye"/>' + c.tips_html + '</div></div>';
     //复选
     c.checkbox = c.item_html + c.block_html + '>' + c.checkbox_html + '</div>' + c.tips_html + '</div>';
     //单选

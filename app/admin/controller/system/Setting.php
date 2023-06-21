@@ -39,9 +39,7 @@ class Setting extends AdminBase
             if($group) $where[] = ['group','=',strip_sql($group)];
             $rs = (new S())->listArray($where,'name,title,value,type,options,private,relation,tips');
             foreach($rs as &$v){
-                if($v['type']=='checkbox'){
-                    $v['value'] = explode(',', $v['value']);
-                }elseif($v['type'] == 'images'){
+                if($v['type'] == 'images'){
                     $v['value'] = $v['value'] ? json_decode($v['value']) : [];
                 }elseif($v['type'] == 'upfile'){
                     $v['filetype'] = $v['options']; $v['options'] = '';
@@ -80,13 +78,13 @@ class Setting extends AdminBase
                 $name = $v['name'];
                 if(in_array($name, ['sys_group','sys_type'])) continue; //系统关键配置项不可修改 开发模式请注释该行
                 if($v['type'] == 'checkbox'){
-                    $data['value'] = isset($d[$name]) && is_array($d[$name]) ? implode(',', $setting[$name]) : '';
+                    $data['value'] = isset($d[$name]) && is_array($d[$name]) ? implode(',', $d[$name]) : '';
                 }elseif($v['type'] == 'image'){
-                    $data['value'] = isset($d[$name]) ? $d[$name] : '';
+                    $data['value'] = $d[$name] ?? '';
                 }elseif($v['type'] == 'images'){
                     $data['value'] = isset($d[$name]) && is_array($d[$name]) ? json_encode($d[$name]) : '';
                 }else{
-                    $data['value'] = isset($d[$name]) ? $d[$name] : 0;
+                    $data['value'] = $d[$name] ?? 0;
                     if($v['private'] && strpos($data['value'], '***') !== false) continue;
                 }
                 S::where("name='$name'")->update($data);

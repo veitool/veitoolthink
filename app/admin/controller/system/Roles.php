@@ -38,7 +38,7 @@ class Roles extends AdminBase
             $rs = Menus::cache(); // 获取后台菜单缓存 构建zTree Json数据
             foreach($rs as $v){
                 $flag = (strpos(",$ids,",",$v[menuid],")!==false) ? true : false;
-                $data[] = ['id'=>$v['menuid'],'pId'=>$v['parent_id'],'name'=>$v['menu_name'].' '.$v['role_url'],'checked'=>$flag,'open'=>true];
+                $data[] = ['id'=>$v['menuid'],'pId'=>$v['parent_id'],'name'=>$v['role_name'].' '.$v['role_url'],'checked'=>$flag,'open'=>true];
             }
             return $this->returnMsg($data);
         }

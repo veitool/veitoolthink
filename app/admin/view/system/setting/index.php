@@ -51,7 +51,7 @@ layui.use(['buildItems'], function(){
         layui.admin.req(app_root+"edit",data.field,function(res){
             layer.msg(res.msg,{shade:[0.4,'#000'],time:1500});
             btn.removeAttr('stop');
-        },'post');
+        },'post',{headersToken:true});
         return false;
     });/**/
 });

@@ -77,7 +77,7 @@ class Manager extends AdminBase
      */
     public function add()
     {
-        $d = $this->only(['username/*/u/管理帐号','password/*/p/登录密码','groupid/d/请选择所属机构','roleid/d/请选择所属角色','truename/?/n','mobile/?/m','email/?/e']);
+        $d = $this->only(['@token'=>'','username/*/u/管理帐号','password/*/p/登录密码','groupid/d/请选择所属机构','roleid/d/请选择所属角色','truename/?/n','mobile/?/m','email/?/e']);
         if(M::get("username = '$d[username]'")) return $this->returnMsg("该用户帐号已经存在");
         $d["passsalt"] = random(8);
         $d["password"] = set_password($d["password"],$d["passsalt"]);
@@ -97,7 +97,7 @@ class Manager extends AdminBase
      */
     public function edit($do='')
     {
-        $d = $this->only($do ? ['userid/d/参数错误','av','af'] : ['userid/d/参数错误','username/*/u/管理帐号','groupid/d/请选择所属机构','roleid/d/请选择所属角色','truename/?/n','mobile/?/m','email/?/e']);
+        $d = $this->only($do ? ['@token'=>'','userid/d/参数错误','av','af'] : ['@token'=>'','userid/d/参数错误','username/*/u/管理帐号','groupid/d/请选择所属机构','roleid/d/请选择所属角色','truename/?/n','mobile/?/m','email/?/e']);
         $userid = $d['userid'];
         $Myobj = M::get("userid = $userid");
         if(!$Myobj) return $this->returnMsg("数据不存在");
@@ -133,7 +133,7 @@ class Manager extends AdminBase
      */
     public function edits()
     {
-        $d = $this->only(['nickname/*/n/昵称','truename/*/n','email/?/e','mobile/?/m','areaid/?/i/地区','address/?/{2,100}/详细地址','gender/d']);
+        $d = $this->only(['@token'=>'','nickname/*/n/昵称','truename/*/n','email/?/e','mobile/?/m','areaid/?/i/地区','address/?/{2,100}/详细地址','gender/d']);
         $d["userid"] = $this->manUser['userid'];
         $d['gender'] = in_array($d['gender'],[1,2]) ? $d['gender'] : 1;
         $d["edittime"] = VT_TIME;
@@ -150,7 +150,7 @@ class Manager extends AdminBase
      */
     public function del()
     {
-        $userid = $this->request->post('userid','','intval');
+        $userid = $this->only(['@token'=>'','userid'])['userid'];
         $userid = is_array($userid) ? implode(',',$userid) : $userid;
         if(!$userid) return $this->returnMsg('参数错误');
         $ids = explode(',', $userid);
@@ -189,7 +189,7 @@ class Manager extends AdminBase
      */
     public function resetpwd()
     {
-        $d = $this->only(['userid/d/参数错误','newPassword/*/p/新登录密码']);
+        $d = $this->only(['@token'=>'','userid/d/参数错误','newPassword/*/p/新登录密码']);
         if($d["userid"]==1) return $this->returnMsg('超级管理员禁止重置密码');
         $d["passsalt"] = random(8);
         $d["password"] = set_password($d["newPassword"],$d["passsalt"]);
@@ -207,7 +207,7 @@ class Manager extends AdminBase
      */
     public function oadd()
     {
-        $d = $this->only(['title/*/{2,10}/机构简称','titles/*/{2,50}/机构全称','parentid/d','listorder/d','note/h']);
+        $d = $this->only(['@token'=>'','title/*/{2,10}/机构简称','titles/*/{2,50}/机构全称','parentid/d','listorder/d','note/h']);
         $rs = Organ::get("id = $d[parentid]");
         $d['arrparentid'] = $rs ? (empty($rs['arrparentid']) ? $rs['id'] : $rs['arrparentid'].','.$rs['id']) : '';
         if(Organ::insert($d)){
@@ -223,7 +223,7 @@ class Manager extends AdminBase
      */
     public function oedit()
     {
-        $d = $this->only(['id/d/参数错误','title/*/{2,10}/机构简称','titles/*/{2,50}/机构全称','parentid/d','listorder/d','note/h']);
+        $d = $this->only(['@token'=>'','id/d/参数错误','title/*/{2,10}/机构简称','titles/*/{2,50}/机构全称','parentid/d','listorder/d','note/h']);
         $id = $d['id'];
         $Myobj = Organ::get("id = $id");
         if(!$Myobj) return $this->returnMsg("数据不存在");
@@ -266,8 +266,9 @@ class Manager extends AdminBase
      */
     public function odel()
     {
-        $id = $this->request->post('id/d');
-        if(!$id) return $this->returnMsg("参数错误");
+        $id = $this->only(['@token'=>'','id/d/参数错误'])['id'];
+        $ids = Organ::getChild($id);
+        if(M::get("groupid IN($ids)")) return $this->returnMsg("该组织机构下存在用户不可删除");
         $rs = Organ::del("CONCAT(',',CONCAT(arrparentid,',')) LIKE '%,{$id},%' OR id = $id");
         if($rs){
             return $this->returnMsg("删除成功",1,Organ::order(['listorder'=>'asc'])->column('*'));

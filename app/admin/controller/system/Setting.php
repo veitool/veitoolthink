@@ -65,6 +65,7 @@ class Setting extends AdminBase
      */
     public function edit()
     {
+        $this->only(['@token'=>'']);
         $d = $this->request->post();
         $group = $d['__g'] ?? 'system';
         $where = [];
@@ -142,7 +143,7 @@ class Setting extends AdminBase
      */
     public function badd()
     {
-        $d = $this->only([$this->ptype,$this->pname,$this->ptitle,$this->pgroup,$this->ptips,'value/u','options/u','listorder/d']);
+        $d = $this->only(['@token'=>'',$this->ptype,$this->pname,$this->ptitle,$this->pgroup,$this->ptips,'value/u','options/u','listorder/d']);
         if(S::get("name = '$d[name]' AND addon = ''")) return $this->returnMsg("该配置名称已经存在");
         $d["addtime"] = VT_TIME;
         if(S::insert($d)){
@@ -160,7 +161,7 @@ class Setting extends AdminBase
      */
     public function bedit($do='')
     {
-        $d = $this->only($do ? ['id/d/ID参数错误','av','af'] : ['id/d/ID参数错误',$this->ptype,$this->pname,$this->ptitle,$this->pgroup,$this->ptips,'value/u','options/u','listorder/d']);
+        $d = $this->only($do ? ['@token'=>'','id/d/ID参数错误','av','af'] : ['@token'=>'','id/d/ID参数错误',$this->ptype,$this->pname,$this->ptitle,$this->pgroup,$this->ptips,'value/u','options/u','listorder/d']);
         $id = $d['id'];
         if(in_array($id, [1,2])) return $this->returnMsg("系统关键配置项不可修改");
         $Myobj = S::get("id = $id");
@@ -204,7 +205,7 @@ class Setting extends AdminBase
      */
     public function bdel()
     {
-        $id = $this->request->post('id','','intval');
+        $id = $this->only(['@token'=>'','id'])['id'];
         $id = is_array($id) ? implode(',',$id) : $id;
         if(!$id) return $this->returnMsg('参数错误');
         $ids = explode(',', $id);

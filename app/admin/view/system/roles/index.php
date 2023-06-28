@@ -47,7 +47,7 @@ layui.use(['zTree','buildItems'], function(){
             layer.msg(res.msg,{shade:[0.4,'#000'],time:1500},function(){
                 if(res.code==1 && obj.field=='listorder') table.reloadData('roles');
             });
-        },'post');
+        },'post',{headersToken:true});
     });/**/
     /*状态*/
     form.on('switch(roles-chang)',function(obj){
@@ -55,7 +55,7 @@ layui.use(['zTree','buildItems'], function(){
         var av = obj.elem.checked ? 1 : 0;
         admin.req(app_root+"edit?do=up",{roleid:json.roleid,av:av,af:obj.elem.name},function(res){
             layer.tips(res.msg,obj.othis,{time:2000});
-        },'post');
+        },'post',{headersToken:true});
     });/**/
     /*工具条监听*/
     table.on('tool(roles)', function(obj){
@@ -73,7 +73,7 @@ layui.use(['zTree','buildItems'], function(){
                 layer.msg(res.msg,{shade:[0.4,'#000'],time:1500},function(){
                     if(res.code==1) table.reloadData('roles');
                 });
-            },'post');
+            },'post',{headersToken:true});
         });
     }/**/
     /*弹出窗*/
@@ -122,7 +122,7 @@ layui.use(['zTree','buildItems'], function(){
                             }
                             btn.removeAttr('stop');
                         });
-                    },'post');
+                    },'post',{headersToken:true});
                     return false;
                 });
             }

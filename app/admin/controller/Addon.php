@@ -106,7 +106,7 @@ class Addon extends AdminBase
      */
     public function uninstall()
     {
-        $d = $this->only(['name/*/a']); 
+        $d = $this->only(['@token'=>'','name/*/a']); 
         try{
             //只有开启调试且为超级管理员方可删除相关 数据表 和 配置项
             $tables = config('veitool.ddata',1) && env('app_debug') && $this->manUser['userid']==1 ? Service::getAddonTables($d['name']) : [];
@@ -172,8 +172,7 @@ class Addon extends AdminBase
      */
     public function setting($do='', $addon='', $group='')
     {
-        $groups = (array) vconfig('@'.$addon.'.'.'group',[]);
-        reset($groups);
+        $groups = (array) vconfig('@'.$addon.'.'.'group',[]); reset($groups);
         if($do=='json'){
             $group = $group ? $group : key($groups);
             $where = [];
@@ -207,6 +206,7 @@ class Addon extends AdminBase
      */
     public function setup()
     {
+        $this->only(['@token'=>'']);
         $d = $this->request->post();
         $group = $d['__g'] ?? '';
         $addon = $d['__a'] ?? '';
@@ -220,7 +220,7 @@ class Addon extends AdminBase
             unset($d['__g'],$d['__a']);
             foreach ($rs as $v){
                 $name = $v['name'];
-                if(in_array($name, ['sys_group','sys_type'])) continue; //系统关键配置项不可修改 开发时请注释该行
+                if(in_array($name, ['sys_group','sys_type'])) continue; // 系统关键配置项不可修改 开发时请注释该行
                 if($v['type'] == 'checkbox'){
                     $data['value'] = isset($d[$name]) && is_array($d[$name]) ? implode(',', $d[$name]) : '';
                 }elseif($v['type'] == 'image'){
@@ -229,7 +229,7 @@ class Addon extends AdminBase
                     $data['value'] = isset($d[$name]) && is_array($d[$name]) ? json_encode($d[$name]) : '';
                 }else{
                     $data['value'] = $d[$name] ?? 0;
-                    if($v['private'] && strpos($data['value'], '***') !== false) continue; //隐私项含星号不可更新
+                    if($v['private'] && strpos($data['value'], '***') !== false) continue; // 隐私项含星号不可更新
                 }
                 S::where("name='$name'")->update($data);
             }

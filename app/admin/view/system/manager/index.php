@@ -80,36 +80,37 @@ layui.use(['vinfo', 'xmSelect', 'buildItems'], function(){
     var roles_select = '<option value="">选择角色</option>'; $.each(Roles,function(k,v){roles_select += '<option value="'+ k +'">'+ v +'</option>';});
     /*==============左树结构===============*/
     var organObj,organData; /*左树 选中数据 和 总树数据*/
-    function renderTree(data){
+    function renderTree(data,load){
         if(data){
             organData = toTree(data);
-            doTree(organData);
+            doTree(organData,load);
         }else{
             admin.req(app_root + "index?do=organ",function(res){
                 organData = toTree(res);
-                doTree(organData);
+                doTree(organData,load);
             });
         }
     }
-    function doTree(data){
+    function doTree(data,load){
         layui.tree.render({
             id: 'organTree',
             elem: '#organizationTree',
-            onlyIconControl: true,
             data: data,
+            onlyIconControl: true,
             click: function(obj){
                 $('#organizationTree').find('.organ-tree-click').removeClass('organ-tree-click');
                 $(obj.elem).children('.layui-tree-entry').addClass('organ-tree-click');
-                groupid = obj.data.id;
-                if(organObj){
-                    table.reloadData('manager',{where:{groupid:groupid},page:{curr:1}});
-                }
                 organObj = obj;
+                groupid  = obj.data.id;
+                table.reloadData('manager',{where:{groupid:groupid},page:{curr:1}});
             }
         });
-        $('#organizationTree').find('.layui-tree-entry:first>.layui-tree-main>.layui-tree-txt').trigger('click');
+        var item = $('#organizationTree .layui-tree-entry:first');
+        load ? item.find('.layui-tree-main>.layui-tree-txt').trigger('click') : item.addClass('organ-tree-click');
     }
+    /*初始渲染*/
     renderTree(<?=$organ?>);
+
     /*左树添加按钮*/
     $('#organ-add').on('click',function(){organOpen();});/**/
     /*左树编辑按钮*/
@@ -120,12 +121,9 @@ layui.use(['vinfo', 'xmSelect', 'buildItems'], function(){
         layer.confirm('确定要删除所选机构吗？',function(){
             admin.req(app_root+"odel",{id:organObj.data.id},function(res){
                 layer.msg(res.msg,{shade:[0.4,'#000'],time:1500},function(){
-                    if(res.code==1){
-                        organObj = null;
-                        renderTree(res.data);
-                    }
+                    if(res.code==1) renderTree(res.data,true);
                 });
-            },'post');
+            },'post',{headersToken:true});
         });
     });/**/
     /*树形编辑弹窗*/
@@ -174,12 +172,11 @@ layui.use(['vinfo', 'xmSelect', 'buildItems'], function(){
                         layer.msg(res.msg,{shade:[0.4,'#000'],time:1500},function(){
                             if(res.code==1){
                                 layer.close(index);
-                                organObj = null;
-                                renderTree(res.data);
+                                renderTree(res.data,true);
                             }
                             btn.removeAttr('stop');
                         });
-                    },'post');
+                    },'post',{headersToken:true});
                     return false;
                 });
             }
@@ -276,7 +273,7 @@ layui.use(['vinfo', 'xmSelect', 'buildItems'], function(){
     table.on('edit(manager)',function(obj){
         admin.req(app_root+"edit?do=up",{userid:obj.data.userid,av:obj.value,af:obj.field},function(res){
             layer.msg(res.msg,{shade:[0.4,'#000'],time:500});
-        },'post');
+        },'post',{headersToken:true});
     });/**/
     /*状态*/
     form.on('switch(manager-chang)',function(obj){
@@ -284,7 +281,7 @@ layui.use(['vinfo', 'xmSelect', 'buildItems'], function(){
         var av = obj.elem.checked ? 1 : 0;
         admin.req(app_root+"edit?do=up",{userid:json.userid,av:av,af:obj.elem.name},function(res){
             layer.tips(res.msg,obj.othis,{time:2000});
-        },'post');
+        },'post',{headersToken:true});
     });/**/
     /*工具条监听*/
     table.on('tool(manager)', function(obj){
@@ -325,10 +322,10 @@ layui.use(['vinfo', 'xmSelect', 'buildItems'], function(){
                         data.field.userid = userid;
                         admin.req(app_root+"resetpwd",data.field,function(res){
                             layer.msg(res.msg,{shade:[0.4,'#000'],time:1500},function(){
-                                if(res.code==1){layer.close(index)}
+                                if(res.code==1) layer.close(index);
                                 btn.removeAttr('stop');
                             });
-                        },'post');
+                        },'post',{headersToken:true});
                         return false;
                     });
                 }
@@ -344,7 +341,7 @@ layui.use(['vinfo', 'xmSelect', 'buildItems'], function(){
                 layer.msg(res.msg,{shade:[0.4,'#000'],time:1500},function(){
                     if(res.code==1) table.reloadData('manager');
                 });
-            },'post');
+            },'post',{headersToken:true});
         });
     }/**/
     /*弹出窗*/
@@ -363,19 +360,14 @@ layui.use(['vinfo', 'xmSelect', 'buildItems'], function(){
                         {name:"groupid",title:"所属机构",type:"html",html:'<div id="organ-list-tree" class="v-xmselect-tree"></div>',must:true},
                         {name:"roleid",title:"所属角色",type:"html",html:'<select name="roleid" lay-verify="required" lay-reqText="请选择所属角色" lay-verType="tips">'+roles_select+'</select>',must:true},
                         {name:"username",title:"管理帐号",type:"text",value:'',verify:'required|user',vertype:'tips',placeholder:"请输入4-30位管理帐号",must:true},
-                        {name:"password",title:"登录密码",type:"password",id:'m_pwd',value:'',verify:'required|pass',vertype:'tips',placeholder:"请输入6-16位登录密码",affix:'eye',must:true},
-                        {name:"repassword",title:"确认密码",type:"password",id:'m_rpwd',value:'',verify:'required|rpass',vertype:'tips',placeholder:"请再次输入登录密码",affix:'eye',must:true},
+                        {name:"password",title:"登录密码",type:Dt ? 'hidden' : "password",id:'m_pwd',value:'',verify:Dt ? '' : 'required|pass',vertype:'tips',placeholder:"请输入6-16位登录密码",must:true},
+                        {name:"repassword",title:"确认密码",type:Dt ? 'hidden' : "password",id:'m_rpwd',value:'',verify:Dt ? '' : 'required|rpass',vertype:'tips',placeholder:"请再次输入登录密码",must:true},
                         {name:"truename",title:"真实姓名",type:"text",value:''},
                         {name:"mobile",title:"手机/电话",type:"text",value:''},
                         {name:"email",title:"电子邮箱",type:"text",value:''}
                     ]
                 });
                 form.val('manager_items_form',Dt);
-                /*密码处理*/
-                if(Dt){
-                    $('#m_pwd').parent().parent().hide();
-                    $('#m_rpwd').parent().parent().hide();
-                }
                 form.verify({
                     user: function(v){if(!/^[\S]{4,30}$/.test(v)){return '管理帐号必须4-30位非空字符';}},
                     pass: function(v){if(!/^[\S]{6,16}$/.test(v) && !Dt){return '登录密码必须6-16位非空字符';}},
@@ -388,9 +380,7 @@ layui.use(['vinfo', 'xmSelect', 'buildItems'], function(){
                     var val = o.val();
                     if(obj=='username' && val.length>2){
                         admin.req(app_root+"index?do=check",{username:val,userid:(Dt ? Dt.userid : 0)},function(res){
-                            if(res.code==1){
-                                layer.msg(res.msg,{shade:[0.4,'#000'],time:1500},function(){o.val('');o.focus();});
-                            }
+                            if(res.code==1) layer.msg(res.msg,{shade:[0.4,'#000'],time:1500},function(){o.val('');o.focus();});
                         },'post');
                         return ;
                     }
@@ -426,7 +416,7 @@ layui.use(['vinfo', 'xmSelect', 'buildItems'], function(){
                             }
                             btn.removeAttr('stop');
                         });
-                    },'post');
+                    },'post',{headersToken:true});
                     return false;
                 });
             }

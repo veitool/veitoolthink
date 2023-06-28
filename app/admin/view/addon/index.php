@@ -273,7 +273,7 @@ layui.use(function(){
                             table.reloadData('addon');
                         }
                     });
-                },'post');
+                },'post',{headersToken:true});
             });
         }else if(obj.event === 'versionlist' || obj.event === 'versionlists'){
             var way = obj.event == 'versionlist' ? 'install' : 'upgrade';

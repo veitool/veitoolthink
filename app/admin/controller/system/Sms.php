@@ -38,7 +38,7 @@ class Sms extends AdminBase
      */
     public function send()
     {
-        $d = $this->only(['mobile/*/m','message/h']);
+        $d = $this->only(['@token'=>'','mobile/*/m','message/h']);
         $SMS  = new SendSms();
         if(vconfig('sms_type')=='smsbao'){
             return $this->returnMsg($SMS->smsbao_send($d['mobile'], $d['message']));
@@ -53,7 +53,7 @@ class Sms extends AdminBase
      */
     public function del()
     {
-        $itemid = $this->request->post('itemid','','intval');
+        $itemid = $this->only(['@token'=>'','itemid'])['itemid'];
         $itemid = is_array($itemid) ? implode(',',$itemid) : $itemid;
         if(S::del("itemid IN($itemid)")){
             return $this->returnMsg("删除成功", 1);

@@ -136,13 +136,13 @@ layui.use(['trTable','xmSelect','iconPicker','buildItems'],function(){
         var av = obj.elem.checked ? 1 : 0;
         admin.req(app_root+"edit?do=up",{menuid:json.menuid,av:av,af:obj.elem.name},function(res){
             layer.tips(res.msg,obj.othis,{time:1000});
-        },'post');
+        },'post',{headersToken:true});
     });/**/
     /*快编监听*/
     treeTable.on('edit(menus)',function(obj){
         admin.req(app_root+"edit?do=up",{menuid:obj.data.menuid,av:obj.value,af:obj.field},function(res){
             layer.msg(res.msg,{shade:[0.4,'#000'],time:1000});
-        },'post');
+        },'post',{headersToken:true});
     });/**/
     /*顶部添加按钮*/
     $('#top-menus-add').on('click',function(){addOpen();});
@@ -175,7 +175,7 @@ layui.use(['trTable','xmSelect','iconPicker','buildItems'],function(){
                 layer.msg(res.msg,{shade:[0.4,'#000'],time:1500},function(){
                     if(res.code==1) menusTb.refresh();
                 });
-            },'post');
+            },'post',{headersToken:true});
         });
     }/**/
     /*批量添加*/
@@ -207,7 +207,7 @@ layui.use(['trTable','xmSelect','iconPicker','buildItems'],function(){
                             }
                             btn.removeAttr('stop');
                         });
-                    },'post');
+                    },'post',{headersToken:true});
                     return false;
                 });
             }
@@ -279,7 +279,7 @@ layui.use(['trTable','xmSelect','iconPicker','buildItems'],function(){
                             }
                             btn.removeAttr('stop');
                         });
-                    },'post');
+                    },'post',{headersToken:true});
                     return false;
                 });
             }

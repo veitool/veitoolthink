@@ -34,13 +34,13 @@ layui.use(['iconPicker','buildItems'], function(){
         var ids = checkRows.map(function(d){return d.catid;});
         del(ids);
     });/**/
-    /*菜单显示*/
+    /*类别显示*/
     form.on('switch(category-state-chang)',function(obj){
         var json = JSON.parse(decodeURIComponent($(this).data('json')));
         var state = obj.elem.checked ? 1 : 0;
         admin.req(cat_root+"catedit?do=up",{catid:json.catid,av:state,af:'state'},function(res){
             layer.tips(res.msg,obj.othis,{time:1000,tips:[3,'#333']});
-        },'post');
+        },'post',{headersToken:true});
     });/**/
     /*快编监听*/
     table.on('edit(category_table)',function(obj){
@@ -49,7 +49,7 @@ layui.use(['iconPicker','buildItems'], function(){
                 if(res.code==1) table.reloadData('category_table',{data:res.data});
                 layui.admin.refresh();
             });
-        },'post');
+        },'post',{headersToken:true});
     });/**/
     /*右侧操作工具条监听*/
     table.on('tool(category_table)',function(ob){
@@ -98,7 +98,7 @@ layui.use(['iconPicker','buildItems'], function(){
                             }
                             btn.removeAttr('stop');
                         });
-                    },'post');
+                    },'post',{headersToken:true});
                     return false;
                 });
             }
@@ -109,10 +109,12 @@ layui.use(['iconPicker','buildItems'], function(){
         layer.confirm('确定要删除所选类别吗？', function(){
             admin.req(cat_root+"catdel",{catid:ids},function(res){
                 layer.msg(res.msg,{shade:[0.4,'#000'],time:1500},function(){
-                    if(res.code==1) table.reloadData('category_table',{data:res.data});
-                    layui.admin.refresh();
+                    if(res.code==1){
+                        table.reloadData('category_table',{data:res.data});
+                        admin.refresh();
+                    }
                 });
-            },'post');
+            },'post',{headersToken:true});
         });
     }/**/
 });

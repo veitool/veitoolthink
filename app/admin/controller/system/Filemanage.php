@@ -64,7 +64,7 @@ class Filemanage extends AdminBase
      */
     public function del()
     {
-        $fileid = $this->request->post('fileid','','intval');
+        $fileid = $this->only(['@token'=>'','fileid'])['fileid'];
         $fileid = is_array($fileid) ? implode(',',$fileid) : $fileid;
         if(!$fileid) return $this->returnMsg('参数错误');
         $rs = UploadFile::where("fileid IN ($fileid)")->update(['isdel'=>1]);
@@ -81,7 +81,7 @@ class Filemanage extends AdminBase
      */
     public function reset()
     {
-        $fileid = $this->request->post('fileid','','intval');
+        $fileid = $this->only(['@token'=>'','fileid'])['fileid'];
         $fileid = is_array($fileid) ? implode(',',$fileid) : intval($fileid);
         if(!$fileid) return $this->returnMsg('参数错误');
         $rs = UploadFile::where("fileid IN ($fileid)")->update(['isdel'=>0]);
@@ -98,6 +98,7 @@ class Filemanage extends AdminBase
      */
     public function clear()
     {
+        $this->only(['@token'=>'']);
         $rs = (new UploadFile())->listQuery('isdel=1')->toArray();
         if($rs['data']){
             $fileid = [];

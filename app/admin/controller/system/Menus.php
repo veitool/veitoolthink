@@ -42,7 +42,7 @@ class Menus extends AdminBase
      */
     public function add()
     {
-        $d = $this->only(['catid/d','menu_name/*/{2,20}/菜单名称','role_name/*/{2,20}/权限名称','link_url/u','menu_url/u','role_url/u','icon/u','parent_id/d','listorder/d','ismenu/d','state/d']);
+        $d = $this->only(['@token'=>'','catid/d','menu_name/*/{2,20}/菜单名称','role_name/*/{2,20}/权限名称','link_url/u','menu_url/u','role_url/u','icon/u','parent_id/d','listorder/d','ismenu/d','state/d']);
         $d['addtime'] = VT_TIME;
         if(M::insert($d)){
             M::cache(1);
@@ -58,7 +58,7 @@ class Menus extends AdminBase
      */
     public function adds()
     {
-        $d = $this->only(['titles/h','pid/d','catid/d']);
+        $d = $this->only(['@token'=>'','titles/h','pid/d','catid/d']);
         if(!$d['titles']) return $this->returnMsg("请输入菜单名称");
         $id = $d['pid'];
         $rs = M::get(['menuid'=>$id]);
@@ -87,7 +87,7 @@ class Menus extends AdminBase
      */
     public function edit($do='')
     {
-        $d = $this->only($do ? ['menuid/d/参数错误','av/u','af'] : ['menuid/d/参数错误','catid/d','ocatid/d','menu_name/*/{2,20}/菜单名称','role_name/*/{2,20}/权限名称','link_url/u','menu_url/u','role_url/u','icon/u','parent_id/d','listorder/d','ismenu/d','state/d']);
+        $d = $this->only($do ? ['@token'=>'','menuid/d/参数错误','av/u','af'] : ['@token'=>'','menuid/d/参数错误','catid/d','ocatid/d','menu_name/*/{2,20}/菜单名称','role_name/*/{2,20}/权限名称','link_url/u','menu_url/u','role_url/u','icon/u','parent_id/d','listorder/d','ismenu/d','state/d']);
         $menuid = $d['menuid'];
         $Myobj = M::get("menuid = $menuid");
         if(!$Myobj) return $this->returnMsg("数据不存在");
@@ -131,7 +131,7 @@ class Menus extends AdminBase
      */
     public function del()
     {
-        $menuid = $this->request->post('menuid','','intval');
+        $menuid = $this->only(['@token'=>'','menuid'])['menuid'];
         $menuid = is_array($menuid) ? implode(',',$menuid) : $menuid;
         if(!$menuid) return $this->returnMsg('参数错误');
         $rs = M::where("parent_id IN($menuid)")->column("parent_id");
@@ -157,6 +157,7 @@ class Menus extends AdminBase
         if($rs){
             $rs = $rs->toArray();
             $rs['sublist'] = $data;
+            unset($rs['menuid'],$rs['addtime']);
             $data = [$rs];
         }
         $msg = '无数据导出';
@@ -214,7 +215,7 @@ class Menus extends AdminBase
      */
     public function catadd()
     {
-        $d = $this->only(['title/*/{2,20}/类别名称','icon/u','listorder/d']);
+        $d = $this->only(['@token'=>'','title/*/{2,20}/类别名称','icon/u','listorder/d']);
         $d['type'] = '01';
         if(C::insert($d)){
             return $this->returnMsg('添加类别成功',1,C::catList('01'));
@@ -230,7 +231,7 @@ class Menus extends AdminBase
      */
     public function catedit($do='')
     {
-        $d = $this->only($do ? ['catid/d/参数错误','av','af'] : ['catid/d/参数错误','title/*/{2,20}/类别名称','icon/u','listorder/d']);
+        $d = $this->only($do ? ['@token'=>'','catid/d/参数错误','av','af'] : ['@token'=>'','catid/d/参数错误','title/*/{2,20}/类别名称','icon/u','listorder/d']);
         $Myobj = C::get("catid = $d[catid]");
         if(!$Myobj) return $this->returnMsg("数据不存在");
         if($do=='up'){
@@ -262,7 +263,7 @@ class Menus extends AdminBase
      */
     public function catdel()
     {
-        $catid = $this->request->post('catid','','intval');
+        $catid = $this->only(['@token'=>'','catid'])['catid'];
         $catid = is_array($catid) ? implode(',',$catid) : $catid;
         if(!$catid) return $this->returnMsg('参数错误');
         if(M::get("catid IN ($catid)")) return $this->returnMsg('所删类别下存在菜单');

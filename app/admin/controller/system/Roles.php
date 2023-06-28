@@ -52,7 +52,7 @@ class Roles extends AdminBase
      */
     public function add()
     {
-        $d = $this->only(['role_name/*/{2,30}/角色名称','listorder/d','state/d','role_menuid']);
+        $d = $this->only(['@token'=>'','role_name/*/{2,30}/角色名称','listorder/d','state/d','role_menuid']);
         $d['role_menuid'] = is_array($d['role_menuid']) ? implode(',', array_map('intval', $d['role_menuid'])) : '';
         $d['addtime'] = VT_TIME;
         if($rsid = R::insertGetId($d)){
@@ -70,7 +70,7 @@ class Roles extends AdminBase
      */
     public function edit($do='')
     {
-        $d = $this->only($do ? ['roleid/d/参数错误','av','af'] : ['roleid/d/参数错误','role_name/*/{2,30}/角色名称','listorder/d','state/d','role_menuid']);
+        $d = $this->only($do ? ['@token'=>'','roleid/d/参数错误','av','af'] : ['@token'=>'','roleid/d/参数错误','role_name/*/{2,30}/角色名称','listorder/d','state/d','role_menuid']);
         $roleid = $d['roleid'];
         $Myobj = R::get("roleid = $roleid");
         if(!$Myobj) return $this->returnMsg("数据不存在");
@@ -106,7 +106,7 @@ class Roles extends AdminBase
      */
     public function del()
     {
-        $roleid = $this->request->post('roleid','','intval');
+        $roleid = $this->only(['@token'=>'','roleid'])['roleid'];
         $roleid = is_array($roleid) ? implode(',',$roleid) : $roleid;
         if(!$roleid) return $this->returnMsg('参数错误');
         if(R::del("roleid IN($roleid)")){

@@ -47,7 +47,7 @@ class Area extends AdminBase
      */
     public function add()
     {
-        $d = $this->only(['parentid/d','listorder/d','areaname/*/{2,30}/地区名称']);
+        $d = $this->only(['@token'=>'','parentid/d','listorder/d','areaname/*/{2,30}/地区名称']);
         $parentid  = $d['parentid'];
         $listorder = $d['listorder'];
         $arrparentid = 0;
@@ -78,7 +78,7 @@ class Area extends AdminBase
      */
     public function edit()
     {
-        $d = $this->only(['areaid/d/参数错误','av','af']);
+        $d = $this->only(['@token'=>'','areaid/d/参数错误','av','af']);
         $value = $d['av'];
         $field = $d['af'];
         if(!in_array($field,['areaname','listorder'])) return $this->returnMsg("参数错误2");
@@ -126,7 +126,7 @@ class Area extends AdminBase
      */
     public function del()
     {
-        $areaid = $this->request->post('areaid','','intval');
+        $areaid = $this->only(['@token'=>'','areaid'])['areaid'];
         $areaid = is_array($areaid) ? implode(',',$areaid) : $areaid;
         $rs = A::get("parentid IN ($areaid)");
         if($rs) return $this->returnMsg("该地区存在子地区不能删除！");

@@ -67,7 +67,7 @@ layui.use(['buildItems'],function(){
             layer.msg(res.msg,{shade:[0.4,'#000'],time:1500},function(){
                 if(res.code==1 && obj.field=='listorder') table.reloadData('settings');
             });
-        },'post');
+        },'post',{headersToken:true});
     });/**/
     /*是否隐私、启用状态*/
     form.on('switch(settings-chang)',function(obj){
@@ -75,7 +75,7 @@ layui.use(['buildItems'],function(){
         var av = obj.elem.checked ? 1 : 0;
         admin.req(app_root+"bedit?do=up",{id:json.id,av:av,af:obj.elem.name},function(res){
             layer.tips(res.msg,obj.othis,{time:2000});
-        },'post');
+        },'post',{headersToken:true});
     });/**/
     /*工具条监听*/
     table.on('tool(settings)', function(obj){
@@ -93,7 +93,7 @@ layui.use(['buildItems'],function(){
                 layer.msg(res.msg,{shade:[0.4,'#000'],time:1500},function(){
                     if(res.code===1) table.reloadData('settings');
                 });
-            },'post');
+            },'post',{headersToken:true});
         });
     }/**/
     /*弹出窗*/
@@ -143,7 +143,7 @@ layui.use(['buildItems'],function(){
                             }
                             btn.removeAttr('stop');
                         });
-                    },'post');
+                    },'post',{headersToken:true});
                     return false;
                 });
             }

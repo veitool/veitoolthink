@@ -33,6 +33,12 @@ abstract class BaseController
     protected $request;
 
     /**
+     * Token
+     * @var string
+     */
+    protected $token = '';
+
+    /**
      * 控制器中间件
      * @var array
      */
@@ -166,7 +172,7 @@ abstract class BaseController
         }else if($c==303){
             $re = Response::create(ROOT_PATH . 'app/v_msg.tpl','view')->assign(['msg'=>$m,'site'=>vconfig('site_title'),'url'=>$d['url']])->header($h);
         }else{
-            $rs = json_encode(['code'=>$c,'msg'=>$m,'data'=>$d]);
+            $rs = json_encode(['code'=>$c,'msg'=>$m,'data'=>$d,'token'=>$this->token]);
             $re = Response::create($rs)->header($h);
         }
         throw new HttpResponseException($re);
@@ -176,7 +182,7 @@ abstract class BaseController
      * 返回组信息【return_msg_tpl:如存在该配置将以该模板页返回 动态配置:config(['tpl'=>'msg'],'return_msg_tpl')】
      * @access  protected
      * @param   string/array/obj    $msg      信息字符
-     * @param   int                 $code     状态码
+     * @param   int                 $code     状态码 为 9 时会有token传出
      * @param   array               $data     数组信息
      * @param   int                 $scode    页头状态码
      * @param   array               $header   头部
@@ -200,12 +206,13 @@ abstract class BaseController
         }else{
             $this->logon($msg);
         }
+        $token = $this->token;
         $count = isset($count) ? $count : (is_array($data) ? count($data) : 1);
         if($tpl = config('return_msg_tpl')){
-            $this->assign(compact('code', 'msg', 'data', 'count'));
+            $this->assign(compact('code', 'msg', 'data', 'count', 'token'));
             return $this->fetch($tpl['tpl']);
         }else{
-            return json(compact('code', 'msg', 'data', 'count'), $scode, $header, $options);
+            return json(compact('code', 'msg', 'data', 'count', 'token'), $scode, $header, $options);
         }
     }
 
@@ -213,7 +220,7 @@ abstract class BaseController
      * 带模板反馈提示
      * @access   protected
      * @param    string    $msg    提示信息
-     * @param    int       $tpl    提示模板 默认 /404
+     * @param    int       $tpl    提示模板
      * @param    string    $url    跳转的地址
      */
     protected function returnTpl($msg = '', $tpl = '', $url = '')
@@ -234,8 +241,15 @@ abstract class BaseController
      */
     protected function only($name = [], $type = 'post', $filter = 'strip_sql', $bin = true)
     {
-        $data = $this->request->$type(false);
+        if(isset($name['@token'])){
+            $arr = array_merge(['__token__',[]],(array)$name['@token']);
+            if($this->request->checkToken($arr[0],$arr[1]) === false) return $this->exitMsg("Token错误");
+            $this->token = token();
+            unset($name['@token']);
+            if(!$name) return [];
+        }
         $item = [];
+        $data = $this->request->$type(false);
         $preg = [
             'e'=>[2=>'email',3=>'邮箱地址格式错误',4=>'',5=>''],
             'm'=>[2=>'mobile',3=>'手机号码格式错误',4=>'',5=>''],

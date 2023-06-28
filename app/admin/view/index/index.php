@@ -66,7 +66,8 @@ layui.config({
         viewSuffix: '',        // 视图后缀
         reqPutToPost: true,    // req请求put方法变成post
         apiNoCache: true,      // ajax请求json数据不带版本号
-        tableName: 'vadmin',  // 存储表名
+        tableName: 'vadmin',   // 存储表名
+        token: '{:token()}',   // CSRF-TOKEN
     }
 }).extend({
     Cropper: "Cropper/Cropper", //图片裁剪

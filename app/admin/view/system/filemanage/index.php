@@ -104,7 +104,7 @@ layui.use(function(){
                 layer.msg(res.msg,{shade:[0.4,'#000'],time:1500},function(){
                     if(res.code==1) table.reloadData('filemanage');
                 });
-            },'post');
+            },'post',{headersToken:true});
         });
     });/**/
     /*工具条监听*/
@@ -128,7 +128,7 @@ layui.use(function(){
                 layer.msg(res.msg,{shade:[0.4,'#000'],time:1500},function(){
                     if(res.code==1) table.reloadData('filemanage');
                 });
-            },'post');
+            },'post',{headersToken:true});
         });
     }/**/
     /*按类型获取图标*/

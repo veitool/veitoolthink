@@ -93,13 +93,11 @@ layui.use(['buildItems'],function(){
                     if (btn.attr('stop')){return false}else{btn.attr('stop',1)}
                     admin.req(app_root+"send",data.field,function(res){
                         layer.msg(res.msg,{shade:[0.4,'#000'],time:1500},function(){
-                            layer.close(index);
-                            if(res.code==1){
-                                table.reloadData('sms');
-                            }
+                            if(res.code==1) layer.close(index);
+                            table.reloadData('sms');
                             btn.removeAttr('stop');
                         });
-                    },'post');
+                    },'post',{headersToken:true});
                     return false;
                 });
             }
@@ -126,7 +124,7 @@ layui.use(['buildItems'],function(){
                 layer.msg(res.msg,{shade:[0.4,'#000'],time:1500},function(){
                     if(res.code==1) table.reloadData('sms');
                 });
-            },'post');
+            },'post',{headersToken:true});
         });
     }/**/
 });

@@ -131,7 +131,7 @@
                                     <div class="layui-input-block"><input type="text" name="address" id="address" value="{$User.address}" class="layui-input" placeholder="请输入详细地址"/></div>
                                 </div>
                                 <div class="layui-form-item">
-                                    <div class="layui-input-block"><button class="layui-btn" lay-filter="userInfoSubmit" data-url="edits" lay-submit>确认修改</button></div>
+                                    <div class="layui-input-block"><button class="layui-btn" lay-filter="userInfoSubmit" data-url="edits" data-token="true" lay-submit>确认修改</button></div>
                                 </div>
                             </form>
                         </div>
@@ -152,7 +152,7 @@
                                     <div class="layui-input-block"><input type="password" name="rePassword" id="passwords" class="layui-input" lay-verify="required|password" lay-verType="tips" data-tip="重复登录" lay-affix="eye" data-pass="password" autocomplete='off' placeholder="请再次输入新登录密码"/></div>
                                 </div>
                                 <div class="layui-form-item">
-                                    <div class="layui-input-block"><button class="layui-btn" lay-filter="userInfoSubmit" data-url="changpwd" lay-submit>确认修改</button></div>
+                                    <div class="layui-input-block"><button class="layui-btn" lay-filter="userInfoSubmit" data-url="changpwd" data-token="false" lay-submit>确认修改</button></div>
                                 </div>
                             </form>
                         </div>
@@ -220,7 +220,7 @@ layui.use(['fileLibrary', 'cascader'], function () {
                             }else{
                                 layer.msg(re.msg,{icon:2,anim:6});
                             }
-                        },'post');
+                        },'post',{headersToken:true});
                     }else{
                         layer.close(loadIndex);
                         layer.msg(res.msg,{icon:2,shade:[0.4,'#000'],time:1000});
@@ -240,10 +240,8 @@ layui.use(['fileLibrary', 'cascader'], function () {
             if(res.length == 0) return;
             var src = res[0].file_path;
             admin.req(app_root+"edit?do=up",{userid:userid,av:src,af:'face'},function(res){
-                layer.msg(res.msg,{shade:[0.4,'#000'],time:1000},function(){
-                    if(res.code==1) $img.attr('src',src);
-                });
-            },'post');
+                layer.msg(res.msg,{shade:[0.4,'#000'],time:1000},function(){if(res.code==1) $img.attr('src',src);});
+            },'post',{headersToken:true});
         });
     });/**/
     /*会员修改表单提交*/
@@ -255,7 +253,7 @@ layui.use(['fileLibrary', 'cascader'], function () {
                 if(res.code==1) admin.refresh();
                 btn.removeAttr('stop');
             });
-        },'post');
+        },'post',{headersToken:btn.data('token')});
         return false;
     });/**/
 });

@@ -100,7 +100,7 @@ layui.use(['buildItems'], function(){
             layer.msg(res.msg,{shade:[0.4,'#000'],time:1000},function(){
                 if(res.code==1 && obj.field!='areaname') redata();
             });
-        },'post');
+        },'post',{headersToken:true});
     });/**/
     /*工具条监听*/
     table.on('tool(areas)', function(obj){
@@ -120,7 +120,7 @@ layui.use(['buildItems'], function(){
                 layer.msg(res.msg,{shade:[0.4,'#000'],time:1500},function(){
                     if(res.code==1){pname = ''; redata();}
                 });
-            },'post');
+            },'post',{headersToken:true});
         });
     }/**/
     /*弹出窗*/
@@ -146,12 +146,11 @@ layui.use(['buildItems'], function(){
                     admin.req(app_root+"add",data.field,function(res){
                         layer.msg(res.msg,{shade:[0.4,'#000'],time:1500},function(){
                             if(res.code==1){
-                                layer.close(index);
-                                redata();
+                                layer.close(index); redata();
                             }
                             btn.removeAttr('stop');
                         });
-                    },'post');
+                    },'post',{headersToken:true});
                     return false;
                 });
             }

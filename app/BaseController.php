@@ -182,7 +182,7 @@ abstract class BaseController
      * 返回组信息【return_msg_tpl:如存在该配置将以该模板页返回 动态配置:config(['tpl'=>'msg'],'return_msg_tpl')】
      * @access  protected
      * @param   string/array/obj    $msg      信息字符
-     * @param   int                 $code     状态码 为 9 时会有token传出
+     * @param   int                 $code     状态码
      * @param   array               $data     数组信息
      * @param   int                 $scode    页头状态码
      * @param   array               $header   头部

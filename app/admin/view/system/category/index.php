@@ -46,7 +46,7 @@ layui.use(['buildItems'], function(){
             layer.msg(res.msg,{shade:[0.4,'#000'],time:1500},function(){
                 if(res.code==1) table.reloadData('category_table',{data:res.data});
             });
-        },'post');
+        },'post',{headersToken:true});
     });/**/
     /*右侧操作工具条监听*/
     table.on('tool(category_table)',function(ob){
@@ -99,7 +99,7 @@ layui.use(['buildItems'], function(){
                             }
                             btn.removeAttr('stop');
                         });
-                    },'post');
+                    },'post',{headersToken:true});
                     return false;
                 });
             }
@@ -116,7 +116,7 @@ layui.use(['buildItems'], function(){
                         admin.refresh();
                     }
                 });
-            },'post');
+            },'post',{headersToken:true});
         });
     };/**/
 });</script>

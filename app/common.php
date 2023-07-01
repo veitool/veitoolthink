@@ -78,17 +78,6 @@ function set_password($p,$s){
 }
 
 /**
- * 设置Token
- * @param   $key   标识
- * @retrun  string 
- */
-function set_token($key){
-    $str = md5(uniqid(md5(microtime(true)),true));
-    $token = sha1($str.$key);
-    return $token;
-}
-
-/**
  * 设置订单号
  * @retrun  string 
  */

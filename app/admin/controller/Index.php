@@ -23,6 +23,9 @@ class Index extends AdminBase
      */
     public function index()
     {
+        $this->assign([
+            "tokenName" => $this->tokenName
+        ]);
         return $this->fetch();
     }
 

@@ -31,6 +31,12 @@ abstract class AdminBase extends BaseController
     protected $routeUri = '';
 
     /**
+     * Token 名
+     * @var string
+     */
+    protected $tokenName = '__admin__';
+
+    /**
      * 覆盖无需业务
      */
     protected function __home(){}

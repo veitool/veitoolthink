@@ -191,7 +191,7 @@ abstract class BaseController
     }
 
     /**
-     * 返回组信息【return_msg_tpl:如存在该配置将以该模板页返回 动态配置:config(['tpl'=>'msg'],'return_msg_tpl')】
+     * 返回组信息
      * @access  protected
      * @param   string/array/obj    $msg      信息字符
      * @param   int                 $code     状态码

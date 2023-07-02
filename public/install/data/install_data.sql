@@ -67,8 +67,6 @@ CREATE TABLE `vt_manager` (
   `username` varchar(30) NOT NULL DEFAULT '' COMMENT '帐号',
   `password` varchar(32) NOT NULL DEFAULT '' COMMENT '密码',
   `passsalt` varchar(8) NOT NULL COMMENT '秘钥',
-  `token` varchar(100) NOT NULL DEFAULT '' COMMENT 'Token',
-  `tokentime` int(11) unsigned NOT NULL DEFAULT '0' COMMENT 'Token记录时间',
   `roleid` int(10) unsigned NOT NULL DEFAULT '1' COMMENT '角色ID',
   `groupid` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '部门ID',
   `truename` varchar(30) NOT NULL DEFAULT '' COMMENT '姓名',
@@ -93,9 +91,9 @@ CREATE TABLE `vt_manager` (
 -- ----------------------------
 -- Records of vt_manager
 -- ----------------------------
-INSERT INTO `vt_manager` VALUES ('1', 'admin', '7e618aaa25356b3049e608a9a29790b1', 'Rt4UBXRZ', '8363b1ab9d2e5ac52066362051aa203c96e4a7e1', '1671545877', '1', '1', '超管员', '超管', '1', '', '15900000001', '26843818@qq.com', '20', '广州', '127.0.0.1', '1', '1671545877', '1553999489', '1671423568', 'system', '1');
-INSERT INTO `vt_manager` VALUES ('2', 'veitool', '89471fdf0fb4fd510c21bb4a2b3319a4', 'z5mFNbdC', '1ca8c4ac39dcaa5c196f6bf9493b0e1b57828398', '1644474007', '2', '4', '微特', '微特', '1', '', '15900000002', '26843818@qq.com', '0', '', '127.0.0.1', '1', '1644474007', '1623161682', '1671366888', 'admin', '1');
-INSERT INTO `vt_manager` VALUES ('3', 'fulang', 'a5b107242d67ea8b855a15ebde80cf93', '9g08n846', '', '0', '2', '1', '王南', '', '1', '', '15900000003', '26843818@qq.com', '0', '', '127.0.0.1', '1', '0', '1671423612', '1671423643', 'admin', '1');
+INSERT INTO `vt_manager` VALUES ('1', 'admin', '7e618aaa25356b3049e608a9a29790b1', 'Rt4UBXRZ', '1', '1', '超管员', '超管', '1', '', '15900000001', '26843818@qq.com', '20', '广州', '127.0.0.1', '1', '1671545877', '1553999489', '1671423568', 'system', '1');
+INSERT INTO `vt_manager` VALUES ('2', 'veitool', '89471fdf0fb4fd510c21bb4a2b3319a4', 'z5mFNbdC', '2', '4', '微特', '微特', '1', '', '15900000002', '26843818@qq.com', '0', '', '127.0.0.1', '1', '1644474007', '1623161682', '1671366888', 'admin', '1');
+INSERT INTO `vt_manager` VALUES ('3', 'fulang', 'a5b107242d67ea8b855a15ebde80cf93', '9g08n846', '2', '1', '王南', '', '1', '', '15900000003', '26843818@qq.com', '0', '', '127.0.0.1', '1', '0', '1671423612', '1671423643', 'admin', '1');
 
 -- ----------------------------
 -- Table structure for vt_manager_log

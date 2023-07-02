@@ -78,8 +78,6 @@ class Login extends BaseController
         }
         if($rs->state == 0) return $this->returnMsg('帐号已被停用！');
         if($rs['password'] === set_password($password,$rs['passsalt'])){
-            $rs->token     = set_token(VT_TIME);
-            $rs->tokentime = VT_TIME;
             $rs->logintime = VT_TIME;
             $rs->loginip   = VT_IP;
             $rs->logins ++;

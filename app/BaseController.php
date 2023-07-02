@@ -45,6 +45,12 @@ abstract class BaseController
     protected $tokenName = '__token__';
 
     /**
+     * 信息模板
+     * @var string
+     */
+    protected $msgTpl = '';
+
+    /**
      * 控制器中间件
      * @var array
      */
@@ -214,9 +220,9 @@ abstract class BaseController
         }
         $token = $this->token;
         $count = isset($count) ? $count : (is_array($data) ? count($data) : 1);
-        if($tpl = config('return_msg_tpl')){
+        if($this->msgTpl){
             $this->assign(compact('code', 'msg', 'data', 'count', 'token'));
-            return $this->fetch($tpl['tpl']);
+            return $this->fetch($this->msgTpl);
         }else{
             return json(compact('code', 'msg', 'data', 'count', 'token'), $scode, $header, $options);
         }

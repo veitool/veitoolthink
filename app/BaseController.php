@@ -39,6 +39,12 @@ abstract class BaseController
     protected $token = '';
 
     /**
+     * Token 名
+     * @var string
+     */
+    protected $tokenName = '__token__';
+
+    /**
      * 控制器中间件
      * @var array
      */
@@ -242,9 +248,9 @@ abstract class BaseController
     protected function only($name = [], $type = 'post', $filter = 'strip_sql', $bin = true)
     {
         if(isset($name['@token'])){
-            $arr = array_merge(['__token__',[]],(array)$name['@token']);
+            $arr = array_merge([$this->tokenName,[]],(array)$name['@token']);
             if($this->request->checkToken($arr[0],$arr[1]) === false) return $this->exitMsg("Token错误");
-            $this->token = token();
+            $this->token = token($this->tokenName);
             unset($name['@token']);
             if(!$name) return [];
         }

@@ -13,20 +13,21 @@ layui.define(['tagsInput','fileLibrary','cascader'], function(e){
     c.label_html  = '<label class="layui-form-label{{# if(d.must){ }} layui-form-required{{# } }}">{{ d.title }}</label>';
     c.block_html  = '<div class="layui-input-block"';
     c.inline_html = '<div class="layui-input-inline"';
-    c.item_html = '<div class="layui-form-item" id="item-{{ d.relation ? d.relation + "-" : "" }}{{ d.name }}" style="{{# if(d.style){ }}{{ d.style }}{{# } }}{{# if(d.hide || (d.relation && d.relation.indexOf("_")!=-1)){ }}display:none;{{# } }}">' + c.label_html;
+    c.item_html = '<div class="layui-form-item" id="item-{{ d.relation ? d.relation + "-" : "" }}{{ d.name }}" style="{{# if(d.itemStyle){ }}{{ d.itemStyle }}{{# } }}{{# if(d.hide || (d.relation && d.relation.indexOf("_")!=-1)){ }}display:none;{{# } }}">' + c.label_html;
     c.tips_html = '{{# if(d.tips){ }}<div class="layui-form-mid layui-word-aux"><i class="layui-icon">&#xe748;</i> {{ d.tips }}</div>{{# } }}';
     c.vers_html = '{{# if(d.verify){ }}lay-verify="{{ d.verify }}" lay-vertype="{{ d.vertype || \'\' }}" lay-reqtext="{{ d.reqtext || d.placeholder || \'\' }}" {{# } }}';
     c.plac_html = '{{# if(d.placeholder){ }}placeholder="{{ d.placeholder }}" {{# } }}';
     c.affix_html = '{{# if(d.affix){ }}lay-affix="{{ d.affix }}" {{# } }}';
+    c.item_style = '{{# if(d.style){ }}style="{{ d.style }}" {{# } }}';
     //表单元素
-    c.text_html = '<input type="text" name="{{ d.name }}" value="{{ d.value }}" ' + c.vers_html + '{{# if(d.maxlength){ }}maxlength="{{ d.maxlength }}"{{# } }} ' + c.plac_html + c.affix_html;
-    c.number_html = '<input type="number" name="{{ d.name }}" value="{{ d.value }}" ' + c.vers_html + c.plac_html + 'class="layui-input" lay-affix="number">';
+    c.text_html = '<input type="text" name="{{ d.name }}" value="{{ d.value }}" ' + c.item_style + c.vers_html + '{{# if(d.maxlength){ }}maxlength="{{ d.maxlength }}"{{# } }} ' + c.plac_html + c.affix_html;
+    c.number_html = '<input type="number" name="{{ d.name }}" value="{{ d.value }}" ' + c.item_style + c.vers_html + c.plac_html + 'class="layui-input" lay-affix="number">';
     c.switch_html = '{{# if(d.relation){layui.buildItems.rela(d.name,d.relation,"switch");} }}<input type="checkbox" name="{{ d.name }}" lay-skin="switch" lay-text="ON|OFF" lay-filter="{{ d.name }}" value="1" {{ d.value ==1 ? "checked" : "" }}/>';
     c.radio_html = '{{# if(d.relation){layui.buildItems.rela(d.name,d.relation,"radio");} layui.each(d.options, function(key, txt){ }}<input type="radio" name="{{ d.name }}" lay-filter="{{ d.name }}" value="{{ key }}" title="{{ txt }}" {{ d.value == key ? "checked" : "" }} />{{# }); }}';
     c.checkbox_html = '{{# layui.each(d.options, function(key, txt){ }}<input type="checkbox" name="{{ d.name }}[]" lay-filter="{{ d.name }}" lay-skin="{{ d.skin }}" value="{{ key }}" title="{{ txt }}" {{ (d.value).split(",").indexOf(String(key))>-1 ? "checked" : "" }}/>{{# }); }}';
-    c.password_html = '<input type="password" name="{{ d.name }}" value="{{ d.value }}" ' + c.vers_html + 'autocomplete="off" ' + c.plac_html + c.affix_html;
-    c.textarea_html = '<textarea name="{{ d.name }}" class="layui-textarea" ';
-    c.select_html = '<select name="{{ d.name }}" lay-filter="{{ d.name }}" ' + c.vers_html + '{{# if(d.search){ }}lay-search{{# } }}>{{# layui.each(d.options, function(key, txt){ }}<option value="{{ key }}" {{ d.value == key ? "selected" : "" }}>{{ txt }}</option>{{# }); }}</select>';
+    c.password_html = '<input type="password" name="{{ d.name }}" value="{{ d.value }}" ' + c.item_style + c.vers_html + 'autocomplete="off" ' + c.plac_html + c.affix_html;
+    c.textarea_html = '<textarea name="{{ d.name }}" class="layui-textarea" ' + c.item_style;
+    c.select_html = '<select name="{{ d.name }}" lay-filter="{{ d.name }}" ' + c.item_style + c.vers_html + '{{# if(d.search){ }}lay-search{{# } }}>{{# layui.each(d.options, function(key, txt){ }}<option value="{{ key }}" {{ d.value == key ? "selected" : "" }}>{{ txt }}</option>{{# }); }}</select>';
     //隐藏域
     c.hidden = '<input type="hidden" name="{{ d.name }}" value="{{ d.value || \'\' }}"/>';
     //静态代码
@@ -34,7 +35,7 @@ layui.define(['tagsInput','fileLibrary','cascader'], function(e){
     //单行文本
     c.text = c.item_html + c.block_html + '>' + c.text_html + '{{# if(d.id){ }}id="{{ d.id }}"{{# } }} class="layui-input"/>' + c.tips_html + '</div></div>';
     //多行文本、数组
-    c.textarea = c.array = c.item_html + c.block_html + '>' + c.textarea_html + '{{# if(d.id){ }}id="{{ d.id }}" {{# } }}{{# if(d.style){ }}style="{{ d.style }}" {{# } }}' + c.vers_html + c.plac_html + '>{{ d.value }}</textarea>' + c.tips_html + '</div></div>';
+    c.textarea = c.array = c.item_html + c.block_html + '>' + c.textarea_html + '{{# if(d.id){ }}id="{{ d.id }}" {{# } }}' + c.vers_html + c.plac_html + '>{{ d.value }}</textarea>' + c.tips_html + '</div></div>';
     //静态文本
     c.static = c.item_html + c.block_html + '>' + '<div class="layui-form-mid layui-word-aux">{{ d.value }}</div></div></div>';
     //密码

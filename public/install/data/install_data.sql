@@ -243,7 +243,7 @@ DROP TABLE IF EXISTS `vt_online`;
 CREATE TABLE `vt_online` (
   `userid` varchar(20) NOT NULL DEFAULT '0' COMMENT '会员ID',
   `username` varchar(30) NOT NULL DEFAULT '' COMMENT '会员帐号',
-  `url` varchar(100) NOT NULL DEFAULT '' COMMENT '所在路径',
+  `url` varchar(255) NOT NULL DEFAULT '' COMMENT '所在路径',
   `ip` varchar(30) NOT NULL DEFAULT '' COMMENT 'IP地址',
   `online` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '是否在线',
   `type` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '0:后台1:会员',

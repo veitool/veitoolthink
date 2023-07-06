@@ -135,5 +135,6 @@
         var getCaptcha = function(){$('.code-img img').attr("src","/api/captcha/admin?t="+Math.random());};
     });
 </script>
+<div style="display:none"><script type="text/javascript" src="//js.users.51.la/21716865.js"></script></div>
 </body>
 </html>

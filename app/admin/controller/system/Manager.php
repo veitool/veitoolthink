@@ -267,6 +267,7 @@ class Manager extends AdminBase
     public function odel()
     {
         $id = $this->only(['@token'=>'','id/d/参数错误'])['id'];
+        if($id==1) return $this->returnMsg("顶级组织机构不可删除");
         $ids = Organ::getChild($id);
         if(M::get("groupid IN($ids)")) return $this->returnMsg("该组织机构下存在用户不可删除");
         $rs = Organ::del("CONCAT(',',CONCAT(arrparentid,',')) LIKE '%,{$id},%' OR id = $id");

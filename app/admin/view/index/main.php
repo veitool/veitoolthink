@@ -123,7 +123,7 @@
                     <table class="layui-table layui-text">
                         <colgroup><col width="90"><col></colgroup>
                         <tbody>
-                        <tr><td>软件版本</td><td>Veitool-v{{ layui.cache.version }}&emsp;<a href="https://www.veitool.com" target="_black">更新日志</a></td></tr>
+                        <tr><td>软件版本</td><td>Veitool-v{{ layui.cache.version }}&emsp;<a href="https://www.veitool.com/download" target="_black">更新日志</a></td></tr>
                         <tr><td>基础框架</td><td>ThinkPHP-v{:\\think\\App::VERSION} + Layui-v{{ layui.v }}</td></tr>
                         <tr><td>开发官方</td><td><a href="https://www.veitool.com" target="_black">https://www.veitool.com</a></td></tr>
                         <tr><td>服务系统</td><td>{:PHP_OS}</td></tr>

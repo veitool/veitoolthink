@@ -30,6 +30,7 @@ abstract class BaseQuery
     use concern\TimeFieldQuery;
     use concern\AggregateQuery;
     use concern\ModelRelationQuery;
+    use concern\ParamsBind;
     use concern\ResultOperation;
     use concern\Transaction;
     use concern\WhereQuery;
@@ -1053,11 +1054,11 @@ abstract class BaseQuery
     /**
      * 指定数据表主键.
      *
-     * @param string|array $pk 主键
+     * @param string|array|bool $pk 主键
      *
      * @return $this
      */
-    public function pk(string|array $pk)
+    public function pk(string|array|bool $pk)
     {
         $this->pk = $pk;
 

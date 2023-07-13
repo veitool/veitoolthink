@@ -17,8 +17,11 @@ use think\facade\View;
  */
 abstract class Base
 {
+    //插件标识名
     protected $addonName = '';
+    //插件目录
     protected $addonPath = '';
+    //插件信息盒子
     protected $infoBox = [];
 
     /**
@@ -29,9 +32,13 @@ abstract class Base
     public function __construct($name = null)
     {
         $name = is_null($name) ? $this->getName() : $name;
+        //设置插件标识
         $this->addonName = $name;
+        //获取当前插件目录
         $this->addonPath = ADDON_PATH . $name . VT_DS;
+        //配置视图路径
         View::config(['view_path' => $this->addonPath]);
+        //控制器初始化
         if(method_exists($this, '__init')){
             $this->__init();
         }
@@ -125,7 +132,7 @@ abstract class Base
             fclose($fop);
         }
     }
-
+    
     /**
      * 合并函数库
      * @param   string   $addon    插件标识
@@ -149,7 +156,9 @@ abstract class Base
         fclose($fop);
     }
 
+    //必须实现安装
     abstract public function install();
 
+    //必须卸载插件方法
     abstract public function uninstall();
 }

@@ -9,8 +9,8 @@
  */
 header('Content-Type:text/html; charset=utf-8');
 // 检测php版本号
-if(version_compare(PHP_VERSION,'8.0.2','<')){
-    exit('很抱歉，由于您的PHP版本过低，不能安装本软件，为了系统功能全面可用，请升级到PHP8.0.2或更高版本再安装，谢谢！');
+if(version_compare(PHP_VERSION,'8.1.0','<')){
+    exit('很抱歉，由于您的PHP版本过低，不能安装本软件，为了系统功能全面可用，请升级到PHP8.1.0或更高版本再安装，谢谢！');
 }
 
 // 不限制响应时间 error_reporting(0);

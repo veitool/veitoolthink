@@ -18,11 +18,14 @@ use Symfony\Component\VarDumper\Cloner\Stub;
  *
  * @author Nicolas Grekas <p@tchwork.com>
  *
- * @final since Symfony 4.4
+ * @final
  */
 class StubCaster
 {
-    public static function castStub(Stub $c, array $a, Stub $stub, $isNested)
+    /**
+     * @return array
+     */
+    public static function castStub(Stub $c, array $a, Stub $stub, bool $isNested)
     {
         if ($isNested) {
             $stub->type = $c->type;
@@ -43,12 +46,18 @@ class StubCaster
         return $a;
     }
 
-    public static function castCutArray(CutArrayStub $c, array $a, Stub $stub, $isNested)
+    /**
+     * @return array
+     */
+    public static function castCutArray(CutArrayStub $c, array $a, Stub $stub, bool $isNested)
     {
         return $isNested ? $c->preservedSubset : $a;
     }
 
-    public static function cutInternals($obj, array $a, Stub $stub, $isNested)
+    /**
+     * @return array
+     */
+    public static function cutInternals($obj, array $a, Stub $stub, bool $isNested)
     {
         if ($isNested) {
             $stub->cut += \count($a);
@@ -59,7 +68,10 @@ class StubCaster
         return $a;
     }
 
-    public static function castEnum(EnumStub $c, array $a, Stub $stub, $isNested)
+    /**
+     * @return array
+     */
+    public static function castEnum(EnumStub $c, array $a, Stub $stub, bool $isNested)
     {
         if ($isNested) {
             $stub->class = $c->dumpKeys ? '' : null;
@@ -78,6 +90,17 @@ class StubCaster
                 $a = array_combine($keys, $c->value);
             }
         }
+
+        return $a;
+    }
+
+    /**
+     * @return array
+     */
+    public static function castScalar(ScalarStub $scalarStub, array $a, Stub $stub)
+    {
+        $stub->type = Stub::TYPE_SCALAR;
+        $stub->attr['value'] = $scalarStub->value;
 
         return $a;
     }

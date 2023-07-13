@@ -90,23 +90,33 @@ class Service
         if(!$name || (is_dir(ADDON_PATH . $name) && !$force)){
             throw new Exception('Addon already exists');
         }
+        //远程下载插件
         $tmpFile  = Service::download($name, $extend);
         $addonDir = self::getAddonDir($name);
         try{
+            //解压插件压缩包到插件目录
             Service::unzip($name);
+            //非强制覆盖模式检查文件冲突
             if(!$force){Service::noConflict($name);}
+            //检查插件是否完整
             Service::check($name);
         }catch(AddonException $e){
+            //异常 删除解压后的插件目录
             @rmdirs($addonDir);
             throw new AddonException($e->getMessage(), $e->getCode(), $e->getData());
         }catch(Exception $e){
+            //异常 删除解压后的插件目录
             @rmdirs($addonDir);
             throw new Exception($e->getMessage());
         }finally{
+            //最后移除临时文件
             @unlink($tmpFile);
         }
+        //获取插件实例
         $addon = self::getAddonInstance($name);
+        //获取ini信息
         $info = $addon->getInfo($name);
+        //开启事务
         Db::startTrans();
         try{
             $addon->install();
@@ -116,7 +126,9 @@ class Service
             Db::rollback();
             throw new Exception($e->getMessage());
         }
+        //导入
         Service::importsql($name,true);
+        //启用插件
         return Service::enable($name, $force);
     }
 
@@ -132,11 +144,13 @@ class Service
         if(!$file || !$file instanceof \think\File){
             throw new Exception('No file upload or server upload limit exceeded');
         }
+        //上传验证
         try{
             validate(['file' => ['fileSize'=>10*1024*1024,'fileExt'=>'zip']],['file.fileSize' => '文件大小不能超过10M','file.fileExt' => '请上传格式为zip的压缩包',])->check(['file' => $file]);
         }catch(\think\exception\ValidateException $e){
             throw new Exception($e->getMessage());
         }
+        //获取临时目录
         $addonsTempDir = self::getAddonsBackupDir();
         try{
             $tmpName = $file->hashName('uniqid');
@@ -144,40 +158,53 @@ class Service
         }catch(\think\exception\FileException $e){
             throw new Exception($e->getMessage());
         }
+        //解压处理
         $zip = new ZipFile();
         $tmpFile = $addonsTempDir . $tmpName;
         $newAddonDir = '';
         try{
+            //打开插件压缩包
             $zip->openFile($tmpFile);
+            //获取压缩包内ini信息
             $zipInfo = self::getZipIni($zip);
+            //判断插件标识
             $name = $zipInfo['name'] ?? '';
             if(!$name){
                 throw new Exception('Addon info file data incorrect');
             }
+            //判断插件名合法性
             if(!is_preg($name,'{3,20}',[1,2])){
                 throw new Exception('Addon name incorrect');
             }
+            //判断新插件是否已经存在
             $newAddonDir = self::getAddonDir($name);
             if(is_dir($newAddonDir)){
                 throw new Exception('Addon already exists');
             }
-            $extend['md5file'] = md5_file($tmpFile);
-            $extend['notes'] = $zip->getArchiveComment();
+            //追加MD5和Data数据
+            $extend['md5file'] = md5_file($tmpFile); //获取文件的MD5散列
+            $extend['notes'] = $zip->getArchiveComment(); //获取压缩包注释
             $params = array_merge($zipInfo, $extend);
-            $check = env('app_debug', true) && config('veitool.unknown');
-            $check || Service::valid($params);
+            $check = env('app_debug', true) && config('veitool.unknown'); //是否允许未知来源的插件压缩包
+            $check || Service::valid($params); //压缩包验证、版本依赖判断
+            //创建插件目录
             @mkdir($newAddonDir, 0755, true);
+            //解压到插件目录
             $zip->extractTo($newAddonDir);
+            //非强制覆盖模式检查文件冲突
             if(!$force){Service::noConflict($name);}
+            //未知来源的插件时进行完整性检查
             $check || Service::check($name);
         }catch(ZipException $e){
             $zip->close();
             @unlink($tmpFile);
             throw new Exception('Unable to open the zip file');
         }catch(AddonException $e){
+            //异常 删除解压后的插件目录
             $newAddonDir && @rmdirs($newAddonDir);
             throw new AddonException($e->getMessage(), $e->getCode(), $e->getData());
         }catch(Exception $e){
+            //异常 删除解压后的插件目录
             $newAddonDir && @rmdirs($newAddonDir);
             throw new Exception($e->getMessage());
         }finally{
@@ -185,6 +212,7 @@ class Service
             $zip->close();
             @unlink($tmpFile);
         }
+        //获取插件实例
         $addon = self::getAddonInstance($name);
         Db::startTrans();
         try{
@@ -194,8 +222,11 @@ class Service
             Db::rollback();
             throw new Exception($e->getMessage());
         }
+        //导入SQL
         Service::importsql($name,true);
+        //默认禁用该插件
         self::setAddonInfo($name,['state'=>0]);
+        //重建插件事件缓存
         self::setAddonEvent();
         return true;
     }
@@ -213,20 +244,25 @@ class Service
             throw new Exception('Addon not exists');
         }
         if($force){
+            //移除插件全局资源文件
             $list = Service::getGlobalFiles($name);
             foreach($list as $v){
                 @unlink(ROOT_PATH . ltrim($v,'@'));
             }
         }else{
+            //非强制卸载下检查冲突文件
             Service::noConflict($name);
         }
+        //执行卸载脚本
         try{
             $addon = self::getAddonInstance($name);
             $addon->uninstall();
         }catch(Exception $e){
             throw new Exception($e->getMessage());
         }
+        //移除插件目录
         @rmdirs(ADDON_PATH . $name);
+        //重建插件事件缓存
         self::setAddonEvent();
         return true;
     }
@@ -238,41 +274,58 @@ class Service
      */
     public static function upgrade($name, $extend = [])
     {
+        //获取已装插件信息
         $info = self::getAddonInstance($name)->getInfo($name);
         if($info['state']){
             throw new Exception('请先禁用插件后再进行升级操作！');
         }
+        //远程下载插件
         $tmpFile = Service::download($name, $extend);
+        //备份插件文件
         Service::backup($name);
+        //获取插件目录
         $addonDir = self::getAddonDir($name);
+        //删除插件下可动资源目录
         $files = self::getCheckDirs();
         foreach($files as $index => $file){
             @rmdirs($addonDir . $file);
         }
         try{
+            //解压插件压缩包到插件目录
             Service::unzip($name);
         }catch(Exception $e){
             throw new Exception($e->getMessage());
         }finally{
+            //最后移除临时文件
             @unlink($tmpFile);
         }
+        //导入数据
         Service::importsql($name);
+        //执行升级脚本
         try{
             $addonName = ucfirst($name);
+            //创建临时类用于调用升级的方法
             $sourceFile = $addonDir . $addonName . ".php";
             $destFile = $addonDir . $addonName . "Upgrade.php";
+            //替换类名
             $classContent = str_replace("class {$addonName} extends", "class {$addonName}Upgrade extends", file_get_contents($sourceFile));
+            //创建临时的类文件
             file_put_contents($destFile, $classContent);
+            //实例化
             $className = "\\addons\\" . $name . "\\" . $addonName . "Upgrade";
             $addon = new $className($name);
+            //调用升级的方法
             if(method_exists($addon,"upgrade")){
                 $addon->upgrade();
             }
+            //移除临时文件
             @unlink($destFile);
         }catch(Exception $e){
             throw new Exception($e->getMessage());
         }
+        //更新ini文件配置信息
         self::setAddonInfo($name, ['version'=>$extend['version']]);
+        //重建插件事件缓存
         self::setAddonEvent();
         return true;
     }
@@ -294,11 +347,13 @@ class Service
             $content = $body->getContents();
             if(substr($content, 0, 1) === '{'){
                 $json = (array)json_decode($content, true);
+                //如果传回的是一个下载链接,则再次下载
                 if($json['data'] && isset($json['data']['url'])){
                     $response = $client->get($json['data']['url']);
                     $body = $response->getBody();
                     $content = $body->getContents();
                 }else{
+                    //返回提示信息，抛出信息
                     throw new AddonException($json['msg'], $json['code'], $json['data']);
                 }
             }
@@ -327,6 +382,7 @@ class Service
         if(!$force){
             Service::noConflict($name);
         }
+        //备份冲突文件
         if(config('veitool.back_up')){
             $conflictFiles = self::getGlobalFiles($name,true);
             if($conflictFiles){
@@ -347,20 +403,24 @@ class Service
         $files = self::getGlobalFiles($name);
         $onDir = self::getCheckDirs();
         $addonDir = self::getAddonDir($name);
+        //更新插件资源文件记录
         if($files){
             Service::aJson($name, ['files' => $files]);
         }
+        //复制 可动资源 文件到全局
         foreach($onDir as $dir){
             if(is_dir($addonDir . $dir)){
                 copydirs($addonDir . $dir, ROOT_PATH . ltrim($dir,'@'));
             }
         }
+        //是否删除插件原可动资源目录
         if(config('veitool.clean')){
             foreach($onDir as $dir){
                 @rmdirs($addonDir . $dir);
             }
         }
         $addon = self::getAddonInstance($name);
+        //执行启用脚本
         try{
             if(method_exists($addon, "enable")){
                 $addon->enable();
@@ -368,7 +428,9 @@ class Service
         }catch(Exception $e){
             throw new Exception($e->getMessage());
         }
+        //更新ini文件配置信息
         self::setAddonInfo($name, ['state'=>1]);
+        //重建插件事件缓存
         self::setAddonEvent();
         return true;
     }
@@ -388,6 +450,7 @@ class Service
         if(!$force){
             Service::noConflict($name);
         }
+        //备份冲突文件
         if(config('veitool.back_up')){
             $conflictFiles = self::getGlobalFiles($name,true);
             if($conflictFiles){
@@ -405,12 +468,16 @@ class Service
                 }
             }
         }
+        //获取插件目录
         $addonDir = self::getAddonDir($name);
+        //插件目录获取可动资源文件集
         $list = Service::getGlobalFiles($name);
         if(config('veitool.clean') || !$list){
+            //获取可动资源文件记录
             $ajson = Service::aJson($name);
             if(isset($ajson['files']) && is_array($ajson['files'])){
                 foreach($ajson['files'] as $item){
+                    //路径符替换兼容多操作系统
                     $item = str_replace(['/', '\\'], VT_DS, $item);
                     $file = $addonDir . $item;
                     $fdir = dirname($file);
@@ -427,16 +494,20 @@ class Service
         }
         $dirs = [];
         $list = $list ? str_replace('@','',$list) : [];
+        //移除插件全局文件
         foreach($list as $v){
             $file = ROOT_PATH . $v;
             $dirs[] = dirname($file);
             @unlink($file);
         }
+        //移除插件空目录
         $dirs = array_filter(array_unique($dirs));
         foreach($dirs as $v){
             remove_empty_folder($v);
         }
+        //获取插件实例
         $addon = self::getAddonInstance($name);
+        //执行禁用脚本
         try{
             if(method_exists($addon, "disable")){
                 $addon->disable();
@@ -444,7 +515,9 @@ class Service
         }catch(Exception $e){
             throw new Exception($e->getMessage());
         }
+        //更新ini文件配置信息
         self::setAddonInfo($name, ['state'=>0]);
+        //重建插件事件缓存
         self::setAddonEvent();
         return true;
     }
@@ -461,6 +534,7 @@ class Service
             throw new Exception('Invalid parameters');
         }
         $file = self::getAddonsBackupDir() . $name . '.zip';
+        //打开插件压缩包
         $zip = new ZipFile();
         try{
             $zip->openFile($file);
@@ -472,6 +546,7 @@ class Service
         if(!is_dir($dir)){
             @mkdir($dir, 0755);
         }
+        //解压插件压缩包到插件目录
         try{
             $zip->extractTo($dir);
         }catch(ZipException $e){
@@ -494,6 +569,7 @@ class Service
             throw new Exception('Addon not exists');
         }
         $addon = self::getAddonInstance($name);
+        //调用插件基类方法检查 ini文件属性是否完整
         if(!$addon->checkInfo()){
             throw new Exception("The configuration file info.ini content is incorrect");
         }
@@ -508,8 +584,10 @@ class Service
      */
     public static function noConflict($name)
     {
+        //检测冲突文件
         $list = self::getGlobalFiles($name, true);
         if($list){
+            //发现冲突文件，抛出异常
             throw new AddonException("Conflicting file found", -3, ['files' => str_replace('@','',$list)]);
         }
         return true;
@@ -574,10 +652,13 @@ class Service
         $list = [];
         $addonDir = self::getAddonDir($name);
         $checkDirList = self::getCheckDirs();
+        //扫描插件目录是否有覆盖的文件
         foreach($checkDirList as $dirName){
+            //检测目录是否存在
             if(!is_dir($addonDir . $dirName)){
                 continue;
             }
+            //匹配出所有的文件
             $files = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($addonDir . $dirName, RecursiveDirectoryIterator::SKIP_DOTS), RecursiveIteratorIterator::CHILD_FIRST);
             foreach($files as $fileinfo){
                 if($fileinfo->isFile()){
@@ -610,6 +691,7 @@ class Service
     public static function getAddonClass($name, $type = '', $class = null)
     {
         $name = parse_name($name);
+        //处理多级控制器情况
         if(!is_null($class) && strpos($class, '.')){
             $class = explode('.', $class);
             $class[count($class) - 1] = parse_name(end($class), 1);

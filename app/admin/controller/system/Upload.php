@@ -116,8 +116,12 @@ class Upload extends AdminBase
         $domain = $this->config['engine'][$engine]['domain'];
         //实例化存储驱动
         $StorageDriver = new StorageDriver($this->config);
-        //设置上传文件的信息
-        $StorageDriver->setUploadFile($file);
+        try{
+            //设置上传文件的信息
+            $StorageDriver->setUploadFile($file);
+        }catch(\think\Exception $e){
+            return $this->returnMsg('上传失败！'.$e->getMessage());
+        }
         //上传图片
         if(!$StorageDriver->upload()) return $this->returnMsg('上传失败！'.$StorageDriver->getError());
         //图片上传路径

@@ -132,7 +132,7 @@ abstract class Base
             fclose($fop);
         }
     }
-    
+
     /**
      * 合并函数库
      * @param   string   $addon    插件标识

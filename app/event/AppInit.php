@@ -66,16 +66,6 @@ class AppInit extends Service
 
         /* 插件应用名 用于AdminBase.php中兼容插件权限 */
         define('ADDON_APP', $module);
-
-        /*插件事件初始化*/
-        $listen = Cache::get("addon_event_list");
-        if(!empty($listen)){
-            foreach($listen as $k => $v){
-                if(!empty($v)){
-                    Event::listenEvents($v);
-                }
-            }
-        }/**/
     }
 
 }

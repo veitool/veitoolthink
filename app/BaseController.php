@@ -243,7 +243,7 @@ abstract class BaseController
     }
 
     /**
-     * 获取指定的参数 过滤方法后执行【key / *或?问号表非空时验证 / 规则(e邮箱m手机c身份证p密码u帐号n姓名i数串a插件名v配置名)或位数范围如{1,3} / 提示(传入优先) / 合法的字符集0,1..串 默认0:字母数字汉字下划线 1:数字 2:小写字母 3:大写字母 4:汉字 5:任何非空白字符 / 允许的字符】
+     * 获取指定的参数 过滤方法后执行【key / *或?表非空时验证或$表非空时验证不规范则置空不中断 / 规则(e邮箱m手机c身份证p密码u帐号n姓名i数串a插件名v配置名)或位数范围如{1,3} / 提示(传入优先) / 合法的字符集0,1..串 默认0:字母数字汉字下划线 1:数字 2:小写字母 3:大写字母 4:汉字 5:任何非空白字符 / 允许的字符】
      * @access protected
      * @param  array         $name    变量名 /a转数组 /d整数 /f浮点 /b布尔 /s字符串 /u网址净化 /h全净化去标签 /c转为HTML实体 /r转为2位小数 /*验证【默认允许：汉字|字母|数字|下划线|空格.#-】
      * @param  mixed         $type    方法类型 默认 post
@@ -291,8 +291,8 @@ abstract class BaseController
             }
             $v = $data[$key] ?? $default;
             if($sub[1]){
-                $nmt = true;
-                if($sub[1] == '?'){$nmt = $v ? true : false; $sub[1] = '*';}
+                $must = $msg = true; // $must:是否必须验证  $msg:是否验证不规范时中断反馈提示
+                if(in_array($sub[1],['?','$'])){$must = $v ? true : false; if($sub[1] == '$') $msg = false; $sub[1] = '*';}
                 switch($sub[1]){
                     case 'a':
                         $v = $v ? (array) $v : [];
@@ -313,16 +313,20 @@ abstract class BaseController
                         $v = dround($v);
                         break;
                     case '*':
-                        if($sub[2]=='p') $nmt = is_md5($v) ? false : $nmt;
+                        if($sub[2]=='p') $must = is_md5($v) ? false : $must;
                         $tip = $sub[3]; if(isset($preg[$sub[2]])){$sub = $preg[$sub[2]] + $sub; $tip = $tip ?: $sub[3];}
                         $reg = explode(',',$sub[4]);
-                        if($nmt && !is_preg($v,$sub[2],$reg,$sub[5])){
-                            $tip = $tip ?: "字段{$key}不合规范"; $txt = ['汉字字母数字下划线','数字','小写字母','大写字母','汉字','任何非空白字符'];
-                            if($reg[0]!==''){
-                                $str = ''; foreach($reg as $i){$str .= ($txt[$i] ?? '').'、';}
-                                $tip = $tip.'必须由'.(str_replace(['{',',','}'],['','-',''],$sub[2])).'位'.rtrim($str,'、').($sub[5] ? '和'.str_replace(' ', '空格', $sub[5]) : '').'组成';
+                        if($must && !is_preg($v,$sub[2],$reg,$sub[5])){
+                            if($msg){
+                                $tip = $tip ?: "字段{$key}不合规范"; $txt = ['汉字字母数字下划线','数字','小写字母','大写字母','汉字','任何非空白字符'];
+                                if($reg[0]!==''){
+                                    $str = ''; foreach($reg as $i){$str .= ($txt[$i] ?? '').'、';}
+                                    $tip = $tip.'必须由'.(str_replace(['{',',','}'],['','-',''],$sub[2])).'位'.rtrim($str,'、').($sub[5] ? '和'.str_replace(' ', '空格', $sub[5]) : '').'组成';
+                                }
+                                $this->exitMsg($tip);
+                            }else{
+                                $v = '';
                             }
-                            $this->exitMsg($tip);
                         }
                         break;
                     case 'f':

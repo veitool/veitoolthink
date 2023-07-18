@@ -1,5 +1,5 @@
 /*
- * Veitool 1.0 构建表单项 2020-06-28
+ * Veitool 1.0.1 构建表单项 2023-07-18
  * Website:www.veitool.com 
  * Author：niaho (QQ:26843818)
  */
@@ -26,7 +26,7 @@ layui.define(['tagsInput','fileLibrary','cascader'], function(e){
     c.radio_html = '{{# if(d.relation){layui.buildItems.rela(d.name,d.relation,"radio");} layui.each(d.options, function(key, txt){ }}<input type="radio" name="{{ d.name }}" lay-filter="{{ d.name }}" value="{{ key }}" title="{{ txt }}" {{ d.value == key ? "checked" : "" }} />{{# }); }}';
     c.checkbox_html = '{{# layui.each(d.options, function(key, txt){ }}<input type="checkbox" name="{{ d.name }}[]" lay-filter="{{ d.name }}" lay-skin="{{ d.skin }}" value="{{ key }}" title="{{ txt }}" {{ (d.value).split(",").indexOf(String(key))>-1 ? "checked" : "" }}/>{{# }); }}';
     c.password_html = '<input type="password" name="{{ d.name }}" value="{{ d.value }}" ' + c.item_style + c.vers_html + 'autocomplete="off" ' + c.plac_html + c.affix_html;
-    c.textarea_html = '<textarea name="{{ d.name }}" class="layui-textarea" ' + c.item_style;
+    c.textarea_html = '<textarea name="{{ d.name }}" ' + c.item_style;
     c.select_html = '<select name="{{ d.name }}" lay-filter="{{ d.name }}" ' + c.item_style + c.vers_html + '{{# if(d.search){ }}lay-search{{# } }}>{{# layui.each(d.options, function(key, txt){ }}<option value="{{ key }}" {{ d.value == key ? "selected" : "" }}>{{ txt }}</option>{{# }); }}</select>';
     //隐藏域
     c.hidden = '<input type="hidden" name="{{ d.name }}" value="{{ d.value || \'\' }}"/>';
@@ -35,7 +35,7 @@ layui.define(['tagsInput','fileLibrary','cascader'], function(e){
     //单行文本
     c.text = c.item_html + c.block_html + '>' + c.text_html + '{{# if(d.id){ }}id="{{ d.id }}"{{# } }} class="layui-input"/>' + c.tips_html + '</div></div>';
     //多行文本、数组
-    c.textarea = c.array = c.item_html + c.block_html + '>' + c.textarea_html + '{{# if(d.id){ }}id="{{ d.id }}" {{# } }}' + c.vers_html + c.plac_html + '>{{ d.value }}</textarea>' + c.tips_html + '</div></div>';
+    c.textarea = c.array = c.item_html + c.block_html + '>' + c.textarea_html + 'class="layui-textarea" {{# if(d.id){ }}id="{{ d.id }}" {{# } }}' + c.vers_html + c.plac_html + '>{{ d.value }}</textarea>' + c.tips_html + '</div></div>';
     //静态文本
     c.static = c.item_html + c.block_html + '>' + '<div class="layui-form-mid layui-word-aux">{{ d.value }}</div></div></div>';
     //密码
@@ -61,7 +61,7 @@ layui.define(['tagsInput','fileLibrary','cascader'], function(e){
     //百度编辑器
     c.ueditor = c.item_html + c.block_html + '>' + c.textarea_html + ' id="ueditor-{{ d.id ? d.id : d.name }}" style="border:0;padding:0;">{{ d.value }}</textarea>' + c.tips_html + '</div></div>';
     //Md编辑器
-    c.cherrymd = c.item_html + c.block_html + '><div id="cherrymd-{{ d.id ? d.id : d.name }}"></div><textarea id="temp-{{ d.id ? d.id : d.name }}" style="display:none;">{{ d.value }}</textarea>' + c.tips_html + '</div></div>';
+    c.cherrymd = c.item_html + c.block_html + '><div '+ c.item_style +'id="cherrymd-{{ d.id ? d.id : d.name }}"></div><textarea id="temp-{{ d.id ? d.id : d.name }}" style="display:none;">{{ d.value }}</textarea>' + c.tips_html + '</div></div>';
     //Md编辑器
     c.editormd = c.item_html + c.block_html + '><style>.editormd-preview li{list-style:inherit!important}.editormd-code-toolbar>select{display:initial}</style><div id="editormd-{{ d.id ? d.id : d.name }}" style="z-index:1000;">' + c.textarea_html + ' style="display:none;">{{ d.value }}</textarea></div>' + c.tips_html + '</div></div>';
     //TinyMCE编辑器
@@ -471,9 +471,10 @@ layui.define(['tagsInput','fileLibrary','cascader'], function(e){
                 b.getTE(function(){
                     tinymce.remove();
                     for(var i in ids){
+                        let heg = $("#"+ ids[i]).height(); heg = heg>400 ? heg : 400;
                         tinymce.init({
                             selector: '#'+ ids[i],
-                            min_height: 400,
+                            min_height: heg,
                             suffix: '.min',
                             branding: false,
                             language:'zh_CN',

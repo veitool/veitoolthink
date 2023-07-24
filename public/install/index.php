@@ -20,16 +20,16 @@ set_time_limit(0);
 define('INSTALL_PATH', str_replace('\\', '/', dirname(__FILE__)));
 define('ROOT_PATH', dirname(INSTALL_PATH, 2));
 
+// 提示已经安装
+if(is_file(INSTALL_PATH . '/install.lock')){
+    exit('已经安装过');
+}
+
 // 版权信息设置
 $copyright = '© 2023 veitool.com 版权所有';
 
 // 获取当前步骤
 $s = isset($_GET['s']) && in_array($_GET['s'], [1,2,3,4,5,6]) ? $_GET['s'] : 1 ;
-
-// 提示已经安装
-if(is_file(INSTALL_PATH . '/install.lock')){
-    exit('已经安装过');
-}
 
 // 环境检测
 if($s == 2){

@@ -124,11 +124,12 @@ layui.define(['tagsInput','fileLibrary','cascader'], function(e){
             }
         },
         sett: function(data){ //data: 二维数组[{name:标识,title:标题,group:分组,type:类型,value:值,options:选项},{}]
-            var html = '';
+            var html = '', str = '';
             for(var i in data){
                 var d = data[i];
                 if(c[d.type]===undefined){continue;}
-                html = html + b.tpl(c[d.type],d);
+                str = b.tpl(c[d.type],d);
+                html = html + (d.itemCol ? '<div class="'+ d.itemCol +'">' + str + '</div>' : str);
             }
             $("#"+c.bid).html(html);
             $h = $("#"+ c.bid);

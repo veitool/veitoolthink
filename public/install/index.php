@@ -220,6 +220,18 @@ function getExtendArray()
             'status' => extension_loaded('PDO') && extension_loaded('pdo_mysql'),
         ],
         [
+            'name' => 'Mysqlnd',
+            'status' => extension_loaded('mysqlnd'),
+        ],
+        [
+            'name' => 'JSON',
+            'status' => extension_loaded('json')
+        ],
+        [
+            'name' => 'Fileinfo',
+            'status' => extension_loaded('fileinfo')
+        ],
+        [
             'name' => 'GD',
             'status' => extension_loaded('gd'),
         ],
@@ -228,7 +240,7 @@ function getExtendArray()
             'status' => extension_loaded('bcmath'),
         ],
         [
-            'name' => 'mbstring',
+            'name' => 'Mbstring',
             'status' => extension_loaded('mbstring'),
         ],
         [

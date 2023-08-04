@@ -59,6 +59,26 @@ class Filemanage extends AdminBase
     }
 
     /**
+     * 编辑文件
+     * @return json
+     */
+    public function edit($do='')
+    {
+        $d = $this->only(['@token'=>'','fileid/d/参数错误','av','af']);
+        $fileid = $d['fileid'];
+        $Myobj = UploadFile::get("fileid = $fileid");
+        if(!$Myobj) return $this->returnMsg("数据不存在");
+        $value = $d['av'];
+        $field = $d['af'];
+        if(!in_array($field,['filename'])) return $this->returnMsg("参数错误");
+        if($field=='filename'){
+            $this->only(['av/*/{2,100}/文件标题/0/.']);
+        }
+        $rs = $Myobj->save([$field=>$value]);
+        return $this->returnMsg($rs ? "设置成功" : '设置失败', 1);
+    }
+
+    /**
      * 删除文件
      * @return json
      */

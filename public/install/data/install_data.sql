@@ -205,34 +205,35 @@ INSERT INTO `vt_menus` VALUES ('69', '1', '', '上传附件', '上传附件', ''
 INSERT INTO `vt_menus` VALUES ('70', '1', '', '图片列表', '图片列表', '', '', 'system.upload/ueditor/listimage', '', '55', '5', '0', '0', '1', '1671601827');
 INSERT INTO `vt_menus` VALUES ('71', '1', '', '附件列表', '附件列表', '', '', 'system.upload/ueditor/listfile', '', '55', '6', '0', '0', '1', '1671601827');
 INSERT INTO `vt_menus` VALUES ('72', '1', '', '文件列表', '文件列表', '', '', 'system.filemanage/index', '', '17', '1', '0', '0', '1', '1671601827');
-INSERT INTO `vt_menus` VALUES ('73', '1', '', '文件软删除', '文件软删除', '', '', 'system.filemanage/del', '', '17', '2', '0', '0', '1', '1671601827');
-INSERT INTO `vt_menus` VALUES ('74', '1', '', '文件恢复', '文件恢复', '', '', 'system.filemanage/reset', '', '17', '3', '0', '0', '1', '1671601827');
-INSERT INTO `vt_menus` VALUES ('75', '1', '', '文件清理', '文件清理', '', '', 'system.filemanage/clear', '', '17', '4', '0', '0', '1', '1671601827');
-INSERT INTO `vt_menus` VALUES ('76', '1', '', '登录日志', '日志查看', '', '', 'system.log/login', '', '18', '1', '0', '0', '1', '1671601827');
-INSERT INTO `vt_menus` VALUES ('77', '1', '', '登录日志清理', '日志删除', '', '', 'system.log/ldel', '', '18', '2', '0', '0', '1', '1671601827');
-INSERT INTO `vt_menus` VALUES ('78', '1', '', '后台日志', '后台日志', '', '', 'system.log/manager', '', '18', '3', '0', '0', '1', '1671601827');
-INSERT INTO `vt_menus` VALUES ('79', '1', '', '后台日志清理', '日志列表', '', '', 'system.log/mdel', '', '18', '4', '0', '0', '1', '1671601827');
-INSERT INTO `vt_menus` VALUES ('80', '1', '', '访问日志', '访问日志', '', '', 'system.log/web', '', '18', '5', '0', '0', '1', '1671601827');
-INSERT INTO `vt_menus` VALUES ('81', '1', '', '访问日志清理', '访问日志清理', '', '', 'system.log/wdel', '', '18', '6', '0', '0', '1', '1671601827');
-INSERT INTO `vt_menus` VALUES ('82', '1', '', '地区列表', '地区列表', '', '', 'system.area/index', '', '19', '10', '0', '0', '1', '1671601827');
-INSERT INTO `vt_menus` VALUES ('83', '1', '', '地区添加', '地区添加', '', '', 'system.area/add', '', '19', '10', '0', '0', '1', '1671601827');
-INSERT INTO `vt_menus` VALUES ('84', '1', '', '地区编辑', '地区编辑', '', '', 'system.area/edit', '', '19', '10', '0', '0', '1', '1671601827');
-INSERT INTO `vt_menus` VALUES ('85', '1', '', '地区删除', '地区删除', '', '', 'system.area/del', '', '19', '10', '0', '0', '1', '1671601827');
-INSERT INTO `vt_menus` VALUES ('86', '1', '', '内置导入', '内置导入', '', '', 'system.area/import', '', '19', '10', '0', '0', '1', '1671601827');
-INSERT INTO `vt_menus` VALUES ('87', '1', '', '发送记录', '发送记录', '', '', 'system.sms/index', '', '20', '10', '0', '0', '1', '1671601827');
-INSERT INTO `vt_menus` VALUES ('88', '1', '', '发送短信', '发送短信', '', '', 'system.sms/send', '', '20', '10', '0', '0', '1', '1671601827');
-INSERT INTO `vt_menus` VALUES ('89', '1', '', '记录删除', '记录删除', '', '', 'system.sms/del', '', '20', '10', '0', '0', '1', '1671601827');
-INSERT INTO `vt_menus` VALUES ('90', '1', '', '数据列表', '数据列表', '', '', 'system.database/index', '', '21', '10', '0', '0', '1', '1671601827');
-INSERT INTO `vt_menus` VALUES ('91', '1', '', '数据备份', '数据备份', '', '', 'system.database/backup', '', '21', '10', '0', '0', '1', '1671601827');
-INSERT INTO `vt_menus` VALUES ('92', '1', '', '备份列表', '备份列表', '', '', 'system.database/imports', '', '21', '10', '0', '0', '1', '1671601827');
-INSERT INTO `vt_menus` VALUES ('93', '1', '', '备份恢复', '备份恢复', '', '', 'system.database/import', '', '21', '10', '0', '0', '1', '1671601827');
-INSERT INTO `vt_menus` VALUES ('94', '1', '', '备份删除', '备份删除', '', '', 'system.database/del', '', '21', '10', '0', '0', '1', '1671601827');
-INSERT INTO `vt_menus` VALUES ('95', '1', '', '注释修改', '注释修改', '', '', 'system.database/edit', '', '21', '10', '0', '0', '1', '1671601827');
-INSERT INTO `vt_menus` VALUES ('96', '1', '', '查看字典', '查看字典', '', '', 'system.database/dict', '', '21', '10', '0', '0', '1', '1671601827');
-INSERT INTO `vt_menus` VALUES ('97', '1', '', '备份下载', '备份下载', '', '', 'system.database/download', '', '21', '10', '0', '0', '1', '1671601827');
-INSERT INTO `vt_menus` VALUES ('98', '1', '', '数据表修复', '数据表修复', '', '', 'system.database/xiufu', '', '21', '10', '0', '0', '1', '1671601827');
-INSERT INTO `vt_menus` VALUES ('99', '1', '', '数据表优化', '数据表优化', '', '', 'system.database/youhua', '', '21', '10', '0', '0', '1', '1671601827');
-INSERT INTO `vt_menus` VALUES ('100', '1', '', '用户列表', '用户列表', '', '', 'system.online/index', '', '22', '10', '0', '0', '1', '1671601827');
+INSERT INTO `vt_menus` VALUES ('73', '1', '', '文件名编辑', '文件名编辑', '', '', 'system.filemanage/edit', '', '17', '2', '0', '0', '1', '1671601827');
+INSERT INTO `vt_menus` VALUES ('74', '1', '', '文件软删除', '文件软删除', '', '', 'system.filemanage/del', '', '17', '3', '0', '0', '1', '1671601827');
+INSERT INTO `vt_menus` VALUES ('75', '1', '', '文件恢复', '文件恢复', '', '', 'system.filemanage/reset', '', '17', '4', '0', '0', '1', '1671601827');
+INSERT INTO `vt_menus` VALUES ('76', '1', '', '文件清理', '文件清理', '', '', 'system.filemanage/clear', '', '17', '5', '0', '0', '1', '1671601827');
+INSERT INTO `vt_menus` VALUES ('77', '1', '', '登录日志', '日志查看', '', '', 'system.log/login', '', '18', '1', '0', '0', '1', '1671601827');
+INSERT INTO `vt_menus` VALUES ('78', '1', '', '登录日志清理', '日志删除', '', '', 'system.log/ldel', '', '18', '2', '0', '0', '1', '1671601827');
+INSERT INTO `vt_menus` VALUES ('79', '1', '', '后台日志', '后台日志', '', '', 'system.log/manager', '', '18', '3', '0', '0', '1', '1671601827');
+INSERT INTO `vt_menus` VALUES ('80', '1', '', '后台日志清理', '日志列表', '', '', 'system.log/mdel', '', '18', '4', '0', '0', '1', '1671601827');
+INSERT INTO `vt_menus` VALUES ('81', '1', '', '访问日志', '访问日志', '', '', 'system.log/web', '', '18', '5', '0', '0', '1', '1671601827');
+INSERT INTO `vt_menus` VALUES ('82', '1', '', '访问日志清理', '访问日志清理', '', '', 'system.log/wdel', '', '18', '6', '0', '0', '1', '1671601827');
+INSERT INTO `vt_menus` VALUES ('83', '1', '', '地区列表', '地区列表', '', '', 'system.area/index', '', '19', '10', '0', '0', '1', '1671601827');
+INSERT INTO `vt_menus` VALUES ('84', '1', '', '地区添加', '地区添加', '', '', 'system.area/add', '', '19', '10', '0', '0', '1', '1671601827');
+INSERT INTO `vt_menus` VALUES ('85', '1', '', '地区编辑', '地区编辑', '', '', 'system.area/edit', '', '19', '10', '0', '0', '1', '1671601827');
+INSERT INTO `vt_menus` VALUES ('86', '1', '', '地区删除', '地区删除', '', '', 'system.area/del', '', '19', '10', '0', '0', '1', '1671601827');
+INSERT INTO `vt_menus` VALUES ('87', '1', '', '内置导入', '内置导入', '', '', 'system.area/import', '', '19', '10', '0', '0', '1', '1671601827');
+INSERT INTO `vt_menus` VALUES ('88', '1', '', '发送记录', '发送记录', '', '', 'system.sms/index', '', '20', '10', '0', '0', '1', '1671601827');
+INSERT INTO `vt_menus` VALUES ('89', '1', '', '发送短信', '发送短信', '', '', 'system.sms/send', '', '20', '10', '0', '0', '1', '1671601827');
+INSERT INTO `vt_menus` VALUES ('90', '1', '', '记录删除', '记录删除', '', '', 'system.sms/del', '', '20', '10', '0', '0', '1', '1671601827');
+INSERT INTO `vt_menus` VALUES ('91', '1', '', '数据列表', '数据列表', '', '', 'system.database/index', '', '21', '10', '0', '0', '1', '1671601827');
+INSERT INTO `vt_menus` VALUES ('92', '1', '', '数据备份', '数据备份', '', '', 'system.database/backup', '', '21', '10', '0', '0', '1', '1671601827');
+INSERT INTO `vt_menus` VALUES ('93', '1', '', '备份列表', '备份列表', '', '', 'system.database/imports', '', '21', '10', '0', '0', '1', '1671601827');
+INSERT INTO `vt_menus` VALUES ('94', '1', '', '备份恢复', '备份恢复', '', '', 'system.database/import', '', '21', '10', '0', '0', '1', '1671601827');
+INSERT INTO `vt_menus` VALUES ('95', '1', '', '备份删除', '备份删除', '', '', 'system.database/del', '', '21', '10', '0', '0', '1', '1671601827');
+INSERT INTO `vt_menus` VALUES ('96', '1', '', '注释修改', '注释修改', '', '', 'system.database/edit', '', '21', '10', '0', '0', '1', '1671601827');
+INSERT INTO `vt_menus` VALUES ('97', '1', '', '查看字典', '查看字典', '', '', 'system.database/dict', '', '21', '10', '0', '0', '1', '1671601827');
+INSERT INTO `vt_menus` VALUES ('98', '1', '', '备份下载', '备份下载', '', '', 'system.database/download', '', '21', '10', '0', '0', '1', '1671601827');
+INSERT INTO `vt_menus` VALUES ('99', '1', '', '数据表修复', '数据表修复', '', '', 'system.database/xiufu', '', '21', '10', '0', '0', '1', '1671601827');
+INSERT INTO `vt_menus` VALUES ('100', '1', '', '数据表优化', '数据表优化', '', '', 'system.database/youhua', '', '21', '10', '0', '0', '1', '1671601827');
+INSERT INTO `vt_menus` VALUES ('101', '1', '', '用户列表', '用户列表', '', '', 'system.online/index', '', '22', '10', '0', '0', '1', '1671601827');
 
 -- ----------------------------
 -- Table structure for vt_online
@@ -291,7 +292,7 @@ CREATE TABLE `vt_roles` (
 -- ----------------------------
 -- Records of vt_roles
 -- ----------------------------
-INSERT INTO `vt_roles` VALUES ('1', '超级管理员', '1,3,4,5,6,7,8,9,10,2,11,23,24,25,26,12,27,28,13,29,30,31,32,33,34,35,36,37,14,38,39,40,41,15,42,43,44,45,46,47,48,49,50,51,52,16,53,56,57,58,59,54,60,61,62,63,64,65,55,66,67,68,69,70,71,17,72,73,74,75,18,76,77,78,79,80,81,19,82,83,84,85,86,20,87,88,89,21,90,91,92,93,94,95,96,97,98,99,22,100', '1', '1', '1552297671');
+INSERT INTO `vt_roles` VALUES ('1', '超级管理员', '1,3,4,5,6,7,8,9,10,2,11,23,24,25,26,12,27,28,13,29,30,31,32,33,34,35,36,37,14,38,39,40,41,15,42,43,44,45,46,47,48,49,50,51,52,16,53,56,57,58,59,54,60,61,62,63,64,65,55,66,67,68,69,70,71,17,72,73,74,75,18,76,77,78,79,80,81,19,82,83,84,85,86,20,87,88,89,21,90,91,92,93,94,95,96,97,98,99,22,100,101', '1', '1', '1552297671');
 INSERT INTO `vt_roles` VALUES ('2', '系统管理员', '1,3,4,5,6,7,8,9,10', '2', '1', '1553593209');
 
 -- ----------------------------

@@ -201,7 +201,7 @@ layui.use(function(){
         $("[id^='Taddon-']").removeClass('layui-btn-danger');
         $this.addClass('layui-btn-danger');
         if(id=='3'){
-            table.reloadData('addon',{page:{curr:1},url:app_root+'exist'+getUser('uids')});
+            table.reloadData('addon',{page:false,url:app_root+'exist'+getUser('uids')});
         }else{
             type = id;
             var field = [];field.catid = catid;field.type = type;field.version = version;

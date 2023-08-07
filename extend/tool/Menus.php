@@ -81,7 +81,7 @@ class Menus
     public static function menuOut($menuid = 0, $where = '')
     {
         global $_MES;
-        $_MES = $_MES ?: M::where($where)->order('listorder', 'asc')->column('*');
+        $_MES = $_MES ?: M::where($where)->order(['listorder'=>'asc','menuid'=>'asc'])->column('*');
         $data = [];
         foreach ($_MES as $v){
             if($v['parent_id']==$menuid){
@@ -151,7 +151,7 @@ class Menus
     public static function reset($id = 0, $pd = 0, $rs = [])
     {
         if(!$rs){
-            $rs = Db::name('menus')->order('listorder asc')->column('*');
+            $rs = Db::name('menus')->order(['listorder'=>'asc','menuid'=>'asc'])->column('*');
             if($rs){
                 Db::query("truncate vt_menus");
                 self::reset($id,$pd,$rs);

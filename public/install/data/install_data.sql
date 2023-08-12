@@ -324,7 +324,7 @@ CREATE TABLE `vt_setting` (
 -- Records of vt_setting
 -- ----------------------------
 INSERT INTO `vt_setting` VALUES ('1', 'sys_group', '配置分组', 'system', 'array', 'system:系统\nsms:短信\nupload:上传', '', '配置分组，每行为一组如：标识:组名', '', '0', '1475240646', '1475240646', '1', '', '1');
-INSERT INTO `vt_setting` VALUES ('2', 'sys_type', '配置类型', 'system', 'array', 'text:单行文本\ntextarea:多行文本\nstatic:静态文本\npassword:密码\ncheckbox:复选框\nradio:单选按钮\nyear:年选择器\nmonth:年月选择器\ndate:日期选择器\ntime:时间选择器\ndatetime:日期+时间选择器\nswitch:开关\narray:数组\nselect:下拉框\ntags:标签\nimage:单张图片\nimages:多张图片\nnumber:数字\nupfile:文件上传\ncolorpicker:取色器\nueditor:百度编辑器\ncherrymd:CherryMarkdown\neditormd:Editor.md\ntinymce:TinyMCE编辑器', '', '配置类型，每行为一组如：标识:说明', '', '0', '1475240646', '1475240646', '2', '', '1');
+INSERT INTO `vt_setting` VALUES ('2', 'sys_type', '配置类型', 'system', 'array', 'text:单行文本\ntextarea:多行文本\nstatic:静态文本\npassword:密码\ncheckbox:复选框\nradio:单选按钮\nyear:年选择器\nmonth:年月选择器\ndate:日期选择器\ntime:时间选择器\ndatetime:日期+时间选择器\nswitch:开关\narray:数组\nkeyval:键值对\nselect:下拉框\ntags:标签\nimage:单张图片\nimages:多张图片\nnumber:数字\nupfile:文件上传\ncolorpicker:取色器\nueditor:百度编辑器\ncherrymd:CherryMarkdown\neditormd:Editor.md\ntinymce:TinyMCE编辑器', '', '配置类型，每行为一组如：标识:说明', '', '0', '1475240646', '1475240646', '2', '', '1');
 INSERT INTO `vt_setting` VALUES ('3', 'sys_title', '面板名称', 'system', 'text', '后台管理', '', '后台管理面板显示的名称', '', '0', '1593860369', '0', '2', '', '1');
 INSERT INTO `vt_setting` VALUES ('4', 'admin_captcha', '后台验证', 'system', 'switch', '0', '', '后台管理员登录是否开启图形验证码', '', '0', '1599057178', '0', '3', '', '1');
 INSERT INTO `vt_setting` VALUES ('5', 'admin_log', '后台日志', 'system', 'switch', '0', '', '是否开启后台操作日志', '', '0', '1612773267', '0', '4', '', '1');

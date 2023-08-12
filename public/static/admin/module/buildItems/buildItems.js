@@ -37,7 +37,7 @@ layui.define(['tagsInput','fileLibrary','cascader'], function(e){
     //多行文本
     c.textarea = c.array = c.item_html + c.block_html + '>' + c.textarea_html + 'class="layui-textarea" {{# if(d.id){ }}id="{{ d.id }}" {{# } }}' + c.vers_html + c.plac_html + '>{{ d.value }}</textarea>' + c.tips_html + '</div></div>';
     //键值对组
-    c.keyval_html = '{{# layui.each(d.value, function(k, v){ }}<div class="keyval_item"><div class="layui-input-inline"><input type="text" value="{{ k }}" class="layui-input" placeholder="key"></div>'+
+    c.keyval_html = '{{# d.value = d.value || "{}"; layui.each(typeof d.value === "string" ? JSON.parse(d.value) : d.value, function(k, v){ }}<div class="keyval_item"><div class="layui-input-inline"><input type="text" value="{{ k }}" class="layui-input" placeholder="key"></div>'+
             '<div class="layui-form-mid">:</div><div class="layui-input-inline"><input type="text" value="{{ v }}" class="layui-input" placeholder="value"></div>'+
             '<a class="layui-btn layui-bg-red del"><i class="layui-icon layui-icon-delete"></i></a></div>{{# }); }}';
     c.keyval = c.item_html + c.block_html + '><div id="keyval-show-{{ d.name }}" data-name="{{ d.name }}"><input type="hidden" name="{{ d.name }}" id="keyval-input-{{ d.name }}" value="{{ JSON.stringify(d.value) }}" ' +

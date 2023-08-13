@@ -40,8 +40,8 @@ layui.define(['tagsInput','fileLibrary','cascader'], function(e){
     c.keyval_html = '{{# d.value = d.value || "{}"; layui.each(typeof d.value === "string" ? JSON.parse(d.value) : d.value, function(k, v){ }}<div class="keyval_item"><div class="layui-input-inline"><input type="text" value="{{ k }}" class="layui-input" placeholder="key"></div>'+
             '<div class="layui-form-mid">:</div><div class="layui-input-inline"><input type="text" value="{{ v }}" class="layui-input" placeholder="value"></div>'+
             '<a class="layui-btn layui-bg-red del"><i class="layui-icon layui-icon-delete"></i></a></div>{{# }); }}';
-    c.keyval = c.item_html + c.block_html + '><div id="keyval-show-{{ d.name }}" data-name="{{ d.name }}"><input type="hidden" name="{{ d.name }}" id="keyval-input-{{ d.name }}" value="{{ JSON.stringify(d.value) }}" ' +
-            'lay-verify="{{ d.verify || \'\' }}" lay-reqtext="{{ d.reqtext || \'\' }}"/>'+ c.keyval_html + '</div><a class="layui-btn" id="keyval-add-{{ d.name }}"><i class="layui-icon layui-icon-add-circle"></i> 追加</a>' + c.tips_html + '</div></div>';
+    c.keyval = c.item_html + c.block_html + '><div id="keyval-show-{{ d.name }}" data-name="{{ d.name }}"><input type="hidden" name="{{ d.name }}" id="keyval-input-{{ d.name }}" value="" ' +
+            'lay-verify="{{ d.verify || \'\' }}" lay-reqtext="{{ d.reqtext || \'\' }}"/>'+ c.keyval_html + '</div><a class="layui-btn keyval-add" id="keyval-add-{{ d.name }}"><i class="layui-icon layui-icon-add-circle"></i> 追加</a>' + c.tips_html + '</div></div>';
     //静态文本
     c.static = c.item_html + c.block_html + '>' + '<div class="layui-form-mid layui-word-aux">{{ d.value }}</div></div></div>';
     //密码
@@ -254,6 +254,7 @@ layui.define(['tagsInput','fileLibrary','cascader'], function(e){
             });
             $h.find("[id^='keyval-show-']").each(function(){
                 ids.push($(this).attr('id'));
+                b.setArr($(this).data('name')); // 初始赋值到隐藏域
             });
             if(ids.length > 0){
                 layui.define(function(e){
@@ -388,8 +389,7 @@ layui.define(['tagsInput','fileLibrary','cascader'], function(e){
                             ]],
                             wordCount: false,
                             autoFloatEnabled: false,
-                            autosave: false,
-                            //saveInterval: 5000,
+                            autosave: false, //saveInterval: 5000,
                             zIndex: isOpen ? 19991000 : 999,
                             cpos: isOpen ? 'fixed' : '', //isOpen来判断是否为弹窗 弹出窗口中编辑器兼容可全屏
                             UEDITOR_HOME_URL: static + 'ueditor/',
@@ -412,8 +412,7 @@ layui.define(['tagsInput','fileLibrary','cascader'], function(e){
                                     });
                                 }
                             });
-                            //源码模式时按钮变灰切换
-                            editor.addListener('selectionchange', function(){
+                            editor.addListener('selectionchange', function(){ //源码模式时按钮变灰切换
                                 var state = editor.queryCommandState(uiName);
                                 if(state == -1){btn.setDisabled(true);btn.setChecked(false);}else{btn.setDisabled(false);btn.setChecked(state);}
                             });
@@ -537,8 +536,7 @@ layui.define(['tagsInput','fileLibrary','cascader'], function(e){
                                      upurl = c.map + "upfile?action=video&groupid=" + c.gid;
                                      filetype = '.mp3, .mp4';
                                 }
-                                //模拟出一个input用于添加本地文件
-                                var input = document.createElement('input');input.setAttribute('type', 'file');input.setAttribute('accept', filetype);input.click();
+                                var input = document.createElement('input');input.setAttribute('type', 'file');input.setAttribute('accept', filetype);input.click();/*模拟出一个input用于添加本地文件*/
                                 input.onchange = function(){
                                     var xhr = new XMLHttpRequest(), formData = new FormData(), file = this.files[0];
                                     xhr.withCredentials = false;

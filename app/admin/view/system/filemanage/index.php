@@ -61,7 +61,7 @@ layui.use(function(){
         cols: [[
             {type:'checkbox',fixed:'left'},
             {field:"fileurl",align:'center',title:"预览图",width:80,templet:function(d){return '<div class="files_item"><img src="'+ get_icon(d.fileurl,d.filetype,d.fileext) +'" alt="'+d.filename+'" lay-event="file-event-image"/></div>';}},
-            {field:"filename",title:"文件名"},
+            {field:"filename",edit:'text',title:"文件名"},
             {field:"username",align:'center',width:100,title:"用户",templet:function(d){return d.admin==1 ? '<font color=red>'+d.username+'</font>' : d.username;}},
             {field:"groupname",align:'center',width:80,title:"分组",templet:function(d){return d.groupname ? d.groupname : '尚未分组';}},
             {field:"filesize",align:'center',width:80,title:"大小(Kb)"},
@@ -106,6 +106,12 @@ layui.use(function(){
                 });
             },'post',{headersToken:true});
         });
+    });/**/
+    /*快编监听*/
+    table.on('edit(filemanage)',function(obj){
+        admin.req(app_root+"edit",{fileid:obj.data.fileid,av:obj.value,af:obj.field},function(res){
+            layer.msg(res.msg,{shade:[0.4,'#000'],time:1500});
+        },'post',{headersToken:true});
     });/**/
     /*工具条监听*/
     table.on('tool(filemanage)', function(obj){

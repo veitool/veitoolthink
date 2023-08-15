@@ -52,16 +52,16 @@ layui.use(['trTable','xmSelect','iconPicker','buildItems'],function(){
         },
         cols: [[
             {type:'checkbox',fixed:'left'},
-            {field:'menuid',minWidth:50,unresize:true,align:'center',title:'ID'},
-            {field:'menu_name',edit:'text',minWidth:160,title:'名称'},
-            {field:'menu_url',edit:'text',minWidth:150,title:'菜单标识'},
-            {field:'role_url',edit:'text',minWidth:160,title:'权限路径'},
-            {field:'link_url',edit:'text',width:60,title:'外链路径'},
-            {field:'icon',minWidth:50,align:'center',templet:function(d){return d.icon ? '<i class="layui-icon '+ d.icon +'"></i>' : '';},title:'图标'},
-            {field:'listorder',minWidth:50,edit:'text',align:'center',title:'排序'},
+            {field:'menuid',width:50,unresize:true,align:'center',title:'ID'},
+            {field:'menu_name',minWidth:150,edit:'text',title:'名称'},
+            {field:'menu_url',minWidth:150,edit:'text',title:'菜单标识'},
+            {field:'role_url',minWidth:150,edit:'text',title:'权限路径'},
+            {field:'link_url',minWidth:150,edit:'text',title:'外链路径'},
+            {field:'icon',width:50,align:'center',templet:function(d){return d.icon ? '<i class="layui-icon '+ d.icon +'"></i>' : '';},title:'图标'},
+            {field:'listorder',width:50,edit:'text',align:'center',title:'排序'},
             {field:'ismenu',width:60,align:'center',templet:function(d){return '<input type="checkbox" name="ismenu" lay-skin="switch" lay-text="是|否" lay-filter="menus-chang" value="'+d.ismenu+'" data-json="'+encodeURIComponent(JSON.stringify(d))+'"'+(d.ismenu==1 ? ' checked' : '')+'>';},unresize:true,title:'菜单'},
             {field:'state',width:60,align:'center',templet:function(d){return '<input type="checkbox" name="state" lay-skin="switch" lay-text="是|否" lay-filter="menus-chang" value="'+d.state+'" data-json="'+encodeURIComponent(JSON.stringify(d))+'"'+(d.state==1 ? ' checked' : '')+'>';},unresize:true,title:'显示'},
-            {fixed:'right',width:140,align:'center',toolbar:'<div><a class="layui-btn layui-btn-xs" lay-event="add">添加</a><a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="edit">编辑</a><a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a></div>',title:'操作'}
+            {fixed:'right',width:150,align:'center',toolbar:'<div><a class="layui-btn layui-btn-xs" lay-event="add">添加</a><a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="edit">编辑</a><a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a></div>',title:'操作'}
         ]]
     });/**/
     /*顶部选项卡监听*/

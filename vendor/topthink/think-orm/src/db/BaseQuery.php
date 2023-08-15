@@ -30,6 +30,7 @@ abstract class BaseQuery
     use concern\TimeFieldQuery;
     use concern\AggregateQuery;
     use concern\ModelRelationQuery;
+    use concern\ParamsBind;
     use concern\ResultOperation;
     use concern\Transaction;
     use concern\WhereQuery;
@@ -729,7 +730,7 @@ abstract class BaseQuery
         }
 
         $page           = isset($config['page']) ? (int) $config['page'] : Paginator::getCurrentPage($config['var_page']);
-        $page           = $page < 1 ? 1 : $page;
+        $page           = max($page, 1);
         $config['path'] = $config['path'] ?? Paginator::getCurrentPath();
 
         if (!isset($total) && !$simple) {
@@ -784,7 +785,7 @@ abstract class BaseQuery
         $config     = is_array($listRows) ? array_merge($defaultConfig, $listRows) : $defaultConfig;
         $listRows   = is_int($listRows) ? $listRows : (int) $config['list_rows'];
         $page       = isset($config['page']) ? (int) $config['page'] : Paginator::getCurrentPage($config['var_page']);
-        $page       = $page < 1 ? 1 : $page;
+        $page       = max($page, 1);
 
         $config['path'] = $config['path'] ?? Paginator::getCurrentPath();
 
@@ -1049,15 +1050,15 @@ abstract class BaseQuery
 
         return $this;
     }
-    
+
     /**
      * 指定数据表主键.
      *
-     * @param string|array $pk 主键
+     * @param string|array|bool $pk 主键
      *
      * @return $this
      */
-    public function pk(string|array $pk)
+    public function pk(string|array|bool $pk)
     {
         $this->pk = $pk;
 

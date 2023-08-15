@@ -157,7 +157,7 @@ class RequestCore
     /**
      * The state of SSL certificate verification.
      */
-    public $ssl_verification = true;
+    public $ssl_verification = false;
 
     /**
      * The user-defined callback function to call when a stream is read from.

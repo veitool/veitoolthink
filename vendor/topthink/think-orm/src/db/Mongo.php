@@ -122,7 +122,7 @@ class Mongo extends BaseQuery
      *
      * @return mixed
      */
-    public function aggregate(string $aggregate, $field, bool $force = false)
+    public function aggregate(string $aggregate, $field, bool $force = false, bool $one = false)
     {
         $result = $this->cmd('aggregate', [strtolower($aggregate), $field]);
         $value = $result[0]['aggregate'] ?? 0;
@@ -590,7 +590,7 @@ class Mongo extends BaseQuery
 
         $page = isset($config['page']) ? (int) $config['page'] : Paginator::getCurrentPage($config['var_page']);
 
-        $page = $page < 1 ? 1 : $page;
+        $page = max($page, 1);
 
         $config['path'] = $config['path'] ?? Paginator::getCurrentPath();
 

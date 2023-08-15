@@ -16,7 +16,7 @@ namespace think\db\builder;
 use PDO;
 use think\db\Builder;
 use think\db\exception\DbException as Exception;
-use think\db\Query;
+use think\db\BaseQuery as Query;
 use think\db\Raw;
 
 /**
@@ -214,7 +214,7 @@ class Mysql extends Builder
      */
     public function insertAllByKeys(Query $query, array $keys, array $datas): string
     {
-        $options= $query->getOptions();
+        $options = $query->getOptions();
         $bind   = $query->getFieldsBindType();
         $fields = [];
         $values = [];
@@ -419,6 +419,31 @@ class Mysql extends Builder
         }
 
         return $key;
+    }
+
+    /**
+     * Null查询.
+     *
+     * @param Query  $query    查询对象
+     * @param string $key
+     * @param string $exp
+     * @param mixed  $value
+     * @param string $field
+     * @param int    $bindType
+     *
+     * @return string
+     */
+    protected function parseNull(Query $query, string $key, string $exp, $value, $field, int $bindType): string
+    {
+        if (str_starts_with($key, "json_extract")) {
+            if ($exp === 'NULL') {
+                return '(' . $key . ' is null OR json_type(' . $key . ') = \'NULL\')';
+            }elseif ($exp === 'NOT NULL'){
+                return '(' . $key . ' is not null AND json_type(' . $key . ') != \'NULL\')';
+            }
+        }
+
+        return parent::parseNull($query, $key, $exp, $value, $field, $bindType);
     }
 
     /**

@@ -779,7 +779,8 @@ class Service
      */
     public static function setAddonEvent()
     {
-        $listen = [];
+        $event_file = ROOT_PATH . 'app' . VT_DS . 'event.php';
+        $listen = include $event_file;
         $rs = scandir(ADDON_PATH);
         foreach($rs as $name){
             if(in_array($name,['.','..','.htaccess'])) continue;
@@ -787,15 +788,32 @@ class Service
             $ifile = ADDON_PATH . $name . VT_DS . 'info.ini';
             if(file_exists($cfile) && is_file($ifile)){
                 $info = parse_ini_file($ifile, true, INI_SCANNER_TYPED) ?: [];
-                if(!isset($info['state']) || $info['state']!=1) continue;
                 $event = require_once $cfile;
-                $addon_listen = isset($event['listen']) ? $event['listen'] : [];
-                if(!empty($addon_listen)){
-                    $listen[] = $addon_listen;
+                $event = $event['listen'] ?? [];
+                if($event){
+                    if(isset($info['state']) && $info['state']==1){
+                        $listen['listen'] = array_merge_recursive($listen['listen'],$event);
+                    }else{
+                        $keys = array_keys($event);
+                        foreach($keys as $k){
+                            if(isset($listen['listen'][$k])){
+                                if($listen['listen'][$k] === $event[$k]){
+                                    unset($listen['listen'][$k]);
+                                }else{
+                                    foreach($listen['listen'][$k] as $i=>$v){
+                                        if(strpos('\\'.$v.'\\','\\'.$name.'\\')!==false) unset($listen['listen'][$k][$i]);
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
-        Cache::tag("addon")->set("addon_event_list", $listen);
+        $code = "<?php\nreturn ".var_export($listen,true).";";
+        $code = preg_replace('/(?<==> \n).*?(?=array)/si', '', $code);
+        $code = str_replace(["array (", "),", ");", "=> \n", "  "], ["[", "],", "];", "=> ", "    "], $code);
+        @file_put_contents($event_file, $code);
     }
 
     /**

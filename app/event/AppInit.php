@@ -22,7 +22,7 @@ class AppInit extends Service
     public function handle()
     {
         // 版本信息
-        define('VT_VERSION', '1.0.0');
+        define('VT_VERSION', '1.0.2');
         // 后台管理员 session 标识
         define('VT_MANAGER', 'V_MANAGER');
         // 前台会员 session 标识
@@ -66,16 +66,6 @@ class AppInit extends Service
 
         /* 插件应用名 用于AdminBase.php中兼容插件权限 */
         define('ADDON_APP', $module);
-
-        /*插件事件初始化*/
-        $listen = Cache::get("addon_event_list");
-        if(!empty($listen)){
-            foreach($listen as $k => $v){
-                if(!empty($v)){
-                    Event::listenEvents($v);
-                }
-            }
-        }/**/
     }
 
 }

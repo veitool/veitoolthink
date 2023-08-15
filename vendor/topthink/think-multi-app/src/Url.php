@@ -63,9 +63,9 @@ class Url extends UrlBuild
             } elseif (!$this->app->http->isBind()) {
                 $map = $this->app->config->get('app.app_map', []);
                 if ($key = array_search($app, $map)) {
-                    $url = $key . '/' . $url;
+                   $url = $key . '/' . $url;
                 } else {
-                    $url = $app . '/' . $url;
+                   $url = $app . '/' . $url;
                 }
             }
         }

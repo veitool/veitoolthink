@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'topthink/think',
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
-        'reference' => NULL,
+        'pretty_version' => 'dev-master',
+        'version' => 'dev-master',
+        'reference' => '210ee5f2ce4e5f96e226609e26899e9725374e32',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -85,7 +85,7 @@
         'league/flysystem' => array(
             'pretty_version' => '2.5.0',
             'version' => '2.5.0.0',
-            'reference' => '3239285c825c152bcc315fe0e87d6b55f5972ed1',
+            'reference' => '8aaffb653c5777781b0f7f69a5d937baf7ab6cdb',
             'type' => 'library',
             'install_path' => __DIR__ . '/../league/flysystem',
             'aliases' => array(),
@@ -335,9 +335,9 @@
             'dev_requirement' => false,
         ),
         'topthink/think' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
-            'reference' => NULL,
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'reference' => '210ee5f2ce4e5f96e226609e26899e9725374e32',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

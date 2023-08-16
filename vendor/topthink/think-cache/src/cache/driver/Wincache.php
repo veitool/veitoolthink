@@ -2,7 +2,7 @@
 // +----------------------------------------------------------------------
 // | ThinkPHP [ WE CAN DO IT JUST THINK ]
 // +----------------------------------------------------------------------
-// | Copyright (c) 2006~2019 http://thinkphp.cn All rights reserved.
+// | Copyright (c) 2006~2017 http://thinkphp.cn All rights reserved.
 // +----------------------------------------------------------------------
 // | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
 // +----------------------------------------------------------------------
@@ -15,18 +15,13 @@ use think\cache\Driver;
 
 /**
  * Wincache缓存驱动
+ * @author    liu21st <liu21st@gmail.com>
  */
 class Wincache extends Driver
 {
-    /**
-     * 配置参数
-     * @var array
-     */
     protected $options = [
-        'prefix'     => '',
-        'expire'     => 0,
-        'tag_prefix' => 'tag:',
-        'serialize'  => [],
+        'prefix' => '',
+        'expire' => 0,
     ];
 
     /**
@@ -35,7 +30,7 @@ class Wincache extends Driver
      * @param  array $options 缓存参数
      * @throws \BadFunctionCallException
      */
-    public function __construct(array $options = [])
+    public function __construct($options = [])
     {
         if (!function_exists('wincache_ucache_info')) {
             throw new \BadFunctionCallException('not support: WinCache');
@@ -52,7 +47,7 @@ class Wincache extends Driver
      * @param  string $name 缓存变量名
      * @return bool
      */
-    public function has($name): bool
+    public function has($name)
     {
         $this->readTimes++;
 
@@ -68,7 +63,7 @@ class Wincache extends Driver
      * @param  mixed  $default 默认值
      * @return mixed
      */
-    public function get($name, $default = null)
+    public function get($name, $default = false)
     {
         $this->readTimes++;
 
@@ -83,9 +78,9 @@ class Wincache extends Driver
      * @param  string            $name 缓存变量名
      * @param  mixed             $value  存储数据
      * @param  integer|\DateTime $expire  有效时间（秒）
-     * @return bool
+     * @return boolean
      */
-    public function set($name, $value, $expire = null): bool
+    public function set($name, $value, $expire = null)
     {
         $this->writeTimes++;
 
@@ -97,7 +92,12 @@ class Wincache extends Driver
         $expire = $this->getExpireTime($expire);
         $value  = $this->serialize($value);
 
+        if ($this->tag && !$this->has($name)) {
+            $first = true;
+        }
+
         if (wincache_ucache_set($key, $value, $expire)) {
+            isset($first) && $this->setTagItem($key);
             return true;
         }
 
@@ -111,7 +111,7 @@ class Wincache extends Driver
      * @param  int       $step 步长
      * @return false|int
      */
-    public function inc(string $name, int $step = 1)
+    public function inc($name, $step = 1)
     {
         $this->writeTimes++;
 
@@ -127,7 +127,7 @@ class Wincache extends Driver
      * @param  int       $step 步长
      * @return false|int
      */
-    public function dec(string $name, int $step = 1)
+    public function dec($name, $step = 1)
     {
         $this->writeTimes++;
 
@@ -140,9 +140,9 @@ class Wincache extends Driver
      * 删除缓存
      * @access public
      * @param  string $name 缓存变量名
-     * @return bool
+     * @return boolean
      */
-    public function delete($name): bool
+    public function rm($name)
     {
         $this->writeTimes++;
 
@@ -152,23 +152,22 @@ class Wincache extends Driver
     /**
      * 清除缓存
      * @access public
-     * @return bool
+     * @param  string $tag 标签名
+     * @return boolean
      */
-    public function clear(): bool
+    public function clear($tag = null)
     {
-        $this->writeTimes++;
-        return wincache_ucache_clear();
-    }
-
-    /**
-     * 删除缓存标签
-     * @access public
-     * @param  array $keys 缓存标识列表
-     * @return void
-     */
-    public function clearTag(array $keys): void
-    {
-        wincache_ucache_delete($keys);
+        if ($tag) {
+            $keys = $this->getTagItem($tag);
+            foreach ($keys as $key) {
+                wincache_ucache_delete($key);
+            }
+            $this->rm('tag_' . md5($tag));
+            return true;
+        } else {
+            $this->writeTimes++;
+            return wincache_ucache_clear();
+        }
     }
 
 }

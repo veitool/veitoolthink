@@ -3,6 +3,8 @@ namespace Qiniu;
 
 use Qiniu\Http\Client;
 use Qiniu\Http\Error;
+use Qiniu\Http\Middleware\RetryDomainsMiddleware;
+use Qiniu\Http\RequestOptions;
 
 class Region
 {
@@ -154,31 +156,24 @@ class Region
         return $regionSingapore;
     }
 
-    //首尔
-    public static function regionSeoul()
-    {
-        //首尔
-        return new Region(
-            array('up-ap-northeast-1.qiniup.com'),
-            array('upload-ap-northeast-1.qiniup.com'),
-            "rs-ap-northeast-1.qiniuapi.com",
-            "rsf-ap-northeast-1.qiniuapi.com",
-            "api-ap-northeast-1.qiniuapi.com",
-            "iovip-ap-northeast-1.qiniuio.com"
-        );
-    }
-
     /*
-     * GET /v2/query?ak=<ak>&bucket=<bucket>
+     * GET /v4/query?ak=<ak>&bucket=<bucket>
      **/
-    public static function queryRegion($ak, $bucket, $ucHost = null)
+    public static function queryRegion($ak, $bucket, $ucHost = null, $backupUcHosts = array(), $retryTimes = 2)
     {
         $region = new Region();
         if (!$ucHost) {
-            $ucHost = "https://" . Config::UC_HOST;
+            $ucHost = "https://" . Config::QUERY_REGION_HOST;
         }
         $url = $ucHost . '/v4/query' . "?ak=$ak&bucket=$bucket";
-        $ret = Client::Get($url);
+        $reqOpt = new RequestOptions();
+        $reqOpt->middlewares = array(
+            new RetryDomainsMiddleware(
+                $backupUcHosts,
+                $retryTimes
+            )
+        );
+        $ret = Client::Get($url, array(), $reqOpt);
         if (!$ret->ok()) {
             return array(null, new Error($url, $ret));
         }

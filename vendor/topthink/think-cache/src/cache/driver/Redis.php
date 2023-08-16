@@ -2,7 +2,7 @@
 // +----------------------------------------------------------------------
 // | ThinkPHP [ WE CAN DO IT JUST THINK ]
 // +----------------------------------------------------------------------
-// | Copyright (c) 2006~2019 http://thinkphp.cn All rights reserved.
+// | Copyright (c) 2006~2017 http://thinkphp.cn All rights reserved.
 // +----------------------------------------------------------------------
 // | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
 // +----------------------------------------------------------------------
@@ -22,10 +22,6 @@ use think\cache\Driver;
  */
 class Redis extends Driver
 {
-    /**
-     * 配置参数
-     * @var array
-     */
     protected $options = [
         'host'       => '127.0.0.1',
         'port'       => 6379,
@@ -35,8 +31,6 @@ class Redis extends Driver
         'expire'     => 0,
         'persistent' => false,
         'prefix'     => '',
-        'tag_prefix' => 'tag:',
-        'serialize'  => [],
     ];
 
     /**
@@ -44,42 +38,23 @@ class Redis extends Driver
      * @access public
      * @param  array $options 缓存参数
      */
-    public function __construct(array $options = [])
+    public function __construct($options = [])
     {
+        if (!extension_loaded('redis')) {
+            throw new \BadFunctionCallException('not support: redis');
+        }
+
         if (!empty($options)) {
             $this->options = array_merge($this->options, $options);
         }
 
-        if (extension_loaded('redis')) {
-            $this->handler = new \Redis;
+        $func = $this->options['persistent'] ? 'pconnect' : 'connect';
 
-            if ($this->options['persistent']) {
-                $this->handler->pconnect($this->options['host'], (int) $this->options['port'], $this->options['timeout'], 'persistent_id_' . $this->options['select']);
-            } else {
-                $this->handler->connect($this->options['host'], (int) $this->options['port'], $this->options['timeout']);
-            }
+        $this->handler = new \Redis;
+        $this->handler->$func($this->options['host'], $this->options['port'], $this->options['timeout']);
 
-            if ('' != $this->options['password']) {
-                $this->handler->auth($this->options['password']);
-            }
-        } elseif (class_exists('\Predis\Client')) {
-            $params = [];
-            foreach ($this->options as $key => $val) {
-                if (in_array($key, ['aggregate', 'cluster', 'connections', 'exceptions', 'prefix', 'profile', 'replication', 'parameters'])) {
-                    $params[$key] = $val;
-                    unset($this->options[$key]);
-                }
-            }
-
-            if ('' == $this->options['password']) {
-                unset($this->options['password']);
-            }
-
-            $this->handler = new \Predis\Client($this->options, $params);
-
-            $this->options['prefix'] = '';
-        } else {
-            throw new \BadFunctionCallException('not support: redis');
+        if ('' != $this->options['password']) {
+            $this->handler->auth($this->options['password']);
         }
 
         if (0 != $this->options['select']) {
@@ -93,7 +68,7 @@ class Redis extends Driver
      * @param  string $name 缓存变量名
      * @return bool
      */
-    public function has($name): bool
+    public function has($name)
     {
         return $this->handler->exists($this->getCacheKey($name));
     }
@@ -105,7 +80,7 @@ class Redis extends Driver
      * @param  mixed  $default 默认值
      * @return mixed
      */
-    public function get($name, $default = null)
+    public function get($name, $default = false)
     {
         $this->readTimes++;
 
@@ -124,9 +99,9 @@ class Redis extends Driver
      * @param  string            $name 缓存变量名
      * @param  mixed             $value  存储数据
      * @param  integer|\DateTime $expire  有效时间（秒）
-     * @return bool
+     * @return boolean
      */
-    public function set($name, $value, $expire = null): bool
+    public function set($name, $value, $expire = null)
     {
         $this->writeTimes++;
 
@@ -134,27 +109,34 @@ class Redis extends Driver
             $expire = $this->options['expire'];
         }
 
-        $key    = $this->getCacheKey($name);
-        $expire = $this->getExpireTime($expire);
-        $value  = $this->serialize($value);
-
-        if ($expire) {
-            $this->handler->setex($key, $expire, $value);
-        } else {
-            $this->handler->set($key, $value);
+        if ($this->tag && !$this->has($name)) {
+            $first = true;
         }
 
-        return true;
+        $key    = $this->getCacheKey($name);
+        $expire = $this->getExpireTime($expire);
+
+        $value = $this->serialize($value);
+
+        if ($expire) {
+            $result = $this->handler->setex($key, $expire, $value);
+        } else {
+            $result = $this->handler->set($key, $value);
+        }
+
+        isset($first) && $this->setTagItem($key);
+
+        return $result;
     }
 
     /**
      * 自增缓存（针对数值缓存）
      * @access public
-     * @param  string $name 缓存变量名
-     * @param  int    $step 步长
+     * @param  string    $name 缓存变量名
+     * @param  int       $step 步长
      * @return false|int
      */
-    public function inc(string $name, int $step = 1)
+    public function inc($name, $step = 1)
     {
         $this->writeTimes++;
 
@@ -166,11 +148,11 @@ class Redis extends Driver
     /**
      * 自减缓存（针对数值缓存）
      * @access public
-     * @param  string $name 缓存变量名
-     * @param  int    $step 步长
+     * @param  string    $name 缓存变量名
+     * @param  int       $step 步长
      * @return false|int
      */
-    public function dec(string $name, int $step = 1)
+    public function dec($name, $step = 1)
     {
         $this->writeTimes++;
 
@@ -183,62 +165,74 @@ class Redis extends Driver
      * 删除缓存
      * @access public
      * @param  string $name 缓存变量名
-     * @return bool
+     * @return boolean
      */
-    public function delete($name): bool
+    public function rm($name)
     {
         $this->writeTimes++;
 
-        $this->handler->del($this->getCacheKey($name));
-        return true;
+        return $this->handler->delete($this->getCacheKey($name));
     }
 
     /**
      * 清除缓存
      * @access public
-     * @return bool
+     * @param  string $tag 标签名
+     * @return boolean
      */
-    public function clear(): bool
+    public function clear($tag = null)
     {
+        if ($tag) {
+            // 指定标签清除
+            $keys = $this->getTagItem($tag);
+
+            foreach ($keys as $key) {
+                $this->handler->delete($key);
+            }
+
+            $this->rm('tag_' . md5($tag));
+            return true;
+        }
+
         $this->writeTimes++;
 
-        $this->handler->flushDB();
-        return true;
+        return $this->handler->flushDB();
     }
 
     /**
-     * 删除缓存标签
+     * 如果不存在则写入缓存
      * @access public
-     * @param  array  $keys 缓存标识列表
-     * @return void
+     * @param string $name 缓存变量名
+     * @param mixed $value 存储数据
+     * @param int $expire  有效时间 0为永久
+     * @return mixed
      */
-    public function clearTag(array $keys): void
+    public function remember($name, $value, $expire = null)
     {
-        // 指定标签清除
-        $this->handler->del($keys);
-    }
+        if (is_null($expire)) {
+            $expire = $this->options['expire'];
+        }
 
-    /**
-     * 追加（数组）缓存数据
-     * @access public
-     * @param  string $name 缓存标识
-     * @param  mixed  $value 数据
-     * @return void
-     */
-    public function push(string $name, $value): void
-    {
-        $this->handler->sAdd($name, $value);
-    }
+        // 没有过期参数时，使用setnx
+        if (!$expire) {
+            $key = $this->getCacheKey($name);
+            $val = $this->serialize($value);
+            $res = $this->handler->setnx($key,$val);
+            if ($res) {
+                $this->writeTimes++;
+                return $value;
+            }else{
+                return $this->get($name);
+            }
+        }
 
-    /**
-     * 获取标签包含的缓存标识
-     * @access public
-     * @param  string $tag 缓存标签
-     * @return array
-     */
-    public function getTagItems(string $tag): array
-    {
-        return $this->handler->sMembers($tag);
+        if ($this->has($name)) {
+            return $this->get($name);
+        }else{
+            $this->set($name,$value,$expire);
+        }
+
+        return $value;
     }
 
 }

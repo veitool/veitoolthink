@@ -4,20 +4,20 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit9bacb46644b293a00be40e7ff309b6ba
+class ComposerStaticInit57898cf400a54732f12b9d8908a98510
 {
     public static $files = array (
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
         '9b552a3cc426e3287cc811caefa3cf53' => __DIR__ . '/..' . '/topthink/think-helper/src/helper.php',
-        'c964ee0ededf28c96ebd9db5099ef910' => __DIR__ . '/..' . '/guzzlehttp/promises/src/functions_include.php',
         '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
         '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
         '35fab96057f1bf5e7aba31a8a6d5fdde' => __DIR__ . '/..' . '/topthink/think-orm/stubs/load_stubs.php',
         'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
+        '2cffec82183ee1cea088009cef9a6fc3' => __DIR__ . '/..' . '/ezyang/htmlpurifier/library/HTMLPurifier.composer.php',
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
-        '538ca81a9a966a6716601ecf48f4eaef' => __DIR__ . '/..' . '/opis/closure/functions.php',
         'cd5441689b14144e5573bf989ee47b34' => __DIR__ . '/..' . '/qcloud/cos-sdk-v5/src/Common.php',
         '841780ea2e1d6545ea3a253239d59c05' => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu/functions.php',
+        '5dd19d8a547b7318af0c3a93c8bd6565' => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu/Http/Middleware/Middleware.php',
         '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
         '1cfd2761b63b0a29ed23657ea394cb2d' => __DIR__ . '/..' . '/topthink/think-captcha/src/helper.php',
     );
@@ -40,6 +40,10 @@ class ComposerStaticInit9bacb46644b293a00be40e7ff309b6ba
         array (
             'app\\' => 4,
             'addons\\' => 7,
+        ),
+        'Z' => 
+        array (
+            'ZipStream\\' => 10,
         ),
         'W' => 
         array (
@@ -65,15 +69,16 @@ class ComposerStaticInit9bacb46644b293a00be40e7ff309b6ba
             'Psr\\Http\\Client\\' => 16,
             'Psr\\Container\\' => 14,
             'PhpZip\\' => 7,
+            'PhpOffice\\PhpSpreadsheet\\' => 25,
         ),
         'O' => 
         array (
-            'Opis\\Closure\\' => 13,
             'OSS\\' => 4,
         ),
         'M' => 
         array (
             'MyCLabs\\Enum\\' => 13,
+            'Matrix\\' => 7,
         ),
         'L' => 
         array (
@@ -88,6 +93,10 @@ class ComposerStaticInit9bacb46644b293a00be40e7ff309b6ba
             'GuzzleHttp\\Command\\Guzzle\\' => 26,
             'GuzzleHttp\\Command\\' => 19,
             'GuzzleHttp\\' => 11,
+        ),
+        'C' => 
+        array (
+            'Complex\\' => 8,
         ),
     );
 
@@ -135,6 +144,10 @@ class ComposerStaticInit9bacb46644b293a00be40e7ff309b6ba
         'addons\\' => 
         array (
             0 => __DIR__ . '/../..' . '/addons',
+        ),
+        'ZipStream\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/maennchen/zipstream-php/src',
         ),
         'Workerman\\' => 
         array (
@@ -189,9 +202,9 @@ class ComposerStaticInit9bacb46644b293a00be40e7ff309b6ba
         array (
             0 => __DIR__ . '/..' . '/nelexa/zip/src',
         ),
-        'Opis\\Closure\\' => 
+        'PhpOffice\\PhpSpreadsheet\\' => 
         array (
-            0 => __DIR__ . '/..' . '/opis/closure/src',
+            0 => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet',
         ),
         'OSS\\' => 
         array (
@@ -200,6 +213,10 @@ class ComposerStaticInit9bacb46644b293a00be40e7ff309b6ba
         'MyCLabs\\Enum\\' => 
         array (
             0 => __DIR__ . '/..' . '/myclabs/php-enum/src',
+        ),
+        'Matrix\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/markbaker/matrix/classes/src',
         ),
         'League\\MimeTypeDetection\\' => 
         array (
@@ -233,14 +250,18 @@ class ComposerStaticInit9bacb46644b293a00be40e7ff309b6ba
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/guzzle/src',
         ),
+        'Complex\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/markbaker/complex/classes/src',
+        ),
     );
 
     public static $prefixesPsr0 = array (
-        'P' => 
+        'H' => 
         array (
-            'PHPExcel' => 
+            'HTMLPurifier' => 
             array (
-                0 => __DIR__ . '/..' . '/phpoffice/phpexcel/Classes',
+                0 => __DIR__ . '/..' . '/ezyang/htmlpurifier/library',
             ),
         ),
     );
@@ -261,11 +282,11 @@ class ComposerStaticInit9bacb46644b293a00be40e7ff309b6ba
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit9bacb46644b293a00be40e7ff309b6ba::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit9bacb46644b293a00be40e7ff309b6ba::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit9bacb46644b293a00be40e7ff309b6ba::$prefixesPsr0;
-            $loader->fallbackDirsPsr0 = ComposerStaticInit9bacb46644b293a00be40e7ff309b6ba::$fallbackDirsPsr0;
-            $loader->classMap = ComposerStaticInit9bacb46644b293a00be40e7ff309b6ba::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit57898cf400a54732f12b9d8908a98510::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit57898cf400a54732f12b9d8908a98510::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit57898cf400a54732f12b9d8908a98510::$prefixesPsr0;
+            $loader->fallbackDirsPsr0 = ComposerStaticInit57898cf400a54732f12b9d8908a98510::$fallbackDirsPsr0;
+            $loader->classMap = ComposerStaticInit57898cf400a54732f12b9d8908a98510::$classMap;
 
         }, null, ClassLoader::class);
     }

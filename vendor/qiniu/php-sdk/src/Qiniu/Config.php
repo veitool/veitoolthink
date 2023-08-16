@@ -3,7 +3,7 @@ namespace Qiniu;
 
 final class Config
 {
-    const SDK_VER = '7.9.0';
+    const SDK_VER = '7.10.1';
 
     const BLOCK_SIZE = 4194304; //4*1024*1024 分块上传块大小，该参数为接口规格，不能修改
 
@@ -11,6 +11,7 @@ final class Config
     const API_HOST = 'api.qiniuapi.com';
     const RS_HOST = 'rs.qiniuapi.com';      //RS Host
     const UC_HOST = 'uc.qbox.me';              //UC Host
+    const QUERY_REGION_HOST = 'kodo-config.qiniuapi.com';
     const RTCAPI_HOST = 'http://rtc.qiniuapi.com';
     const ARGUS_HOST = 'ai.qiniuapi.com';
     const CASTER_HOST = 'pili-caster.qiniuapi.com';
@@ -32,6 +33,11 @@ final class Config
     private $regionCache;
     // UC Host
     private $ucHost;
+    private $queryRegionHost;
+    // backup UC Hosts
+    private $backupQueryRegionHosts;
+    // backup UC Hosts max retry time
+    public $backupUcHostsRetryTimes;
 
     // 构造函数
     public function __construct(Region $z = null)
@@ -41,11 +47,18 @@ final class Config
         $this->useCdnDomains = false;
         $this->regionCache = array();
         $this->ucHost = Config::UC_HOST;
+        $this->queryRegionHost = Config::QUERY_REGION_HOST;
+        $this->backupQueryRegionHosts = array(
+            "uc.qbox.me",
+            "api.qiniu.com"
+        );
+        $this->backupUcHostsRetryTimes = 2;
     }
 
     public function setUcHost($ucHost)
     {
         $this->ucHost = $ucHost;
+        $this->setQueryRegionHost($ucHost);
     }
 
     public function getUcHost()
@@ -57,6 +70,33 @@ final class Config
         }
 
         return $scheme . $this->ucHost;
+    }
+
+    public function setQueryRegionHost($host, $backupHosts = array())
+    {
+        $this->queryRegionHost = $host;
+        $this->backupQueryRegionHosts = $backupHosts;
+    }
+
+    public function getQueryRegionHost()
+    {
+        if ($this->useHTTPS === true) {
+            $scheme = "https://";
+        } else {
+            $scheme = "http://";
+        }
+
+        return $scheme . $this->queryRegionHost;
+    }
+
+    public function setBackupQueryRegionHosts($hosts = array())
+    {
+        $this->backupQueryRegionHosts = $hosts;
+    }
+
+    public function getBackupQueryRegionHosts()
+    {
+        return $this->backupQueryRegionHosts;
     }
 
     public function getUpHost($accessKey, $bucket)
@@ -308,7 +348,13 @@ final class Config
             return $regionCache;
         }
 
-        $region = Zone::queryZone($accessKey, $bucket, $this->getUcHost());
+        $region = Zone::queryZone(
+            $accessKey,
+            $bucket,
+            $this->getQueryRegionHost(),
+            $this->getBackupQueryRegionHosts(),
+            $this->backupUcHostsRetryTimes
+        );
         if (is_array($region)) {
             list($region, $err) = $region;
             if ($err != null) {
@@ -332,7 +378,13 @@ final class Config
             return array($regionCache, null);
         }
 
-        $region = Zone::queryZone($accessKey, $bucket, $this->getUcHost());
+        $region = Zone::queryZone(
+            $accessKey,
+            $bucket,
+            $this->getQueryRegionHost(),
+            $this->getBackupQueryRegionHosts(),
+            $this->backupUcHostsRetryTimes
+        );
         if (is_array($region)) {
             list($region, $err) = $region;
             return array($region, $err);

@@ -2,7 +2,7 @@
 // +----------------------------------------------------------------------
 // | ThinkPHP [ WE CAN DO IT JUST THINK ]
 // +----------------------------------------------------------------------
-// | Copyright (c) 2006~2019 http://thinkphp.cn All rights reserved.
+// | Copyright (c) 2006~2017 http://thinkphp.cn All rights reserved.
 // +----------------------------------------------------------------------
 // | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
 // +----------------------------------------------------------------------
@@ -13,26 +13,17 @@ namespace think\cache\driver;
 
 use think\cache\Driver;
 
-/**
- * Memcached缓存类
- */
 class Memcached extends Driver
 {
-    /**
-     * 配置参数
-     * @var array
-     */
     protected $options = [
-        'host'       => '127.0.0.1',
-        'port'       => 11211,
-        'expire'     => 0,
-        'timeout'    => 0, // 超时时间（单位：毫秒）
-        'prefix'     => '',
-        'username'   => '', //账号
-        'password'   => '', //密码
-        'option'     => [],
-        'tag_prefix' => 'tag:',
-        'serialize'  => [],
+        'host'     => '127.0.0.1',
+        'port'     => 11211,
+        'expire'   => 0,
+        'timeout'  => 0, // 超时时间（单位：毫秒）
+        'prefix'   => '',
+        'username' => '', //账号
+        'password' => '', //密码
+        'option'   => [],
     ];
 
     /**
@@ -40,7 +31,7 @@ class Memcached extends Driver
      * @access public
      * @param  array $options 缓存参数
      */
-    public function __construct(array $options = [])
+    public function __construct($options = [])
     {
         if (!extension_loaded('memcached')) {
             throw new \BadFunctionCallException('not support: memcached');
@@ -62,16 +53,16 @@ class Memcached extends Driver
         }
 
         // 支持集群
-        $hosts = (array) $this->options['host'];
-        $ports = (array) $this->options['port'];
+        $hosts = explode(',', $this->options['host']);
+        $ports = explode(',', $this->options['port']);
         if (empty($ports[0])) {
             $ports[0] = 11211;
         }
 
         // 建立连接
         $servers = [];
-        foreach ($hosts as $i => $host) {
-            $servers[] = [$host, $ports[$i] ?? $ports[0], 1];
+        foreach ((array) $hosts as $i => $host) {
+            $servers[] = [$host, (isset($ports[$i]) ? $ports[$i] : $ports[0]), 1];
         }
 
         $this->handler->addServers($servers);
@@ -88,7 +79,7 @@ class Memcached extends Driver
      * @param  string $name 缓存变量名
      * @return bool
      */
-    public function has($name): bool
+    public function has($name)
     {
         $key = $this->getCacheKey($name);
 
@@ -102,7 +93,7 @@ class Memcached extends Driver
      * @param  mixed  $default 默认值
      * @return mixed
      */
-    public function get($name, $default = null)
+    public function get($name, $default = false)
     {
         $this->readTimes++;
 
@@ -119,7 +110,7 @@ class Memcached extends Driver
      * @param  integer|\DateTime $expire  有效时间（秒）
      * @return bool
      */
-    public function set($name, $value, $expire = null): bool
+    public function set($name, $value, $expire = null)
     {
         $this->writeTimes++;
 
@@ -127,11 +118,16 @@ class Memcached extends Driver
             $expire = $this->options['expire'];
         }
 
+        if ($this->tag && !$this->has($name)) {
+            $first = true;
+        }
+
         $key    = $this->getCacheKey($name);
         $expire = $this->getExpireTime($expire);
         $value  = $this->serialize($value);
 
         if ($this->handler->set($key, $value, $expire)) {
+            isset($first) && $this->setTagItem($key);
             return true;
         }
 
@@ -141,11 +137,11 @@ class Memcached extends Driver
     /**
      * 自增缓存（针对数值缓存）
      * @access public
-     * @param  string $name 缓存变量名
-     * @param  int    $step 步长
+     * @param  string    $name 缓存变量名
+     * @param  int       $step 步长
      * @return false|int
      */
-    public function inc(string $name, int $step = 1)
+    public function inc($name, $step = 1)
     {
         $this->writeTimes++;
 
@@ -161,11 +157,11 @@ class Memcached extends Driver
     /**
      * 自减缓存（针对数值缓存）
      * @access public
-     * @param  string $name 缓存变量名
-     * @param  int    $step 步长
+     * @param  string    $name 缓存变量名
+     * @param  int       $step 步长
      * @return false|int
      */
-    public function dec(string $name, int $step = 1)
+    public function dec($name, $step = 1)
     {
         $this->writeTimes++;
 
@@ -173,7 +169,11 @@ class Memcached extends Driver
         $value = $this->handler->get($key) - $step;
         $res   = $this->handler->set($key, $value);
 
-        return !$res ? false : $value;
+        if (!$res) {
+            return false;
+        } else {
+            return $value;
+        }
     }
 
     /**
@@ -183,7 +183,7 @@ class Memcached extends Driver
      * @param  bool|false   $ttl
      * @return bool
      */
-    public function delete($name, $ttl = false): bool
+    public function rm($name, $ttl = false)
     {
         $this->writeTimes++;
 
@@ -197,24 +197,23 @@ class Memcached extends Driver
     /**
      * 清除缓存
      * @access public
+     * @param  string $tag 标签名
      * @return bool
      */
-    public function clear(): bool
+    public function clear($tag = null)
     {
+        if ($tag) {
+            // 指定标签清除
+            $keys = $this->getTagItem($tag);
+
+            $this->handler->deleteMulti($keys);
+            $this->rm('tag_' . md5($tag));
+
+            return true;
+        }
+
         $this->writeTimes++;
 
         return $this->handler->flush();
     }
-
-    /**
-     * 删除缓存标签
-     * @access public
-     * @param  array $keys 缓存标识列表
-     * @return void
-     */
-    public function clearTag(array $keys): void
-    {
-        $this->handler->deleteMulti($keys);
-    }
-
 }

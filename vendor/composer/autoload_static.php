@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit9c995ad11ea639425d8b630518680326
+class ComposerStaticInit9f2e30f9993c254ba202c46ffa184b8d
 {
     public static $files = array (
         '9b552a3cc426e3287cc811caefa3cf53' => __DIR__ . '/..' . '/topthink/think-helper/src/helper.php',
@@ -13,6 +13,7 @@ class ComposerStaticInit9c995ad11ea639425d8b630518680326
         '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
         '35fab96057f1bf5e7aba31a8a6d5fdde' => __DIR__ . '/..' . '/topthink/think-orm/stubs/load_stubs.php',
         'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
+        '2cffec82183ee1cea088009cef9a6fc3' => __DIR__ . '/..' . '/ezyang/htmlpurifier/library/HTMLPurifier.composer.php',
         '538ca81a9a966a6716601ecf48f4eaef' => __DIR__ . '/..' . '/opis/closure/functions.php',
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         '25072dd6e2470089de65ae7bf11d3109' => __DIR__ . '/..' . '/symfony/polyfill-php72/bootstrap.php',
@@ -42,6 +43,10 @@ class ComposerStaticInit9c995ad11ea639425d8b630518680326
             'app\\' => 4,
             'addons\\' => 7,
         ),
+        'Z' => 
+        array (
+            'ZipStream\\' => 10,
+        ),
         'W' => 
         array (
             'Workerman\\' => 10,
@@ -68,6 +73,7 @@ class ComposerStaticInit9c995ad11ea639425d8b630518680326
             'Psr\\Container\\' => 14,
             'Psr\\Cache\\' => 10,
             'PhpZip\\' => 7,
+            'PhpOffice\\PhpSpreadsheet\\' => 25,
         ),
         'O' => 
         array (
@@ -77,6 +83,7 @@ class ComposerStaticInit9c995ad11ea639425d8b630518680326
         'M' => 
         array (
             'MyCLabs\\Enum\\' => 13,
+            'Matrix\\' => 7,
         ),
         'L' => 
         array (
@@ -92,6 +99,10 @@ class ComposerStaticInit9c995ad11ea639425d8b630518680326
             'GuzzleHttp\\Command\\' => 19,
             'GuzzleHttp\\' => 11,
             'GatewayWorker\\' => 14,
+        ),
+        'C' => 
+        array (
+            'Complex\\' => 8,
         ),
     );
 
@@ -139,6 +150,10 @@ class ComposerStaticInit9c995ad11ea639425d8b630518680326
         'addons\\' => 
         array (
             0 => __DIR__ . '/../..' . '/addons',
+        ),
+        'ZipStream\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/maennchen/zipstream-php/src',
         ),
         'Workerman\\' => 
         array (
@@ -201,6 +216,10 @@ class ComposerStaticInit9c995ad11ea639425d8b630518680326
         array (
             0 => __DIR__ . '/..' . '/nelexa/zip/src',
         ),
+        'PhpOffice\\PhpSpreadsheet\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet',
+        ),
         'Opis\\Closure\\' => 
         array (
             0 => __DIR__ . '/..' . '/opis/closure/src',
@@ -212,6 +231,10 @@ class ComposerStaticInit9c995ad11ea639425d8b630518680326
         'MyCLabs\\Enum\\' => 
         array (
             0 => __DIR__ . '/..' . '/myclabs/php-enum/src',
+        ),
+        'Matrix\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/markbaker/matrix/classes/src',
         ),
         'League\\MimeTypeDetection\\' => 
         array (
@@ -249,14 +272,18 @@ class ComposerStaticInit9c995ad11ea639425d8b630518680326
         array (
             0 => __DIR__ . '/..' . '/workerman/gateway-worker/src',
         ),
+        'Complex\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/markbaker/complex/classes/src',
+        ),
     );
 
     public static $prefixesPsr0 = array (
-        'P' => 
+        'H' => 
         array (
-            'PHPExcel' => 
+            'HTMLPurifier' => 
             array (
-                0 => __DIR__ . '/..' . '/phpoffice/phpexcel/Classes',
+                0 => __DIR__ . '/..' . '/ezyang/htmlpurifier/library',
             ),
         ),
     );
@@ -277,11 +304,11 @@ class ComposerStaticInit9c995ad11ea639425d8b630518680326
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit9c995ad11ea639425d8b630518680326::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit9c995ad11ea639425d8b630518680326::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit9c995ad11ea639425d8b630518680326::$prefixesPsr0;
-            $loader->fallbackDirsPsr0 = ComposerStaticInit9c995ad11ea639425d8b630518680326::$fallbackDirsPsr0;
-            $loader->classMap = ComposerStaticInit9c995ad11ea639425d8b630518680326::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit9f2e30f9993c254ba202c46ffa184b8d::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit9f2e30f9993c254ba202c46ffa184b8d::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit9f2e30f9993c254ba202c46ffa184b8d::$prefixesPsr0;
+            $loader->fallbackDirsPsr0 = ComposerStaticInit9f2e30f9993c254ba202c46ffa184b8d::$fallbackDirsPsr0;
+            $loader->classMap = ComposerStaticInit9f2e30f9993c254ba202c46ffa184b8d::$classMap;
 
         }, null, ClassLoader::class);
     }

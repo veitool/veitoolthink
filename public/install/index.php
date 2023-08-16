@@ -9,8 +9,8 @@
  */
 header('Content-Type:text/html; charset=utf-8');
 // 检测php版本号
-if(version_compare(PHP_VERSION,'8.0.2','<')){
-    exit('很抱歉，由于您的PHP版本过低，不能安装本软件，为了系统功能全面可用，请升级到PHP8.0.2或更高版本再安装，谢谢！');
+if(version_compare(PHP_VERSION,'8.1.0','<')){
+    exit('很抱歉，由于您的PHP版本过低，不能安装本软件，为了系统功能全面可用，请升级到PHP8.1.0或更高版本再安装，谢谢！');
 }
 
 // 不限制响应时间 error_reporting(0);
@@ -20,16 +20,16 @@ set_time_limit(0);
 define('INSTALL_PATH', str_replace('\\', '/', dirname(__FILE__)));
 define('ROOT_PATH', dirname(INSTALL_PATH, 2));
 
+// 提示已经安装
+if(is_file(INSTALL_PATH . '/install.lock')){
+    exit('已经安装过');
+}
+
 // 版权信息设置
 $copyright = '© 2023 veitool.com 版权所有';
 
 // 获取当前步骤
 $s = isset($_GET['s']) && in_array($_GET['s'], [1,2,3,4,5,6]) ? $_GET['s'] : 1 ;
-
-// 提示已经安装
-if(is_file(INSTALL_PATH . '/install.lock')){
-    exit('已经安装过');
-}
 
 // 环境检测
 if($s == 2){
@@ -220,6 +220,18 @@ function getExtendArray()
             'status' => extension_loaded('PDO') && extension_loaded('pdo_mysql'),
         ],
         [
+            'name' => 'Mysqlnd',
+            'status' => extension_loaded('mysqlnd'),
+        ],
+        [
+            'name' => 'JSON',
+            'status' => extension_loaded('json')
+        ],
+        [
+            'name' => 'Fileinfo',
+            'status' => extension_loaded('fileinfo')
+        ],
+        [
             'name' => 'GD',
             'status' => extension_loaded('gd'),
         ],
@@ -228,7 +240,7 @@ function getExtendArray()
             'status' => extension_loaded('bcmath'),
         ],
         [
-            'name' => 'mbstring',
+            'name' => 'Mbstring',
             'status' => extension_loaded('mbstring'),
         ],
         [

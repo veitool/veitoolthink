@@ -1,5 +1,5 @@
 /*
- * Veitool 1.0 构建表单项 2020-06-28
+ * Veitool 1.0.3 构建表单项 2023-08-12
  * Website:www.veitool.com 
  * Author：niaho (QQ:26843818)
  */
@@ -16,7 +16,7 @@ layui.define(['tagsInput','fileLibrary','cascader'], function(e){
     c.item_html = '<div class="layui-form-item" id="item-{{ d.relation ? d.relation + "-" : "" }}{{ d.name }}" style="{{# if(d.itemStyle){ }}{{ d.itemStyle }}{{# } }}{{# if(d.hide || (d.relation && d.relation.indexOf("_")!=-1)){ }}display:none;{{# } }}">' + c.label_html;
     c.tips_html = '{{# if(d.tips){ }}<div class="layui-form-mid layui-word-aux"><i class="layui-icon">&#xe748;</i> {{ d.tips }}</div>{{# } }}';
     c.vers_html = '{{# if(d.verify){ }}lay-verify="{{ d.verify }}" lay-vertype="{{ d.vertype || \'\' }}" lay-reqtext="{{ d.reqtext || d.placeholder || \'\' }}" {{# } }}';
-    c.plac_html = '{{# if(d.placeholder){ }}placeholder="{{ d.placeholder }}" {{# } }}';
+    c.plac_html = '{{# if(d.placeholder){ }}placeholder="{{ d.placeholder }}" {{# } }}{{# if(d.readonly){ }}readonly {{# } }}';
     c.affix_html = '{{# if(d.affix){ }}lay-affix="{{ d.affix }}" {{# } }}';
     c.item_style = '{{# if(d.style){ }}style="{{ d.style }}" {{# } }}';
     //表单元素
@@ -26,16 +26,22 @@ layui.define(['tagsInput','fileLibrary','cascader'], function(e){
     c.radio_html = '{{# if(d.relation){layui.buildItems.rela(d.name,d.relation,"radio");} layui.each(d.options, function(key, txt){ }}<input type="radio" name="{{ d.name }}" lay-filter="{{ d.name }}" value="{{ key }}" title="{{ txt }}" {{ d.value == key ? "checked" : "" }} />{{# }); }}';
     c.checkbox_html = '{{# layui.each(d.options, function(key, txt){ }}<input type="checkbox" name="{{ d.name }}[]" lay-filter="{{ d.name }}" lay-skin="{{ d.skin }}" value="{{ key }}" title="{{ txt }}" {{ (d.value).split(",").indexOf(String(key))>-1 ? "checked" : "" }}/>{{# }); }}';
     c.password_html = '<input type="password" name="{{ d.name }}" value="{{ d.value }}" ' + c.item_style + c.vers_html + 'autocomplete="off" ' + c.plac_html + c.affix_html;
-    c.textarea_html = '<textarea name="{{ d.name }}" class="layui-textarea" ' + c.item_style;
+    c.textarea_html = '<textarea name="{{ d.name }}" ' + c.item_style;
     c.select_html = '<select name="{{ d.name }}" lay-filter="{{ d.name }}" ' + c.item_style + c.vers_html + '{{# if(d.search){ }}lay-search{{# } }}>{{# layui.each(d.options, function(key, txt){ }}<option value="{{ key }}" {{ d.value == key ? "selected" : "" }}>{{ txt }}</option>{{# }); }}</select>';
     //隐藏域
     c.hidden = '<input type="hidden" name="{{ d.name }}" value="{{ d.value || \'\' }}"/>';
     //静态代码
     c.html = c.item_html + c.block_html + '>' + '{{- d.html }}' + c.tips_html + '</div></div>';
-    //单行文本
+    //单行文本、数组
     c.text = c.item_html + c.block_html + '>' + c.text_html + '{{# if(d.id){ }}id="{{ d.id }}"{{# } }} class="layui-input"/>' + c.tips_html + '</div></div>';
-    //多行文本、数组
-    c.textarea = c.array = c.item_html + c.block_html + '>' + c.textarea_html + '{{# if(d.id){ }}id="{{ d.id }}" {{# } }}' + c.vers_html + c.plac_html + '>{{ d.value }}</textarea>' + c.tips_html + '</div></div>';
+    //多行文本
+    c.textarea = c.array = c.item_html + c.block_html + '>' + c.textarea_html + 'class="layui-textarea" {{# if(d.id){ }}id="{{ d.id }}" {{# } }}' + c.vers_html + c.plac_html + '>{{ d.value }}</textarea>' + c.tips_html + '</div></div>';
+    //键值对组
+    c.keyval_html = '{{# d.value = d.value || "{}"; layui.each(typeof d.value === "string" ? JSON.parse(d.value) : d.value, function(k, v){ }}<div class="keyval_item"><div class="layui-input-inline"><input type="text" value="{{ k }}" class="layui-input" placeholder="key"></div>'+
+            '<div class="layui-form-mid">:</div><div class="layui-input-inline"><input type="text" value="{{ v }}" class="layui-input" placeholder="value"></div>'+
+            '<a class="layui-btn layui-bg-red del"><i class="layui-icon layui-icon-delete"></i></a></div>{{# }); }}';
+    c.keyval = c.item_html + c.block_html + '><div id="keyval-show-{{ d.name }}" data-name="{{ d.name }}"><input type="hidden" name="{{ d.name }}" id="keyval-input-{{ d.name }}" value="" ' +
+            'lay-verify="{{ d.verify || \'\' }}" lay-reqtext="{{ d.reqtext || \'\' }}"/>'+ c.keyval_html + '</div><a class="layui-btn keyval-add" id="keyval-add-{{ d.name }}"><i class="layui-icon layui-icon-add-circle"></i> 追加</a>' + c.tips_html + '</div></div>';
     //静态文本
     c.static = c.item_html + c.block_html + '>' + '<div class="layui-form-mid layui-word-aux">{{ d.value }}</div></div></div>';
     //密码
@@ -61,22 +67,22 @@ layui.define(['tagsInput','fileLibrary','cascader'], function(e){
     //百度编辑器
     c.ueditor = c.item_html + c.block_html + '>' + c.textarea_html + ' id="ueditor-{{ d.id ? d.id : d.name }}" style="border:0;padding:0;">{{ d.value }}</textarea>' + c.tips_html + '</div></div>';
     //Md编辑器
-    c.cherrymd = c.item_html + c.block_html + '><div id="cherrymd-{{ d.id ? d.id : d.name }}"></div><textarea id="temp-{{ d.id ? d.id : d.name }}" style="display:none;">{{ d.value }}</textarea>' + c.tips_html + '</div></div>';
+    c.cherrymd = c.item_html + c.block_html + '><div '+ c.item_style +'id="cherrymd-{{ d.id ? d.id : d.name }}"></div><textarea id="temp-{{ d.id ? d.id : d.name }}" style="display:none;">{{ d.value }}</textarea>' + c.tips_html + '</div></div>';
     //Md编辑器
     c.editormd = c.item_html + c.block_html + '><style>.editormd-preview li{list-style:inherit!important}.editormd-code-toolbar>select{display:initial}</style><div id="editormd-{{ d.id ? d.id : d.name }}" style="z-index:1000;">' + c.textarea_html + ' style="display:none;">{{ d.value }}</textarea></div>' + c.tips_html + '</div></div>';
     //TinyMCE编辑器
     c.tinymce = c.item_html + c.block_html + '>' + c.textarea_html + ' id="tinymce-{{ d.id ? d.id : d.name }}">{{ d.value }}</textarea>' + c.tips_html + '</div></div>';
     //上传单图
     c.image = c.item_html + c.block_html + '><div id="image-show-{{ d.name }}" data-type="image" data-verify="{{ d.verify || \'\' }}" data-reqtext="{{ d.reqtext || \'\' }}">{{# if (d.value) { }}' +
-              '<div class="imgs_item"><img src="{{ d.value }}"/><input type="hidden" name="{{ d.name }}" value="{{ d.value }}"/>'+
+              '<div class="image_item"><img src="{{ d.value }}"/><input type="hidden" name="{{ d.name }}" value="{{ d.value }}"/>'+
               '<i class="layui-icon layui-icon-edit item-edit"></i><i class="layui-icon layui-icon-close item-delete"></i></div>{{# }else{ }}<input type="hidden" name="{{ d.name }}" lay-verify="{{ d.verify || \'\' }}" lay-reqtext="{{ d.reqtext || \'\' }}"/>{{# } }}</div>'+
-              '<div class="imgs_item layui-upload-drag" style="background:#efefef;" id="up-image-btn-{{ d.name }}" data-type="image" data-name="{{ d.name }}" data-thum="{{ d.thum || 0 }}"><i class="layui-icon">&#xe67c;</i><br/>上传图片</div>'+
+              '<div class="image_item layui-upload-drag" style="background:#efefef;" id="up-image-btn-{{ d.name }}" data-type="image" data-name="{{ d.name }}" data-thum="{{ d.thum || 0 }}"><i class="layui-icon">&#xe67c;</i><br/>上传图片</div>'+
               '<div style="clear:both"></div>' + c.tips_html + '</div></div>';
     //上传多图
     c.images = c.item_html + c.block_html + '><div id="image-show-{{ d.name }}" data-type="images" data-verify="{{ d.verify || \'\' }}" data-reqtext="{{ d.reqtext || \'\' }}">{{# var i = 0;layui.each(d.value, function(key, url){ i=1; }}'+
-              '<div class="imgs_item"><img src="{{ url }}"/><input type="hidden" name="{{ d.name }}[]" value="{{ url }}"/>'+
+              '<div class="image_item"><img src="{{ url }}"/><input type="hidden" name="{{ d.name }}[]" value="{{ url }}"/>'+
               '<i class="layui-icon layui-icon-edit item-edit"></i><i class="layui-icon layui-icon-close item-delete"></i></div>{{# }); }}{{# if (i == 0) { }}<input type="hidden" name="{{ d.name }}" lay-verify="{{ d.verify || \'\' }}" lay-reqtext="{{ d.reqtext || \'\' }}"/>{{# } }}</div>'+
-              '<div class="imgs_item layui-upload-drag" style="background:#efefef;" id="up-image-btn-{{ d.name }}" data-type="images" data-name="{{ d.name }}" data-thum="{{ d.thum || 0 }}"><i class="layui-icon">&#xe67c;</i><br/>上传图片</div>'+
+              '<div class="image_item layui-upload-drag" style="background:#efefef;" id="up-image-btn-{{ d.name }}" data-type="images" data-name="{{ d.name }}" data-thum="{{ d.thum || 0 }}"><i class="layui-icon">&#xe67c;</i><br/>上传图片</div>'+
               '<div style="clear:both"></div>' + c.tips_html + '</div></div>';
     //上传文件
     c.upfile = c.item_html + c.block_html + '>' + c.inline_html + ' style="width:85px;float:right;"><button type="button" class="layui-btn" data-type="{{ d.filetype }}" id="{{ d.id ? d.id : \'upfile-btn-\' + d.name }}">上传文件</button></div>'+
@@ -109,6 +115,7 @@ layui.define(['tagsInput','fileLibrary','cascader'], function(e){
             c.map  = d.map || 'admin/system.upload/'; //上传接口
             c.url  = d.url || ''; //构建项json数据接口
             c.data = d.data || []; //构建项json数据
+            c.space = d.space ? ' '+d.space : ''; //栅格间隙 layui-col-space[n]
             if(c.data.length > 0 || c.data.constructor === Object){
                 b.sett(c.data);
             }else{
@@ -124,14 +131,28 @@ layui.define(['tagsInput','fileLibrary','cascader'], function(e){
             }
         },
         sett: function(data){ //data: 二维数组[{name:标识,title:标题,group:分组,type:类型,value:值,options:选项},{}]
-            var html = '';
+            var html = '', str = '', tab_t = '', tab_c = '';
+            $h = $("#"+ c.bid);
             for(var i in data){
                 var d = data[i];
-                if(c[d.type]===undefined){continue;}
-                html = html + b.tpl(c[d.type],d);
+                if(d.type=='layui_tab'){
+                    tab_t += '<li'+ (d.showTab ? ' class="layui-this"' : '') +'>'+ d.title +'</li>';
+                    tab_c += '<div class="layui-tab-item'+(d.showTab ? ' layui-show' : '')+ c.space +'">';
+                    for(var j in d.data){
+                        var dd = d.data[j];
+                        if(c[dd.type]){
+                            str = b.tpl(c[dd.type],dd);
+                            tab_c += (dd.itemCol ? '<div class="'+ dd.itemCol +'">' + str + '</div>' : str);
+                        }
+                    }
+                    tab_c += '</div>';
+                }else if(c[d.type]){
+                    str = b.tpl(c[d.type],d);
+                    html += (d.itemCol ? '<div class="'+ d.itemCol +'">' + str + '</div>' : str);
+                }
             }
-            $("#"+c.bid).html(html);
-            $h = $("#"+ c.bid);
+            html += tab_t ? '<div class="layui-tab layui-tab-brief"><ul class="layui-tab-title">'+tab_t+'</ul><div class="layui-tab-content">'+tab_c+'</div></div>' : !$h.addClass(c.space) || '';
+            $h.html(html);
             form.render(null,c.bid+'_form');
             //显示选中的关联项
             $.each(c.relation,function(i,v){
@@ -231,20 +252,28 @@ layui.define(['tagsInput','fileLibrary','cascader'], function(e){
             $h.find("[id^='image-show-']").each(function(){
                 if($(this).data('type')=='images') ids.push($(this).attr('id'));
             });
+            $h.find("[id^='keyval-show-']").each(function(){
+                ids.push($(this).attr('id'));
+                b.setArr($(this).data('name')); // 初始赋值到隐藏域
+            });
             if(ids.length > 0){
                 layui.define(function(e){
                     $ = layui.$;window.jQuery = layui.$;
                     jQuery.getScript(static + "script/ddsort/ddsort.js").done(function(){
                         e('DDSort',jQuery);
-                        for(var i in ids){
-                            $("#"+ids[i]).DDSort({
-                                target: '.imgs_item',
-                                delay: 100, // 延时处理，默认为 50 ms，防止手抖点击 A 链接无效
-                                floatStyle:{
-                                    'border': '1px solid #ccc',
-                                    'background-color': '#fff'
-                                }
-                            });
+                        if(ids.length > 0){
+                            for(var i in ids){
+                                let rs = ids[i].split("-");
+                                $("#"+ids[i]).DDSort({
+                                    target: '.'+ rs[0] +'_item',
+                                    delay: 100, // 延时处理，默认为 50 ms，防止手抖点击 A 链接无效
+                                    floatStyle:{
+                                        'border': '1px solid #ccc',
+                                        'background-color': '#fff'
+                                    },
+                                    up:function(){if(rs[0]=='keyval') b.setArr(rs[2]);}
+                                });
+                            }
                         }
                     }).fail(function(){
                         layui.hint().error('加载DDSort.js失败');
@@ -253,7 +282,7 @@ layui.define(['tagsInput','fileLibrary','cascader'], function(e){
             }
         },
         regAction: function(){
-            $h.find("[id^='image-show-']").on('click','.imgs_item .item-edit', function(){
+            $h.find("[id^='image-show-']").on('click','.image_item .item-edit', function(){
                 var $this = $(this);
                 var $img   = $this.parent().children('img');
                 var $input = $this.parent().children('input');
@@ -287,7 +316,7 @@ layui.define(['tagsInput','fileLibrary','cascader'], function(e){
                     }
                 });
             });
-            $h.find("[id^='image-show-']").on('click','.imgs_item .item-delete', function(){
+            $h.find("[id^='image-show-']").on('click','.image_item .item-delete', function(){
                 var $this = $(this), noClick = $this.data('noClick'), name = $this.data('name');
                 if (noClick) {return false;}
                 layer.confirm('您确定要删除该' + (name ? name : '图片') + '吗？', {
@@ -302,6 +331,20 @@ layui.define(['tagsInput','fileLibrary','cascader'], function(e){
                     layer.close(index);
                 });
             });
+            $h.find("[id^='keyval-add-']").on('click',function(){
+                var id  = $(this).attr('id');
+                var name = id.split('-')[2];
+                var str = b.tpl(c.keyval_html,{value:{'':''}});
+                $("#keyval-show-"+name).append(str);
+            });
+            $h.find("[id^='keyval-show-']").on('click','.keyval_item .del',function(){
+                var name = $(this).parent().parent().data('name');
+                $(this).parent().remove();
+                b.setArr(name);
+            });
+            $h.find("[id^='keyval-show-']").on('blur','.keyval_item input',function(){
+                b.setArr($(this).parent().parent().parent().data('name'));
+            });
         },
         regUpload: function(){
             $h.find("[id^='up-image-btn-']").on('click', function(){
@@ -313,12 +356,12 @@ layui.define(['tagsInput','fileLibrary','cascader'], function(e){
                     if(res.length == 0) return;
                     var $pbox = $h.find("#image-show-" + name);
                     if(type=='image'){
-                        $pbox.html('<div class="imgs_item"><img src="'+ res[0].file_path +'" /><input type="hidden" name="'+ name +'" value="'+ res[0].file_path +'"><i class="layui-icon layui-icon-edit item-edit"></i><i class="layui-icon layui-icon-close item-delete"></i></div>');
+                        $pbox.html('<div class="image_item"><img src="'+ res[0].file_path +'" /><input type="hidden" name="'+ name +'" value="'+ res[0].file_path +'"><i class="layui-icon layui-icon-edit item-edit"></i><i class="layui-icon layui-icon-close item-delete"></i></div>');
                     }else{
                         if($pbox.children('input').length>0) $pbox.html('');
                         for(var i in res){
                             var v = res[i];
-                            $pbox.append('<div class="imgs_item"><img src="'+ v.file_path +'" /><input type="hidden" name="'+ name +'[]" value="'+ v.file_path +'"><i class="layui-icon layui-icon-edit item-edit"></i><i class="layui-icon layui-icon-close item-delete"></i></div>');
+                            $pbox.append('<div class="image_item"><img src="'+ v.file_path +'" /><input type="hidden" name="'+ name +'[]" value="'+ v.file_path +'"><i class="layui-icon layui-icon-edit item-edit"></i><i class="layui-icon layui-icon-close item-delete"></i></div>');
                         }
                     }
                     b.Photos();
@@ -346,8 +389,7 @@ layui.define(['tagsInput','fileLibrary','cascader'], function(e){
                             ]],
                             wordCount: false,
                             autoFloatEnabled: false,
-                            autosave: false,
-                            //saveInterval: 5000,
+                            autosave: false, //saveInterval: 5000,
                             zIndex: isOpen ? 19991000 : 999,
                             cpos: isOpen ? 'fixed' : '', //isOpen来判断是否为弹窗 弹出窗口中编辑器兼容可全屏
                             UEDITOR_HOME_URL: static + 'ueditor/',
@@ -370,8 +412,7 @@ layui.define(['tagsInput','fileLibrary','cascader'], function(e){
                                     });
                                 }
                             });
-                            //源码模式时按钮变灰切换
-                            editor.addListener('selectionchange', function(){
+                            editor.addListener('selectionchange', function(){ //源码模式时按钮变灰切换
                                 var state = editor.queryCommandState(uiName);
                                 if(state == -1){btn.setDisabled(true);btn.setChecked(false);}else{btn.setDisabled(false);btn.setChecked(state);}
                             });
@@ -393,6 +434,7 @@ layui.define(['tagsInput','fileLibrary','cascader'], function(e){
                         let name = eid.split("-")[1],k = i;
                         obj[i] = new Cherry({
                             id:eid,
+                            engine:{syntax:{codeBlock:{wrap:false}}},
                             editor:{height:heg+'px',id:name,name:name,value:$('#temp-'+name).val(),autoSave2Textarea:true,codemirror:{autofocus:false}},
                             callback:{afterInit:function(){$("textarea[name='"+name+"']")[0].value=$('#temp-'+name).val();}},
                             toolbars:{
@@ -471,9 +513,10 @@ layui.define(['tagsInput','fileLibrary','cascader'], function(e){
                 b.getTE(function(){
                     tinymce.remove();
                     for(var i in ids){
+                        let heg = $("#"+ ids[i]).height(); heg = heg>400 ? heg : 400;
                         tinymce.init({
                             selector: '#'+ ids[i],
-                            min_height: 400,
+                            min_height: heg,
                             suffix: '.min',
                             branding: false,
                             language:'zh_CN',
@@ -493,8 +536,7 @@ layui.define(['tagsInput','fileLibrary','cascader'], function(e){
                                      upurl = c.map + "upfile?action=video&groupid=" + c.gid;
                                      filetype = '.mp3, .mp4';
                                 }
-                                //模拟出一个input用于添加本地文件
-                                var input = document.createElement('input');input.setAttribute('type', 'file');input.setAttribute('accept', filetype);input.click();
+                                var input = document.createElement('input');input.setAttribute('type', 'file');input.setAttribute('accept', filetype);input.click();/*模拟出一个input用于添加本地文件*/
                                 input.onchange = function(){
                                     var xhr = new XMLHttpRequest(), formData = new FormData(), file = this.files[0];
                                     xhr.withCredentials = false;
@@ -581,6 +623,15 @@ layui.define(['tagsInput','fileLibrary','cascader'], function(e){
                     typeof success === 'function' && success();
                 });
             }
+        },
+        setArr: function(name){
+            var obj = {}, val;
+            $h.find("#keyval-show-"+ name +" .keyval_item").each(function(){
+                let key = $(this).find("input:eq(0)").val();
+                if(key) obj[key] = $(this).find("input:eq(1)").val();
+            });
+            val = JSON.stringify(obj);
+            $("#keyval-input-"+name).val(val==='{}' ? '' : val);
         },
         tpl: function(t,d){var h='';layui.laytpl(t).render(d,function(r){h=r;});return h;}
     };

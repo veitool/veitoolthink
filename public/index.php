@@ -11,7 +11,7 @@
 namespace think;
 
 // 检测PHP环境
-if(version_compare(PHP_VERSION,'8.0.2','<')) die('require PHP >= 8.0.2!');
+if(version_compare(PHP_VERSION,'8.1.0','<')) die('require PHP >= 8.1.0!');
 
 // 安装引导
 if (!is_file(__DIR__ . '/install/install.lock')) exit(header('Location:/install'));

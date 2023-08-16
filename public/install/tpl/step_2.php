@@ -4,7 +4,7 @@
         <table class="layui-table" lay-even lay-skin="nob" lay-size="sm">
             <tr><th width="30%">项目</th><th width="30%">所需配置</th><th width="15%">推荐配置</th><th width="25%">当前服务器</th></tr>
             <tr><td>操作系统</td><td>不限制</td><td>Linux</td><td><?php echo PHP_OS; ?></td></tr>
-            <tr><td>PHP 版本</td><td>8.0.2</td><td>8.1</td><td><?php echo PHP_VERSION; ?></td></tr>
+            <tr><td>PHP 版本</td><td>8.1.0</td><td>8.1.0</td><td><?php echo PHP_VERSION; ?></td></tr>
             <tr><td>附件上传</td><td>2Mb</td><td>20Mb</td><td><?php echo get_cfg_var("upload_max_filesize") ? get_cfg_var("upload_max_filesize").'b' : '不允许上传附件'; ?></td></tr>
             <tr><td>GD 库</td><td>2.0</td><td>2.1</td><td>
             <?php

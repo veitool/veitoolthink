@@ -36,7 +36,7 @@ if($s == 2){
     // 初始通过
     $isOK = true;
     // 检测是否可写的路径
-    $iswrite_array = ['/.env',/** / '/addons/','/runtime/',/**/'/public/file/'];
+    $iswrite_array = ['/.env','/public/file/'];
     // 获取检测的函数数据
     $exists_array = ['curl_init', 'bcadd', 'mb_substr', 'simplexml_load_string'];
     // 获取扩展要求数据

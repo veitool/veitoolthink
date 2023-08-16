@@ -22,7 +22,7 @@ class AppInit extends Service
     public function handle()
     {
         // 版本信息
-        define('VT_VERSION', '1.0.2');
+        define('VT_VERSION', '1.0.3');
         // 后台管理员 session 标识
         define('VT_MANAGER', 'V_MANAGER');
         // 前台会员 session 标识

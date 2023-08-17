@@ -24,8 +24,8 @@
                 <div class="layui-form-mid layui-word-aux">请输入数据库账号，默认为：root</div>
             </div>
             <div class="layui-form-item">
-                <label class="layui-form-label"><font color="red">*</font> 数据表前缀</label>
-                <div class="layui-input-inline"><input type="text" class="layui-input" name="dbpre" id="dbpre" autocomplete="off" lay-verify="required" lay-reqtext="请输入数据表前缀" value="vt_"/></div>
+                <label class="layui-form-label"> 数据表前缀</label>
+                <div class="layui-input-inline"><input type="text" class="layui-input" name="dbpre" id="dbpre" autocomplete="off" value="vt_"/></div>
                 <div class="layui-form-mid layui-word-aux">请输入数据表前缀，默认为：vt_</div>
             </div>
             <div class="layui-form-item">

@@ -69,6 +69,8 @@ layui.use(['form', 'layer'],function(){
             if(data === 'false'){
                 $this.addClass('layui-form-danger').focus();
                 layer.tips('数据库连接失败，请检查密码或其他是否正确！', $this, {tips:[1,'#ff5722'],maxWidth:'auto'});
+            }else{
+                layer.closeAll();
             }
         });
     })/**/

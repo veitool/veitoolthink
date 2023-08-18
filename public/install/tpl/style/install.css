@@ -42,5 +42,5 @@
 .main .note{width:400px;margin:100px auto 0}
 .main .note .isok{width:400px;padding:150px 0 0 0;line-height:50px;background:url(ok.png) no-repeat;text-align:center;}
 .footer{margin-top:20px;height:100px;border-top:1px solid #d2d2d2;background:#fff;position:relative}
-.footer .copyright{float:left;line-height:60px;font-family:Verdana;color:#aaa;font-size:13px;}
+.footer .copyright{float:left;line-height:60px;font-family:"Verdana";color:#aaa;font-size:13px;}
 .footer .formBtn{width:200px;float:right;margin-top:15px;text-align:right}

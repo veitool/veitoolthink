@@ -140,7 +140,7 @@ abstract class BaseController
      * @access  protected
      * @param   sting/array  $vars  赋值表达式/数组
      */
-    protected function assign(...$vars)
+    protected final function assign(...$vars)
     {
         View::assign(...$vars);
     }
@@ -151,7 +151,7 @@ abstract class BaseController
      * @param   string  $tmp   模板名称
      * @param   sting   $tip   提示
      */
-    protected function fetch(string $tmp = '', string $tip = '')
+    protected final function fetch(string $tmp = '', string $tip = '')
     {
         $this->logon($tip);
         return View::fetch($tmp);
@@ -163,7 +163,7 @@ abstract class BaseController
      * @param   string  $args  重定向地址
      * @throws  HttpResponseException
      */
-    protected function redirect(...$args)
+    protected final function redirect(...$args)
     {
         throw new HttpResponseException(redirect(...$args));
     }
@@ -177,7 +177,7 @@ abstract class BaseController
      * @param   array    $h   发送的Header信息
      * @throws  HttpResponseException
      */
-    protected function exitMsg($m, $c = 0, $d = [], $h = [])
+    protected final function exitMsg($m, $c = 0, $d = [], $h = [])
     {
         if($c==400){
             $re = Response::create(ROOT_PATH . 'app/v_msg.tpl','view')->assign(['msg'=>$m,'site'=>vconfig('site_title')])->header($h);
@@ -201,7 +201,7 @@ abstract class BaseController
      * @param   array               $options  参数
      * @return  array/json
      */
-    protected function returnMsg($msg = '', $code = 0, $data = [], $scode = 200, $header = [], $options = [])
+    protected final function returnMsg($msg = '', $code = 0, $data = [], $scode = 200, $header = [], $options = [])
     {
         $msg = is_object($msg) ? $msg->toArray() : $msg;
         if(is_array($msg)){
@@ -235,7 +235,7 @@ abstract class BaseController
      * @param    int       $tpl    提示模板
      * @param    string    $url    跳转的地址
      */
-    protected function returnTpl($msg = '', $tpl = '', $url = '')
+    protected final function returnTpl($msg = '', $tpl = '', $url = '')
     {
         $tpl = $tpl ?: ($this->request->isMobile() ? 'err' : ROOT_PATH . 'app/v_msg.tpl');
         $this->assign(['msg'=>$msg,'url'=>$url]);
@@ -251,7 +251,7 @@ abstract class BaseController
      * @param  bool          $bin     是否以传入数组为准 默认是
      * @return array
      */
-    protected function only($name = [], $type = 'post', $filter = 'strip_sql', $bin = true)
+    protected final function only($name = [], $type = 'post', $filter = 'strip_sql', $bin = true)
     {
         if(isset($name['@token'])){
             $arr = array_merge([$this->tokenName,[]],(array)$name['@token']);

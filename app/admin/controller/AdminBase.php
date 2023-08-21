@@ -50,12 +50,8 @@ abstract class AdminBase extends BaseController
         $this->isLogin();
         //载入权限菜单
         $this->loadMenusRoles();
-        //获取控制器名
-        $controller = $this->request->controller();
-        //合取方法
-        $url = $controller."/".$this->request->action();
         //构组路由: 控制器 + 方法 + （参数action的传值）
-        $this->routeUri = strtolower(ADDON_APP.$url.(($action = $this->request->get('action')) ? '/'.$action : ''));
+        $this->routeUri = strtolower(ADDON_APP.$this->request->controller()."/".$this->request->action().(($action = $this->request->get('action')) ? '/'.$action : ''));
         //验证权限
         $this->isPower();
     }

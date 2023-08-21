@@ -44,7 +44,7 @@ abstract class AdminBase extends BaseController
     /**
      * 后台控制器验证初始化
      */
-    protected function __auth()
+    protected final function __auth()
     {
         //验证登录
         $this->isLogin();

@@ -90,6 +90,12 @@ class Controller extends Dispatch
                     $vars = $this->request->param();
                     try {
                         $reflect = new ReflectionMethod($instance, $action);
+
+                        //受保护的方法不允许URL访问
+                        if ($reflect->isProtected()) {
+                            throw new ReflectionException('isProtected');
+                        }
+
                         // 严格获取当前操作方法名
                         $actionName = $reflect->getName();
                         if ($suffix) {

@@ -20,6 +20,7 @@ layui.use(['buildItems'],function(){
     var app_root = layui.cache.maps + 'system.setting/';
     var table=layui.table,form=layui.form,admin=layui.admin;
     var datas = <?=$datas?>;
+    var types = {}; $.each(datas.types,function(k,v){types[k] = v +'：'+ k;}); /*重构[配置类型]数据*/
     /*解析顶部分组选项*/
     var tab = $("#settings_tab");
     layui.each(datas.groups,function(k,v){tab.append('<li group="'+ k +'">'+ v +'</li>');});
@@ -105,8 +106,6 @@ layui.use(['buildItems'],function(){
             area: ['800px', '90%'],
             title: Dt ? '编辑配置项' : '添加配置项',
             success: function(l,index){
-                //重构<配置类型>数据
-                var types = {}; $.each(datas.types,function(k,v){types[k] = v +'：'+ k;});
                 layui.buildItems.build({
                     bid: 'settings_items',
                     data: [

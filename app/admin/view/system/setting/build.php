@@ -105,12 +105,14 @@ layui.use(['buildItems'],function(){
             area: ['800px', '90%'],
             title: Dt ? '编辑配置项' : '添加配置项',
             success: function(l,index){
+                //重构<配置类型>数据
+                var types = {}; $.each(datas.types,function(k,v){types[k] = v +'：'+ k;});
                 layui.buildItems.build({
                     bid: 'settings_items',
                     data: [
                         {name:"id",type:"hidden"},
                         {name:"group",title:"配置分组",type:"radio",options:datas.groups,value:group,must:true},
-                        {name:"type",title:"配置类型",type:"select",options:datas.types,value:'',verify:'required',reqtext:'请选择配置类型',must:true},
+                        {name:"type",title:"配置类型",type:"select",options:types,value:'',verify:'required',reqtext:'请选择配置类型',must:true},
                         {name:"name",title:"配置名称",type:"text",value:'',verify:'required',placeholder:"请输入配置名称",must:true},
                         {name:"title",title:"配置标题",type:"text",value:'',verify:'required',placeholder:"请输入配置标题",must:true},
                         {name:"value",title:"配置初值",type:"textarea",value:'',placeholder:"请输入配置初值"},

@@ -128,8 +128,6 @@ class Setting extends AdminBase
             $msg = $rs ? ['code'=>0,'msg'=>'配置名称【'.$d['name'].'】已被占用！'] : ['code'=>1,'msg'=>'可用'];
             return $this->returnMsg($msg);
         }
-        //重构<配置类型>数据
-        foreach($types as $k=>&$v){$v = $v.'：'.$k;}
         $this->assign([
             'limit' => 10,
             'datas' => json_encode(['groups'=>$groups,'types'=>$types]) //配置分组和配置类型

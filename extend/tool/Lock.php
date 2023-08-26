@@ -30,10 +30,10 @@ class Lock
     public static function check($c = [])
     {
         self::$config = array_merge(self::$config,$c);
-        $data = Cache::get(self::$config['key'].'_'.VT_IP);
+        $data = Cache::get(self::$config['key']);
         $flag = false;
         if(isset($data['times']) && $data['times'] >= self::$config['times'] && (VT_TIME - $data['time']) < self::$config['time']){
-            self::$config['msg'] = '多次'.self::$config['tips'].'失败，您已被锁定'.(intval(self::$config['time']/60)).'分钟';
+            self::$config['msg'] = self::$config['msg'] ?: '多次'.self::$config['tips'].'失败，您已被锁定'.(intval(self::$config['time']/60)).'分钟';
             $flag = true;
         }elseif(self::$config['add']){
             self::add();
@@ -49,7 +49,7 @@ class Lock
     public static function often($c = [])
     {
         self::$config = array_merge(self::$config,$c);
-        $key  = self::$config['key'].'_'.VT_IP;
+        $key  = self::$config['key'];
         $data = Cache::get($key);
         $flag = false;
         if(isset($data['time']) && (VT_TIME - $data['time']) < self::$config['time']){
@@ -67,7 +67,7 @@ class Lock
      */
     public static function add()
     {
-        $key  = self::$config['key'].'_'.VT_IP;
+        $key  = self::$config['key'];
         $data = Cache::get($key);
         Cache::set($key, ['times'=>(isset($data['times']) ? $data['times'] + 1 : 1), 'time'=>VT_TIME]);
     }
@@ -78,7 +78,7 @@ class Lock
      */
     public static function del()
     {
-        Cache::delete(self::$config['key'].'_'.VT_IP);
+        Cache::delete(self::$config['key']);
     }
 
     /**

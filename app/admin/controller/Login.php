@@ -63,7 +63,7 @@ class Login extends BaseController
     public function check()
     {
         //多次尝试验证
-        if(Lock::check()) return $this->returnMsg(Lock::msg());
+        if(Lock::check(['key'=>'LOGIN_'.VT_IP])) return $this->returnMsg(Lock::msg());
         $d = $this->only(['username/*/u/管理帐号','password/*/p/登录密码','captcha']);
         if(vconfig('admin_captcha',1) && !captcha_check($d['captcha'])) return $this->returnMsg('验证码错误！');
         $username = $d['username'];

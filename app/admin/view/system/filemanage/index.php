@@ -62,6 +62,7 @@ layui.use(function(){
             {type:'checkbox',fixed:'left'},
             {field:"fileurl",align:'center',title:"预览图",width:80,templet:function(d){return '<div class="files_item"><img src="'+ get_icon(d.fileurl,d.filetype,d.fileext) +'" alt="'+d.filename+'" lay-event="file-event-image"/></div>';}},
             {field:"filename",edit:'text',title:"文件名"},
+            {field:"fileurl",title:"路径"},
             {field:"username",align:'center',width:100,title:"用户",templet:function(d){return d.admin==1 ? '<font color=red>'+d.username+'</font>' : d.username;}},
             {field:"groupname",align:'center',width:80,title:"分组",templet:function(d){return d.groupname ? d.groupname : '尚未分组';}},
             {field:"filesize",align:'center',width:80,title:"大小(Kb)"},

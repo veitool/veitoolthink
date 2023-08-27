@@ -448,7 +448,7 @@ layui.define(['tagsInput','fileLibrary','cascader'], function(e){
                                             var html = '',v = '';
                                             for(var n in res){
                                                 v = res[n];
-                                                html = html + '![说明]('+ v.file_path +')\n';
+                                                html = html + '![说明#100%]('+ v.file_path +')\n';
                                             }
                                             obj[k].insert(html);
                                         });

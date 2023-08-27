@@ -55,21 +55,23 @@ class Lock
         if(isset($data['time']) && (VT_TIME - $data['time']) < self::$config['time']){
             self::$config['msg'] = '请勿重复操作';
             $flag = true;
-        }else{
-            Cache::set($key, ['time'=>VT_TIME]);
+        }elseif(self::$config['add']){
+            self::add(false);
         }
         return $flag;
     }
 
     /**
      * 追加次数和记录时间
+     * @param  bool  $flag  是否记录次数
      * @return mixed
      */
-    public static function add()
+    public static function add($flag = true)
     {
         $key  = self::$config['key'];
         $data = Cache::get($key);
-        Cache::set($key, ['times'=>(isset($data['times']) ? $data['times'] + 1 : 1), 'time'=>VT_TIME]);
+        $data = $flag ? ['times'=>(isset($data['times']) ? $data['times'] + 1 : 1), 'time'=>VT_TIME] : ['time'=>VT_TIME];
+        Cache::set($key, $data);
     }
 
     /**

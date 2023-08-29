@@ -10,7 +10,6 @@
 <link href="{STATIC__PATH}layui/css/layui.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="{STATIC__PATH}layui/layui.js"></script>
 <script type="text/javascript">var $=layui.$,jQuery=layui.jquery;</script>
-<script type="text/javascript" src="{STATIC__PATH}script/jquery.SuperSlide.2.1.1.js"></script>
 <script type="text/javascript" src="{STATIC__PATH}script/md5.js"></script>
 </head>
 <body>
@@ -40,20 +39,11 @@
     <div id="bgBox">
         <ul class="slideBg">
             <li><img src="{STATIC__PATH}admin/login/banner_1.jpg"></li>
-            <li><img src="{STATIC__PATH}admin/login/banner_2.jpg"></li>
         </ul>
     </div>
 <script type="text/javascript">
     layui.use(function(){
         var layer = layui.layer;
-        //背景切换
-        $("#bgBox").slide({mainCell:".slideBg",effect:"fold",interTime:3500,delayTime:500,autoPlay:true,autoPage:true,endFun:function(i,c,s){
-            $(window).resize(function(){
-                var width = $(window).width();
-                var height = $(window).height();
-                s.find(".slideBg,.slideBg li").css({"width":width,"height":height});
-            });
-        }});
         //获取焦点
         $(".login-item input").focus(function(){
             $(this).parent().addClass("focus");

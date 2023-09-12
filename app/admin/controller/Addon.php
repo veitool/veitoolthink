@@ -88,8 +88,8 @@ class Addon extends AdminBase
     public function local()
     {
         $d = $this->only(['uid/d','token']);
+        if(!$d["uid"] || !$d["token"]) return $this->returnMsg('请先登录Veitool会员后再进行离线安装！',2);
         try{
-            if(!$d["uid"] || !$d["token"]) return $this->returnMsg('请先登录Veitool会员后再进行离线安装！',2);
             $d["vversion"] = VT_VERSION;
             Service::local($this->request->file('file'), config('veitool.force',1), $d);
         }catch(AddonException $e){

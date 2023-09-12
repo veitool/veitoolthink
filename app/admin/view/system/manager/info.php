@@ -102,12 +102,12 @@
                                 </div>
                                 <div class="layui-form-item">
                                     <label class="layui-form-label layui-form-required">用户昵称:</label>
-                                    <div class="layui-input-block"><input type="text" name="nickname" id="nickname" value="{$User.nickname}" class="layui-input" lay-verify="required|nickname" lay-verType="tips" placeholder="请输入用户昵称"/></div>
+                                    <div class="layui-input-block"><input type="text" name="nickname" id="nickname" value="{$User.nickname}" class="layui-input" lay-verify="nickname" lay-verType="tips" placeholder="请输入用户昵称"/></div>
                                 </div>
                                 <div class="layui-form-item">
                                     <label class="layui-form-label layui-form-required">真实姓名:</label>
                                     <div class="layui-input-block">
-                                        <div class="layui-inline"><input type="text" name="truename" id="truename" value="{$User.truename}" class="layui-input" lay-verify="required|truename" lay-verType="tips" placeholder="请输入真实姓名" style="width:260px;"/></div>
+                                        <div class="layui-inline"><input type="text" name="truename" id="truename" value="{$User.truename}" class="layui-input" lay-verify="truename" lay-verType="tips" placeholder="请输入真实姓名" style="width:260px;"/></div>
                                         <div class="layui-inline">
                                             <input type="radio" name="gender" value="1" title="男"{$User.gender==1 ? " checked" : ""} >
                                             <input type="radio" name="gender" value="2" title="女"{$User.gender==2 ? " checked" : ""} >
@@ -141,15 +141,15 @@
                             <form class="layui-form userInfoForm" lay-filter="userInfoForm">
                                 <div class="layui-form-item">
                                     <label class="layui-form-label layui-form-required">原登录密码：</label>
-                                    <div class="layui-input-block"><input type="password" name="oldPassword" id="oldpassword" class="layui-input" lay-verify="required|password" lay-verType="tips" data-tip="原登录" lay-affix="eye" autocomplete='off' placeholder="请输入原登录密码"/></div>
+                                    <div class="layui-input-block"><input type="password" name="oldPassword" id="oldpassword" class="layui-input" lay-verify="password" lay-verType="tips" data-tip="原登录" lay-affix="eye" autocomplete='off' placeholder="请输入原登录密码"/></div>
                                 </div>
                                 <div class="layui-form-item">
                                     <label class="layui-form-label layui-form-required">新登录密码：</label>
-                                    <div class="layui-input-block"><input type="password" name="newPassword" id="password" class="layui-input" lay-verify="required|password" lay-verType="tips" data-tip="新登录" lay-affix="eye" autocomplete='off' placeholder="请输入新登录设密码"/></div>
+                                    <div class="layui-input-block"><input type="password" name="newPassword" id="password" class="layui-input" lay-verify="password" lay-verType="tips" data-tip="新登录" lay-affix="eye" autocomplete='off' placeholder="请输入新登录设密码"/></div>
                                 </div>
                                 <div class="layui-form-item">
                                     <label class="layui-form-label layui-form-required">重复新密码：</label>
-                                    <div class="layui-input-block"><input type="password" name="rePassword" id="passwords" class="layui-input" lay-verify="required|password" lay-verType="tips" data-tip="重复登录" lay-affix="eye" data-pass="password" autocomplete='off' placeholder="请再次输入新登录密码"/></div>
+                                    <div class="layui-input-block"><input type="password" name="rePassword" id="passwords" class="layui-input" lay-verify="password" lay-verType="tips" data-tip="重复登录" lay-affix="eye" data-pass="password" autocomplete='off' placeholder="请再次输入新登录密码"/></div>
                                 </div>
                                 <div class="layui-form-item">
                                     <div class="layui-input-block"><button class="layui-btn" lay-filter="userInfoSubmit" data-url="changpwd" data-token="false" lay-submit>确认修改</button></div>

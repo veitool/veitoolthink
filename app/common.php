@@ -117,19 +117,34 @@ function strip_sql($s,$t=1){
     if(is_array($s)){
         return array_map('strip_sql', $s);
     }else{
-        if(empty($s) || strripos($s,' ') == 0) return trim($s);
+        if(empty($s)) return $s;
+        $s = trim($s);
         if($t){
+            global $_VFILTER;
+            if($_VFILTER) $s = str_ireplace($_VFILTER,'',$s);
+            if(strripos($s,' ') == 0) return $s;
             $p = 'vt_';
-            $s = preg_replace("/\/\*([\s\S]*?)\*\//", "", trim($s));
+            $s = preg_replace("/\/\*([\s\S]*?)\*\//", "", $s);
             $s = preg_replace("/0x([a-f0-9]{2,})/i", '0&#120;\\1', $s);
             $s = preg_replace_callback("/(select|update|replace|delete|drop)([\s\S]*?)(".$p."|from)/i", 'strip_wd', $s);
             $s = preg_replace_callback("/(load_file|substring|substr|reverse|trim|space|left|right|mid|lpad|concat|concat_ws|make_set|ascii|bin|oct|hex|ord|char|conv)([^a-z]?)\(/i", 'strip_wd', $s);
             $s = preg_replace_callback("/(union|where|having|outfile|dumpfile|".$p.")/i", 'strip_wd', $s);
             return $s;
         }else{
-            return str_replace(['&#95;','&#100;','&#101;','&#103;','&#105;','&#109;','&#110;','&#112;','&#114;','&#115;','&#116;','&#118;','&#120;'], ['_','d','e','g','i','m','n','p','r','s','t','v','x'], trim($s));
+            return str_replace(['&#95;','&#100;','&#101;','&#103;','&#105;','&#109;','&#110;','&#112;','&#114;','&#115;','&#116;','&#118;','&#120;'], ['_','d','e','g','i','m','n','p','r','s','t','v','x'], $s);
         }
     }
+}
+
+/**
+ * 过滤扩展初始化，需要扩展过滤时前置于方法strip_sql调用该方法
+ * @param   string   $filter    自定义过滤的字符串多个逗号,隔开，默认按系统配置 sys_filter 设置进行过滤
+ * @global  array    $_VFILTER
+ */
+function strip_sql_extend($filter = ''){
+    global $_VFILTER;
+    $filter = $filter ?: vconfig('sys_filter');
+    $_VFILTER = $_VFILTER ?: ($filter ? explode(',', $filter) : []);
 }
 
 /**

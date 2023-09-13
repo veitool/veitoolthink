@@ -72,6 +72,8 @@ abstract class BaseController
         $this->app = $app;
         // 请求对象
         $this->request = $this->app->request;
+        // 资源目录 运行目录为根目录时请设为空\其他二级或多级目录时后面无斜杠如：/mydir 或 /mydir/xyz
+        define('VT_DIR', config('view.tpl_replace_string.{PUBLIC__PATH}'));
         // 映射路径
         defined('APP_MAP') or define('APP_MAP', $this->request->root());
         // 前台集中业务

@@ -8,27 +8,6 @@
  * ---------------------------------------------------------------------------
  */
 
-// 版本信息
-define('VT_VERSION', '1.0.3');
-// 后台管理员 session 标识
-define('VT_MANAGER', 'V_MANAGER');
-// 前台会员 session 标识
-define('VT_MEMBER', 'V_MEMBER');
-// 时间戳
-define('VT_TIME', time());
-// 分隔符
-define('VT_DS', DIRECTORY_SEPARATOR);
-// 项目目录
-define('ROOT_PATH', $this->app->getRootPath());
-// 插件目录
-define('ADDON_PATH', ROOT_PATH . 'addons' . VT_DS);
-// 临时目录
-define('RUNTIME_PATH', ROOT_PATH . 'runtime' . VT_DS);
-// 站点目录
-define('VT_PUBLIC', ROOT_PATH . 'public' . VT_DS);
-// IP地址
-define('VT_IP', $this->app->request->ip());
-
 /**
  * md5判断
  * @param   string   $w   字符
@@ -103,7 +82,7 @@ function set_password($p,$s){
  * @retrun  string 
  */
 function set_order_id(){
-    return date('YmdHis',VT_TIME).substr(microtime(),2,6).sprintf('%03d',rand(0,999));
+    return date('YmdHis',time()).substr(microtime(),2,6).sprintf('%03d',rand(0,999));
 }
 
 /**

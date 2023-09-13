@@ -82,7 +82,7 @@ function set_password($p,$s){
  * @retrun  string 
  */
 function set_order_id(){
-    return date('YmdHis',time()).substr(microtime(),2,6).sprintf('%03d',rand(0,999));
+    return date('YmdHis',VT_TIME).substr(microtime(),2,6).sprintf('%03d',rand(0,999));
 }
 
 /**

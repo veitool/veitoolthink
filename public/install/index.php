@@ -18,7 +18,7 @@ set_time_limit(0);
 
 // 设置系统路径
 define('INSTALL_PATH', str_replace('\\', '/', dirname(__FILE__)));
-define('ROOT_PATH', dirname(INSTALL_PATH, 2));
+define('ROOT_DIR', dirname(INSTALL_PATH, 2));
 
 // 提示已经安装
 if(is_file(INSTALL_PATH . '/install.lock')){
@@ -84,7 +84,7 @@ if($s == 2){
     }
     // 更新app配置
     $config_str = getConfigs($adminmap);
-    $fp = fopen(ROOT_PATH . '/config/app.php', 'w');
+    $fp = fopen(ROOT_DIR . '/config/app.php', 'w');
     fwrite($fp, $config_str);
     fclose($fp);
     // 数据库创建完成，开始连接
@@ -98,7 +98,7 @@ if($s == 2){
     $env_str = str_replace('~db_port~', $dbport, $env_str);
     $env_str = str_replace('~db_pre~', $dbpre, $env_str);
     // 写入.env配置文件
-    $fp = fopen(ROOT_PATH . '/.env', 'w');
+    $fp = fopen(ROOT_DIR . '/.env', 'w');
     fwrite($fp, $env_str);
     fclose($fp);
 
@@ -127,7 +127,7 @@ if($s == 2){
     time_nanosleep(0,500000000);
 
     // 更新管理员信息
-    include (ROOT_PATH . '/app/common.php');
+    include (ROOT_DIR . '/app/common.php');
     $passsalt = random(8);
     $adminpass = set_password($adminpass,$passsalt);
     $pdo->exec("UPDATE {$dbpre}manager SET `username` ='{$adminuser}',`password`='{$adminpass}',`passsalt`='{$passsalt}' WHERE userid = 1");
@@ -171,7 +171,7 @@ function setOk($val)
 // 测试可写性
 function isWrite($file)
 {
-    if(is_writable(ROOT_PATH . $file)){
+    if(is_writable(ROOT_DIR . $file)){
         echo '可写';
     }else{
         echo '<span>不可写</span>';

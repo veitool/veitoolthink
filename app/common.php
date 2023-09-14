@@ -8,6 +8,29 @@
  * ---------------------------------------------------------------------------
  */
 
+// 版本信息
+define('VT_VERSION', '2.1.0');
+// 后台管理员 session 标识
+define('VT_MANAGER', 'V_MANAGER');
+// 前台会员 session 标识
+define('VT_MEMBER', 'V_MEMBER');
+// 时间戳
+define('VT_TIME', time());
+// 分隔符
+define('VT_DS', DIRECTORY_SEPARATOR);
+// 资源目录 运行目录为根目录时请设为空\其他二级或多级目录时后面无斜杠如：/mydir 或 /mydir/xyz
+define('VT_DIR', '');
+// 全局静态目录
+define('VT_STATIC', '/static/');
+// 项目目录
+define('ROOT_PATH', realpath(dirname(__DIR__)) . VT_DS);
+// 站点目录
+define('VT_PUBLIC', ROOT_PATH . 'public' . VT_DS);
+// 插件目录
+define('ADDON_PATH', ROOT_PATH . 'addons' . VT_DS);
+// 临时目录
+define('RUNTIME_PATH', ROOT_PATH . 'runtime' . VT_DS);
+
 /**
  * md5判断
  * @param   string   $w   字符

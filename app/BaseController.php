@@ -72,6 +72,8 @@ abstract class BaseController
         $this->app = $app;
         // 请求对象
         $this->request = $this->app->request;
+        // IP地址
+        define('VT_IP', $this->app->request->ip());
         // 映射路径
         defined('APP_MAP') or define('APP_MAP', $this->request->root());
         // 前台集中业务

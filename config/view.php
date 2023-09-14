@@ -16,8 +16,8 @@ return [
     'view_depr'     => DIRECTORY_SEPARATOR,
     // 视图输出字符串内容替换
     'tpl_replace_string' => [
-        '{PUBLIC__PATH}' =>  '',          //public 目录
-        '{STATIC__PATH}' =>  '/static/'   //全局静态目录
+        '{PUBLIC__PATH}' =>  VT_DIR,      //public 目录
+        '{STATIC__PATH}' =>  VT_STATIC    //全局静态目录
     ],
     // 模板引擎普通标签开始标记
     'tpl_begin'     => '{',

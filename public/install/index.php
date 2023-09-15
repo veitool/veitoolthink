@@ -49,8 +49,7 @@ if($s == 2){
     // 设置无缓冲输出
     header('X-Accel-Buffering: no');
     ob_implicit_flush(true);
-    // 引入模板页
-    require_once(INSTALL_PATH . '/tpl/step_4.php');
+
     // 初始化信息
     $dbhost = $_GET['dbhost'] ?? '';
     $dbname = $_GET['dbname'] ?? '';
@@ -68,6 +67,7 @@ if($s == 2){
         $pdo->query("SET NAMES utf8"); // 设置数据库编码
     }catch(Exception $e){
         tipMsg('数据库连接错误，请检查！',1);
+        exit(header('HTTP/1.0 500 Internal Server Error'));
     }
     // 查询数据库
     $res = $pdo->query('show Databases');
@@ -102,12 +102,9 @@ if($s == 2){
     fwrite($fp, $env_str);
     fclose($fp);
 
-    // 防止浏览器缓存
-    $buffer = ini_get('output_buffering');
-    echo str_repeat(' ', $buffer + 1);
     tipMsg("数据库连接文件创建完成！");
     ob_flush();
-    time_nanosleep(0,500000000);
+    usleep(100000);
 
     // 导入安装数据
     $data_str = file_get_contents(INSTALL_PATH . '/data/install_data.sql');
@@ -118,13 +115,13 @@ if($s == 2){
             $txt = str_replace(['COMMENT=','\'',';'],['','',''],$txt);
             tipMsg("创建【{$txt}】表完成！");
             ob_flush();
-            time_nanosleep(0,50000000);
+            usleep(100000);
         }
     }
 
     tipMsg("系统初始数据导入完成！");
     ob_flush();
-    time_nanosleep(0,500000000);
+    usleep(100000);
 
     // 更新管理员信息
     include (ROOT_DIR . '/app/common.php');
@@ -137,10 +134,6 @@ if($s == 2){
 
     // 结束缓存区
     ob_end_flush();
-    time_nanosleep(0,500000000);
-
-    // 安装完成跳转
-    echo '<script>layer.msg(\'安装成功\',{icon:1,shade:0.2,time:3000},function(){top.location.href = \'?s=5&adminmap='.$adminmap.'\';});</script>';
     exit();
 
 }elseif($s == 5){
@@ -261,8 +254,7 @@ function getExtendArray()
  */
 function tipMsg($str,$err=0)
 {
-    if($err) exit('<script>$("#install").append("<p class=red>'. $str .'</p>");</script>');
-    echo '<script>$("#install").val($("#install").val() + "'. $str .'" + "\n");$("#install").scrollTop($("#install")[0].scrollHeight);</script>';
+    echo $err ? '<p class="red">'. $str .'</p>' : '<p>'. $str .'</p>';
 }
 
 /**

@@ -82,12 +82,27 @@ layui.use(['form', 'layer'],function(){
     form.on('submit(install)',function(data){
         if($(this).hasClass('layui-btn-disabled')) return false;
         var d = data.field;
+        var url = '?s=4&dbhost='+d.dbhost+'&dbname='+d.dbname+'&dbpre='+d.dbpre+'&dbuser='+d.dbuser+'&dbpwd='+d.dbpwd+'&dbport='+d.dbport+'&adminmap='+d.adminmap+'&adminuser='+d.adminuser+'&adminpass='+d.adminpass;
         layer.open({
-            type: 2,
+            type: 1,
             area: ['500px', '300px'],
             title: '安装处理中，请勿关闭...',
             closeBtn: 1,
-            content: '?s=4&dbhost='+d.dbhost+'&dbname='+d.dbname+'&dbpre='+d.dbpre+'&dbuser='+d.dbuser+'&dbpwd='+d.dbpwd+'&dbport='+d.dbport+'&adminmap='+d.adminmap+'&adminuser='+d.adminuser+'&adminpass='+d.adminpass,
+            content: '<div style="width:456px;margin:20px;color:#666;border:0;" id="install"></div>',
+            success: function(){
+                var xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        layer.msg('安装成功',{icon:1,shade:0.2,time:3000},function(){top.location.href = '?s=5&adminmap='+ d.adminmap;});
+                    }else if(xhr.readyState === 3){
+                        $("#install").html(xhr.responseText);
+                        var parent = $("#install").parent();
+                        parent.scrollTop(parent[0].scrollHeight);
+                    }
+                };
+                xhr.open('GET', url)
+                xhr.send();
+            }
         });
         return false;
     });/**/

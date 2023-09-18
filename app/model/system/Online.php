@@ -64,5 +64,27 @@ class Online extends Base
         $rs['msg'] = $msg;
         return $rs;
     }
+    
+    /**
+     * 记录在线数据
+     * @param  array   $user  用户session信息
+     * @param  string  $url   在线地址
+     * @param  int     $type  在线类型默认1前台 0后台 
+     */
+    public static function recod($user, $url = '', $type = 1)
+    {
+        if($Online = $user){
+            if($yk = session(VT_VISITOR)){ //删除登录前的游客在线
+                session(VT_VISITOR,null);
+                self::del(['uid'=>$yk['uid'],'userid'=>$yk['userid']]);
+            }
+        }elseif(!$Online = session(VT_VISITOR)){
+            $uid = uniqid();
+            $Online = ['uid'=>'YK-'.$uid,'userid'=>$uid,'username'=>'游客'];
+            session(VT_VISITOR,$Online);
+        }
+        // 模型中支持 replace 为 create 的第3个参数设为 true 或者 \think\facade\Db::name('online')->replace()->insert([数据集])
+        self::create(['uid'=>$Online['uid'],'userid'=>$Online['userid'],'username'=>$Online['username'],'url'=>$url,'etime'=>VT_TIME,'ip'=>VT_IP,'type'=>$type],['uid','userid','username','url','etime','ip','type'],true);
+    }
 
 }

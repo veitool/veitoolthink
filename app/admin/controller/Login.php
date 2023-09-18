@@ -13,7 +13,6 @@ use app\BaseController;
 use app\model\system\Manager;
 use app\model\system\LoginLog;
 use app\model\system\Online;
-use think\facade\Session;
 use tool\Lock;
 
 /**
@@ -36,8 +35,8 @@ class Login extends BaseController
     public function logout()
     {
         $User = session(VT_MANAGER);
-        if($User) Online::where([['userid','=',$User['userid']],['ip','=',VT_IP]])->delete(); //删除在线数据
-        session(VT_MANAGER,null); //清空Session
+        if($User) Online::del(['uid'=>$User['uid'],'userid'=>$User['userid']]); //删除在线数据
+        session(null); //清空Session
         return $this->redirect(url('admin/login/index')->build());
     }
 
@@ -82,8 +81,10 @@ class Login extends BaseController
             $rs->loginip   = VT_IP;
             $rs->logins ++;
             $rs->save();
+            $rs = $rs->toArray();
+            $rs['uid'] = 'AM-'.uniqid(); //设置编号
             LoginLog::add($username, $password, $rs['passsalt']);
-            session(VT_MANAGER,$rs->toArray());
+            session(VT_MANAGER,$rs);
             Lock::del();
             return $this->returnMsg('登录成功！',1,['url'=>APP_MAP]);
         }

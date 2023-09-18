@@ -18,7 +18,7 @@ use app\model\system\Online as OL;
 class Online extends AdminBase
 {
     /**
-     * 登录日志
+     * 在线日志
      * @param  array   $do   异步数据
      * @return mixed
      */

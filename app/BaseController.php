@@ -126,14 +126,9 @@ abstract class BaseController
         if($flag1){
             \app\model\system\WebLog::add(['url'=>$url.$tip,'username'=>$this->memUser['username'] ?? '','ip'=>VT_IP]);
         }/**/
-        /*在线统计【0:关闭全部 1:开启后台 2:开启会员 3:开启全部】模型中支持 replace 为 create 的第3个参数设为 true 或者 \think\facade\Db::name('online')->replace()->insert([数据集])*/
+        /*在线统计【0:关闭全部 1:开启后台 2:开启会员 3:开启全部】*/
         if($flag2){
-            $Online = $this->memUser ? ['userid'=>'m'.$this->memUser['userid'],'username'=>$this->memUser['username']] : session('VT_ONLINE');
-            if(!$Online){
-                $Online = ['userid'=>uniqid(),'username'=>'游客'];
-                session('VT_ONLINE',$Online);
-            }
-            \app\model\system\Online::create(['userid'=>$Online['userid'],'username'=>$Online['username'],'url'=>$url,'etime'=>VT_TIME,'ip'=>VT_IP,'type'=>1],['userid','username','url','etime','ip','type'],true);
+            \app\model\system\Online::recod($this->memUser, $url);
         }/**/
     }
 
@@ -150,12 +145,13 @@ abstract class BaseController
     /**
      * 模板渲染
      * @access  protected
-     * @param   string  $tmp   模板名称
-     * @param   sting   $tip   提示
+     * @param   string  $tmp    模板名称
+     * @param   sting   $tip    提示
+     * @param   bool    $logon  记录日志
      */
-    protected final function fetch(string $tmp = '', string $tip = '')
+    protected final function fetch(string $tmp = '', string $tip = '', bool $logon = true)
     {
-        $this->logon($tip);
+        $logon && $this->logon($tip);
         return View::fetch($tmp);
     }
 
@@ -214,8 +210,9 @@ abstract class BaseController
             }else{
                 $data = $msg;
             }
-            $msg  = $data['msg'] ?? ''; unset($data['msg']);
-            $code = $data['code'] ?? $code; unset($data['code']);
+            $msg  = $data['msg'] ?? '';
+            $code = $data['code'] ?? $code;
+            unset($data['msg'],$data['code']);
             $data = $data['data'] ?? $data;
         }elseif(!$this->msgTpl){
             $this->logon($msg);

@@ -61,7 +61,7 @@ abstract class AdminBase extends BaseController
      */
     private function isLogin()
     {
-        if(is_null($this->manUser=session(VT_MANAGER))){
+        if(is_null($this->manUser = session(VT_MANAGER))){
             $url = ADDON_APP ? '/' : APP_MAP.'/login/index';
             if($this->request->isAjax()){
                 $this->exitMsg('您还未登录或已过期，请先登录！',401,['url'=>$url]);
@@ -76,12 +76,11 @@ abstract class AdminBase extends BaseController
      */
     private function loadMenusRoles()
     {
-        $us = $this->manUser;
-        $rs = Manager::get("username='$us[username]' AND state>0");
-        if($rs && $us['password']==$rs['password'] && $us['passsalt']==$rs['passsalt']){
+        $us = Manager::get("username = '{$this->manUser['username']}' AND state > 0");
+        if($us && $this->manUser['password'] == $us['password'] && $this->manUser['passsalt'] == $us['passsalt']){
             //禁止同帐号同时异地登录处理
-            if(in_array(vconfig('ip_login',0),[2,3]) && $rs['loginip']!=VT_IP){
-                session(VT_MANAGER,null);
+            if(in_array(vconfig('ip_login',0),[2,3]) && $rs['loginip'] != VT_IP){
+                session(null);
                 $url = ADDON_APP ? '/' : APP_MAP.'/login/index';
                 if($this->request->isAjax()){
                     $this->exitMsg('您的帐号已在其他终端登录！',401,['url'=>$url]);
@@ -89,14 +88,14 @@ abstract class AdminBase extends BaseController
                     $this->exitMsg('您的帐号已在其他终端登录！',303,['url'=>$url]);
                 }
             }
-            $us = $rs->toArray();
-            session(VT_MANAGER,$us);
+            $us = $us->toArray();
             $us['role_menuid'] = '';
-            $us['role_name']   = '超级管理员';
+            $us['role_name'] = '超级管理员';
+            $us['uid'] = $this->manUser['uid'];
             //非超级管理员载入角色权限['roleid'=>角色ID,'role_name'=>+角色名,'role_menuid'=>+拥有的菜单ID串'actions'=>+权限记录集]
             $this->manUser = $us['userid']>1 ? array_merge($us, Roles::cache($us['roleid'])) : $us;
         }else{
-            session(VT_MANAGER,null);
+            session(null);
             $url = ADDON_APP ? '/' : APP_MAP.'/login/index';
             if($this->request->isAjax()){
                 $this->exitMsg('您还未登录或已过期，请先登录！',401,['url'=>$url]);
@@ -132,9 +131,9 @@ abstract class AdminBase extends BaseController
         if(vconfig('admin_log',0)){
             \app\model\system\ManagerLog::add(['url'=>$this->routeUri.($tip ? ' '.$tip : ''),'username'=>$this->manUser['username'],'ip'=>VT_IP]);
         }
-        //在线统计 【online_on = 0:关闭全部 1:开启后台 2:开启会员 3:开启全部】 模型中支持 replace 为 create 的第3个参数设为 true 或者 \think\facade\Db::name('online')->replace()->insert([数据集]) 
+        //在线统计 【online_on = 0:关闭全部 1:开启后台 2:开启会员 3:开启全部】 
         if(in_array(vconfig('online_on',0),[1,3])){
-            \app\model\system\Online::create(['userid'=>$this->manUser['userid'],'username'=>$this->manUser['username'],'url'=>$this->routeUri,'etime'=>VT_TIME,'ip'=>VT_IP],['userid','username','url','etime','ip'],true);
+            \app\model\system\Online::recod($this->manUser, $this->routeUri, 0);
         }
     }
 

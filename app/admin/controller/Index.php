@@ -26,7 +26,7 @@ class Index extends AdminBase
         $this->assign([
             "tokenName" => $this->tokenName
         ]);
-        return $this->fetch();
+        return $this->fetch('','',false);
     }
 
     /**

@@ -240,6 +240,7 @@ INSERT INTO `vt_menus` VALUES ('101', '1', '', '用户列表', '用户列表', '
 -- ----------------------------
 DROP TABLE IF EXISTS `vt_online`;
 CREATE TABLE `vt_online` (
+  `uid` varchar(30) NOT NULL DEFAULT '' COMMENT '编号',
   `userid` varchar(20) NOT NULL DEFAULT '0' COMMENT '会员ID',
   `username` varchar(30) NOT NULL DEFAULT '' COMMENT '会员帐号',
   `url` varchar(255) NOT NULL DEFAULT '' COMMENT '所在路径',
@@ -247,7 +248,7 @@ CREATE TABLE `vt_online` (
   `online` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '是否在线',
   `type` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '0:后台1:会员',
   `etime` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '最后时间',
-  UNIQUE KEY `uid` (`userid`,`ip`) USING BTREE
+  UNIQUE KEY `uid` (`uid`,`userid`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='在线用户';
 
 -- ----------------------------

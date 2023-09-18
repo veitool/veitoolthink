@@ -14,6 +14,8 @@ define('VT_VERSION', '2.1.0');
 define('VT_MANAGER', 'V_MANAGER');
 // 前台会员 session 标识
 define('VT_MEMBER', 'V_MEMBER');
+// 前台游客 session 标识
+define('VT_VISITOR', 'V_VISITOR');
 // 时间戳
 define('VT_TIME', time());
 // 分隔符

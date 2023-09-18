@@ -9,7 +9,7 @@
  */
 
 // 版本信息
-define('VT_VERSION', '2.1.0');
+define('VT_VERSION', '1.0.4');
 // 后台管理员 session 标识
 define('VT_MANAGER', 'V_MANAGER');
 // 前台会员 session 标识

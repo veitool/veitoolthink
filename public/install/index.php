@@ -80,6 +80,7 @@ if($s == 2){
     if(!in_array(trim($dbname), $dbnameArr)){
         if(!$pdo->exec("CREATE DATABASE `$dbname`")){
             tipMsg("创建数据库失败，请检查权限或联系管理员！",1);
+            exit(header('HTTP/1.0 500 Internal Server Error'));
         }
     }
     // 更新app配置

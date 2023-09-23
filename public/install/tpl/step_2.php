@@ -30,7 +30,7 @@
         <table class="layui-table" lay-even lay-skin="nob" lay-size="sm">
             <tr><th width="60%">扩展要求</th><th width="25%">检查结果</th><th>建议</th></tr>
             <?php foreach($extendArray as $item){?>
-            <tr><td><?= $item['name'] ?></td><td><?= $item['status'] ? '支持' : '不支持' ?></td><td><?= $item['status'] ? '无' : '<span>需安装</span>' ?></td></tr>
+            <tr><td><?= $item['name'] ?></td><td><?= $item['status'] ? '支持' : '不支持' ?></td><td><?= $item['status'] ? '<b class="layui-icon green">&#xe697;</b>' : '<span>需安装</span>' ?></td></tr>
             <?php }?>
         </table>
         <table class="layui-table" lay-even lay-skin="nob" lay-size="sm">

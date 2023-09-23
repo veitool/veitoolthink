@@ -46,10 +46,6 @@ if($s == 2){
     if(!$isOK) header("Location: ?s=2");
     $currentHost = ($_SERVER['SERVER_PORT'] == 443 ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . '/';
 }elseif($s == 4){
-    // 设置无缓冲输出
-    header('X-Accel-Buffering: no');
-    ob_implicit_flush(true);
-
     // 初始化信息
     $dbhost = $_GET['dbhost'] ?? '';
     $dbname = $_GET['dbname'] ?? '';
@@ -102,6 +98,10 @@ if($s == 2){
     $fp = fopen(ROOT_DIR . '/.env', 'w');
     fwrite($fp, $env_str);
     fclose($fp);
+
+    // 设置无缓冲输出
+    header('X-Accel-Buffering: no');
+    ob_implicit_flush(true);
 
     tipMsg("数据库连接文件创建完成！");
     ob_flush();
@@ -166,7 +166,7 @@ function setOk($val)
 function isWrite($file)
 {
     if(is_writable(ROOT_DIR . $file)){
-        echo '可写';
+        echo '<b class="green">可写</b>';
     }else{
         echo '<span>不可写</span>';
         setOk(false);
@@ -187,7 +187,7 @@ function isFunExists($func)
 function isFunExistsTxt($func)
 {
     if(isFunExists($func)){
-        echo '无';
+        echo '<b class="layui-icon green">&#xe697;</b>';
     }else{
         echo '<span>需安装</span>';
         setOk(false);

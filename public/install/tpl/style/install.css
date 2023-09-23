@@ -1,4 +1,5 @@
 .red{color:red}
+.green{color:#16b777;}
 /*滚动条*/
 ::-webkit-scrollbar{width:5px;height:8px}
 ::-webkit-scrollbar-button:vertical{display:none}

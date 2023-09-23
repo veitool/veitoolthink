@@ -219,7 +219,7 @@ layui.use(['trTable','xmSelect','iconPicker','buildItems'],function(){
             type: 1,
             bid: 'menus_items',
             btn: ['保存', '取消'],
-            area: ['660px', '750px'],
+            area: ['660px', '90%'],
             title: (Dt ? '编辑' : '添加') + '菜单',
             success: function(l,index){
                 layui.buildItems.build({

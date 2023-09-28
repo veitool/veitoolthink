@@ -107,18 +107,62 @@ if($s == 2){
     ob_flush();
     usleep(100000);
 
-    // 导入安装数据
-    $data_str = file_get_contents(INSTALL_PATH . '/data/install_data.sql');
-    $data_arr = parseSql($data_str, $dbpre, 'vt_');
-    foreach($data_arr as $v){
-        $pdo->exec(trim($v));
-        if($txt = strstr($v,'COMMENT=')){
-            $txt = str_replace(['COMMENT=','\'',';'],['','',''],$txt);
-            tipMsg("创建【{$txt}】表完成！");
-            ob_flush();
-            usleep(100000);
+    /*--安装数据解析导入处理--*/
+    $sql  = '';
+    $flag = $comment = false;
+    $data = file_get_contents(INSTALL_PATH . '/data/install_data.sql');
+    $data = explode("\n", trim(str_replace(["\r\n", "\r", '`vt_'], ["\n", "\n", '`'.$dbpre], $data)));
+    foreach ($data as $line) {
+        if ($line == '') {
+            continue;
         }
-    }
+        if (preg_match("/^(#|--)/", $line)) {
+            continue;
+        }
+        if (preg_match("/^\/\*(.*?)\*\//", $line)) {
+            continue;
+        }
+        if (substr($line, 0, 2) == '/*') {
+            $comment = true;
+            continue;
+        }
+        if (substr($line, -2) == '*/') {
+            $comment = false;
+            continue;
+        }
+        if ($comment) {
+            continue;
+        }
+        if ($line == 'BEGIN;' || $line == 'COMMIT;') {
+            continue;
+        }
+        $sql .= $line."\n";
+        $tmp  = trim($sql);
+        $exec = '';
+        if($flag || preg_match('/DELIMITER;;$/', $tmp)){
+            if(preg_match('/;;DELIMITER;$/', $tmp)){
+                $flag = false;
+                $sql = str_replace(['DELIMITER;;','DELIMITER;',';;'],['','',''], $sql);
+                //$pdo->exec("set global log_bin_trust_function_creators=1;");
+                $exec = $sql;
+                $sql = '';
+            }else{
+                $flag = true;
+            }
+        }elseif(preg_match('/.*;$/', $tmp)){
+            $exec = $sql;
+            $sql = '';
+        }
+        if ($exec) {
+            $pdo->exec(trim($exec));
+            if($txt = strstr($exec,'COMMENT=')){
+                $txt = str_replace(['COMMENT=','\'',';',"\n"],'',$txt);
+                tipMsg("创建【{$txt}】表完成！");
+                ob_flush();
+                usleep(100000);
+            }
+        }
+    }/*--END--*/
 
     tipMsg("系统初始数据导入完成！");
     ob_flush();
@@ -256,51 +300,6 @@ function getExtendArray()
 function tipMsg($str,$err=0)
 {
     echo $err ? '<p class="red">'. $str .'</p>' : '<p>'. $str .'</p>';
-}
-
-/**
- * Sql数据处理
- * @param   string   $sql    sql数据
- * @param   string   $to     要替换成的前缀
- * @param   strint   $from   默认前缀
- * @return  array
- */
-function parseSql($sql, $to, $from)
-{
-    list($pure_sql, $comment) = [[], false];
-    $sql = explode("\n", trim(str_replace(["\r\n", "\r"], "\n", $sql)));
-    foreach ($sql as $key => $line) {
-        if ($line == '') {
-            continue;
-        }
-        if (preg_match("/^(#|--)/", $line)) {
-            continue;
-        }
-        if (preg_match("/^\/\*(.*?)\*\//", $line)) {
-            continue;
-        }
-        if (substr($line, 0, 2) == '/*') {
-            $comment = true;
-            continue;
-        }
-        if (substr($line, -2) == '*/') {
-            $comment = false;
-            continue;
-        }
-        if ($comment) {
-            continue;
-        }
-        if ($from != '') {
-            $line = str_replace('`' . $from, '`' . $to, $line);
-        }
-        if ($line == 'BEGIN;' || $line == 'COMMIT;') {
-            continue;
-        }
-        array_push($pure_sql, $line);
-    }
-    $pure_sql = implode("\n",$pure_sql);
-    $pure_sql = explode(";\n", $pure_sql);
-    return $pure_sql;
 }
 
 /**

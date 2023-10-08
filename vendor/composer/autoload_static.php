@@ -79,6 +79,7 @@ class ComposerStaticInit9f2e30f9993c254ba202c46ffa184b8d
             'Psr\\Clock\\' => 10,
             'Psr\\Cache\\' => 10,
             'PhpZip\\' => 7,
+            'PhpOffice\\PhpWord\\' => 18,
             'PhpOffice\\PhpSpreadsheet\\' => 25,
         ),
         'O' => 
@@ -95,6 +96,7 @@ class ComposerStaticInit9f2e30f9993c254ba202c46ffa184b8d
         array (
             'League\\MimeTypeDetection\\' => 25,
             'League\\Flysystem\\' => 17,
+            'Laminas\\Escaper\\' => 16,
         ),
         'G' => 
         array (
@@ -148,8 +150,8 @@ class ComposerStaticInit9f2e30f9993c254ba202c46ffa184b8d
             5 => __DIR__ . '/..' . '/topthink/think-image/src',
             6 => __DIR__ . '/..' . '/topthink/think-log/src',
             7 => __DIR__ . '/..' . '/topthink/think-orm/src',
-            8 => __DIR__ . '/..' . '/topthink/think-template/src',
-            9 => __DIR__ . '/..' . '/topthink/think-queue/src',
+            8 => __DIR__ . '/..' . '/topthink/think-queue/src',
+            9 => __DIR__ . '/..' . '/topthink/think-template/src',
         ),
         'app\\' => 
         array (
@@ -240,6 +242,10 @@ class ComposerStaticInit9f2e30f9993c254ba202c46ffa184b8d
         array (
             0 => __DIR__ . '/..' . '/nelexa/zip/src',
         ),
+        'PhpOffice\\PhpWord\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpoffice/phpword/src/PhpWord',
+        ),
         'PhpOffice\\PhpSpreadsheet\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet',
@@ -267,6 +273,10 @@ class ComposerStaticInit9f2e30f9993c254ba202c46ffa184b8d
         'League\\Flysystem\\' => 
         array (
             0 => __DIR__ . '/..' . '/league/flysystem/src',
+        ),
+        'Laminas\\Escaper\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/laminas/laminas-escaper/src',
         ),
         'GuzzleHttp\\UriTemplate\\' => 
         array (

@@ -158,7 +158,7 @@ layui.use(function(){
                 title: '会员登录',
                 content: [
                     '<form class="layui-form model-form" lay-filter="addon_userlogin_form">',
-                    '<h2 style="margin:10px 0 30px 30px;color:#009688;text-align:center;"><fieldset class="layui-elem-field layui-field-title"><legend style="font-size:16px;margin-left:0px;">温馨提示：此处登录帐号为 <a href="'+ app_api +'" style="color:#dd4b39" target="_blank">Veitool官网账号</a></legend></fieldset></h2>',
+                    '<h2 style="margin:10px 0 30px 30px;color:#009688;text-align:center;"><fieldset class="layui-elem-field layui-field-title"><legend style="font-size:16px;margin-left:0px;">温馨提示：此处登录帐号为 <a href="'+ app_api +'" style="color:#dd4b39" target="_blank">Veitool官网帐号</a></legend></fieldset></h2>',
                     '<div class="layui-form-item"><label class="layui-form-label layui-form-required">登录帐号:</label><div class="layui-input-block"><input type="text" name="username" id="username" class="layui-input" lay-verify="required|user" lay-verType="tips" lay-reqText="请输入登录帐号" placeholder="您的用户名、手机号或邮箱" autocomplete="off"/></div></div>',
                     '<div class="layui-form-item"><label class="layui-form-label layui-form-required">登录密码:</label><div class="layui-input-block"><input type="password" name="password" id="password" class="layui-input" lay-verify="required|pass" lay-verType="tips" lay-reqText="请输入登录密码" placeholder="请输入登录密码" autocomplete="off"/></div></div>',
                     '<input type="submit" style="display:none;" lay-filter="addon_userlogin_submit" lay-submit></form>'

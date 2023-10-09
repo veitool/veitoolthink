@@ -166,7 +166,7 @@ layui.use(function(){
                 success: function(l,index){
                     form.verify({
                         user: function(v){if(!/^[\S]{4,20}$/.test(v)){return '请输入4-20位登录帐号';}},
-                        pass: function(v){if(!/^[\S]{6,12}$/.test(v)){return '请输入6-12位登录密码';}}
+                        pass: function(v){if(!/^[\S]{6,20}$/.test(v)){return '请输入6-20位登录密码';}}
                     });
                     form.on('submit(addon_userlogin_submit)',function(data){
                         var btn = $(this);

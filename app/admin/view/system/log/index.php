@@ -130,7 +130,7 @@ layui.use(['vinfo'],function(){
                     {field:"password",width:200,align:'center',title:"密码"},
                     {field:"logintime",width:150,align:'center',title:"时间",sort:!0,templet:function(d){return layui.util.toDateString(d.logintime*1000)}},
                     {field:"loginip",align:'center',width:150,title:"IP",toolbar:'<div><a style="cursor:pointer;" lay-event="showip">{{d.loginip}}</a></div>'},
-                    {field:"agent",align:'center',title:"终端"},
+                    {field:"agent",align:'center',expandedMode:'tips',title:"终端"},
                     {field:"admin",width:60,align:'center',title:"位置",templet:function(d){return PT[d.admin]}},
                     {field:"message",width:80,align:'center',title:"结果"},
                     {fixed:'right',width:60,align:'center',toolbar:'<div><a class="layui-btn layui-btn-xs" lay-event="check">校验</a></div>',title:'操作'}
@@ -243,7 +243,7 @@ layui.use(['vinfo'],function(){
                     {field:"logtime",width:150,align:'center',title:"时间",sort:!0,templet:function(d){return layui.util.toDateString(d.logtime*1000)}},
                     {field:"ip",align:'center',width:150,title:"IP",toolbar:'<div><a style="cursor:pointer;" lay-event="showip">{{d.ip}}</a></div>'},
                     {field:"username",width:120,align:'center',title: "用户",toolbar:'<div><a style="cursor:pointer;" lay-event="userinfo">{{d.username}}</a></div>'},
-                    {field:"agent",align:'center',title:"终端"}
+                    {field:"agent",align:'center',expandedMode:'tips',title:"终端"}
                 ]],
                 page: true,
                 limit: limit

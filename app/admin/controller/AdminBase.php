@@ -79,7 +79,7 @@ abstract class AdminBase extends BaseController
         $us = Manager::get("username = '{$this->manUser['username']}' AND state > 0");
         if($us && $this->manUser['password'] == $us['password'] && $this->manUser['passsalt'] == $us['passsalt']){
             //禁止同帐号同时异地登录处理
-            if(in_array(vconfig('ip_login',0),[2,3]) && $rs['loginip'] != VT_IP){
+            if(in_array(vconfig('ip_login',0),[2,3]) && $us['loginip'] != VT_IP){
                 session(null);
                 $url = ADDON_APP ? '/' : APP_MAP.'/login/index';
                 if($this->request->isAjax()){

@@ -14,7 +14,7 @@ layui.define(['tagsInput','fileLibrary','cascader'], function(e){
     c.block_html  = '<div class="layui-input-block"';
     c.inline_html = '<div class="layui-input-inline"';
     c.item_html = '<div class="layui-form-item" id="item-{{ d.relation ? d.relation + "-" : "" }}{{ d.name }}" style="{{# if(d.itemStyle){ }}{{ d.itemStyle }}{{# } }}{{# if(d.hide || (d.relation && d.relation.indexOf("_")!=-1)){ }}display:none;{{# } }}">' + c.label_html;
-    c.tips_html = '{{# if(d.tips){ }}<div class="layui-form-mid layui-word-aux"><i class="layui-icon">&#xe748;</i> {{ d.tips }}</div>{{# } }}';
+    c.tips_html = '{{# if(d.tips){ }}<div class="layui-form-mid{{# if(d.type ==\'switch\' || d.type ==\'captcha\' || d.type ==\'colorpicker\'){ }} tipx{{# } }}"><i class="layui-icon">&#xe748;</i> {{ d.tips }}</div>{{# } }}';
     c.vers_html = '{{# if(d.verify){ }}lay-verify="{{ d.verify }}" lay-vertype="{{ d.vertype || \'\' }}" lay-reqtext="{{ d.reqtext || d.placeholder || \'\' }}" {{# } }}';
     c.plac_html = '{{# if(d.placeholder){ }}placeholder="{{ d.placeholder }}" {{# } }}{{# if(d.readonly){ }}readonly {{# } }}';
     c.affix_html = '{{# if(d.affix){ }}lay-affix="{{ d.affix }}" {{# } }}';
@@ -43,7 +43,7 @@ layui.define(['tagsInput','fileLibrary','cascader'], function(e){
     c.keyval = c.item_html + c.block_html + '><div id="keyval-show-{{ d.name }}" data-name="{{ d.name }}"><input type="hidden" name="{{ d.name }}" id="keyval-input-{{ d.name }}" value="" ' +
             'lay-verify="{{ d.verify || \'\' }}" lay-reqtext="{{ d.reqtext || \'\' }}"/>'+ c.keyval_html + '</div><a class="layui-btn keyval-add" id="keyval-add-{{ d.name }}"><i class="layui-icon layui-icon-add-circle"></i> 追加</a>' + c.tips_html + '</div></div>';
     //静态文本
-    c.static = c.item_html + c.block_html + '>' + '<div class="layui-form-mid layui-word-aux">{{ d.value }}</div></div></div>';
+    c.static = c.item_html + c.block_html + '>' + '<div class="layui-form-mid">{{ d.value }}</div></div></div>';
     //密码
     c.password = c.item_html + c.block_html + '>' + c.password_html + '{{# if(d.id){ }}id="{{ d.id }}"{{# } }} class="layui-input" lay-affix="eye"/>' + c.tips_html + '</div></div>';
     //复选
@@ -89,7 +89,7 @@ layui.define(['tagsInput','fileLibrary','cascader'], function(e){
                c.block_html + ' style="margin-right:105px;margin-left:0;">'+ c.text_html + 'id="upfile-{{ d.name }}" class="layui-input"/></div>'+
                c.tips_html + '</div></div>';
     //验证码
-    c.captcha = c.item_html + c.block_html + ' >' + c.text_html + 'id ="{{ d.name }}" class="layui-input" style="width:150px;float:left;margin-right:10px;"/><div class="box-{{ d.name }}" style="float:left;"><a class="layui-btn layui-btn-primary">点击获取验证码</a></div>' + c.tips_html + '</div></div>';
+    c.captcha = c.item_html + c.block_html + ' >' + c.text_html + 'id ="{{ d.name }}" class="layui-input" style="width:150px;float:left;margin-right:10px;"/><div class="box-{{ d.name }}" style="float:left;margin-right:10px;"><a class="layui-btn layui-btn-primary">点击获取验证码</a></div>' + c.tips_html + '</div></div>';
     //关联项
     c.relation = [];
     var b = {

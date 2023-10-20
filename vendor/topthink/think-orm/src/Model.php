@@ -268,6 +268,20 @@ abstract class Model implements JsonSerializable, ArrayAccess, Arrayable, Jsonab
     }
 
     /**
+     * 设置当前模型名称.
+     *
+     * @param string $name 模型名称
+     *
+     * @return $this
+     */
+    public function setName(string $name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
      * 创建新的模型实例.
      *
      * @param array $data    数据
@@ -690,12 +704,12 @@ abstract class Model implements JsonSerializable, ArrayAccess, Arrayable, Jsonab
 
         // 时间戳自动写入
         if ($this->autoWriteTimestamp) {
-            if ($this->createTime && !isset($data[$this->createTime])) {
-                $data[$this->createTime] = $this->autoWriteTimestamp();
+            if ($this->createTime && !array_key_exists($this->createTime, $data)) {
+                $data[$this->createTime]       = $this->autoWriteTimestamp();
                 $this->data[$this->createTime] = $data[$this->createTime];
             }
 
-            if ($this->updateTime && !isset($data[$this->updateTime])) {
+            if ($this->updateTime && !array_key_exists($this->updateTime, $data)) {
                 $data[$this->updateTime] = $this->autoWriteTimestamp();
                 $this->data[$this->updateTime] = $data[$this->updateTime];
             }

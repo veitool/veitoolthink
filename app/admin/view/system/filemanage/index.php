@@ -54,6 +54,7 @@ layui.use(function(){
     table.render({
         elem: '#filemanage',
         url: app_root+"index?do=json",
+        cellExpandedMode:'tips',
         css: 'td .layui-table-cell{height:80px;line-height:80px;padding:0 5px;}',
         cols: [[
             {type:'checkbox',fixed:'left'},

@@ -4,15 +4,15 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit57898cf400a54732f12b9d8908a98510
+class ComposerStaticInit9122fa90498c7c375ee553d2b3d1f3e7
 {
     public static $files = array (
         '9b552a3cc426e3287cc811caefa3cf53' => __DIR__ . '/..' . '/topthink/think-helper/src/helper.php',
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
         '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
+        '35fab96057f1bf5e7aba31a8a6d5fdde' => __DIR__ . '/..' . '/topthink/think-orm/stubs/load_stubs.php',
         '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
-        '35fab96057f1bf5e7aba31a8a6d5fdde' => __DIR__ . '/..' . '/topthink/think-orm/stubs/load_stubs.php',
         'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
         'a1105708a18b76903365ca1c4aa61b02' => __DIR__ . '/..' . '/symfony/translation/Resources/functions.php',
         '2cffec82183ee1cea088009cef9a6fc3' => __DIR__ . '/..' . '/ezyang/htmlpurifier/library/HTMLPurifier.composer.php',
@@ -101,6 +101,7 @@ class ComposerStaticInit57898cf400a54732f12b9d8908a98510
             'GuzzleHttp\\Command\\Guzzle\\' => 26,
             'GuzzleHttp\\Command\\' => 19,
             'GuzzleHttp\\' => 11,
+            'GatewayWorker\\' => 14,
         ),
         'C' => 
         array (
@@ -283,6 +284,10 @@ class ComposerStaticInit57898cf400a54732f12b9d8908a98510
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/guzzle/src',
         ),
+        'GatewayWorker\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/workerman/gateway-worker/src',
+        ),
         'Complex\\' => 
         array (
             0 => __DIR__ . '/..' . '/markbaker/complex/classes/src',
@@ -311,7 +316,7 @@ class ComposerStaticInit57898cf400a54732f12b9d8908a98510
         'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'PhpToken' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/PhpToken.php',
-        'Stringable' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Stringable.php',
+        'Stringable' => __DIR__ . '/..' . '/myclabs/php-enum/stubs/Stringable.php',
         'UnhandledMatchError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/UnhandledMatchError.php',
         'ValueError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/ValueError.php',
     );
@@ -319,11 +324,11 @@ class ComposerStaticInit57898cf400a54732f12b9d8908a98510
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit57898cf400a54732f12b9d8908a98510::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit57898cf400a54732f12b9d8908a98510::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit57898cf400a54732f12b9d8908a98510::$prefixesPsr0;
-            $loader->fallbackDirsPsr0 = ComposerStaticInit57898cf400a54732f12b9d8908a98510::$fallbackDirsPsr0;
-            $loader->classMap = ComposerStaticInit57898cf400a54732f12b9d8908a98510::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit9122fa90498c7c375ee553d2b3d1f3e7::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit9122fa90498c7c375ee553d2b3d1f3e7::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit9122fa90498c7c375ee553d2b3d1f3e7::$prefixesPsr0;
+            $loader->fallbackDirsPsr0 = ComposerStaticInit9122fa90498c7c375ee553d2b3d1f3e7::$fallbackDirsPsr0;
+            $loader->classMap = ComposerStaticInit9122fa90498c7c375ee553d2b3d1f3e7::$classMap;
 
         }, null, ClassLoader::class);
     }

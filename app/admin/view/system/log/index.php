@@ -114,6 +114,7 @@ layui.use(['vinfo'],function(){
             do_login = false;
             table.render({
                 elem: '#loginlog',
+                cellExpandedMode:'tips',
                 url: app_root+"login",
                 cols: [[
                     {field:"logid",fixed:"left",width:80,align:'center',title:"ID",sort:!0},
@@ -173,6 +174,7 @@ layui.use(['vinfo'],function(){
             do_manager = false;
             table.render({
                 elem: '#managerlog',
+                cellExpandedMode:'tips',
                 url: app_root + "manager",
                 cols: [[
                     {field:"logid",fixed:"left",width:80,align:'center',title:"ID",sort:!0},
@@ -207,6 +209,7 @@ layui.use(['vinfo'],function(){
             do_web = false;
             table.render({
                 elem: '#weblog',
+                cellExpandedMode:'tips',
                 url: app_root + "web",
                 cols: [[
                     {field:"logid",fixed:"left",width:80,align:'center',title:"ID",sort:!0},

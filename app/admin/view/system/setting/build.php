@@ -6,8 +6,8 @@
         <div class="layui-card-body">
             <div class="layui-card-box">
                 <div class="layui-btn-group">
-                    <button class="layui-btn" id="top-settings-add"><i class="layui-icon layui-icon-add-circle"></i> 添加</button>
-                    <button class="layui-btn" id="top-settings-del"><i class="layui-icon layui-icon-delete"></i> 删除</button>
+                    <a class="layui-btn" id="settings-add"><i class="layui-icon layui-icon-add-circle"></i> 添加</a>
+                    <a class="layui-btn" id="settings-del"><i class="layui-icon layui-icon-delete"></i> 删除</a>
                 </div>
             </div>
             <table lay-filter="settings" id="settings"></table>
@@ -25,8 +25,7 @@ layui.use(['buildItems'],function(){
     var tab = $("#settings_tab");
     layui.each(datas.groups,function(k,v){tab.append('<li group="'+ k +'">'+ v +'</li>');});
     var tab1 = tab.children("li").first();tab1.addClass('layui-this');
-    var group = tab1.attr('group');
-    /**/
+    var group = tab1.attr('group');/**/
     /*渲染数据*/
     table.render({
         elem: '#settings',
@@ -53,10 +52,9 @@ layui.use(['buildItems'],function(){
         table.reloadData('settings',{where:{group:group},page:{curr:1}});
     });/**/
     /*顶部添加按钮*/
-    $('#top-settings-add').on('click',function(){settingsOpen();});
-    /**/
+    $('#settings-add').on('click',function(){settingsOpen();});/**/
     /*顶部删除按钮*/
-    $('#top-settings-del').on('click',function(){
+    $('#settings-del').on('click',function(){
         var checkRows = table.checkStatus('settings').data;
         if(checkRows.length === 0){return layer.msg('请选择需删除的配置项');}
         var ids = checkRows.map(function(d){return d.id;});

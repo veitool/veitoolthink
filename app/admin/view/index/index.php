@@ -22,19 +22,19 @@
             <li class="layui-nav-item" lay-unselect><a v-event="refresh" title="刷新"><i class="layui-icon layui-icon-refresh-3"></i></a></li>
         </ul>
         <ul class="layui-nav layui-layout-right">
-            <li class="layui-nav-item" lay-unselect><a v-event="clearCache" title="缓存" data-url="{:VT_DIR}{:url('admin/index/clear')}"><i class="layui-icon layui-icon-clear"></i></a></li>
-            <li class="layui-nav-item" lay-unselect><a href="{:VT_DIR}/" target="_blank" title="前台"><i class="layui-icon layui-icon-website"></i></a></li>
-            <li class="layui-nav-item" lay-unselect><a v-event="lockScreen" data-url="{:VT_DIR}/static/admin/page/tpl/lock.html" title="锁屏"><i class="layui-icon layui-icon-password"></i></a></li>
+            <li class="layui-nav-item" lay-unselect><a v-event="clearCache" title="缓存" data-url="{:APP_MAP}/index/clear"><i class="layui-icon layui-icon-clear"></i></a></li>
+            <li class="layui-nav-item" lay-unselect><a href="{PUBLIC__PATH}/" target="_blank" title="前台"><i class="layui-icon layui-icon-website"></i></a></li>
+            <li class="layui-nav-item" lay-unselect><a v-event="lockScreen" data-url="{PUBLIC__PATH}/static/admin/page/tpl/lock.html" title="锁屏"><i class="layui-icon layui-icon-password"></i></a></li>
             <li class="layui-nav-item" lay-unselect><a v-event="fullScreen" title="全屏"><i class="layui-icon layui-icon-screen-full"></i></a></li>
             <li class="layui-nav-item" lay-unselect>
                 <a><img src="" id="vFace" class="layui-nav-img"><cite id="vUser"></cite></a>
                 <dl class="layui-nav-child">
                     <dd lay-unselect><a id="vName"></a></dd><hr>
                     <dd lay-unselect><a href="#/system.manager/index/action=info">个人中心</a></dd><hr>
-                    <dd lay-unselect><a v-event="logout" data-url="{:VT_DIR}{:url('admin/login/logout')}">退出</a></dd>
+                    <dd lay-unselect><a v-event="logout" data-url="{:APP_MAP}/login/logout">退出</a></dd>
                 </dl>
             </li>
-            <li class="layui-nav-item" lay-unselect><a v-event="popupRight" data-url="{:VT_DIR}/static/admin/page/tpl/theme.html" title="主题"><i class="layui-icon layui-icon-more-vertical"></i></a></li>
+            <li class="layui-nav-item" lay-unselect><a v-event="popupRight" data-url="{PUBLIC__PATH}/static/admin/page/tpl/theme.html" title="主题"><i class="layui-icon layui-icon-more-vertical"></i></a></li>
         </ul>
     </div>
     <!-- 侧边栏 -->
@@ -52,7 +52,7 @@
 var $ = jQuery = layui.$;
 layui.config({
     base: "{STATIC__PATH}admin/module/",
-    maps: "{PUBLIC__PATH}{:APP_MAP}/", // 映射后的后台根路径
+    maps: "{:APP_MAP}/", // 映射后的后台根路径
     static: "{STATIC__PATH}",  // 静态资源根路径 buildItems.js中有用
     version: "{:VT_VERSION}",  // 框架版本
     bins:{

@@ -13,13 +13,13 @@
             </ul>
         </div>
         <div class="layui-card-header">
-            <form class="layui-form" lay-filter="addon-form-search">
+            <form class="layui-form render">
                 <div class="layui-form-item">
                     <div class="layui-inline" style="width:160px;">
                         <input type="text" name="kw" id="addon-kw" placeholder="搜索" autocomplete="off" class="layui-input" lay-affix="clear"/>
                     </div>
                     <div class="layui-inline">
-                        <button lay-submit lay-filter="top-addon-search" style="display:none">搜索</button>
+                        <button lay-submit lay-filter="addon-search" style="display:none">搜索</button>
                         <div class="layui-btn-group">
                             <a class="layui-btn layui-btn-danger" id="Taddon-0"><i class="layui-icon">&#xe748;</i> 全部</a>
                             <a class="layui-btn" id="Taddon-1"><i class="layui-icon">&#xe627;</i> 免费</a>
@@ -80,7 +80,6 @@ layui.use(function(){
     var map_root = layui.cache.maps;
     var app_root = map_root + 'addon/';
     var app_api  = "{:config('veitool.api_url')}/";
-    form.render(null, 'addon-form-search');
     /*本地上传安装*/
     var uIndex;
     layui.upload.render({
@@ -187,10 +186,8 @@ layui.use(function(){
             });
         }
     });/**/
-    /*渲染搜索元素*/
-    form.render(null, 'addon-form-search');
     /*监听搜索*/
-    form.on('submit(top-addon-search)', function(data){
+    form.on('submit(addon-search)', function(data){
         var field = data.field;field.catid = catid;field.version = version;
         table.reloadData('addon',{where:field,page:{curr:1}});
         return false;

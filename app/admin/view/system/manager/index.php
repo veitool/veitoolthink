@@ -25,7 +25,8 @@
         <div class="layui-col-md9">
             <div class="layui-card">
                 <div class="layui-card-header">
-                    <form class="layui-form" lay-filter="manager-form-search">
+                    <form class="layui-form render form-search">
+                        <input type="hidden" name="groupid" id="manager-groupid" value=""/>
                         <div class="layui-form-item">
                             <div class="layui-inline" style="width:72px;">
                                 <select name="fields">
@@ -37,7 +38,7 @@
                                 </select>
                             </div>
                             <div class="layui-inline" style="width:150px;"><input type="text" name="kw" placeholder="关键词" autocomplete="off" class="layui-input" lay-affix="clear"/></div>
-                            <div class="layui-inline" style="width:192px;"><input type="text" name="sotime" id="manager-search-time" placeholder="登录时间" autocomplete="off" class="layui-input" lay-affix="clear"/></div>
+                            <div class="layui-inline" style="width:200px;"><input type="text" name="sotime" date-render placeholder="登录时间" class="layui-input" lay-affix="clear"/></div>
                             <div class="layui-inline" style="width:110px;"><select name="roleid" id="search_roles_select"></select></div>
                             <div class="layui-inline" style="width:72px;">
                                 <select name="state">
@@ -48,8 +49,8 @@
                             </div>
                             <div class="layui-inline">
                                 <div class="layui-btn-group">
-                                    <button class="layui-btn" lay-submit lay-filter="top-manager-search"><i class="layui-icon layui-icon-search layuiadmin-button-btn"></i> 搜索</button>
-                                    <button class="layui-btn" lay-submit lay-filter="top-manager-all"><i class="layui-icon layui-icon-light"></i>全部</button>
+                                    <a class="layui-btn" lay-submit lay-filter="manager-search"><i class="layui-icon layui-icon-search"></i> 搜索</a>
+                                    <a class="layui-btn" lay-submit lay-filter="manager-all" onclick="$('#manager-groupid').val('')"><i class="layui-icon layui-icon-light"></i>全部</a>
                                 </div>
                             </div>
                         </div>
@@ -58,8 +59,8 @@
                 <div class="layui-card-body">
                     <div class="layui-card-box">
                         <div class="layui-btn-group">
-                            <button class="layui-btn" id="top-manager-add"><i class="layui-icon layui-icon-add-circle"></i> 添加</button>
-                            <button class="layui-btn" id="top-manager-del"><i class="layui-icon layui-icon-delete"></i> 删除</button>
+                            <a class="layui-btn" id="manager-add"><i class="layui-icon layui-icon-add-circle"></i> 添加</a>
+                            <a class="layui-btn" id="manager-del"><i class="layui-icon layui-icon-delete"></i> 删除</a>
                             <a class="layui-btn" href="#/system.manager/index/action=info"><i class="layui-icon layui-icon-username"></i> 个人中心</a>
                         </div>
                     </div>
@@ -72,7 +73,6 @@
 <!--JS部分-->
 <script type="text/javascript">
 layui.use(['vinfo', 'xmSelect', 'buildItems'], function(){
-    var groupid = '';
     var map_root = layui.cache.maps;
     var app_root = map_root + 'system.manager/';
     var layer=layui.layer,table=layui.table,form=layui.form,admin=layui.admin;
@@ -101,8 +101,8 @@ layui.use(['vinfo', 'xmSelect', 'buildItems'], function(){
                 $('#organizationTree').find('.organ-tree-click').removeClass('organ-tree-click');
                 $(obj.elem).children('.layui-tree-entry').addClass('organ-tree-click');
                 organObj = obj;
-                groupid  = obj.data.id;
-                table.reloadData('manager',{where:{groupid:groupid},page:{curr:1}});
+                $('#manager-groupid').val(obj.data.id);
+                table.reloadData('manager',{where:{groupid:obj.data.id},page:{curr:1}});
             }
         });
         var item = $('#organizationTree .layui-tree-entry:first');
@@ -110,7 +110,6 @@ layui.use(['vinfo', 'xmSelect', 'buildItems'], function(){
     }
     /*初始渲染*/
     renderTree(<?=$organ?>);
-
     /*左树添加按钮*/
     $('#organ-add').on('click',function(){organOpen();});/**/
     /*左树编辑按钮*/
@@ -220,9 +219,6 @@ layui.use(['vinfo', 'xmSelect', 'buildItems'], function(){
     }/*==============左树结构END==============*/
     /*顶部类别*/
     $('#search_roles_select').html(roles_select);
-    /*渲染搜索元素*/
-    form.render(null, 'manager-form-search');
-    layui.laydate.render({elem:'#manager-search-time',range:true,format:'yyyy/MM/dd',done:function(){$('#manager-search-time').trigger('input')}});
     /*渲染数据*/
     table.render({
         elem: '#manager',
@@ -248,22 +244,10 @@ layui.use(['vinfo', 'xmSelect', 'buildItems'], function(){
         page: true,
         limit:{$limit}
     });
-    /*监听搜索*/
-    form.on('submit(top-manager-search)', function(data){
-        data.field.groupid = groupid;
-        table.reloadData('manager',{where:data.field,page:{curr:1}});
-        return false;
-    });/**/
-    /*监听全部按钮*/
-    form.on('submit(top-manager-all)', function(){
-        groupid = ''
-        table.reloadData('manager',{where:'',page:{curr:1}});
-        return false;
-    });/**/
     /*顶部添加按钮*/
-    $('#top-manager-add').on('click',function(){managerOpen();});/**/
+    $('#manager-add').on('click',function(){managerOpen();});/**/
     /*顶部删除按钮*/
-    $('#top-manager-del').on('click', function(){
+    $('#manager-del').on('click', function(){
         var checkRows = table.checkStatus('manager').data;
         if(checkRows.length === 0){return layer.msg('请选择需删除的管理帐号');}
         var ids = checkRows.map(function(d){return d.userid;});

@@ -75,7 +75,7 @@ abstract class BaseController
         // IP地址
         define('VT_IP', $this->app->request->ip());
         // 映射路径
-        defined('APP_MAP') or define('APP_MAP', $this->request->root());
+        define('APP_MAP', VT_DIR . $this->request->root());
         // 前台集中业务
         $this->__home();
         // 验证（登录、权限）

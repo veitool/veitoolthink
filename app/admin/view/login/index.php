@@ -102,7 +102,7 @@
             //提交数据
             $.ajax({
                 type: "POST",
-                url: "{:url('admin/login/check')}",
+                url: "{:APP_MAP}/login/check",
                 data: {username:username,password:hex_md5(password),captcha:captcha},
                 dataType: "json",
                 success:function(res){
@@ -122,7 +122,7 @@
         };
         var tip = function(t,o,f){layer.tips(t,o,{tips:[f,'#ff7c3a']});o.focus();return false;};
         //获取验证码
-        var getCaptcha = function(){$('.code-img img').attr("src","/api/captcha/admin?t="+Math.random());};
+        var getCaptcha = function(){$('.code-img img').attr("src","{PUBLIC__PATH}/api/captcha/admin?t="+Math.random());};
     });
 </script>
 <div style="display:none"><script type="text/javascript" src="//js.users.51.la/21716865.js"></script></div>

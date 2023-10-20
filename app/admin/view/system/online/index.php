@@ -1,7 +1,7 @@
 <div class="layui-fluid">   
     <div class="layui-card">
         <div class="layui-card-header">
-            <form class="layui-form" lay-filter="online-form-search">
+            <form class="layui-form render form-search">
                 <div class="layui-form-item">
                     <div class="layui-inline" style="width:80px;">
                         <select name="fields">
@@ -12,7 +12,7 @@
                         </select>
                     </div>
                     <div class="layui-inline" style="width:150px;"><input type="text" name="kw" placeholder="关键词" autocomplete="off" class="layui-input" lay-affix="clear"/></div>
-                    <div class="layui-inline" style="width:192px;"><input type="text" name="sotime" id="online-search-time" placeholder="访问时间" autocomplete="off" class="layui-input" lay-affix="clear"/></div>
+                    <div class="layui-inline" style="width:200px;"><input type="text" name="sotime" date-render placeholder="访问时间" class="layui-input" lay-affix="clear"/></div>
                     <div class="layui-inline" style="width:72px;">
                         <select name="type">
                             <option value="" selected="">类型</option>
@@ -22,8 +22,8 @@
                     </div>
                     <div class="layui-inline">
                         <div class="layui-btn-group">
-                            <button class="layui-btn" lay-submit lay-filter="top-online-search"><i class="layui-icon layui-icon-search layuiadmin-button-btn"></i> 搜索</button>
-                            <button class="layui-btn" lay-submit lay-filter="top-online-all"><i class="layui-icon layui-icon-light"></i>全部</button>
+                            <a class="layui-btn" lay-submit lay-filter="online-search"><i class="layui-icon layui-icon-search"></i> 搜索</a>
+                            <a class="layui-btn" lay-submit lay-filter="online-all"><i class="layui-icon layui-icon-light"></i>全部</a>
                         </div>
                     </div>
                     <div class="layui-btn-group" style="float:right;">
@@ -42,18 +42,13 @@
 layui.use(['vinfo'],function(){
     var map_root = layui.cache.maps;
     var app_root = map_root + 'system.online/';
-    var table=layui.table,form=layui.form;
-    var ip = '{:VT_IP}';
-    //渲染搜索元素
-    form.render(null, 'online-form-search');
-    layui.laydate.render({elem:'#online-search-time',range:true,format:'yyyy/MM/dd',done:function(){$('#online-search-time').trigger('input')}});
     /*渲染数据*/
-    table.render({
+    layui.table.render({
         elem: '#online',
         url: app_root+"index?do=json",
         cols: [[
             {type:'checkbox',fixed:'left'},
-            {field:"username",align:'center',width:120,title:"用户",templet:function(d){return '<a style="cursor:pointer;" lay-event="userinfo"><font'+ (!d.type && d.ip==ip ? ' color=blue' : '') +'>'+ d.username +'</font></a>'}},
+            {field:"username",align:'center',width:120,title:"用户",templet:function(d){return '<a style="cursor:pointer;" lay-event="userinfo"><font'+ (!d.type && d.ip == '{:VT_IP}' ? ' color=blue' : '') +'>'+ d.username +'</font></a>'}},
             {field:"uid",align:'center',width:150,title:"编号"},
             {field:"url",title:"路径"},
             {field:"type",width:80,align:'center',title:"类型",templet:function(d){return d.type==1 ? '会员': '后台'}},
@@ -68,18 +63,8 @@ layui.use(['vinfo'],function(){
         page: true,
         limit:{$limit}
     });/**/
-    /*监听搜索*/
-    form.on('submit(top-online-search)', function(data){
-        table.reloadData('online',{where:data.field,page:{curr:1}});
-        return false;
-    });/**/
-    /*监听全部按钮*/
-    form.on('submit(top-online-all)', function(){
-        table.reloadData('online',{where:'',page:{curr:1}});
-        return false;
-    });/**/
     /*工具条监听*/
-    table.on('tool(online)', function(obj){
+    layui.table.on('tool(online)', function(obj){
         var data = obj.data;
         if(obj.event === 'userinfo'){
             if(data.type>0){

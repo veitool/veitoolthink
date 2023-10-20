@@ -2,8 +2,8 @@
     <div class="layui-card">
         <div class="layui-card-header">
             <div class="layui-btn-group">
-                <button class="layui-btn" id="top-roles-add"><i class="layui-icon layui-icon-add-circle"></i> 添加</button>
-                <button class="layui-btn" id="top-roles-del"><i class="layui-icon layui-icon-delete"></i> 删除</button>
+                <a class="layui-btn" id="roles-add"><i class="layui-icon layui-icon-add-circle"></i> 添加</a>
+                <a class="layui-btn" id="roles-del"><i class="layui-icon layui-icon-delete"></i> 删除</a>
             </div>
         </div>
         <div class="layui-card-body">
@@ -33,9 +33,9 @@ layui.use(['zTree','buildItems'], function(){
         limit:{$limit}
     });/**/
     /*顶部添加按钮*/
-    $('#top-roles-add').on('click',function(){rolesOpen();});/**/
+    $('#roles-add').on('click',function(){rolesOpen();});/**/
     /*顶部删除按钮*/
-    $('#top-roles-del').on('click', function(){
+    $('#roles-del').on('click', function(){
         var checkRows = table.checkStatus('roles').data;
         if(checkRows.length === 0){return layer.msg('请选择需删除的角色');}
         var ids = checkRows.map(function(d){return d.roleid;});

@@ -2,9 +2,9 @@
     <div class="layui-card">
         <div class="layui-card-header">
             <div class="layui-btn-group">
-                <button class="layui-btn" id="top-areas-add"><i class="layui-icon layui-icon-add-circle"></i> 添加</button>
-                <button class="layui-btn" id="top-areas-del"><i class="layui-icon layui-icon-delete"></i> 删除</button>
-                <button class="layui-btn" id="top-areas-import"><i class="layui-icon layui-icon-set"></i> 导入</button>
+                <a class="layui-btn" id="areas-add"><i class="layui-icon layui-icon-add-circle"></i> 添加</a>
+                <a class="layui-btn" id="areas-del"><i class="layui-icon layui-icon-delete"></i> 删除</a>
+                <a class="layui-btn" id="areas-import"><i class="layui-icon layui-icon-set"></i> 导入</a>
             </div>
             <div id="area_guide" style="float:right"></div>
         </div>
@@ -75,16 +75,16 @@ layui.use(['buildItems'], function(){
     /*初始顶级数据*/
     table.render(box);
     /*顶部添加按钮*/
-    $('#top-areas-add').on('click',function(){areasOpen();});/**/
+    $('#areas-add').on('click',function(){areasOpen();});/**/
     /*顶部删除按钮*/
-    $('#top-areas-del').on('click', function(){
+    $('#areas-del').on('click', function(){
         var checkRows = table.checkStatus('areas').data;
         if(checkRows.length === 0){return layer.msg('请选择需删除的地区');}
         var ids = checkRows.map(function(d){return d.areaid;});
         del(ids);
     });/**/
     /*顶部导入按钮*/
-    $('#top-areas-import').on('click', function(){
+    $('#areas-import').on('click', function(){
         layer.confirm('确定要导入内置地区数据吗？？', function(index){
             $("#layui-layer"+index+" .layui-layer-content").html('数据导入中，请勿关闭...');
             admin.req(app_root+"import",function(res){

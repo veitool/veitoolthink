@@ -6,13 +6,13 @@
         <div class="layui-card-body">
             <div class="layui-card-box">
                 <div class="layui-btn-group">
-                    <a class="layui-btn" id="top-menus-add"><i class="layui-icon layui-icon-add-circle"></i> 添加</a>
-                    <a class="layui-btn" id="top-menus-adds"><i class="layui-icon layui-icon-add-circle"></i> 批量</a>
-                    <a class="layui-btn" id="top-menus-del"><i class="layui-icon layui-icon-delete"></i> 删除</a>
-                    <a class="layui-btn" id="top-menus-sz" data="1"><i class="layui-icon">&#xe624;</i>展开</a>
-                    <a class="layui-btn" id="top-menus-cat"><i class="layui-icon layui-icon-rate"></i> 分类</a>
-                    <a class="layui-btn" id="top-menus-out"><i class="layui-icon layui-icon-download-circle"></i> 导出</a>
-                    <a class="layui-btn" id="top-menus-up"><i class="layui-icon layui-icon-upload-drag"></i> 导入</a>
+                    <a class="layui-btn" id="menus-add"><i class="layui-icon layui-icon-add-circle"></i> 添加</a>
+                    <a class="layui-btn" id="menus-adds"><i class="layui-icon layui-icon-add-circle"></i> 批量</a>
+                    <a class="layui-btn" id="menus-del"><i class="layui-icon layui-icon-delete"></i> 删除</a>
+                    <a class="layui-btn" id="menus-sz" data="1"><i class="layui-icon">&#xe624;</i>展开</a>
+                    <a class="layui-btn" id="menus-cat"><i class="layui-icon layui-icon-rate"></i> 分类</a>
+                    <a class="layui-btn" id="menus-out"><i class="layui-icon layui-icon-download-circle"></i> 导出</a>
+                    <a class="layui-btn" id="menus-up"><i class="layui-icon layui-icon-upload-drag"></i> 导入</a>
                 </div>
             </div>
             <table lay-filter="menus" id="menus"></table>
@@ -81,7 +81,7 @@ layui.use(['trTable','xmSelect','iconPicker','buildItems'],function(){
     });
     $('#btnClearSearch').click(function(){menusTb.clearFilter();});/**/
     /*展开或折叠*/
-    $('#top-menus-sz').click(function(){
+    $('#menus-sz').click(function(){
         var ob = $(this),i,t;
         if(ob.attr('data')==1){
             menusTb.expandAll();
@@ -93,7 +93,7 @@ layui.use(['trTable','xmSelect','iconPicker','buildItems'],function(){
         ob.attr('data',i).html(t);
     });/**/
     /*顶部类别管理*/
-    $('#top-menus-cat').on('click', function(){
+    $('#menus-cat').on('click', function(){
         admin.open({
             type: 1,
             area: ['68%','75%'],
@@ -103,7 +103,7 @@ layui.use(['trTable','xmSelect','iconPicker','buildItems'],function(){
         });
     });/**/
     /*顶部导出管理*/
-    $('#top-menus-out').on('click', function(){
+    $('#menus-out').on('click', function(){
         var btn = $(this);
         if (btn.attr('stop')) return false;
         var checkRows = menusTb.checkStatus();
@@ -117,7 +117,7 @@ layui.use(['trTable','xmSelect','iconPicker','buildItems'],function(){
         });
     });/**/
     /*顶部导入管理*/
-    $('#top-menus-up').on('click', function(){
+    $('#menus-up').on('click', function(){
         var btn = $(this);
         if (btn.attr('stop')) return false;
         layer.confirm('确定要导入菜单吗？<br/>请确保存在文件 /runtime/sysMenus.php', function(){
@@ -145,13 +145,13 @@ layui.use(['trTable','xmSelect','iconPicker','buildItems'],function(){
         },'post',{headersToken:true});
     });/**/
     /*顶部添加按钮*/
-    $('#top-menus-add').on('click',function(){addOpen();});
+    $('#menus-add').on('click',function(){addOpen();});
     /**/
     /*顶部批量按钮*/
-    $('#top-menus-adds').on('click',function(){addsOpen(0);});
+    $('#menus-adds').on('click',function(){addsOpen(0);});
     /**/
     /*顶部删除按钮*/
-    $('#top-menus-del').on('click', function(){
+    $('#menus-del').on('click', function(){
         var checkRows = menusTb.checkStatus();
         if(checkRows.length == 0){return layer.msg('请选择需删除的菜单');}
         var ids = checkRows.map(function(d){return d.menuid;});

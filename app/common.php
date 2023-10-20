@@ -9,7 +9,7 @@
  */
 
 // 版本信息
-define('VT_VERSION', '1.0.4');
+define('VT_VERSION', '2.0.0');
 // 后台管理员 session 标识
 define('VT_MANAGER', 'V_MANAGER');
 // 前台会员 session 标识
@@ -23,7 +23,7 @@ define('VT_DS', DIRECTORY_SEPARATOR);
 // 资源目录 运行目录为根目录时请设为空\其他二级或多级目录时后面无斜杠如：/mydir 或 /mydir/xyz
 define('VT_DIR', '');
 // 全局静态目录
-define('VT_STATIC', '/static/');
+define('VT_STATIC', VT_DIR . '/static/');
 // 项目目录
 define('ROOT_PATH', realpath(dirname(__DIR__)) . VT_DS);
 // 站点目录

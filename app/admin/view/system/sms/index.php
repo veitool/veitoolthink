@@ -1,7 +1,7 @@
 <div class="layui-fluid">   
     <div class="layui-card">
         <div class="layui-card-header">
-            <form class="layui-form" lay-filter="sms-form-search">
+            <form class="layui-form render form-search">
                 <div class="layui-form-item">
                     <div class="layui-inline" style="width:80px;">
                         <select name="fields">
@@ -13,11 +13,11 @@
                         </select>
                     </div>
                     <div class="layui-inline" style="width:150px;"><input type="text" name="kw" placeholder="关键词" autocomplete="off" class="layui-input" lay-affix="clear"/></div>
-                    <div class="layui-inline" style="width:192px;"><input type="text" name="sotime" id="sms-search-time" placeholder="时间" autocomplete="off" class="layui-input" lay-affix="clear"/></div>
+                    <div class="layui-inline" style="width:200px;"><input type="text" name="sotime" date-render placeholder="时间" class="layui-input" lay-affix="clear"/></div>
                     <div class="layui-inline">
                         <div class="layui-btn-group">
-                            <button class="layui-btn" lay-submit lay-filter="top-sms-search"><i class="layui-icon layui-icon-search layuiadmin-button-btn"></i> 搜索</button>
-                            <button class="layui-btn" lay-submit lay-filter="top-sms-all"><i class="layui-icon layui-icon-light"></i>全部</button>
+                            <a class="layui-btn" lay-submit lay-filter="sms-search"><i class="layui-icon layui-icon-search"></i> 搜索</a>
+                            <a class="layui-btn" lay-submit lay-filter="sms-all"><i class="layui-icon layui-icon-light"></i>全部</a>
                         </div>
                     </div>
                 </div>
@@ -26,8 +26,8 @@
         <div class="layui-card-body">
             <div class="layui-card-box">
                 <div class="layui-btn-group">
-                    <button class="layui-btn" id="top-sms-send"><i class="layui-icon layui-icon-add-circle"></i> 发送短信</button>
-                    <button class="layui-btn" id="top-sms-del"><i class="layui-icon layui-icon-delete"></i> 删除记录</button>
+                    <a class="layui-btn" id="sms-send"><i class="layui-icon layui-icon-add-circle"></i> 发送短信</a>
+                    <a class="layui-btn" id="sms-del"><i class="layui-icon layui-icon-delete"></i> 删除记录</a>
                 </div>
             </div>
             <table lay-filter="sms" id="sms"></table>
@@ -39,9 +39,6 @@
 layui.use(['buildItems'],function(){
     var app_root = layui.cache.maps + 'system.sms/';
     var table=layui.table,form=layui.form,admin=layui.admin;
-    /*渲染搜索元素*/
-    form.render(null, 'sms-form-search');
-    layui.laydate.render({elem:'#sms-search-time',range:true,format:'yyyy/MM/dd',done:function(){$('#sms-search-time').trigger('input')}});
     /*渲染数据*/
     table.render({
         elem: '#sms',
@@ -60,19 +57,8 @@ layui.use(['buildItems'],function(){
         page: true,
         limit:{$limit}
     });/**/
-    /*监听搜索*/
-    form.on('submit(top-sms-search)', function(data){
-        var field = data.field;
-        table.reloadData('sms',{where:field,page:{curr:1}});
-        return false;
-    });/**/
-    /*监听全部按钮*/
-    form.on('submit(top-sms-all)', function(){
-        table.reloadData('sms',{where:'',page:{curr:1}});
-        return false;
-    });/**/
     /*顶部发送短信*/
-    $('#top-sms-send').on('click', function(){
+    $('#sms-send').on('click', function(){
         admin.open({
             type: 1,
             bid: 'sms_items',
@@ -104,7 +90,7 @@ layui.use(['buildItems'],function(){
         });
     });/**/
     /*顶部删除短信按钮*/
-    $('#top-sms-del').on('click', function(){
+    $('#sms-del').on('click', function(){
         var checkData = table.checkStatus('sms').data;
         if (checkData.length === 0){return layer.msg('请选择短信记录');}
         var ids = checkData.map(function(d){return d.itemid;});

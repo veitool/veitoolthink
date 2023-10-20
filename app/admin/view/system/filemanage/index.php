@@ -5,7 +5,7 @@
 <div class="layui-fluid">
     <div class="layui-card">
         <div class="layui-card-header">
-            <form class="layui-form" lay-filter="filemanage-form-search">
+            <form class="layui-form render form-search">
                 <div class="layui-form-item" style="margin-bottom:5px;">
                     <div class="layui-inline" style="width:80px;">
                         <select name="fields">
@@ -15,19 +15,19 @@
                         </select>
                     </div>
                     <div class="layui-inline" style="width:150px;"><input type="text" name="kw" placeholder="关键词" autocomplete="off" class="layui-input" lay-affix="clear"/></div>
-                    <div class="layui-inline" style="width:192px;"><input type="text" name="sotime" id="filemanage-search-time" placeholder="上传时间" autocomplete="off" class="layui-input" lay-affix="clear"/></div>
+                    <div class="layui-inline" style="width:200px;"><input type="text" name="sotime" date-render placeholder="上传时间" class="layui-input" lay-affix="clear"/></div>
                     <div class="layui-inline" style="width:110px;"><select name="groupid" id="search_filemanage_select"></select></div>
                     <div class="layui-inline" style="width:72px;">
                         <select name="isdel">
-                            <option value="" selected="">软删</option>
+                            <option value="">软删</option>
                             <option value="0">未删</option>
                             <option value="1">已删</option>
                         </select>
                     </div>
                     <div class="layui-inline">
                         <div class="layui-btn-group">
-                            <button class="layui-btn" lay-submit lay-filter="top-filemanage-search"><i class="layui-icon layui-icon-search layuiadmin-button-btn"></i> 搜索</button>
-                            <button class="layui-btn" lay-submit lay-filter="top-filemanage-all"><i class="layui-icon layui-icon-light"></i>全部</button>
+                            <a class="layui-btn" lay-submit lay-filter="filemanage-search"><i class="layui-icon layui-icon-search"></i> 搜索</a>
+                            <a class="layui-btn" lay-submit lay-filter="filemanage-all"><i class="layui-icon layui-icon-light"></i>全部</a>
                             <a class="layui-btn" id="top-filemanage-del"><i class="layui-icon layui-icon-delete"></i> 删除</a>
                             <a class="layui-btn" id="top-filemanage-reset"><i class="layui-icon layui-icon-vercode"></i> 恢复</a>
                             <a class="layui-btn" id="top-filemanage-clear"><i class="layui-icon layui-icon-close"></i> 清理</a>
@@ -45,14 +45,11 @@
 <script type="text/javascript">
 layui.use(function(){
     var app_root = layui.cache.maps + 'system.filemanage/';
-    var table=layui.table,form=layui.form,admin=layui.admin;
+    var table=layui.table,admin=layui.admin;
     //分组渲染
     var Group = {$group|raw};
     var filemanage_select = '<option value="">文件分组</option><option value="0">尚未分组</option>'; $.each(Group,function(k,v){filemanage_select += '<option value="'+ k +'">'+ v +'</option>';});
     $('#search_filemanage_select').html(filemanage_select);
-    //渲染搜索元素
-    form.render(null, 'filemanage-form-search');
-    layui.laydate.render({elem:'#filemanage-search-time',range:true,format:'yyyy/MM/dd',done:function(){$('#filemanage-search-time').trigger('input')}});
     /*渲染数据*/
     table.render({
         elem: '#filemanage',
@@ -73,16 +70,6 @@ layui.use(function(){
         ]],
         page: true,
         limit:{$limit}
-    });/**/
-    /*监听搜索*/
-    form.on('submit(top-filemanage-search)', function(data){
-        table.reloadData('filemanage',{where:data.field,page:{curr:1}});
-        return false;
-    });/**/
-    /*监听全部按钮*/
-    form.on('submit(top-filemanage-all)', function(){
-        table.reloadData('filemanage',{where:'',page:{curr:1}});
-        return false;
     });/**/
     /*顶部删除按钮*/
     $('#top-filemanage-del').on('click', function(){
@@ -145,11 +132,7 @@ layui.use(function(){
         }else if(type==='audio'){
             return '/static/fileicon/audio.png';
         }else if(type==='file'){
-            if(ext==='jpg' || ext==='jpeg' || ext==='png' || ext==='gif' || ext==='bmp'){
-                return '/static/fileicon/pic.png';
-            }else{
-                return '/static/fileicon/'+ext+'.png';
-            }
+            return (ext==='jpg' || ext==='jpeg' || ext==='png' || ext==='gif' || ext==='bmp') ? '/static/fileicon/pic.png' : '/static/fileicon/'+ext+'.png';
         }else{
             return url;
         }

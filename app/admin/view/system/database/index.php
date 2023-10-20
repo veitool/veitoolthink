@@ -2,12 +2,12 @@
     <div class="layui-card">
         <div class="layui-card-header">
             <div class="layui-btn-group">
-                <button class="layui-btn" id="top-database-backup"><i class="layui-icon layui-icon-auz"></i> 备份数据</button>
-                <button class="layui-btn" id="top-database-imports"><i class="layui-icon layui-icon-refresh"></i> 恢复数据</button>
-                <button class="layui-btn" id="top-database-xiufu"><i class="layui-icon layui-icon-set"></i> 修复表</button>
-                <button class="layui-btn" id="top-database-youhua"><i class="layui-icon layui-icon-rate"></i> 优化表</button>
+                <a class="layui-btn" id="database-backup"><i class="layui-icon layui-icon-auz"></i> 备份数据</a>
+                <a class="layui-btn" id="database-imports"><i class="layui-icon layui-icon-refresh"></i> 恢复数据</a>
+                <a class="layui-btn" id="database-xiufu"><i class="layui-icon layui-icon-set"></i> 修复表</a>
+                <a class="layui-btn" id="database-youhua"><i class="layui-icon layui-icon-rate"></i> 优化表</a>
             </div>
-            <div style="float:right;padding:10px 5px 0 0;">共<b> <?php echo isset($tables)?$tables:'0';?></b> 张表 / <b><?php echo isset($totalsize)?$totalsize:'0';?></b> Mb</div>
+            <div style="float:right;padding:10px 5px 0 0;">共<b> <?php echo $tables ?? '0';?></b> 张表 / <b><?php echo $totalsize ?? '0';?></b> Mb</div>
         </div>
         <div class="layui-card-body">
             <table lay-filter="database" id="database"></table>
@@ -37,7 +37,7 @@ layui.use(function(){
         ]]
     });/**/
     /*顶部备份数据按钮*/
-    $('#top-database-backup').on('click',function(){
+    $('#database-backup').on('click',function(){
         var checkData = table.checkStatus('database').data;
         if (checkData.length === 0){return layer.msg('请选择需备份的数据表');}
         var tables = {}, sizes = {};
@@ -75,7 +75,7 @@ layui.use(function(){
         });
     });/**/
     /*顶部恢复数据按钮*/
-    $('#top-database-imports').on('click', function(){
+    $('#database-imports').on('click', function(){
         admin.open({
             type: 1,
             area: ['70%', '75%'],
@@ -159,7 +159,7 @@ layui.use(function(){
         });
     });/**/
     /*顶部修复表按钮*/
-    $('#top-database-xiufu').on('click', function(){
+    $('#database-xiufu').on('click', function(){
         var btn = $(this);
         if (btn.attr('stop')) return false;
         var checkRows = table.checkStatus('database').data;
@@ -171,7 +171,7 @@ layui.use(function(){
         },'post');
     });/**/
     /*顶部优化表按钮*/
-    $('#top-database-youhua').on('click', function(){
+    $('#database-youhua').on('click', function(){
         var btn = $(this);
         if (btn.attr('stop')) return false;
         var checkRows = table.checkStatus('database').data;

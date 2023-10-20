@@ -95,7 +95,7 @@
                         </div>
                         <!-- tab2 -->
                         <div class="layui-tab-item">
-                            <form class="layui-form userInfoForm" lay-filter="userInfoForm">
+                            <form class="layui-form userInfoForm render">
                                 <div class="layui-form-item">
                                     <label class="layui-form-label">用户帐号:</label>
                                     <div class="layui-input-block"><input type="text" value="{$User.username}" class="layui-input"  readonly/></div>
@@ -138,7 +138,7 @@
                         <!-- tab3 -->
                         <div class="layui-tab-item">
                             <!-- 修改登录密码 -->
-                            <form class="layui-form userInfoForm" lay-filter="userInfoForm">
+                            <form class="layui-form userInfoForm render">
                                 <div class="layui-form-item">
                                     <label class="layui-form-label layui-form-required">原登录密码：</label>
                                     <div class="layui-input-block"><input type="password" name="oldPassword" id="oldpassword" class="layui-input" lay-verify="password" lay-verType="tips" data-tip="原登录" lay-affix="eye" autocomplete='off' placeholder="请输入原登录密码"/></div>
@@ -171,7 +171,6 @@ layui.use(['fileLibrary', 'cascader'], function () {
     var map_root = layui.cache.maps;
     var app_root = map_root + 'system.manager/';
     var layer=layui.layer,form=layui.form,admin=layui.admin;
-    form.render(null,'userInfoForm');
     /*自定义验证*/
     form.verify({
         nickname: [/^[\w\u4e00-\u9fa5]{2,10}$/, '昵称必须为2-10位数字、字母、汉字或下划线组成'],

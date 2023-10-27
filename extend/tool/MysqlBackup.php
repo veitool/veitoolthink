@@ -93,8 +93,10 @@ class MysqlBackup
                 $tables[$k] = strip_sql($v, 0);
                 $totalSize += $sizes[$v];
             }
-            $back['tables']  = $tables;   //数据表集
-            $back['sizes']   = $sizes;    //数据表大小集合
+            $rs = Db::query("SELECT VERSION() as v");
+            $back['version'] = $rs[0]['v']; //获取数据库版本号
+            $back['tables']  = $tables;     //数据表集
+            $back['sizes']   = $sizes;      //数据表大小集合
             $back['totalTables']     = count($tables);  //数据表总数
             $back['tablesStartKey']  = 0;  //初始数据表集下标
             $back['recordStartNum']  = 0;  //初始数据表记录开始行数
@@ -145,6 +147,7 @@ class MysqlBackup
             session('db_back_info.fileNum',$back['fileNum']+1); //记录递增的分卷编号
             return ['code'=>0,'p'=>$p,'filenum'=>$back['fileNum']];
         }else{
+            $this->dumpEnd($back);
             session('db_back_info',null);
             return ['code'=>1,'p'=>100,'filenum'=>$back['fileNum'],'msg'=>'备份数据成功'];
         }
@@ -160,22 +163,42 @@ class MysqlBackup
     public function dumpSql(string $table, int $start = 0, int $sizes = 0)
     {
         $sql = '';
-        $offset = 100;
         if($start == 0){
-            $sql = "DROP TABLE IF EXISTS `$table`;\n";
             $rs = Db::query("SHOW CREATE TABLE `$table`");
             $rs = array_map('array_change_key_case', $rs);
-            $create = trim($rs[0]['create table']);
-            $sql .= $create.";\n\n";
+            if(isset($rs[0]['create view'])){
+                $sql    = "DROP VIEW IF EXISTS `$table`;\n" . trim($rs[0]['create view']) . ";\n\n";
+                $back   = session('db_back_info');
+                $fildir = $this->config['path'].$back['backFolderName'].'/';
+                if($this->checkPath($fildir)){
+                    $filename = $fildir.'z.sql';
+                    if(is_file($filename)){
+                        $old = file_get_contents($filename);
+                        $fp = @fopen($filename, 'w');
+                        @fwrite($fp, $old.$sql);
+                        @fclose($fp);
+                    }else{
+                        $fp = @fopen($filename, 'a');
+                        @fwrite($fp, $sql);
+                        @fclose($fp);
+                    }
+                }
+                return '';
+            }else{
+                $sql = "DROP TABLE IF EXISTS `$table`;\n" . trim($rs[0]['create table']) . ";\n\n";
+            }
         }
-        $rows = $offset;
+        $rows = $offset = 100;
         while(($sizes + strlen($sql)) < $this->config['part'] && $rows == $offset){
             $rows = 0;
             /*备份数据记录*/
             $result = Db::query("SELECT * FROM `$table` LIMIT $start, $offset");
             foreach ($result as $row) {
-                $row  = array_map('addslashes', $row);
-                $sql .= "INSERT INTO `{$table}` VALUES('" . str_replace(array("\r","\n"),array('\\r','\\n'),implode("','", $row)) . "');\n";
+                $str = '';
+                foreach($row as $v){
+                    $str .= (is_null($v) ? 'null,' : "'".addslashes($v)."',");
+                }
+                $sql .= "INSERT INTO `{$table}` VALUES(". str_replace(["\r","\n"], ['\\r','\\n'], rtrim($str, ',')) .");\n";
                 $rows++;
             }/**/
             $start += $offset;
@@ -183,6 +206,83 @@ class MysqlBackup
         session('db_back_info.recordStartNum',$start);
         $sql .= "\n";
         return $sql;
+    }
+
+    /**
+     * 其他信息备份 存储过程/函数/触发器
+     * @param   array   $back   信息集
+     * @return  mixd
+     */
+    function dumpEnd(array $back)
+    {
+        $txt = '';
+        $dbname = $this->dbconfig['database'];
+
+        /*版本判断*/
+        if(version_compare($back['version'],'5.7.0','<')){
+            $key = 'name';
+            $sql = "select name from mysql.proc where db = '".$dbname."' and `type` =";
+        }else{
+            $key = 'SPECIFIC_NAME';
+            $sql = "select * from information_schema.parameters where SPECIFIC_SCHEMA = '".$dbname."' and `ROUTINE_TYPE` =";
+        }/**/
+
+        /*备份存储过程*/
+        $result = Db::query($sql ." 'PROCEDURE' ");
+        for ($i = 0; $i < count($result); $i++) {
+            $Pname  = $result[$i][$key];
+            $rs     = Db::query("show create procedure {$Pname}");
+            $rs     = array_map('array_change_key_case', $rs);
+            $Pnamez = $rs[0]['create procedure']; 
+            $txt   .= "\r\nDROP PROCEDURE IF EXISTS `{$Pname}`;\r\nDELIMITER;;\r\n{$Pnamez}\r\n;;DELIMITER;\r\n";
+        }/**/
+
+        /*备份函数*/
+        $result = Db::query($sql ." 'FUNCTION' ");
+        for ($i = 0; $i < count($result); $i++) {
+            $Pname  = $result[$i][$key];
+            $rs     = Db::query("show create function {$Pname}");
+            $rs     = array_map('array_change_key_case', $rs);
+            $Pnamez = $rs[0]['create function']; 
+            $txt   .= "\r\nDROP FUNCTION IF EXISTS `{$Pname}`;\r\nDELIMITER;;\r\n{$Pnamez}\r\n;;DELIMITER;\r\n";
+        }/**/
+
+        /*备份触发器*/
+        $sql = "SELECT * FROM information_schema.TRIGGERS where trigger_schema = '".$dbname."'";
+        $rs = Db::query($sql);
+        $rs = array_map('array_change_key_case', $rs);
+        for ($i = 0; $i < count($rs); $i++) {
+            $trigger_name       = $rs[$i]['trigger_name'];
+            $action_timing      = $rs[$i]['action_timing'];
+            $event_manipulation = $rs[$i]['event_manipulation'];
+            $event_object_table = $rs[$i]['event_object_table'];
+            $action_statement   = $rs[$i]['action_statement'];
+            $m    = "CREATE TRIGGER `{$trigger_name}` {$action_timing} {$event_manipulation} ON `{$event_object_table}` FOR EACH ROW {$action_statement}";
+            $txt .= "\r\nDROP TRIGGER IF EXISTS `{$trigger_name}`;\r\nDELIMITER;;\r\n{$m}\r\n;;DELIMITER;\r\n";
+        }/**/
+
+        /*写入文件*/
+        $fildir = $this->config['path'].$back['backFolderName'].'/';
+        if ($this->checkPath($fildir)) {
+            $filename = $fildir.'z.sql';
+            $newfname = $fildir.$back['fileNum'].'.sql';
+            if(is_file($filename)){
+                $txt = file_get_contents($filename) . $txt;
+                @unlink($filename);
+            }elseif(!$txt){
+                return false;
+            }
+            if($this->config['compress']){
+                $newfname = "{$newfname}.gz";
+                $fp = @gzopen($newfname, "a{$this->config['level']}");
+                @gzwrite($fp, $txt);
+                @gzclose($fp);
+            }else{
+                $fp = @fopen($newfname, 'a');
+                @fwrite($fp, $txt);
+                @fclose($fp);
+            }
+        }/**/
     }
 
     /**
@@ -198,9 +298,9 @@ class MysqlBackup
                 $ext = $this->config['compress'] ? '.sql.gz' : '.sql';
                 $rs = glob($path.'*'.$ext);
                 if(!$rs) return ['code'=>5,'p'=>0,'filenum'=>0,'msg'=>'备份源不存在'];
-                $back['files']   = $rs;       //文件集
-                $back['total']   = count($rs);//分卷总数
-                $back['fileNum'] = 1;        //初始分卷编号
+                $back['files']   = $rs;        //文件集
+                $back['total']   = count($rs); //分卷总数
+                $back['fileNum'] = 1;          //初始分卷编号
             }else{
                 return ['code'=>2,'p'=>0,'filenum'=>0,'msg'=>'参数错误'];
             }
@@ -212,25 +312,52 @@ class MysqlBackup
         $fid = $back['fileNum']-1;
         if(isset($back['files'][$fid])){
             $sql = '';
+            $flag = false;
             $sqlFile = $back['files'][$fid];
             $db = self::connect();
             if($this->config['compress']){
                 $gz  = gzopen($sqlFile, 'r');
                 while(!gzeof($gz)){
                     $sql .= gzgets($gz);
-                    if(preg_match('/.*;$/', trim($sql))){
+                    $tmp  = trim($sql);
+                    if($flag || preg_match('/DELIMITER;;$/', $tmp)){
+                        if(preg_match('/;;DELIMITER;$/', $tmp)){
+                            $flag = false;
+                            $sql  = str_replace(['DELIMITER;;','DELIMITER;',';;'],['','',''], $sql);
+                            $db->execute("set global log_bin_trust_function_creators=1;");
+                            if($db->execute($sql) === false){
+                                return ['code'=>3,'p'=>0,'filenum'=>$back['fileNum'],'msg'=>'卷：'.$back['fileNum'].'导入失败'];
+                            }
+                            $sql = '';
+                        }else{
+                            $flag = true;
+                        }
+                    }elseif(preg_match('/.*;$/', $tmp)){
                         if($db->execute($sql) === false){
                             return ['code'=>3,'p'=>0,'filenum'=>$back['fileNum'],'msg'=>'卷：'.$back['fileNum'].'导入失败'];
                         }
                         $sql = '';
                     }
-                 }
-                 gzclose($gz);
+                }
+                gzclose($gz);
             }else{
                 $gz = fopen($sqlFile, 'r');
                 while(!feof($gz)){
                     $sql .= fgets($gz);
-                    if(preg_match('/.*;$/', trim($sql))){
+                    $tmp  = trim($sql);
+                    if($flag || preg_match('/DELIMITER;;$/', $tmp)){
+                        if(preg_match('/;;DELIMITER;$/', $tmp)){
+                            $flag = false;
+                            $sql  = str_replace(['DELIMITER;;','DELIMITER;',';;'],['','',''], $sql);
+                            $db->execute("set global log_bin_trust_function_creators=1;");
+                            if($db->execute($sql) === false){
+                                return ['code'=>3,'p'=>0,'filenum'=>$back['fileNum'],'msg'=>'卷：'.$back['fileNum'].'导入失败'];
+                            }
+                            $sql = '';
+                        }else{
+                            $flag = true;
+                        }
+                    }elseif(preg_match('/.*;$/', $tmp)){
                         if($db->execute($sql) === false){
                             return ['code'=>3,'p'=>0,'filenum'=>$back['fileNum'],'msg'=>'卷：'.$back['fileNum'].'导入失败'];
                         }
@@ -241,7 +368,7 @@ class MysqlBackup
             }
             session('db_back_imp.fileNum',$back['fileNum']+1);
             $p = $back['fileNum'] < $back['total'] ? dround($back['fileNum']*100/$back['total'], 0, true) : 100;
-            $p = $p>=100 ? 100 : ($p < 1 ? 1 : $p);
+            $p = $p >= 100 ? 100 : ($p < 1 ? 1 : $p);
             return ['code'=>0,'p'=>$p,'filenum'=>$back['fileNum']];
         }else{
             session('db_back_imp',null);

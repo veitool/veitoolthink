@@ -1,7 +1,7 @@
 <div class="layui-fluid">   
     <div class="layui-card">
         <div class="layui-card-header">
-            <form class="layui-form render form-search">
+            <form class="layui-form render">
                 <div class="layui-form-item">
                     <div class="layui-inline" style="width:80px;">
                         <select name="fields">
@@ -22,8 +22,8 @@
                     </div>
                     <div class="layui-inline">
                         <div class="layui-btn-group">
-                            <a class="layui-btn" lay-submit lay-filter="online-search"><i class="layui-icon layui-icon-search"></i> 搜索</a>
-                            <a class="layui-btn" lay-submit lay-filter="online-all"><i class="layui-icon layui-icon-light"></i>全部</a>
+                            <a class="layui-btn" lay-submit lay-filter="search-online"><i class="layui-icon layui-icon-search"></i> 搜索</a>
+                            <a class="layui-btn" lay-submit lay-filter="search-online-all"><i class="layui-icon layui-icon-light"></i>全部</a>
                         </div>
                     </div>
                     <div class="layui-btn-group" style="float:right;">

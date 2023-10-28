@@ -2,8 +2,8 @@
     <div class="layui-card">
         <div class="layui-card-header">
             <div class="layui-btn-group">
-                <a class="layui-btn" id="roles-add"><i class="layui-icon layui-icon-add-circle"></i> 添加</a>
-                <a class="layui-btn" id="roles-del"><i class="layui-icon layui-icon-delete"></i> 删除</a>
+                <a class="layui-btn" id="roles-add" v-show="@system.roles/add"><i class="layui-icon layui-icon-add-circle"></i> 添加</a>
+                <a class="layui-btn" id="roles-del" v-show="@system.roles/del"><i class="layui-icon layui-icon-delete"></i> 删除</a>
             </div>
         </div>
         <div class="layui-card-body">

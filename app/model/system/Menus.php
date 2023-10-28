@@ -33,7 +33,7 @@ class Menus extends Base
      */
     public static function getMenus($data=[], $pid=0)
     {
-        $arr = [];
+        $arr = []; $str = ',';
         if(isset($data['userid'])){
             if(isset($data['role_menuid'])){
                 $tp = 1; $md = $data['role_menuid']; //后台管理菜单
@@ -44,8 +44,10 @@ class Menus extends Base
             //获取后台或会员全部菜单
             $data = self::cache(0,$tp);
             foreach($data as $k=>$v){
+                $flag = (($userid>1 || $tp==2) && strpos(",$md,",",$k,")===false);
+                if(!$flag && $v['role_url']) $str .= $v['role_url'].',';
                 //过滤掉未开启的菜单，以及后台非顶管、前台会员没有的管理权限菜单
-                if(!$v['state'] || (($userid>1 || $tp==2) && strpos(",$md,",",$k,")===false)) continue;
+                if(!$v['state'] || $flag) continue;
                 $arr[] = [
                     'id'     => $v['menuid'],
                     'icon'   => $v['icon'],
@@ -57,7 +59,7 @@ class Menus extends Base
                 ];
             }
         }
-        return $arr;
+        return ['menus'=>$arr,'roles'=>$str];
     }
 
     /**

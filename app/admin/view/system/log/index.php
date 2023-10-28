@@ -8,7 +8,7 @@
             </ul>
         </div>
         <div class="layui-card-header">
-            <form class="logTab_login layui-form render form-search">
+            <form class="logTab_login layui-form render">
                 <div class="layui-form-item">
                     <div class="layui-inline" style="width:72px;">
                         <select name="fields">
@@ -25,14 +25,14 @@
                     <div class="layui-inline" style="width:72px;"><select name="admin" id="search_log_select"></select></div>
                     <div class="layui-inline">
                         <div class="layui-btn-group">
-                            <a class="layui-btn" lay-submit lay-filter="loginlog-search"><i class="layui-icon layui-icon-search"></i> 搜索</a>
-                            <a class="layui-btn" lay-submit lay-filter="loginlog-all"><i class="layui-icon layui-icon-light"></i>全部</a>
-                            <a class="layui-btn loginlog-clear"><i class="layui-icon layui-icon-delete"></i> 清理</a>
+                            <a class="layui-btn" lay-submit lay-filter="search-loginlog"><i class="layui-icon layui-icon-search"></i> 搜索</a>
+                            <a class="layui-btn" lay-submit lay-filter="search-loginlog-all"><i class="layui-icon layui-icon-light"></i> 全部</a>
+                            <a class="layui-btn" id="loginlog-clear" v-show="@system.log/ldel"><i class="layui-icon layui-icon-delete"></i> 清理</a>
                         </div>
                     </div>
                 </div>
             </form>
-            <form class="logTab_manager layui-form render form-search">
+            <form class="logTab_manager layui-form render">
                 <div class="layui-form-item">
                     <div class="layui-inline" style="width:72px;">
                         <select name="fields">
@@ -46,14 +46,14 @@
                     <div class="layui-inline" style="width:200px;"><input type="text" name="sotime" date-render placeholder="操作时间" class="layui-input" lay-affix="clear"/></div>
                     <div class="layui-inline">
                         <div class="layui-btn-group">
-                            <a class="layui-btn" lay-submit lay-filter="managerlog-search"><i class="layui-icon layui-icon-search"></i> 搜索</a>
-                            <a class="layui-btn" lay-submit lay-filter="managerlog-all"><i class="layui-icon layui-icon-light"></i>全部</a>
-                            <a class="layui-btn managerlog-clear"><i class="layui-icon layui-icon-delete"></i> 清理</a>
+                            <a class="layui-btn" lay-submit lay-filter="search-managerlog"><i class="layui-icon layui-icon-search"></i> 搜索</a>
+                            <a class="layui-btn" lay-submit lay-filter="search-managerlog-all"><i class="layui-icon layui-icon-light"></i>全部</a>
+                            <a class="layui-btn" id="managerlog-clear" v-show="@system.log/mdel"><i class="layui-icon layui-icon-delete"></i> 清理</a>
                         </div>
                     </div>
                 </div>
             </form>
-            <form class="logTab_web layui-form render form-search">
+            <form class="logTab_web layui-form render">
                 <div class="layui-form-item">
                     <div class="layui-inline" style="width:72px;">
                         <select name="fields">
@@ -68,9 +68,9 @@
                     <div class="layui-inline" style="width:200px;"><input type="text" name="sotime" date-render placeholder="操作时间" class="layui-input" lay-affix="clear"/></div>
                     <div class="layui-inline">
                         <div class="layui-btn-group">
-                            <a class="layui-btn" lay-submit lay-filter="weblog-search"><i class="layui-icon layui-icon-search"></i> 搜索</a>
-                            <a class="layui-btn" lay-submit lay-filter="weblog-all"><i class="layui-icon layui-icon-light"></i>全部</a>
-                            <a class="layui-btn weblog-clear"><i class="layui-icon layui-icon-delete"></i> 清理</a>
+                            <a class="layui-btn" lay-submit lay-filter="search-weblog"><i class="layui-icon layui-icon-search"></i> 搜索</a>
+                            <a class="layui-btn" lay-submit lay-filter="search-weblog-all"><i class="layui-icon layui-icon-light"></i>全部</a>
+                            <a class="layui-btn" id="weblog-clear" v-show="@system.log/wdel"><i class="layui-icon layui-icon-delete"></i> 清理</a>
                         </div>
                     </div>
                 </div>
@@ -131,7 +131,7 @@ layui.use(['vinfo'],function(){
                 limit:limit
             });/**/
             /*日志清理*/
-            $('.loginlog-clear').on('click',function(){
+            $('#loginlog-clear').on('click',function(){
                 layer.confirm('为系统安全，系统仅能删除30天之前的日志！', function(){
                     admin.req(app_root+"ldel",function(res){
                         layer.msg(res.msg,{shade:[0.4,'#000'],time:1500},function(){
@@ -187,7 +187,7 @@ layui.use(['vinfo'],function(){
                 limit: limit
             });/**/
             /*日志清理*/
-            $('.managerlog-clear').on('click',function(){
+            $('#managerlog-clear').on('click',function(){
                 layer.confirm('为系统安全，系统仅能删除7天之前的日志！', function(){
                     admin.req(app_root+"mdel",function(res){
                         layer.msg(res.msg,{shade:[0.4,'#000'],time:1500},function(){
@@ -223,7 +223,7 @@ layui.use(['vinfo'],function(){
                 limit: limit
             });/**/
             /*日志清理*/
-            $('.weblog-clear').on('click',function(){
+            $('#weblog-clear').on('click',function(){
                 layer.confirm('确定要清理前台访问日志吗？', function(){
                     admin.req(app_root+"wdel",function(res){
                         layer.msg(res.msg,{shade:[0.4,'#000'],time:1500},function(){

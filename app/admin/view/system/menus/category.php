@@ -1,7 +1,7 @@
 <div style="padding:20px;">
-    <div class="layui-btn-group">
-        <a class="layui-btn" id="menucategory-add"><i class="layui-icon layui-icon-add-circle"></i> 添加类别</a>
-        <a class="layui-btn" id="menucategory-del"><i class="layui-icon layui-icon-delete"></i> 删除类别</a>
+    <div class="layui-btn-group" style="margin-bottom:20px;">
+        <a class="layui-btn" id="menucategory-add" v-show="@system.menus/catadd"><i class="layui-icon layui-icon-add-circle"></i> 添加类别</a>
+        <a class="layui-btn" id="menucategory-del" v-show="@system.menus/catdel"><i class="layui-icon layui-icon-delete"></i> 删除类别</a>
     </div>
     <table id="menucategory" lay-filter="menucategory"></table>
 </div>

@@ -1,7 +1,7 @@
 <div class="layui-fluid">   
     <div class="layui-card">
         <div class="layui-card-header">
-            <form class="layui-form render form-search">
+            <form class="layui-form render">
                 <div class="layui-form-item">
                     <div class="layui-inline" style="width:80px;">
                         <select name="fields">
@@ -16,8 +16,8 @@
                     <div class="layui-inline" style="width:200px;"><input type="text" name="sotime" date-render placeholder="时间" class="layui-input" lay-affix="clear"/></div>
                     <div class="layui-inline">
                         <div class="layui-btn-group">
-                            <a class="layui-btn" lay-submit lay-filter="sms-search"><i class="layui-icon layui-icon-search"></i> 搜索</a>
-                            <a class="layui-btn" lay-submit lay-filter="sms-all"><i class="layui-icon layui-icon-light"></i>全部</a>
+                            <a class="layui-btn" lay-submit lay-filter="search-sms"><i class="layui-icon layui-icon-search"></i> 搜索</a>
+                            <a class="layui-btn" lay-submit lay-filter="search-sms-all"><i class="layui-icon layui-icon-light"></i>全部</a>
                         </div>
                     </div>
                 </div>
@@ -26,8 +26,8 @@
         <div class="layui-card-body">
             <div class="layui-card-box">
                 <div class="layui-btn-group">
-                    <a class="layui-btn" id="sms-send"><i class="layui-icon layui-icon-add-circle"></i> 发送短信</a>
-                    <a class="layui-btn" id="sms-del"><i class="layui-icon layui-icon-delete"></i> 删除记录</a>
+                    <a class="layui-btn" id="sms-send" v-show="@system.sms/send"><i class="layui-icon layui-icon-add-circle"></i> 发送短信</a>
+                    <a class="layui-btn" id="sms-del" v-show="@system.sms/del"><i class="layui-icon layui-icon-delete"></i> 删除记录</a>
                 </div>
             </div>
             <table lay-filter="sms" id="sms"></table>

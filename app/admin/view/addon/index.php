@@ -379,6 +379,7 @@ layui.use(function(){
     /*重载左侧主菜单*/
     var loadLeftMenu = function(){
         admin.req(layui.cache.maps + 'index/json',function(res){
+            admin.putUser(res.user);
             layui.index.buildLeftMenus(res.menus);
         });
     }/**/

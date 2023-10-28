@@ -6,13 +6,13 @@
         <div class="layui-card-body">
             <div class="layui-card-box">
                 <div class="layui-btn-group">
-                    <a class="layui-btn" id="menus-add"><i class="layui-icon layui-icon-add-circle"></i> 添加</a>
-                    <a class="layui-btn" id="menus-adds"><i class="layui-icon layui-icon-add-circle"></i> 批量</a>
-                    <a class="layui-btn" id="menus-del"><i class="layui-icon layui-icon-delete"></i> 删除</a>
+                    <a class="layui-btn" id="menus-add" v-show="@system.menus/add"><i class="layui-icon layui-icon-add-circle"></i> 添加</a>
+                    <a class="layui-btn" id="menus-adds" v-show="@system.menus/adds"><i class="layui-icon layui-icon-add-circle"></i> 批量</a>
+                    <a class="layui-btn" id="menus-del" v-show="@system.menus/del"><i class="layui-icon layui-icon-delete"></i> 删除</a>
                     <a class="layui-btn" id="menus-sz" data="1"><i class="layui-icon">&#xe624;</i>展开</a>
-                    <a class="layui-btn" id="menus-cat"><i class="layui-icon layui-icon-rate"></i> 分类</a>
-                    <a class="layui-btn" id="menus-out"><i class="layui-icon layui-icon-download-circle"></i> 导出</a>
-                    <a class="layui-btn" id="menus-up"><i class="layui-icon layui-icon-upload-drag"></i> 导入</a>
+                    <a class="layui-btn" id="menus-cat" v-show="@system.menus/category"><i class="layui-icon layui-icon-rate"></i> 分类</a>
+                    <a class="layui-btn" id="menus-out" v-show="@system.menus/out"><i class="layui-icon layui-icon-download-circle"></i> 导出</a>
+                    <a class="layui-btn" id="menus-up" v-show="@system.menus/up"><i class="layui-icon layui-icon-upload-drag"></i> 导入</a>
                 </div>
             </div>
             <table lay-filter="menus" id="menus"></table>
@@ -99,7 +99,9 @@ layui.use(['trTable','xmSelect','iconPicker','buildItems'],function(){
             area: ['68%','75%'],
             title: '【菜单类别管理】',
             url: app_root + "category",
-            success: function(){}
+            success: function(){
+                admin.vShow(); /*移除未有的权限按钮*/
+            }
         });
     });/**/
     /*顶部导出管理*/

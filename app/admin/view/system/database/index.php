@@ -2,10 +2,10 @@
     <div class="layui-card">
         <div class="layui-card-header">
             <div class="layui-btn-group">
-                <a class="layui-btn" id="database-backup"><i class="layui-icon layui-icon-auz"></i> 备份数据</a>
-                <a class="layui-btn" id="database-imports"><i class="layui-icon layui-icon-refresh"></i> 恢复数据</a>
-                <a class="layui-btn" id="database-xiufu"><i class="layui-icon layui-icon-set"></i> 修复表</a>
-                <a class="layui-btn" id="database-youhua"><i class="layui-icon layui-icon-rate"></i> 优化表</a>
+                <a class="layui-btn" id="database-backup" v-show="@system.database/backup"><i class="layui-icon layui-icon-auz"></i> 备份数据</a>
+                <a class="layui-btn" id="database-imports" v-show="@system.database/imports"><i class="layui-icon layui-icon-refresh"></i> 恢复数据</a>
+                <a class="layui-btn" id="database-xiufu" v-show="@system.database/xiufu"><i class="layui-icon layui-icon-set"></i> 修复表</a>
+                <a class="layui-btn" id="database-youhua" v-show="@system.database/youhua"><i class="layui-icon layui-icon-rate"></i> 优化表</a>
             </div>
             <div style="float:right;padding:10px 5px 0 0;">共<b> <?php echo $tables ?? '0';?></b> 张表 / <b><?php echo $totalsize ?? '0';?></b> Mb</div>
         </div>
@@ -82,10 +82,11 @@ layui.use(function(){
             title: '数据恢复',
             content: [
                 '<div style="padding:20px;">',
-                '<div style="margin-bottom:10px;"><button class="layui-btn" id="database-open-imports-del"><i class="layui-icon layui-icon-delete"></i> 删除备份</button></div>',
-                '<table id="database_open_imports_table" lay-filter="database_open_imports_table"></table></div>'
+                '<div style="margin-bottom:10px;"><a class="layui-btn" id="database-open-imports-del" v-show="@system.database/del"><i class="layui-icon layui-icon-delete"></i> 删除备份</a></div>',
+                '<table id="database_open_imports_table"></table></div>'
             ].join(''),
             success: function(){
+                admin.vShow();/*移除无权限项*/
                 /*备份列表*/
                 table.render({
                     elem: '#database_open_imports_table',

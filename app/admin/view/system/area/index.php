@@ -2,9 +2,9 @@
     <div class="layui-card">
         <div class="layui-card-header">
             <div class="layui-btn-group">
-                <a class="layui-btn" id="areas-add"><i class="layui-icon layui-icon-add-circle"></i> 添加</a>
-                <a class="layui-btn" id="areas-del"><i class="layui-icon layui-icon-delete"></i> 删除</a>
-                <a class="layui-btn" id="areas-import"><i class="layui-icon layui-icon-set"></i> 导入</a>
+                <a class="layui-btn" id="areas-add" v-show="@system.area/add"><i class="layui-icon layui-icon-add-circle"></i> 添加</a>
+                <a class="layui-btn" id="areas-del" v-show="@system.area/del"><i class="layui-icon layui-icon-delete"></i> 删除</a>
+                <a class="layui-btn" id="areas-import" v-show="@system.area/import"><i class="layui-icon layui-icon-set"></i> 导入</a>
             </div>
             <div id="area_guide" style="float:right"></div>
         </div>

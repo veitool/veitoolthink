@@ -6,8 +6,8 @@
         <div class="layui-card-body">
             <div class="layui-card-box">
                 <div class="layui-btn-group">
-                    <a class="layui-btn" id="settings-add"><i class="layui-icon layui-icon-add-circle"></i> 添加</a>
-                    <a class="layui-btn" id="settings-del"><i class="layui-icon layui-icon-delete"></i> 删除</a>
+                    <a class="layui-btn" id="settings-add" v-show="@system.setting/badd"><i class="layui-icon layui-icon-add-circle"></i> 添加</a>
+                    <a class="layui-btn" id="settings-del" v-show="@system.setting/bdel"><i class="layui-icon layui-icon-delete"></i> 删除</a>
                 </div>
             </div>
             <table lay-filter="settings" id="settings"></table>

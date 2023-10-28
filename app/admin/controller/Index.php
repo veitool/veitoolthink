@@ -48,8 +48,8 @@ class Index extends AdminBase
         $cat = Category::catList([['state','=',1],['type','=','01']],0,'title,icon,catid'); // 获取菜单分类
         $data = Menus::getMenus(array_intersect_key($this->manUser, ['userid'=>"",'role_menuid'=>""])); // 获取拥有的菜单数据
         $rs =[
-            'menus' => $cat ? ['cat'=>$cat,'menus'=>$data]: $data,
-            'user'  => $this->manUser
+            'menus' => $cat ? ['cat'=>$cat,'menus'=>$data['menus']]: $data['menus'],
+            'user'  => $this->manUser + ['roles' => $data['roles']]
         ];
         unset($rs['user']['password'],$rs['user']['passsalt']);
         return json($rs);

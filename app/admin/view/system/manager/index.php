@@ -12,9 +12,9 @@
                     <!-- 树工具栏 -->
                     <div class="layui-form toolbar" id="organizationTreeBar">
                         <div class="layui-btn-group">
-                            <button id="organ-add" class="layui-btn layui-btn-sm icon-btn"><i class="layui-icon">&#xe654;</i>添加</button>
-                            <button id="organ-edit" class="layui-btn layui-btn-sm icon-btn"><i class="layui-icon">&#xe642;</i>修改</button>
-                            <button id="organ-del" class="layui-btn layui-btn-sm icon-btn"><i class="layui-icon">&#xe640;</i>删除</button>
+                            <a id="organ-add" class="layui-btn layui-btn-sm icon-btn" v-show="@system.manager/oadd"><i class="layui-icon">&#xe654;</i>添加</a>
+                            <a id="organ-edit" class="layui-btn layui-btn-sm icon-btn" v-show="@system.manager/oedit"><i class="layui-icon">&#xe642;</i>修改</a>
+                            <a id="organ-del" class="layui-btn layui-btn-sm icon-btn" v-show="@system.manager/odel"><i class="layui-icon">&#xe640;</i>删除</a>
                         </div>
                     </div>
                     <!-- 左树 -->
@@ -25,7 +25,7 @@
         <div class="layui-col-md9">
             <div class="layui-card">
                 <div class="layui-card-header">
-                    <form class="layui-form render form-search">
+                    <form class="layui-form render">
                         <input type="hidden" name="groupid" id="manager-groupid" value=""/>
                         <div class="layui-form-item">
                             <div class="layui-inline" style="width:72px;">
@@ -49,8 +49,8 @@
                             </div>
                             <div class="layui-inline">
                                 <div class="layui-btn-group">
-                                    <a class="layui-btn" lay-submit lay-filter="manager-search"><i class="layui-icon layui-icon-search"></i> 搜索</a>
-                                    <a class="layui-btn" lay-submit lay-filter="manager-all" onclick="$('#manager-groupid').val('')"><i class="layui-icon layui-icon-light"></i>全部</a>
+                                    <a class="layui-btn" lay-submit lay-filter="search-manager"><i class="layui-icon layui-icon-search"></i> 搜索</a>
+                                    <a class="layui-btn" lay-submit lay-filter="search-manager-all" onclick="$('#manager-groupid').val('')"><i class="layui-icon layui-icon-light"></i>全部</a>
                                 </div>
                             </div>
                         </div>
@@ -59,8 +59,8 @@
                 <div class="layui-card-body">
                     <div class="layui-card-box">
                         <div class="layui-btn-group">
-                            <a class="layui-btn" id="manager-add"><i class="layui-icon layui-icon-add-circle"></i> 添加</a>
-                            <a class="layui-btn" id="manager-del"><i class="layui-icon layui-icon-delete"></i> 删除</a>
+                            <a class="layui-btn" id="manager-add" v-show="@system.manager/add"><i class="layui-icon layui-icon-add-circle"></i> 添加</a>
+                            <a class="layui-btn" id="manager-del" v-show="@system.manager/del"><i class="layui-icon layui-icon-delete"></i> 删除</a>
                             <a class="layui-btn" href="#/system.manager/index/action=info"><i class="layui-icon layui-icon-username"></i> 个人中心</a>
                         </div>
                     </div>

@@ -106,9 +106,9 @@ class Area extends AdminBase
         }else{
             @set_time_limit(0);
             $file = VT_PUBLIC . 'install/data/area_data.sql';
+            $prefix = config('database.connections.'.config('database.default').'.prefix');
             if(is_file($file)){
-                $sql = file_get_contents($file);
-                $sql = explode("\n", trim(str_replace(["\r\n", "\r"], "\n", $sql)));
+                $sql = explode("\n", trim(str_replace(["\r\n", "\r", "vt_"], ["\n", "\n", $prefix], file_get_contents($file))));
                 foreach($sql as $v){
                     \think\facade\Db::execute($v);
                 }

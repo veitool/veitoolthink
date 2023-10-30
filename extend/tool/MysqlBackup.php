@@ -39,7 +39,7 @@ class MysqlBackup
      */
     public function __construct($config = [])
     {
-        $this->config['path'] = app()->getRootPath() . 'backup'. VT_DS .'database'. VT_DS;
+        $this->config['path'] = ROOT_PATH . 'backup'. VT_DS .'database'. VT_DS;
         $this->config = array_merge($this->config, $config);
         //初始化数据库连接参数
         $this->dbconfig = config('database.connections.' . config('database.default'));
@@ -293,7 +293,7 @@ class MysqlBackup
     public function doImport(string $dir = '')
     {
         if($dir){
-            $path = realpath($this->config['path'].$dir).'/';
+            $path = realpath($this->config['path'].$dir) . VT_DS;
             if(is_dir($path)){
                 $ext = $this->config['compress'] ? '.sql.gz' : '.sql';
                 $rs = glob($path.'*'.$ext);
@@ -377,31 +377,73 @@ class MysqlBackup
     }
 
     /**
+     * 备份数据字符替换
+     * @param  string  $files   备份系列
+     * @param  string  $old     查找内容
+     * @param  string  $new     新的内容
+     * @return array
+     */
+    public function doReplace(string $files, string $old, string $new)
+    {
+        if(!$files) return ['code'=>1,'p'=>0,'filenum'=>0,'msg'=>'请选择备份系列'];
+		if(!$old) return ['code'=>1,'p'=>0,'filenum'=>0,'msg'=>'请请填写查找内容'];
+        $path   = realpath($this->config['path']) . VT_DS;
+        $ext    = $this->config['compress'] ? '.sql.gz' : '.sql';
+        $total  = count(glob($path . $files . VT_DS . '*'.$ext));
+        $fileid = session('db_back_repfileid') ?: 1;
+        $file   = $path . $files. VT_DS . $fileid . $ext;
+		$old    = urldecode($old);
+		$new    = urldecode($new);
+		if(is_file($file)){
+            if($this->config['compress']){
+                $sql = '';
+                $gz = gzopen($file, 'r');
+                while(!gzeof($gz)){
+                    $sql .= gzgets($gz);
+                }
+                gzclose($gz);
+                $sql = str_replace($old, $new, $sql);
+                $fp  = @gzopen($file, "wa{$this->config['level']}");
+                @gzwrite($fp, $sql);
+                @gzclose($fp);
+            }else{
+                $sql = file_get_contents($file);
+                $fop = fopen($file, 'wa');
+                fwrite($fop, str_replace($old, $new, $sql));
+                fclose($fop);
+            }
+            $p = $fileid < $total ? dround($fileid*100/$total, 0, true) : 100;
+            session('db_back_repfileid',$fileid + 1);
+			return ['p'=>$p,'filenum'=>$fileid];
+		}else{
+            session('db_back_repfileid',null);
+            return $fileid > 1 ?  ['code'=>1,'p'=>100,'filenum'=>$total,'msg'=>'文件内容替换成功'] : ['code'=>1,'p'=>0,'filenum'=>0,'msg'=>'备份源不存在'];
+		}
+    }
+
+    /**
      * 数据库备份文件列表
      * @return array
      */
     public function getBackFile()
     {
-        $dbak = $dbaks = array();
-        $path = realpath($this->config['path']).'/';
+        $dbak = $dbaks = [];
+        $path = realpath($this->config['path']) . VT_DS;
         $sqlfiles = glob($path.'*');
         if(is_array($sqlfiles)){
             foreach($sqlfiles as $id=>$sqlfile){
                 $tmp = basename($sqlfile);
-                $ftm = fileatime($sqlfile);
                 if(is_dir($sqlfile)){
-                    $dbak['filename'] = $tmp;
                     $size = $number = 0;
-                    $ss = glob($path.$tmp.'/*.sql*');
-                    foreach($ss as $s){
-                        $size += filesize($s);
+                    $fsql = glob($path.$tmp.'/*.sql*');
+                    foreach($fsql as $f){
+                        $size += filesize($f);
                         $number++;
                     }
+                    $dbak['filename'] = $tmp;
+                    $dbak['number']   = $number;
+                    $dbak['mtime']    = filectime($sqlfile);
                     $dbak['filesize'] = round($size/(1024*1024), 2);
-                    $dbak['pre'] = $tmp;
-                    $dbak['number'] = $number;
-                    $dbak['mtime'] = date("Y-m-d H:i:s",$ftm);//str_replace('.', ':', substr($tmp,	0, 19));
-                    $dbak['btime'] = substr($dbak['mtime'], 0, -3);
                     $dbaks[] = $dbak;
                 }
             }
@@ -410,7 +452,7 @@ class MysqlBackup
     }
 
     /**
-     * 数据库备份文件列表
+     * 删除库数据备份系列
      * @param   array   $files   要删除的文件夹名
      * @return  string/bool
      */

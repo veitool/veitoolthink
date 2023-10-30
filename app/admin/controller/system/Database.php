@@ -69,6 +69,17 @@ class Database extends AdminBase
     }
 
     /**
+     * 备份数据替换
+     * @return json
+     */
+    public function replace()
+    {
+        $d = $this->only(['files','old','new','safepass']);
+        if($this->manUser['password'] != set_password($d['safepass'],$this->manUser["passsalt"])) return $this->returnMsg(['code'=>1,'p'=>0,'filenum'=>0,'msg'=>'安全密码错误']);
+        return $this->returnMsg($this->db->doReplace($d['files'],$d['old'],$d['new']));
+    }
+
+    /**
      * 数据备份列表
      * @return json
      */

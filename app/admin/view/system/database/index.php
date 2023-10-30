@@ -15,8 +15,9 @@
     </div>
 </div>
 <!--JS部分-->
+<script type="text/javascript" src="{STATIC__PATH}script/md5.js"></script>
 <script type="text/javascript">
-layui.use(function(){
+layui.use(['buildItems'],function(){
     var app_root = layui.cache.maps + 'system.database/';
     var table=layui.table,admin=layui.admin,layer=layui.layer;
     /*数据表渲染*/
@@ -95,10 +96,10 @@ layui.use(function(){
                     cols: [[
                         {type:"checkbox",fixed:"left"},
                         {field:"filename",title: "备份系列"},
-                        {field:"mtime",align:'center',title:"备份时间",sort:true},
+                        {field:"mtime",align:'center',title:"备份时间",sort:true,templet:function(d){return layui.util.toDateString(d.mtime*1000)}},
                         {field:"filesize",align:'center',width:120,title: "数据大小(Mb)",sort:true},
                         {field:"number",align:'center',width:80,title:"卷数"},
-                        {fixed:'right',width:100,align:'center',toolbar:'<div><a class="layui-btn layui-btn-xs" lay-event="impt">导入</a><a class="layui-btn layui-btn-xs" lay-event="down">下载</a></div>',title:'操作'}
+                        {fixed:'right',width:160,align:'center',toolbar:'<div><a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="rep">替换</a><a class="layui-btn layui-btn-xs" lay-event="impt">导入</a><a class="layui-btn layui-btn-xs" lay-event="down">下载</a></div>',title:'操作'}
                     ]]
                 });/**/
                 /*删除备份*/
@@ -118,14 +119,56 @@ layui.use(function(){
                 });/**/
                 /*右侧操作工具条监听*/
                 table.on('tool(database_open_imports_table)',function(ob){
-                    if(ob.event === 'impt'){
+                    var str = '<div style="padding:20px 10px;width:300px">' + 
+                        '<div class="layui-progress layui-progress-big" lay-showpercent="true">' +
+                        '<div class="layui-progress-bar layui-bg-green" style="width:0%;">' +
+                        '<span class="layui-progress-text">0%</span>'+
+                        '</div></div><p class="ts" style="text-align:center;padding:5px 0;"></p></div>';
+                    if(ob.event === 'rep'){
+                        admin.open({
+                            type: 1,
+                            bid: 'replace_items',
+                            btn: ['执行', '取消'],
+                            area: ['500px', '300px'],
+                            title: ob.data.filename + ' - 备份字符替换',
+                            success: function(){
+                                layui.buildItems.build({
+                                    bid: 'replace_items',
+                                    data: [
+                                        {name:"files",type:"hidden",value:ob.data.filename},
+                                        {name:"old",title:"查找内容",type:"text",value:'',verify:'required',placeholder:"请输入要替换的内容",must:true},
+                                        {name:"new",title:"替换为",type:"text",value:'',verify:'required',placeholder:"请输入替换后的内容",must:true},
+                                        {name:"safepass",title:"安全密码",type:"password",value:'',verify:'required',placeholder:"请再输入安全密码(登录密码)",affix:'eye',must:true}
+                                    ]
+                                });
+                                layui.form.on('submit(replace_items)',function(data){
+                                    var btn = $(this);
+                                    if (btn.attr('stop')){return false}else{btn.attr('stop',1)}
+                                    var layid = layer.open({type:1, title:'字符替换中请勿关闭...', content:str});
+                                    var Replace = function(Dt){
+                                        admin.req(app_root+'replace',Dt,function(res){
+                                            $(".layui-progress-bar").css("width",res.data.p+"%");
+                                            $(".layui-progress-text").html(res.data.p+"%");
+                                            $(".ts").html("分卷 "+ res.data.filenum +" 替换成功，自动继续中...");
+                                            if(res.code > 0){
+                                                 layer.msg(res.msg,{shade:[0.4,'#000'],time:1500},function(){
+                                                    layer.close(layid);
+                                                    btn.removeAttr('stop');
+                                                });
+                                            }else{
+                                                setTimeout(function(){Replace(Dt)},1000);
+                                            }
+                                        },'post');
+                                    };
+                                    data.field.safepass = hex_md5(data.field.safepass);
+                                    setTimeout(function(){Replace(data.field)},1000);
+                                    return false;
+                                });
+                            }
+                        });
+                    }else if(ob.event === 'impt'){
                         var filename = ob.data.filename, totaltid = ob.data.number;
                         layer.confirm('即将导入：' + filename, {icon:3, title:'数据导入', maxWidth: '200px'}, function(){
-                            var str = '<div style="padding:20px 10px;width:300px">' + 
-                                      '<div class="layui-progress layui-progress-big" lay-showpercent="true">' +
-                                      '<div class="layui-progress-bar layui-bg-green" style="width:0%;">' +
-                                      '<span class="layui-progress-text">0%</span>'+
-                                      '</div></div><p class="ts" style="text-align:center;padding:5px 0;"></p></div>';
                             var layid = layer.open({type:1, title:'数据导入中请勿关闭...', content:str});
                             var Imports = function(data){
                                 admin.req(app_root+"import",data,function(res){
@@ -141,8 +184,7 @@ layui.use(function(){
                                     }
                                 },'post');
                             }
-                            var data = {filename:filename}
-                            setTimeout(function(){Imports(data)},1000);
+                            setTimeout(function(){Imports({filename:filename})},1000);
                         });
                     }else if(ob.event === 'down'){
                         var filename = ob.data.filename, totaltid = ob.data.number;

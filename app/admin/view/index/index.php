@@ -38,7 +38,7 @@
         </ul>
     </div>
     <!-- 侧边栏 -->
-    <div class="layui-side"><div class="layui-side-scroll"><ul class="layui-nav layui-nav-tree" lay-filter="admin-side-nav" lay-shrink="_all"></ul></div></div>
+    <div class="layui-side"><div class="layui-side-scroll"><ul class="layui-nav layui-nav-tree" lay-filter="admin-side-nav" lay-shrink="all"></ul></div></div>
     <!-- 主体部分 -->
     <div class="layui-body"></div>
     <!-- 底部 -->

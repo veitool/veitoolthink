@@ -36,14 +36,6 @@
             <input id="setMoreTab" lay-filter="setMoreTab" type="checkbox" lay-skin="switch" lay-text="开启|关闭">
         </div>
     </div>
-    <div class="layui-form-item">
-        <label class="set-item-label">导航箭头：</label>
-        <div class="set-item-ctrl">
-            <input lay-filter="navArrow" type="radio" value="" title="默认" name="navArrow">
-            <input lay-filter="navArrow" type="radio" value="arrow2" title="箭头" name="navArrow">
-            <input lay-filter="navArrow" type="radio" value="arrow3" title="加号" name="navArrow">
-        </div>
-    </div>
 </div>
 <script>
 layui.use(function(){
@@ -75,16 +67,7 @@ layui.use(function(){
         admin.putTempData('indexTabs', undefined);
         location.reload();
     });
-    $('#setMoreTab').prop('checked', layui.cache.bins.pageTabs);
-    // 导航小三角
-    var $leftNav = $('.layui-layout-admin>.layui-side>.layui-side-scroll>.layui-nav');
-    form.on('radio(navArrow)', function (data) {
-        $leftNav.removeClass('arrow2 arrow3');
-        data.value && $leftNav.addClass(data.value);
-        admin.putSetting('navArrow', data.value);
-    });
-    var navArrow = $leftNav.hasClass('arrow2') ? 'arrow2' : $leftNav.hasClass('arrow3') ? 'arrow3' : '';
-    $('[name="navArrow"][value="' + navArrow + '"]').prop('checked', true);
+    $('#setMoreTab').prop('checked', layui.cache.bins.pageTabs);   
     form.render('radio', 'more-set-form');
     form.render('checkbox', 'more-set-form');
 });

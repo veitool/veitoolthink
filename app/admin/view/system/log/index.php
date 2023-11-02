@@ -25,7 +25,7 @@
                     <div class="layui-inline" style="width:72px;"><select name="admin" id="search_log_select"></select></div>
                     <div class="layui-inline">
                         <div class="layui-btn-group">
-                            <a class="layui-btn" lay-submit lay-filter="search-loginlog"><i class="layui-icon layui-icon-search"></i> 搜索</a>
+                            <button class="layui-btn" lay-submit lay-filter="search-loginlog"><i class="layui-icon layui-icon-search"></i> 搜索</button>
                             <a class="layui-btn" lay-submit lay-filter="search-loginlog-all"><i class="layui-icon layui-icon-light"></i> 全部</a>
                             <a class="layui-btn" id="loginlog-clear" v-show="@system.log/ldel"><i class="layui-icon layui-icon-delete"></i> 清理</a>
                         </div>

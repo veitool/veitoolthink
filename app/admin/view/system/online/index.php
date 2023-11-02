@@ -22,7 +22,7 @@
                     </div>
                     <div class="layui-inline">
                         <div class="layui-btn-group">
-                            <a class="layui-btn" lay-submit lay-filter="search-online"><i class="layui-icon layui-icon-search"></i> 搜索</a>
+                            <button class="layui-btn" lay-submit lay-filter="search-online"><i class="layui-icon layui-icon-search"></i> 搜索</button>
                             <a class="layui-btn" lay-submit lay-filter="search-online-all"><i class="layui-icon layui-icon-light"></i>全部</a>
                         </div>
                     </div>

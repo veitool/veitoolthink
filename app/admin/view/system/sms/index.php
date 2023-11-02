@@ -16,7 +16,7 @@
                     <div class="layui-inline" style="width:200px;"><input type="text" name="sotime" date-render placeholder="时间" class="layui-input" lay-affix="clear"/></div>
                     <div class="layui-inline">
                         <div class="layui-btn-group">
-                            <a class="layui-btn" lay-submit lay-filter="search-sms"><i class="layui-icon layui-icon-search"></i> 搜索</a>
+                            <button class="layui-btn" lay-submit lay-filter="search-sms"><i class="layui-icon layui-icon-search"></i> 搜索</button>
                             <a class="layui-btn" lay-submit lay-filter="search-sms-all"><i class="layui-icon layui-icon-light"></i>全部</a>
                         </div>
                     </div>

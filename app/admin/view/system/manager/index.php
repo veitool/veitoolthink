@@ -81,6 +81,7 @@ layui.use(['vinfo', 'xmSelect', 'buildItems'], function(){
     /*==============左树结构===============*/
     var organObj,organData; /*左树 选中数据 和 总树数据*/
     function renderTree(data,load){
+        if(!load) organObj = data[0];
         if(data){
             organData = toTree(data);
             doTree(organData,load);
@@ -100,7 +101,7 @@ layui.use(['vinfo', 'xmSelect', 'buildItems'], function(){
             click: function(obj){
                 $('#organizationTree').find('.organ-tree-click').removeClass('organ-tree-click');
                 $(obj.elem).children('.layui-tree-entry').addClass('organ-tree-click');
-                organObj = obj;
+                organObj = obj.data;
                 $('#manager-groupid').val(obj.data.id);
                 table.reloadData('manager',{where:{groupid:obj.data.id},page:{curr:1}});
             }
@@ -113,12 +114,12 @@ layui.use(['vinfo', 'xmSelect', 'buildItems'], function(){
     /*左树添加按钮*/
     $('#organ-add').on('click',function(){organOpen();});/**/
     /*左树编辑按钮*/
-    $('#organ-edit').on('click',function(){organOpen(organObj.data);});/**/
+    $('#organ-edit').on('click',function(){organOpen(organObj);});/**/
     /*左树删除按钮*/
     $('#organ-del').on('click', function(){
         if(!organObj) return layer.msg('未选择机构');
         layer.confirm('确定要删除所选机构吗？',function(){
-            admin.req(app_root+"odel",{id:organObj.data.id},function(res){
+            admin.req(app_root+"odel",{id:organObj.id},function(res){
                 layer.msg(res.msg,{shade:[0.4,'#000'],time:1500},function(){
                     if(res.code==1) renderTree(res.data,true);
                 });
@@ -159,7 +160,7 @@ layui.use(['vinfo', 'xmSelect', 'buildItems'], function(){
                     radio: true,
                     clickClose: true,
                     model: {label:{type:'text'}},
-                    initValue: [Dt ? Dt.parentid : (organObj ? organObj.data.id : 0)],
+                    initValue: [Dt ? Dt.parentid : (organObj ? organObj.id : 0)],
                     prop: {name:'title',value:'id',disabled:'disabled'},
                     tree: {show:true,indent:25,strict:false,expandedKeys:true}
                 });

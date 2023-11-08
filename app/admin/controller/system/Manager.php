@@ -225,17 +225,14 @@ class Manager extends AdminBase
     {
         $d = $this->only(['@token'=>'','id/d/参数错误','title/*/{2,10}/机构简称','titles/*/{2,50}/机构全称','parentid/d','listorder/d','note/h']);
         $id = $d['id'];
-        $Myobj = Organ::get("id = $id");
-        if(!$Myobj) return $this->returnMsg("数据不存在");
         $arr = []; //改上级ID时所用到的所有子类新数据
         $parentid = $d['parentid'];
         if($id==$parentid) return $this->returnMsg("上级ID不能为本身ID");
-        //获取当前类数据
-        $rs = Organ::get("id = $id");
-        if(!$rs) return $this->returnMsg("参数错误2");
-        if($rs['parentid'] != $parentid){
+        $Myobj = Organ::get("id = $id");
+        if(!$Myobj) return $this->returnMsg("数据不存在");
+        if($Myobj['parentid'] != $parentid){
             //旧的所有上级ID串
-            $old_arrparentid = $rs['arrparentid'] ? $rs['arrparentid'].','.$id : $id;
+            $old_arrparentid = $Myobj['arrparentid'] ? $Myobj['arrparentid'].','.$id : $id;
             //获取上级类数据
             $rs = $parentid ? Organ::get("id = $parentid") : ['arrparentid'=>'','id'=>''];
             if(!$rs) return $this->returnMsg("上级ID不存在");

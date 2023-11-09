@@ -46,7 +46,7 @@
                     <div class="layui-inline" style="width:200px;"><input type="text" name="sotime" date-render placeholder="操作时间" class="layui-input" lay-affix="clear"/></div>
                     <div class="layui-inline">
                         <div class="layui-btn-group">
-                            <a class="layui-btn" lay-submit lay-filter="search-managerlog"><i class="layui-icon layui-icon-search"></i> 搜索</a>
+                            <button class="layui-btn" lay-submit lay-filter="search-managerlog"><i class="layui-icon layui-icon-search"></i> 搜索</button>
                             <a class="layui-btn" lay-submit lay-filter="search-managerlog-all"><i class="layui-icon layui-icon-light"></i>全部</a>
                             <a class="layui-btn" id="managerlog-clear" v-show="@system.log/mdel"><i class="layui-icon layui-icon-delete"></i> 清理</a>
                         </div>
@@ -68,7 +68,7 @@
                     <div class="layui-inline" style="width:200px;"><input type="text" name="sotime" date-render placeholder="操作时间" class="layui-input" lay-affix="clear"/></div>
                     <div class="layui-inline">
                         <div class="layui-btn-group">
-                            <a class="layui-btn" lay-submit lay-filter="search-weblog"><i class="layui-icon layui-icon-search"></i> 搜索</a>
+                            <button class="layui-btn" lay-submit lay-filter="search-weblog"><i class="layui-icon layui-icon-search"></i> 搜索</button>
                             <a class="layui-btn" lay-submit lay-filter="search-weblog-all"><i class="layui-icon layui-icon-light"></i>全部</a>
                             <a class="layui-btn" id="weblog-clear" v-show="@system.log/wdel"><i class="layui-icon layui-icon-delete"></i> 清理</a>
                         </div>

@@ -7,7 +7,7 @@
             </div>
         </div>
         <div class="layui-card-body">
-            <table lay-filter="roles" id="roles"></table>
+            <table id="roles"></table>
         </div>
     </div>
 </div>
@@ -85,13 +85,14 @@ layui.use(['zTree','buildItems'], function(){
             area: ['660px', '90%'],
             title: Dt ? '编辑角色' : '添加角色',
             success: function(l,index){
-                var height = l.height() - 260;
+                var height = l.height() - 290;
+                var tool = '<div style="padding:8px 0 5px 0;"><a class="layui-btn layui-btn-xs" id="zTreeAll">全选</a> <a class="layui-btn layui-btn-xs" id="zTreeNo">反选</a> <a class="layui-btn layui-btn-xs" id="zTreeE">折叠</a></div>';
                 layui.buildItems.build({
                     bid: 'roles_items',
                     data: [
                         {name:"role_name",title:"角色名称",type:"text",value:'',verify:'required',placeholder:"请输入角色名称",must:true},
                         {name:"listorder",title:"排序编号",type:"html",html:'<div class="layui-input-inline"><input type="number" name="listorder" value="10" lay-verify="required" placeholder="请输入排序数字" autocomplete="off" class="layui-input"></div><div class="layui-input-block"><input type="checkbox" name="state" lay-verify="required" lay-skin="switch" lay-text="启用|禁用" value="1" checked/></div>',must:true},
-                        {name:"parent_id",title:"权限列表",type:"html",html:'<div style="padding-top:10px;height:'+ height +'px;overflow:auto;"><ul id="rolesTree" class="ztree"></ul></div>'}
+                        {name:"parent_id",title:"权限列表",type:"html",html:tool+'<div style="padding-top:10px;height:'+ height +'px;overflow:auto;"><ul id="rolesTree" class="ztree"></ul></div>'}
                     ]
                 });
                 form.val('roles_items_form', Dt);
@@ -100,7 +101,29 @@ layui.use(['zTree','buildItems'], function(){
                 admin.req(app_root+"index?do=mjson",{roleid:roleid},function(res){
                     layer.close(loadIndex);
                     if(res.code === 0){
-                        $.fn.zTree.init($('#rolesTree'),{check:{enable:true},data:{simpleData:{enable:true}}},res.data);
+                        var treeObj = $.fn.zTree.init($('#rolesTree'),{check:{enable:true},data:{simpleData:{enable:true}}},res.data);
+                        $('#zTreeAll').on('click',function(){
+                            treeObj.checkAllNodes(true);
+                        });
+                        $('#zTreeNo').on('click',function(){
+                            var checked = treeObj.getCheckedNodes(true);
+                            var checkeds = treeObj.transformToArray(checked);
+                            var nodes = treeObj.transformToArray(treeObj.getNodes());
+                            if(checked.length < nodes.length){
+                                treeObj.checkAllNodes(true);
+                                $.each(checkeds, function(k,node){
+                                    treeObj.checkNode(node, false, false);
+                                });
+                            }else{
+                                treeObj.checkAllNodes(false);
+                            }
+                        });
+                        $('#zTreeE').on('click',function(){
+                            var html = $(this).html(), flag = true, tip = '折叠';
+                            if(html == '折叠'){flag = false; tip = '展开';}
+                            $(this).html(tip);
+                            treeObj.expandAll(flag);
+                        });
                     }else{
                         layer.msg(res.msg,{icon:2});
                     }

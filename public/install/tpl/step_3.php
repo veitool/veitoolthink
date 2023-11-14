@@ -67,7 +67,7 @@ layui.use(['form', 'layer'],function(){
         var $this = $(this); if(!$this.val()) return;
         $.get("index.php",{s:6,dbhost:$("#dbhost").val(),dbport:$("#dbport").val(),dbuser:$("#dbuser").val(),dbpwd:$("#dbpwd").val()},function(data){
             if(data === 'false'){
-                $this.addClass('layui-form-danger').focus();
+                $this.addClass('layui-form-danger');
                 layer.tips('数据库连接失败，请检查密码或其他是否正确！', $this, {tips:[1,'#ff5722'],maxWidth:'auto'});
             }else{
                 layer.closeAll();

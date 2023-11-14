@@ -187,11 +187,11 @@ if($s == 2){
     fclose($fp);
 }elseif($s == 6){ //异步检查数据库密码
     $dbhost = $_GET['dbhost'] ?? '';
+    $dbport = $_GET['dbport'] ?? '';
     $dbuser = $_GET['dbuser'] ?? '';
     $dbpwd  = $_GET['dbpwd'] ?? '';
-    $dbport = $_GET['dbport'] ?? '';
     try{
-        $dsn = "mysql:host=$dbhost;charset=utf8";
+        $dsn = "mysql:host={$dbhost};port={$dbport};charset=utf8";
         $pdo = new PDO($dsn, $dbuser, $dbpwd);
         exit('true');
     }catch(Exception $e){

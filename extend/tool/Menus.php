@@ -153,7 +153,8 @@ class Menus
         if(!$rs){
             $rs = Db::name('menus')->order(['listorder'=>'asc','menuid'=>'asc'])->column('*');
             if($rs){
-                Db::query("truncate vt_menus");
+                $prefix = config('database.connections.'.config('database.default').'.prefix');
+                Db::query("truncate {$prefix}menus");
                 self::reset($id,$pd,$rs);
                 M::cache(1);
             }

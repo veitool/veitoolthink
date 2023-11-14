@@ -103,7 +103,10 @@ layui.use(['zTree','buildItems'], function(){
                     if(res.code === 0){
                         var treeObj = $.fn.zTree.init($('#rolesTree'),{check:{enable:true},data:{simpleData:{enable:true}}},res.data);
                         $('#zTreeAll').on('click',function(){
-                            treeObj.checkAllNodes(true);
+                            var html = $(this).html(), flag = false, tip = '全选';
+                            if(html == '全选'){flag = true; tip = '清空';}
+                            $(this).html(tip);
+                            treeObj.checkAllNodes(flag);
                         });
                         $('#zTreeNo').on('click',function(){
                             var checked = treeObj.getCheckedNodes(true);

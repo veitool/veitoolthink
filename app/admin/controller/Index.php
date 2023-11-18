@@ -9,6 +9,7 @@
  */
 namespace app\admin\controller;
 
+use app\model\system\Dict;
 use app\model\system\Menus;
 use app\model\system\Category;
 
@@ -49,7 +50,7 @@ class Index extends AdminBase
         $data = Menus::getMenus(array_intersect_key($this->manUser, ['userid'=>"",'role_menuid'=>""])); // 获取拥有的菜单数据
         $rs =[
             'menus' => $cat ? ['cat'=>$cat,'menus'=>$data['menus']]: $data['menus'],
-            'user'  => $this->manUser + ['roles' => $data['roles']]
+            'user'  => $this->manUser + ['roles' => $data['roles']] + ['dict' => Dict::cache()]
         ];
         unset($rs['user']['password'],$rs['user']['passsalt']);
         return json($rs);

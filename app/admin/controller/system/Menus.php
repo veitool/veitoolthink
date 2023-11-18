@@ -20,7 +20,7 @@ use tool\Menus as T;
 class Menus extends AdminBase
 {
     /**
-     * 菜单列表  return T::reset(); //菜单重新构建
+     * 菜单列表
      * @param  array   $do   异步数据
      * @return mixed
      */
@@ -34,6 +34,16 @@ class Menus extends AdminBase
             'category' => json_encode(C::catList('01',0,'title,catid'))
         ]);
         return $this->fetch();
+    }
+
+    /**
+     * 菜单数据重构
+     * @return mixed
+     */
+    public function reset()
+    {
+        $rs = T::reset() == 'ok' ? 1 : 0;
+        return $this->returnMsg("构建成功", $rs);
     }
 
     /**

@@ -83,11 +83,11 @@ layui.use(['vinfo', 'xmSelect', 'buildItems'], function(){
     function renderTree(data,load){
         if(!load) organObj = data[0];
         if(data){
-            organData = toTree(data);
+            organData = admin.util.toTree(data);
             doTree(organData,load);
         }else{
             admin.req(app_root + "index?do=organ",function(res){
-                organData = toTree(res);
+                organData = admin.util.toTree(res);
                 doTree(organData,load);
             });
         }
@@ -181,26 +181,6 @@ layui.use(['vinfo', 'xmSelect', 'buildItems'], function(){
                 });
             }
         });
-    }/**/
-    /*二维数组转为树形结构*/
-    function toTree(data){
-        let result = []
-        let map = {};
-        if(!Array.isArray(data)){return result;}
-        data.forEach(item =>{
-            delete item.children;
-            item.spread = true;
-            map[item.id] = item;
-        });
-        data.forEach(item =>{
-            let parent = map[item.parentid];
-            if(parent){
-                (parent.children || (parent.children = [])).push(item);
-            } else {
-                result.push(item);
-            }
-        });
-        return result;
     }/**/
     /*机构本身和子类不可选为上级*/
     function Exitem(data, id, flag){

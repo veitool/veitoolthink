@@ -279,14 +279,17 @@ abstract class BaseController
                 $sub = explode('/', $val) + $sub;
                 $val = $sub[0];
             }
+            $flag = true; //用于是否 $filter 过滤控制
             if(is_int($key)){
                 $key = $val;
+                if($key[0] == '@'){$flag = false; $key = ltrim($key,'@');}
                 if(!key_exists($key,$data) && !$sub[1]){
                     $item[$key] = $default;
                     continue;
                 }
             }else{
                 $default = $val;
+                if($key[0] == '@'){$flag = false; $key = ltrim($key,'@');}
             }
             $v = $data[$key] ?? $default;
             if($sub[1]){
@@ -344,7 +347,7 @@ abstract class BaseController
                 }
                 if($sub[1] != '*' && $sub[2] && !$v)  $this->exitMsg($sub[2]);
             }
-            $item[$key] = call_user_func($filter, $v);
+            $item[$key] = $flag ? call_user_func($filter, $v) : $v;
         }
         return $bin ? $item : $item + $data;
     }

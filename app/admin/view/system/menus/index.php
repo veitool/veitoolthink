@@ -9,6 +9,7 @@
                     <a class="layui-btn" id="menus-add" v-show="@system.menus/add"><i class="layui-icon layui-icon-add-circle"></i> 添加</a>
                     <a class="layui-btn" id="menus-adds" v-show="@system.menus/adds"><i class="layui-icon layui-icon-add-circle"></i> 批量</a>
                     <a class="layui-btn" id="menus-del" v-show="@system.menus/del"><i class="layui-icon layui-icon-delete"></i> 删除</a>
+                    <a class="layui-btn" id="menus-reset" v-show="@system.menus/reset"><i class="layui-icon layui-icon-snowflake"></i> 重构</a>
                     <a class="layui-btn" id="menus-sz" data="1"><i class="layui-icon">&#xe624;</i>展开</a>
                     <a class="layui-btn" id="menus-cat" v-show="@system.menus/category"><i class="layui-icon layui-icon-rate"></i> 分类</a>
                     <a class="layui-btn" id="menus-out" v-show="@system.menus/out"><i class="layui-icon layui-icon-download-circle"></i> 导出</a>
@@ -104,6 +105,22 @@ layui.use(['trTable','xmSelect','iconPicker','buildItems'],function(){
             }
         });
     });/**/
+    /*顶部重构按钮*/
+    $('#menus-reset').on('click', function(){
+        var btn = $(this);
+        if (btn.attr('stop')) return false;
+        layer.confirm('确定要重构菜单吗？重构后菜单ID将按顺序重新构建！', function(){
+            btn.attr('stop',1);
+            var loadIndex = layer.load(2);
+            admin.req(app_root+"reset",function(res){
+                layer.close(loadIndex);
+                layer.msg(res.msg,{shade:[0.4,'#000'],time:1500},function(){
+                    if(res.code==1) menusTb.refresh();
+                    btn.removeAttr('stop');
+                });
+            },'post');
+        });
+    });/**/
     /*顶部导出管理*/
     $('#menus-out').on('click', function(){
         var btn = $(this);
@@ -147,11 +164,9 @@ layui.use(['trTable','xmSelect','iconPicker','buildItems'],function(){
         },'post',{headersToken:true});
     });/**/
     /*顶部添加按钮*/
-    $('#menus-add').on('click',function(){addOpen();});
-    /**/
+    $('#menus-add').on('click',function(){addOpen();});/**/
     /*顶部批量按钮*/
-    $('#menus-adds').on('click',function(){addsOpen(0);});
-    /**/
+    $('#menus-adds').on('click',function(){addsOpen(0);});/**/
     /*顶部删除按钮*/
     $('#menus-del').on('click', function(){
         var checkRows = menusTb.checkStatus();

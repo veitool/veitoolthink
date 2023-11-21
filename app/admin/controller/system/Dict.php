@@ -221,7 +221,7 @@ class Dict extends AdminBase
      */
     public function iadd()
     {
-        $d = $this->only(['@token'=>'','groupid/d','parentid/d','name/*/{1,100}/字典项名','value/*/{1,100}/字典项值','listorder/d','state/d']);
+        $d = $this->only(['@token'=>'','groupid/d','parentid/d','name/s/字典项名','value/s/字典项值','listorder/d','state/d']);
         $rs = D::get("id = $d[parentid]");
         $d['arrparentid'] = $rs ? (empty($rs['arrparentid']) ? $rs['id'] : $rs['arrparentid'].','.$rs['id']) : '';
         $d['addtime'] = VT_TIME;
@@ -271,7 +271,7 @@ class Dict extends AdminBase
      */
     public function iedit($do='')
     {
-        $d = $this->only($do ? ['@token'=>'','id/d/参数错误','av/u','af'] : ['@token'=>'','id/d/参数错误','groupid/d','parentid/d','name/*/{1,100}/字典项名','value/*/{1,100}/字典项值','listorder/d','state/d']);
+        $d = $this->only($do ? ['@token'=>'','id/d/参数错误','av/u','af'] : ['@token'=>'','id/d/参数错误','groupid/d','parentid/d','name/s/请输入字典项名','value/s/请输入字典项值','listorder/d','state/d']);
         $id = $d['id'];
         $Myobj = D::get("id = $id");
         if(!$Myobj) return $this->returnMsg("数据不存在");
@@ -279,11 +279,7 @@ class Dict extends AdminBase
             $value = $d['av'];
             $field = $d['af'];
             if(!in_array($field,['name','value','listorder','state'])) return $this->returnMsg("参数错误");
-            if($field=='name'){
-                $this->only(['av/*/{1,100}/字典项名']);
-            }elseif($field=='value'){
-                $this->only(['av/*/{1,100}/字典项值']);
-            }else{
+            if($field=='listorder' || $field=='state'){
                 $value = intval($value);
             }
             if($Myobj->save([$field=>$value])){

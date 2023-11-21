@@ -240,7 +240,7 @@ class Dict extends AdminBase
      */
     public function iadds()
     {
-        $d = $this->only(['@token'=>'','titles/h','pid/d','groupid/d']);
+        $d = $this->only(['@token'=>'','titles/s','pid/d','groupid/d']);
         if(!$d['titles']) return $this->returnMsg("请输入字典项名");
         $id = $d['pid'];
         $rs = D::get("id = $id");
@@ -249,8 +249,8 @@ class Dict extends AdminBase
             $arr  = explode("\n", $d['titles']);
             $arrparentid = $rs ? (empty($rs['arrparentid']) ? $rs['id'] : $rs['arrparentid'].','.$rs['id']) : '';
             foreach($arr as $v){
+                if(word_count($v) < 1) continue;
                 $vs = explode('|', $v);
-                if(!is_preg($vs[0],'{1,100}')) continue;
                 $data[] = ['name'=>$vs[0],'value'=>$vs[1] ?? $vs[0],'groupid'=>$d['groupid'],'parentid'=>$id,'arrparentid'=>$arrparentid,'listorder'=>100,'addtime'=>VT_TIME,'editor'=>$this->manUser['username']];
             }
             if(D::insertAll($data)){

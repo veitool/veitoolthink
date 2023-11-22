@@ -20,10 +20,10 @@ class Base extends Model
 
     /**
      * 获取单条数据
-     * @param  string/array  $where   查询条件
+     * @param  string|array  $where   查询条件
      * @param  string        $field   查询字段
-     * @param  string        $order   排序
-     * @return obj/null
+     * @param  string|array  $order   排序
+     * @return obj|null
      */
     public static function get($where,$field='*',$order=[])
     {
@@ -32,9 +32,9 @@ class Base extends Model
     
     /**
      * 获取多条数据
-     * @param  string/array  $where   查询条件
+     * @param  string|array  $where   查询条件
      * @param  string        $field   查询字段
-     * @param  string        $order   排序
+     * @param  string|array  $order   排序
      * @return obj|array
      */
     public static function all($where,$field='*',$order=[])

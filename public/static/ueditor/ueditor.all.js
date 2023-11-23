@@ -11469,17 +11469,27 @@ UE.plugins['font'] = function () {
         };
     me.setOpt({
         'fontfamily': [
-            { name: 'songti', val: '宋体,SimSun'},
-            { name: 'yahei', val: '微软雅黑,Microsoft YaHei'},
-            { name: 'kaiti', val: '楷体,楷体_GB2312, SimKai'},
-            { name: 'heiti', val: '黑体, SimHei'},
-            { name: 'lishu', val: '隶书, SimLi'},
-            { name: 'andaleMono', val: 'andale mono'},
-            { name: 'arial', val: 'arial, helvetica,sans-serif'},
-            { name: 'arialBlack', val: 'arial black,avant garde'},
-            { name: 'comicSansMs', val: 'comic sans ms'},
-            { name: 'impact', val: 'impact,chicago'},
-            { name: 'timesNewRoman', val: 'times new roman'}
+            {name:"songti",val:"宋体,SimSun"},
+            {name:'NSimSun',val:'新宋体,NSimSun'},
+            {name:'SimSun',val:'仿宋,SimSun'},
+            {name:'FangSong_GB2312',val:'仿宋_GB2312 ,FangSong_GB2312'},
+            {name:'YouYuan',val:'幼圆, YouYuan'},
+            {name:"yahei",val:"微软雅黑,Microsoft YaHei"},
+            {name:"kaiti",val:"楷体,楷体_GB2312, SimKai"},
+            {name:"heiti",val:"黑体, SimHei"},
+            {name:"lishu",val:"隶书, SimLi"},
+            {name:"arial",val:"arial, helvetica,sans-serif"},
+            {name:"andaleMono",val:"andale mono"},
+            {name:"arialBlack",val:"arial black,avant garde"},
+            {name:"broadway",val:"Broadway"},
+            {name:"bernardMC",val:"Bernard MT Condensed"},
+            {name:"comicSansMs",val:"comic sans ms"},
+            {name:"courierNew",val:"Courier New"},
+            {name:"helvetica",val:"Helvetica"},
+            {name:"impact",val:"impact,chicago"},
+            {name:"tahoma",val:"Tahoma"},
+            {name:"timesNewRoman",val:"times new roman"},
+            {name:"verdana",val:"Verdana"}
         ],
         'fontsize': [10, 11, 12, 14, 16, 18, 20, 24, 36]
     });

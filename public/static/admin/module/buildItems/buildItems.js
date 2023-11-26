@@ -65,13 +65,13 @@ layui.define(['tagsInput','fileLibrary','cascader'], function(e){
     //取色器
     c.colorpicker = c.item_html + c.block_html + '>' + c.inline_html + ' style="width:120px;">' + c.text_html + 'id="show-colorpicker-{{ d.name }}" placeholder="请选择颜色" class="layui-input"/></div>' + c.inline_html + ' style="left:-11px;width:40px;"><div id="colorpicker-{{ d.name }}"></div></div>' + c.tips_html + '</div></div>';
     //百度编辑器
-    c.ueditor = c.item_html + c.block_html + '>' + c.textarea_html + ' id="ueditor-{{ d.id ? d.id : d.name }}" style="border:0;padding:0;">{{ d.value }}</textarea>' + c.tips_html + '</div></div>';
+    c.ueditor = c.item_html + c.block_html + '>' + c.textarea_html + ' id="ueditor-{{ d.id ? d.id : d.name }}" style="border:0;padding:0;">{{- d.value }}</textarea>' + c.tips_html + '</div></div>';
     //Md编辑器
-    c.cherrymd = c.item_html + c.block_html + '><div '+ c.item_style +'id="cherrymd-{{ d.id ? d.id : d.name }}"></div><textarea id="temp-{{ d.id ? d.id : d.name }}" style="display:none;">{{ d.value }}</textarea>' + c.tips_html + '</div></div>';
+    c.cherrymd = c.item_html + c.block_html + '><div '+ c.item_style +'id="cherrymd-{{ d.id ? d.id : d.name }}"></div><textarea id="temp-{{ d.id ? d.id : d.name }}" style="display:none;">{{- d.value }}</textarea>' + c.tips_html + '</div></div>';
     //Md编辑器
-    c.editormd = c.item_html + c.block_html + '><style>.editormd-preview li{list-style:inherit!important}.editormd-code-toolbar>select{display:initial}</style><div id="editormd-{{ d.id ? d.id : d.name }}" style="z-index:1000;">' + c.textarea_html + ' style="display:none;">{{ d.value }}</textarea></div>' + c.tips_html + '</div></div>';
+    c.editormd = c.item_html + c.block_html + '><style>.editormd-preview li{list-style:inherit!important}.editormd-code-toolbar>select{display:initial}</style><div id="editormd-{{ d.id ? d.id : d.name }}" style="z-index:1000;">' + c.textarea_html + ' style="display:none;">{{- d.value }}</textarea></div>' + c.tips_html + '</div></div>';
     //TinyMCE编辑器
-    c.tinymce = c.item_html + c.block_html + '>' + c.textarea_html + ' id="tinymce-{{ d.id ? d.id : d.name }}">{{ d.value }}</textarea>' + c.tips_html + '</div></div>';
+    c.tinymce = c.item_html + c.block_html + '>' + c.textarea_html + ' id="tinymce-{{ d.id ? d.id : d.name }}">{{- d.value }}</textarea>' + c.tips_html + '</div></div>';
     //上传单图
     c.image = c.item_html + c.block_html + '><div id="image-show-{{ d.name }}" data-type="image" data-verify="{{ d.verify || \'\' }}" data-reqtext="{{ d.reqtext || \'\' }}">{{# if (d.value) { }}' +
               '<div class="image_item"><img src="{{ d.value }}"/><input type="hidden" name="{{ d.name }}" value="{{ d.value }}"/>'+

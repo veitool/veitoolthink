@@ -584,7 +584,7 @@ layui.define(['tagsInput','fileLibrary','cascader'], function(e){
         },
         getUE: function(success){
             if(window.UE){
-                typeof success === 'function' && success();
+                typeof success === 'function' && setTimeout(function(){success()},100);
             }else{
                 $.getScript(static + "ueditor/ueditor.all.min.js", function(){
                     window.UE = UE;
@@ -594,7 +594,7 @@ layui.define(['tagsInput','fileLibrary','cascader'], function(e){
         },
         getCM: function(success){
             if(window.Cherry){
-                typeof success === 'function' && setTimeout(function(){success()},300);/*延迟：解决存在于OPEN窗口中时编辑区的渲染尺寸问题*/
+                typeof success === 'function' && setTimeout(function(){success()},100);/*延迟：解决存在于OPEN窗口中时编辑区的渲染尺寸问题*/
             }else{
                 layui.link(static + "cherrymd/cherry-markdown.min.css");
                 $.getScript(static + "cherrymd/cherry-markdown.min.js", function(){
@@ -605,12 +605,12 @@ layui.define(['tagsInput','fileLibrary','cascader'], function(e){
         },
         getEM: function(success){
             if(window.editormd){
-                typeof success === 'function' && setTimeout(function(){success()},300);
+                typeof success === 'function' && setTimeout(function(){success()},100);
             }else{
                 layui.link(static + "editormd/css/editormd.min.css");
                 $.getScript(static + "editormd/editormd.min.js", function(){
                     window.editormd = editormd;
-                    typeof success === 'function' && setTimeout(function(){success()},300);
+                    typeof success === 'function' && success();
                 });
             }
         },

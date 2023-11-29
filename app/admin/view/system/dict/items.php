@@ -1,18 +1,14 @@
 <style>.treeTable-filter-hide{display:none !important;}</style>
-<div class="layui-fluid">   
-    <div class="layui-card">
-        <div class="layui-card-body">
-            <div class="layui-card-box">
-                <div class="layui-btn-group">
-                    <a class="layui-btn" id="dictItems-add"><i class="layui-icon layui-icon-add-circle"></i> 添加</a>
-                    <a class="layui-btn" id="dictItems-adds"><i class="layui-icon layui-icon-add-circle"></i> 批量</a>
-                    <a class="layui-btn" id="dictItems-del"><i class="layui-icon layui-icon-delete"></i> 删除</a>
-                    <a class="layui-btn" id="dictItems-sz" data="1"><i class="layui-icon">&#xe624;</i>展开</a>
-                </div>
-            </div>
-            <table id="dictItems"></table>
+<div class="layui-card-body">
+    <div class="layui-card-box">
+        <div class="layui-btn-group">
+            <a class="layui-btn" id="dictItems-add"><i class="layui-icon layui-icon-add-circle"></i> 添加</a>
+            <a class="layui-btn" id="dictItems-adds"><i class="layui-icon layui-icon-add-circle"></i> 批量</a>
+            <a class="layui-btn" id="dictItems-del"><i class="layui-icon layui-icon-delete"></i> 删除</a>
+            <a class="layui-btn" id="dictItems-sz" data="1"><i class="layui-icon">&#xe624;</i>展开</a>
         </div>
     </div>
+    <table id="dictItems"></table>
 </div>
 <!--JS部分-->
 <script type="text/javascript">

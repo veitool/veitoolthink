@@ -256,6 +256,7 @@ layui.use(['vinfo', 'xmSelect', 'buildItems'], function(){
                 offset: 'rb',
                 title: data.title +' - 字典项管理',
                 area: ["70%", "100%"],
+                skin: 'layui-anim layui-anim-rl layui-layer-Right',
                 url: app_root + 'items?groupid=' + data.id,
                 success: function(){}
             });

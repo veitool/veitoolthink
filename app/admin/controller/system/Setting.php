@@ -22,6 +22,7 @@ class Setting extends AdminBase
     private $pgroup = 'group/?/v/配置组名';
     private $ptitle = 'title/*/{2,30}/配置标题';
     private $ptips  = 'tips/?/{2,100}/配置说明/0/,，:：.。';
+    private $paddon = 'addon/?/a';
     private $prelation = 'av/?/v/关联项';
 
     /**
@@ -107,9 +108,16 @@ class Setting extends AdminBase
         $groups = vconfig('sys_group');
         $types  = vconfig('sys_type');
         if($do=='json'){ //配置列表数据
-            $where[] = ['addon','=',''];
-            $group = $this->request->get('group',0);
-            if(isset($groups[$group])) $where[] = ['group','=',$group];
+            $d = $this->only(['group','kw'],'get');
+            if(isset($groups[$d['group']])){
+                $where[] = ['addon','=',''];
+                $where[] = ['group','=',$d['group']];
+            }else{
+                $where[] = ['addon','<>',''];
+            }
+            if($d['kw']){
+                $where[] = ['name|title|addon','LIKE', '%'. $d['kw'] .'%'];
+            }
             $rs = (new S())->listQuery($where);
             foreach($rs as $k=>$v){
                 $rs[$k]['typename'] = isset($types[$v['type']]) ? $types[$v['type']] : '';
@@ -141,8 +149,8 @@ class Setting extends AdminBase
      */
     public function badd()
     {
-        $d = $this->only(['@token'=>'',$this->ptype,$this->pname,$this->ptitle,$this->pgroup,$this->ptips,'value/u','options/u','listorder/d']);
-        if(S::get("name = '$d[name]' AND addon = ''")) return $this->returnMsg("该配置名称已经存在");
+        $d = $this->only(['@token'=>'',$this->ptype,$this->pname,$this->ptitle,$this->pgroup,$this->ptips,$this->paddon,'value/u','options/u','listorder/d']);
+        if(S::get("name = '$d[name]' AND addon = '$d[addon]'")) return $this->returnMsg("该配置名称已经存在");
         $d["addtime"] = VT_TIME;
         if(S::insert($d)){
             S::cache(1);
@@ -167,12 +175,14 @@ class Setting extends AdminBase
         if($do=='up'){
             $value = $d['av'];
             $field = $d['af'];
-            if(!in_array($field,['name','title','listorder','relation','private','state'])) return $this->returnMsg("参数错误");
+            if(!in_array($field,['name','title','addon','listorder','relation','private','state'])) return $this->returnMsg("参数错误");
             if($field=='name'){
                 $this->only([str_replace('name','av',$this->pname)]);
                 if(S::get("name = '$value' AND addon = '' AND id<>$id")) return $this->returnMsg("该配置名称已经存在");
             }elseif($field=='title'){
                 $this->only([str_replace('title','av',$this->ptitle)]);
+            }elseif($field=='addon'){
+                $this->only(['av/*/a']);
             }elseif($field=='relation'){
                 $this->only([$this->prelation]);
             }else{
@@ -214,6 +224,54 @@ class Setting extends AdminBase
         }else{
             return $this->returnMsg("删除失败");
         }
+    }
+
+    /**
+     * 配置项导出
+     * @return json
+     */
+    public function bout()
+    {
+        $msg = '无数据导出';
+        $group = $this->only([$this->pgroup])['group'];
+        $where = $group ? "`group` = '$group' AND addon = ''" : "addon <> ''";
+        $data = S::where($where ." AND state")->order('listorder', 'asc')->column("name,title,group,type,value,options,tips,relation,private,addtime,edittime,listorder,addon,state");
+        if($data){
+            $file = $group ? 'sysSettings_'. $group .'.php' : 'sysSettings_addon.php';
+            $content = "<?php\nreturn ".var_export($data,true).";";
+            $content = preg_replace('/(?<==> \n).*?(?=array)/si', '', $content);
+            $content = str_replace(["array (", "),", ");", "=> \n"], ["[", "],", "];", "=> "], $content);
+            @file_put_contents(RUNTIME_PATH.$file, $content);
+            $msg = '导出成功位置:/runtime/'.$file;
+        }
+        return $this->returnMsg($msg);
+    }
+
+    /**
+     * 配置项导入
+     * @return json
+     */
+    public function bup()
+    {
+        set_time_limit(0);
+        $code  = 0;
+        $group = $this->only([$this->pgroup])['group'];
+        $file  = $group ? 'sysSettings_'. $group .'.php' : 'sysSettings_addon.php';
+        $path  = RUNTIME_PATH.$file;
+        if(is_file($path)){
+            try{
+                $data = include($path);
+                S::insertAll($data);
+                S::cache(1);
+                $msg = '导入成功';
+                $code = 1;
+            }catch(\think\db\exception\PDOException $e){
+                $msg = $e->getMessage();
+            }
+        }else{
+            $msg = '找不到配置数据:/runtime/'.$file;
+        }
+        return $this->returnMsg($msg,$code);
     }
 
 }

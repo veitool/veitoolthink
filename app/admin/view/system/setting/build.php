@@ -8,7 +8,21 @@
                 <div class="layui-btn-group">
                     <a class="layui-btn" id="settings-add" v-show="@system.setting/badd"><i class="layui-icon layui-icon-add-circle"></i> 添加</a>
                     <a class="layui-btn" id="settings-del" v-show="@system.setting/bdel"><i class="layui-icon layui-icon-delete"></i> 删除</a>
+                    <a class="layui-btn" id="settings-out"><i class="layui-icon layui-icon-download-circle"></i> 导出</a>
+                    <a class="layui-btn" id="settings-up"><i class="layui-icon layui-icon-upload-drag"></i> 导入</a>
                 </div>
+                <form class="layui-form render" style="float:right;">
+                    <input type="hidden" name="group" id="settings-group" value="">
+                    <div class="layui-form-item">
+                        <div class="layui-inline" style="width:150px;"><input type="text" name="kw" placeholder="关键词" autocomplete="off" class="layui-input" lay-affix="clear"/></div>
+                        <div class="layui-inline">
+                            <div class="layui-btn-group">
+                                <button class="layui-btn" lay-submit lay-filter="search-settings"><i class="layui-icon layui-icon-search"></i> 搜索</button>
+                                <a class="layui-btn" lay-submit lay-filter="search-settings-all-group"><i class="layui-icon layui-icon-light"></i>全部</a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
             <table lay-filter="settings" id="settings"></table>
         </div>
@@ -24,8 +38,9 @@ layui.use(['buildItems'],function(){
     /*解析顶部分组选项*/
     var tab = $("#settings_tab");
     layui.each(datas.groups,function(k,v){tab.append('<li group="'+ k +'">'+ v +'</li>');});
-    var tab1 = tab.children("li").first();tab1.addClass('layui-this');
-    var group = tab1.attr('group');/**/
+    var tab1 = tab.children("li").first(); tab1.addClass('layui-this'); tab.append('<li group=""><b>插件</b></li>');
+    var group = tab1.attr('group');
+    $('#settings-group').val(group);/**/
     /*渲染数据*/
     table.render({
         elem: '#settings',
@@ -36,6 +51,7 @@ layui.use(['buildItems'],function(){
             {field:"name",edit:'text',title:"名称",width:180},
             {field:"title",edit:'text',title:"标题"},
             {field:"relation",edit:'text',title:"关联"},
+            {field:"addon",edit:'text',title:"插件"},
             {field:"typename",align:'center',width:120,title:"类型",sort:!0},
             {field:"addtime",align:'center',title:"添加时间",width:160,sort:!0,templet:function(d){return layui.util.toDateString(d.addtime*1000)}},
             {field:'listorder',edit:'text',width:60,align:'center',title:'排序'},
@@ -48,7 +64,7 @@ layui.use(['buildItems'],function(){
     });/**/
     /*顶部选项卡监听*/
     layui.element.on('tab(settings_top_tab)',function(){
-        group = this.getAttribute("group");
+        group = this.getAttribute("group"); $('#settings-group').val(group);
         table.reloadData('settings',{where:{group:group},page:{curr:1}});
     });/**/
     /*顶部添加按钮*/
@@ -59,6 +75,32 @@ layui.use(['buildItems'],function(){
         if(checkRows.length === 0){return layer.msg('请选择需删除的配置项');}
         var ids = checkRows.map(function(d){return d.id;});
         del(ids);
+    });/**/
+    /*顶部导出管理*/
+    $('#settings-out').on('click', function(){
+        var btn = $(this);
+        if (btn.attr('stop')) return false;
+        layer.confirm('确定要导出当前组的配置吗？<br/>将将导出在文件 /runtime/sysSettings_*.php', function(){
+            btn.attr('stop',1);
+            admin.req(app_root+"bout",{group:group},function(res){
+                layer.msg(res.msg);
+                btn.removeAttr('stop');
+            },'post');
+        });
+    });/**/
+    /*顶部导入管理*/
+    $('#settings-up').on('click', function(){
+        var btn = $(this);
+        if (btn.attr('stop')) return false;
+        layer.confirm('确定要导入当前组的配置吗？请确保数据无重复配置键名<br/>确保存在对应数据文件 /runtime/sysSettings_*.php', function(){
+            btn.attr('stop',1);
+            admin.req(app_root+"bup",{group:group},function(res){
+                layer.msg(res.msg,{shade:[0.4,'#000'],time:1500},function(){
+                    if(res.code==1) table.reloadData('settings');
+                    btn.removeAttr('stop');
+                });
+            },'post');
+        });
     });/**/
     /*快编监听*/
     table.on('edit(settings)',function(obj){
@@ -108,13 +150,14 @@ layui.use(['buildItems'],function(){
                     bid: 'settings_items',
                     data: [
                         {name:"id",type:"hidden"},
-                        {name:"group",title:"配置分组",type:"radio",options:datas.groups,value:group,must:true},
+                        {name:"group",title:"配置分组",type:group ? "radio" : "text",options:datas.groups,value:group,placeholder:"插件分组（选填）",must:true},
                         {name:"type",title:"配置类型",type:"select",options:types,value:'',verify:'required',reqtext:'请选择配置类型',must:true},
                         {name:"name",title:"配置名称",type:"text",value:'',verify:'required',placeholder:"请输入配置名称",must:true},
                         {name:"title",title:"配置标题",type:"text",value:'',verify:'required',placeholder:"请输入配置标题",must:true},
                         {name:"value",title:"配置初值",type:"textarea",value:'',placeholder:"请输入配置初值"},
                         {name:"options",title:"配置选项",type:"textarea",value:'',placeholder:"用于单选、多选、下拉、联动等类型时请输入；时间选择器时用于配置range参数；文件上传时用于filetype[image、file、video、audio]参数"},
                         {name:"tips",title:"配置说明",type:"text",value:'',placeholder:"请输入配置说明"},
+                        {name:"addon",title:"插件名称",type:"text",value:'',placeholder:"所属插件标识名称（选填）",verify:group ? '' : 'required',must:group ? false : true},
                         {name:"listorder",title:"排序编号",type:"number",value:10,verify:'required',placeholder:"请输入排序数字",must:true}
                     ]
                 });

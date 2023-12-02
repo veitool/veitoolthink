@@ -79,7 +79,8 @@ layui.use(['vinfo', 'xmSelect', 'buildItems'], function(){
     var Roles = {$roles|raw};
     var roles_select = '<option value="">选择角色</option>'; $.each(Roles,function(k,v){roles_select += '<option value="'+ k +'">'+ v +'</option>';});
     /*==============左树结构===============*/
-    var organObj,organData; /*左树 选中数据 和 总树数据*/
+    var organObj,organData,Organ = {},organArr = <?=$organ?>; /*左树 选中数据 和 总树数据*/
+    for(const v of organArr){Organ[v.id] = v.title}
     function renderTree(data,load){
         if(!load) organObj = data[0];
         if(data){
@@ -110,7 +111,7 @@ layui.use(['vinfo', 'xmSelect', 'buildItems'], function(){
         load ? item.find('.layui-tree-main>.layui-tree-txt').trigger('click') : item.addClass('organ-tree-click');
     }
     /*初始渲染*/
-    renderTree(<?=$organ?>);
+    renderTree(organArr);
     /*左树添加按钮*/
     $('#organ-add').on('click',function(){organOpen();});/**/
     /*左树编辑按钮*/
@@ -210,15 +211,13 @@ layui.use(['vinfo', 'xmSelect', 'buildItems'], function(){
         cols: [[
             {type:'checkbox',fixed:'left'},
             {field:'userid',width:50,unresize:true,align:'center',title:'ID',sort:!0},
-            {field:"username",title:"帐号",toolbar:'<div><a style="cursor:pointer;" lay-event="info">{{d.username}}</a></div>'},
-            {field:"truename",edit:'text',title:"姓名"},
-            {field:"mobile",width:110,edit:'text',title:"手机"},
-            {field:"email",edit:'text',title:"邮箱"},
-            {field:"roleid",width:80,align:'center',title:"角色",templet:function(d){return Roles[d.roleid]}},
-            {field:"logins",width:68,align:'center',title:"登录次数"},
-            {field:"loginip",width:110,align:'center',title:"登录IP",toolbar:'<div><a style="cursor:pointer;" lay-event="showip">{{d.loginip}}</a></div>'},
-            {field:"logintime",width:100,align:'center',title:"最近登录",sort:!0,templet:function(d){return layui.util.toDateString(d.logintime*1000,'yyyy-MM-dd')}},
-            {field:"edit",width:68,align:'center',title:"操作帐号"},
+            {field:"username",title:"帐号",align:'center',toolbar:'<div><a style="cursor:pointer;" lay-event="info">{{d.username}}</a></div>'},
+            {field:"truename",edit:'text',align:'center',title:"姓名"},
+            {field:"email",edit:'text',align:'center',title:"邮箱"},
+            {field:"groupid",align:'center',title:"部门",templet:function(d){return Organ[d.groupid]}},
+            {field:"roleid",align:'center',title:"角色",templet:function(d){return Roles[d.roleid]}},
+            {field:"mobile",width:110,edit:'text',align:'center',title:"手机"},
+            {field:"edit",width:68,align:'center',title:"操作"},
             {field:'state',width:80,align:'center',templet:function(d){return '<input type="checkbox" name="state" lay-skin="switch" lay-text="正常|禁用" lay-filter="manager-chang" value="'+d.state+'" data-json="'+encodeURIComponent(JSON.stringify(d))+'"'+(d.state==1 ? ' checked' : '')+'>';},unresize:true,title:'状态'},
             {fixed:'right',width:130,align:'center',toolbar:'<div><a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a><a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="reset">重置</a><a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a></div>',title:'操作'}
         ]],

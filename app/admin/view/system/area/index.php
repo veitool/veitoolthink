@@ -135,7 +135,7 @@ layui.use(['buildItems'], function(){
                 layui.buildItems.build({
                     bid: 'areas_items',
                     data: [
-                        {name:"pname",title:"上级地区",type:"html",html:'<div class="layui-form-mid">'+area+'</div><input type="hidden" name="parentid" value="'+pid+'"/>'},
+                        {name:"pname",title:"上级地区",type:"html",html:'<div class="layui-form-mid tipx" style="font-size:14px;">'+area+'</div><input type="hidden" name="parentid" value="'+pid+'"/>'},
                         {name:"areaname",title:"地区名称",type:"textarea",value:'',verify:'required',placeholder:"允许批量添加，一行一个，点回车换行",must:true},
                         {name:"listorder",title:"排序编号",type:"number",value:100,verify:'required',placeholder:"请输入排序数字",must:true}
                     ]

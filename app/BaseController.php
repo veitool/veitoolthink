@@ -254,7 +254,7 @@ abstract class BaseController
     {
         if(isset($name['@token'])){
             $arr = array_merge([$this->tokenName,[]],(array)$name['@token']);
-            if($this->request->checkToken($arr[0],$arr[1]) === false) $this->exitMsg("Token错误");
+            $this->request->checkToken($arr[0],$arr[1]) === false && $this->exitMsg("Token错误");
             $this->token = token($this->tokenName);
             unset($name['@token']);
             if(!$name) return [];

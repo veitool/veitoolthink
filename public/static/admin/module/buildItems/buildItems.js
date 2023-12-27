@@ -109,6 +109,12 @@ layui.define(['tagsInput','fileLibrary','cascader'], function(e){
                 });
             }
         },
+        render: function(d){
+            $h = $("#"+ d.bid); //绑定ID
+            c.gid = d.gid || -1;  //上传资源分组ID
+            c.map = d.map || 'admin/system.upload/'; //上传接口
+            b.init();
+        },
         build: function(d){
             c.bid  = d.bid || ''; //绑定ID
             c.gid  = d.gid || -1;  //上传资源分组ID

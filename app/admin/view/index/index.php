@@ -66,6 +66,7 @@ layui.config({
         viewSuffix: '',        // 视图后缀
         reqPutToPost: true,    // req请求put方法变成post
         apiNoCache: true,      // ajax请求json数据不带版本号
+        tabAutoRefresh: false, // 是否每点击菜单都刷新
         tableName: 'vadmin',   // 存储表名
         token: '{:token($tokenName)}',   // CSRF-TOKEN
     }

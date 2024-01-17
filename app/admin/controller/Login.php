@@ -25,7 +25,7 @@ class Login extends BaseController
      */
     public function index()
     {
-        if(!empty(session(VT_MANAGER))) return $this->redirect(APP_MAP);
+        if(!empty(session(VT_MANAGER))) return $this->redirect(APP_MAP ?: '/');
         return $this->fetch();
     }
 
@@ -37,7 +37,7 @@ class Login extends BaseController
         $User = session(VT_MANAGER);
         if($User) Online::del(['uid'=>$User['uid'],'userid'=>$User['userid']]); //删除在线数据
         session(null); //清空Session
-        return $this->redirect(url('admin/login/index')->build());
+        return $this->redirect(APP_MAP ?: '/');
     }
 
     /**
@@ -86,7 +86,7 @@ class Login extends BaseController
             LoginLog::add($username, $password, $rs['passsalt']);
             session(VT_MANAGER,$rs);
             Lock::del();
-            return $this->returnMsg('登录成功！',1,['url'=>APP_MAP]);
+            return $this->returnMsg('登录成功！',1,['url'=>(APP_MAP ?: '/')]);
         }
         LoginLog::add($username, $password, $rs['passsalt'], '密码错误');
         captcha('admin'); //重建验证码

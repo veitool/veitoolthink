@@ -52,7 +52,7 @@
 var $ = jQuery = layui.$;
 layui.config({
     base: "{STATIC__PATH}admin/module/",
-    maps: "{:APP_MAP}/", // 映射后的后台根路径
+    maps: ("{:APP_MAP}" || "/admin") + "/", // 映射后的后台根路径
     static: "{STATIC__PATH}",  // 静态资源根路径 buildItems.js中有用
     version: "{:VT_VERSION}",  // 框架版本
     bins:{

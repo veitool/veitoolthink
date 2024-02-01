@@ -27,7 +27,7 @@ class UploadFile extends Base
      * @param  int     $where    条件
      * @param  array   $order    排序
      * @param  string  $field    字段
-     * @return array
+     * @return obj
      */
     public function listQuery($where='', $order=['fileid'=>'desc'], $field='*')
     {

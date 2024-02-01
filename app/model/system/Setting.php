@@ -40,7 +40,7 @@ class Setting extends Base
     /**
      * 获取配置信息
      * @param  string $name  配置名
-     * @return mixed
+     * @return array
      */
     public static function getSetting($name='')
     {

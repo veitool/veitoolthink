@@ -28,7 +28,7 @@ class DictGroup extends Base
      * @param  string  $fields   排除字段
      * @param  int     $limit    查询条数
      * @param  array   $order    查询排序
-     * @return array
+     * @return obj
      */
     public function listQuery($where = [], $fields = '', $limit = 0, $order = ['id'=>'asc'])
     {

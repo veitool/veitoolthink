@@ -27,7 +27,7 @@ class Roles extends Base
 
     /**
      * 分页列表
-     * @return array
+     * @return obj
      */
     public function listQuery()
     {

@@ -28,7 +28,7 @@ class ManagerLog extends Base
      * @param  array   $order    排序
      * @param  string  $fields   字段
      * @param  int     $limit    条数
-     * @return array
+     * @return obj
      */
     public function listQuery($where=[], $order=['logid'=>'desc'], $fields = '*', $limit=0)
     {

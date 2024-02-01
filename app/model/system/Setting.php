@@ -19,7 +19,7 @@ class Setting extends Base
     /**
      * 列表(分页)
      * @param  string  $where  查询条件
-     * @return array
+     * @return obj
      */
     public function listQuery($where='')
     {

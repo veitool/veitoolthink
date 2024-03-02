@@ -198,7 +198,7 @@ abstract class BaseController
      * @param   int                 $scode    页头状态码
      * @param   array               $header   头部
      * @param   array               $options  参数
-     * @return  array/json
+     * @return  html/json
      */
     protected final function returnMsg($msg = '', $code = 0, $data = [], $scode = 200, $header = [], $options = [])
     {
@@ -346,7 +346,7 @@ abstract class BaseController
                         }
                         break;
                 }
-                if($sub[1] != '*' && $sub[2] && !$v)  $this->exitMsg($sub[2]);
+                if($sub[1] != '*' && $sub[2] && !$v) $this->exitMsg($sub[2]);
             }
             $item[$key] = $flag ? call_user_func($filter, $v) : $v;
         }

@@ -444,7 +444,7 @@ layui.define(['tagsInput','fileLibrary','cascader'], function(e){
                             editor:{height:heg+'px',id:name,name:name,value:$('#temp-'+name).val(),autoSave2Textarea:true,codemirror:{autofocus:false}},
                             callback:{afterInit:function(){$("textarea[name='"+name+"']")[0].value=$('#temp-'+name).val();}},
                             toolbars:{
-                                toolbar: ['bold','italic','strikethrough','justify','|','header','list','panel','graph','|','vimg',{insert:['vado','vido','br','code','table','line-table','bar-table','link','hr','detail']},'export','settings'],
+                                toolbar: ['bold','italic','strikethrough','justify','|','header','list','panel','graph','|','vimg',{insert:['vado','vido','br','code','table','line-table','bar-table','link','linkOut','hr','detail']},'export','settings'],
                                 toolbarRight: ['fullScreen'],
                                 sidebar: ['mobilePreview', 'copy', 'theme'],
                                 customMenu:{
@@ -460,7 +460,8 @@ layui.define(['tagsInput','fileLibrary','cascader'], function(e){
                                         });
                                     }}),
                                     vido:Cherry.createMenuHook('视频',{iconName:'video',onClick:function(){return '!video[描述](url){poster=封面}';}}),
-                                    vado:Cherry.createMenuHook('音频',{iconName:'video',onClick:function(){return '!audio[描述](url)';}})
+                                    vado:Cherry.createMenuHook('音频',{iconName:'video',onClick:function(){return '!audio[描述](url)';}}),
+                                    linkOut:Cherry.createMenuHook('外链接',{iconName:'link',onClick:function(){return '[https://www.veitool.com](https://www.veitool.com){target=_blank}';}})
                                 }
                             }
                         });

@@ -32,7 +32,7 @@
                     </div>
                 </div>
             </form>
-            <form class="logTab_manager layui-form render">
+            <form class="logTab_manager layui-form render" style="display:none">
                 <div class="layui-form-item">
                     <div class="layui-inline" style="width:72px;">
                         <select name="fields">
@@ -53,7 +53,7 @@
                     </div>
                 </div>
             </form>
-            <form class="logTab_web layui-form render">
+            <form class="logTab_web layui-form render" style="display:none">
                 <div class="layui-form-item">
                     <div class="layui-inline" style="width:72px;">
                         <select name="fields">
@@ -78,8 +78,8 @@
         </div>
         <div class="layui-card-body">
             <span class="logTab_login"><table lay-filter="loginlog" id="loginlog"></table></span>
-            <span class="logTab_manager"><table lay-filter="managerlog" id="managerlog"></table></span>
-            <span class="logTab_web"><table lay-filter="weblog" id="weblog"></table></span>
+            <span class="logTab_manager" style="display:none"><table lay-filter="managerlog" id="managerlog"></table></span>
+            <span class="logTab_web" style="display:none"><table lay-filter="weblog" id="weblog"></table></span>
         </div>
     </div>
 </div>
@@ -91,9 +91,8 @@ layui.use(['vinfo'],function(){
     var app_root = map_root + 'system.log/';
     var table=layui.table,admin=layui.admin;
     var limit = {$limit}, PT = {$PT|raw};
-    var log_select = '<option value="">位置</option>';$.each(PT,function(k,v){log_select += '<option value="'+ k +'">'+ v +'</option>';});
     /*位置选择*/
-    $('#search_log_select').html(log_select);
+    admin.util.buildOption('#search_log_select',PT,'位置');
     /*初始选中选卡*/
     $('*[lay-id="'+ mtab +'"]').addClass('layui-this');
     /*定义开关防重复请求*/

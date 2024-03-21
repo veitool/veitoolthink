@@ -34,6 +34,12 @@ class Manager extends AdminBase
             $User['areaname'] = Area::getAreaStr($User['areaid'], ' - ');
             $this->assign("User",$User);
             return $this->fetch('info');
+        }elseif($action=='role'){ //角色切换
+            $roleid = $this->request->get('roleid/d');
+            if($roleid!=$this->manUser['roleid'] && in_array($roleid, explode(',',$this->manUser['roleids']))){
+                M::update(['userid'=>$this->manUser['userid'],'roleid'=>$roleid]);
+            }
+            return $this->redirect(APP_MAP);
         }
         $organ = Organ::order(['listorder'=>'asc'])->column('*');
         if($do){
@@ -77,12 +83,13 @@ class Manager extends AdminBase
      */
     public function add()
     {
-        $d = $this->only(['@token'=>'','username/*/u/管理帐号','password/*/p/登录密码','groupid/d/请选择所属机构','roleid/d/请选择所属角色','truename/?/n','mobile/?/m','email/?/e']);
+        $d = $this->only(['@token'=>'','username/*/u/管理帐号','password/*/p/登录密码','groupid/d/请选择所属机构','roleids/*/i/请选择所属角色','truename/?/n','mobile/?/m','email/?/e']);
         if(M::get("username = '$d[username]'")) return $this->returnMsg("该用户帐号已经存在");
         $d["passsalt"] = random(8);
         $d["password"] = set_password($d["password"],$d["passsalt"]);
         $d["edit"]     = $this->manUser['username'];
         $d["addtime"]  = VT_TIME;
+        $d["roleid"]   = explode(",",$d['roleids'])[0];
         if(M::insert($d)){
             return $this->returnMsg("添加用户成功", 1);
         }else{
@@ -97,7 +104,7 @@ class Manager extends AdminBase
      */
     public function edit($do='')
     {
-        $d = $this->only($do ? ['@token'=>'','userid/d/参数错误','av','af'] : ['@token'=>'','userid/d/参数错误','username/*/u/管理帐号','groupid/d/请选择所属机构','roleid/d/请选择所属角色','truename/?/n','mobile/?/m','email/?/e']);
+        $d = $this->only($do ? ['@token'=>'','userid/d/参数错误','av','af'] : ['@token'=>'','userid/d/参数错误','username/*/u/管理帐号','groupid/d/请选择所属机构','roleids/*/i/请选择所属角色','truename/?/n','mobile/?/m','email/?/e']);
         $userid = $d['userid'];
         $Myobj = M::get("userid = $userid");
         if(!$Myobj) return $this->returnMsg("数据不存在");
@@ -119,6 +126,7 @@ class Manager extends AdminBase
             if($userid == 1 && $userid != $this->manUser['userid']) return $this->returnMsg("您的身份不能修改超级用户的信息");
             if(M::get("username='$d[username]' AND userid<>$userid")) return $this->returnMsg("帐号【".$d['username']."】已经存在");
             $d["edittime"] = VT_TIME;
+            $d["roleid"]   = explode(",",$d['roleids'])[0];
             if($Myobj->save($d)){
                 return $this->returnMsg("编辑用户成功", 1);
             }else{

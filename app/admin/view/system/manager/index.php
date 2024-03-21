@@ -77,7 +77,8 @@ layui.use(['vinfo', 'xmSelect', 'buildItems'], function(){
     var app_root = map_root + 'system.manager/';
     var layer=layui.layer,table=layui.table,form=layui.form,admin=layui.admin;
     var Roles = {$roles|raw};
-    var roles_select = '<option value="">选择角色</option>'; $.each(Roles,function(k,v){roles_select += '<option value="'+ k +'">'+ v +'</option>';});
+    /*顶部类别构建*/
+    admin.util.buildOption('#search_roles_select',Roles,'选择角色');
     /*==============左树结构===============*/
     var organObj,organData,Organ = {},organArr = <?=$organ?>; /*左树 选中数据 和 总树数据*/
     for(const v of organArr){Organ[v.id] = v.title}
@@ -135,12 +136,12 @@ layui.use(['vinfo', 'xmSelect', 'buildItems'], function(){
             btn: ['保存', '取消'],
             area: ['500px', '500px'],
             title: (Dt ? '修改' : '添加') + '机构',
-            success: function(l,index){
+            success: function(lay,index){
                 layui.buildItems.build({
                     bid: 'organ_items',
                     data: [
                         {name:"id",type:"hidden"},
-                        {name:"parentid",title:"上级机构",type:"html",html:'<div id="organ-list-tree" class="v-xmselect-tree"></div>',must:true},
+                        {name:"parentid",title:"上级机构",type:"html",html:'<div id="parentid-select" v-dict="PARENTID" options="{name:\'parentid\',prop:{name:\'title\',value:\'id\',disabled:\'disabled\'},initValue:['+(Dt ? Dt.parentid : (organObj ? organObj.id : 0))+']}" class="v-xmselect-tree"></div>',must:true},
                         {name:"title",title:"机构简称",type:"text",value:'',verify:'required',placeholder:"请输入机构简称",must:true},
                         {name:"titles",title:"机构全称",type:"text",value:'',verify:'required',placeholder:"请输入机构全称",must:true},
                         {name:"note",title:"备注说明",type:"textarea",value:'',placeholder:"请输入备注说明(选填)"},
@@ -151,20 +152,7 @@ layui.use(['vinfo', 'xmSelect', 'buildItems'], function(){
                 /*渲染下拉树 https://maplemei.gitee.io/xm-select/#/component/options*/
                 var data = JSON.parse(JSON.stringify(organData));
                 if(Dt) Exitem(data,Dt.id,true);
-                layui.xmSelect.render({
-                    el: '#organ-list-tree',
-                    name: 'parentid',
-                    tips: '顶级机构',
-                    height: '240px',
-                    data: data,
-                    filterable: true,
-                    radio: true,
-                    clickClose: true,
-                    model: {label:{type:'text'}},
-                    initValue: [Dt ? Dt.parentid : (organObj ? organObj.id : 0)],
-                    prop: {name:'title',value:'id',disabled:'disabled'},
-                    tree: {show:true,indent:25,strict:false,expandedKeys:true}
-                });
+                admin.vDict(lay,{PARENTID:data});/**/
                 form.on('submit(organ_items)',function(data){
                     var btn = $(this);
                     if (btn.attr('stop')){return false}else{btn.attr('stop',1)}
@@ -199,8 +187,6 @@ layui.use(['vinfo', 'xmSelect', 'buildItems'], function(){
             }
         }
     }/*==============左树结构END==============*/
-    /*顶部类别*/
-    $('#search_roles_select').html(roles_select);
     /*渲染数据*/
     table.render({
         elem: '#manager',
@@ -316,13 +302,13 @@ layui.use(['vinfo', 'xmSelect', 'buildItems'], function(){
             btn: ['保存', '取消'],
             area: ['500px','560px'],
             title: (Dt ? '编辑' : '添加') + '管理员',
-            success: function(l,index){
+            success: function(lay,index){
                 layui.buildItems.build({
                     bid: 'manager_items',
                     data: [
                         {name:"userid",type:"hidden"},
-                        {name:"groupid",title:"所属机构",type:"html",html:'<div id="organ-list-tree" class="v-xmselect-tree"></div>',must:true},
-                        {name:"roleid",title:"所属角色",type:"html",html:'<select name="roleid" lay-verify="required" lay-reqText="请选择所属角色" lay-verType="tips">'+roles_select+'</select>',must:true},
+                        {name:"groupid",title:"所属机构",type:"html",html:'<div id="groupid-select" v-dict="GROUPID" options="{name:\'groupid\',prop:{name:\'title\',value:\'id\'},layVerify:\'required\',layVerType:\'tips\',layReqText:\'请选择所属机构\',initValue:['+(Dt ? Dt.groupid : 0)+']}" class="v-xmselect-tree"></div>',must:true},
+                        {name:"roleids",title:"所属角色",type:"html",html:'<div id="roleid-select" v-dict="ROLEIDS" options="{name:\'roleids\',prop:{name:\'value\',value:\'name\'},layVerify:\'required\',layVerType:\'tips\',layReqText:\'请选择所属角色\',radio:false,clickClose:false,model:{},initValue:['+(Dt ? Dt.roleids : 0)+']}" class="xm-select-demo-alert"></div>',must:true},
                         {name:"username",title:"管理帐号",type:"text",value:'',verify:'user',vertype:'tips',placeholder:"请输入4-30位管理帐号",must:true},
                         {name:"password",title:"登录密码",type:Dt ? 'hidden' : "password",id:'m_pwd',value:'',verify:Dt ? '' : 'pass',vertype:'tips',placeholder:"请输入6-16位登录密码",must:true},
                         {name:"repassword",title:"确认密码",type:Dt ? 'hidden' : "password",id:'m_rpwd',value:'',verify:Dt ? '' : 'rpass',vertype:'tips',placeholder:"请再次输入登录密码",must:true},
@@ -349,25 +335,8 @@ layui.use(['vinfo', 'xmSelect', 'buildItems'], function(){
                         return ;
                     }
                 });
-                /*渲染下拉树 https://maplemei.gitee.io/xm-select/#/component/options*/
-                var data = JSON.parse(JSON.stringify(organData));
-                layui.xmSelect.render({
-                    el: '#organ-list-tree',
-                    name: 'groupid',
-                    tips: '所属机构',
-                    height: '300px',
-                    data: data,
-                    filterable: true,
-                    radio: true,
-                    clickClose: true,
-                    layVerify: 'required',
-                    layVerType: 'tips',
-                    layReqText: '请选择所属机构',
-                    model: {label:{type:'text'}},
-                    initValue: [Dt ? Dt.groupid : 0],
-                    prop: {name:'title',value:'id',disabled:'disabled'},
-                    tree: {show:true,indent:25,strict:false,expandedKeys:true}
-                });
+                /* 手动渲染字典:组织机构、所属角色 渲染下拉树 https://maplemei.gitee.io/xm-select/#/component/options */
+                admin.vDict(lay,{GROUPID:JSON.parse(JSON.stringify(organData)), ROLEIDS:Roles});/**/
                 form.on('submit(manager_items)',function(data){
                     var btn = $(this);
                     if (btn.attr('stop')){return false}else{btn.attr('stop',1)}

@@ -29,9 +29,9 @@
             <li class="layui-nav-item" lay-unselect>
                 <a><img src="" id="vFace" class="layui-nav-img"><cite id="vUser"></cite></a>
                 <dl class="layui-nav-child">
-                    <dd lay-unselect><a id="vName"></a></dd><hr>
-                    <dd lay-unselect><a href="#/system.manager/index/action=info">个人中心</a></dd><hr>
-                    <dd lay-unselect><a v-event="logout" data-url="{:APP_MAP}/login/logout">退出</a></dd>
+                    <dd><a id="vName"></a></dd><hr>
+                    <dd><a href="#/system.manager/index/action=info">个人中心</a></dd><hr><span id="vRole"></span>
+                    <dd><a v-event="logout" data-url="{:APP_MAP}/login/logout">退出</a></dd>
                 </dl>
             </li>
             <li class="layui-nav-item" lay-unselect><a v-event="popupRight" data-url="{PUBLIC__PATH}/static/admin/page/tpl/theme.html" title="主题"><i class="layui-icon layui-icon-more-vertical"></i></a></li>
@@ -85,6 +85,12 @@ layui.config({
         $('#vName').html(res.user.truename);
         $('#vFace').attr('src',res.user.face ? res.user.face : '{PUBLIC__PATH}/static/admin/img/head.jpg');
         layui.index.buildLeftMenus(res.menus); // 构建左侧菜单
+        // 构造角色选项
+        var r_str = '';
+        $.each(res.user.rolem,function(k,val){
+            r_str += (res.user.roleid == val.id ? '<dd style="background-color:#e9cccc;"><a>' : '<dd><a href="{:APP_MAP}/system.manager/index?action=role&roleid='+ val.id +'">') + val.name +'</a></dd>';
+        });
+        $('#vRole').html(r_str + '<hr>');
     });
 });
 </script>

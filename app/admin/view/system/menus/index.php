@@ -9,11 +9,11 @@
                     <a class="layui-btn" id="menus-add" v-show="@system.menus/add"><i class="layui-icon layui-icon-add-circle"></i> 添加</a>
                     <a class="layui-btn" id="menus-adds" v-show="@system.menus/adds"><i class="layui-icon layui-icon-add-circle"></i> 批量</a>
                     <a class="layui-btn" id="menus-del" v-show="@system.menus/del"><i class="layui-icon layui-icon-delete"></i> 删除</a>
-                    <a class="layui-btn" id="menus-reset" v-show="@system.menus/reset"><i class="layui-icon layui-icon-snowflake"></i> 重构</a>
                     <a class="layui-btn" id="menus-sz" data="1"><i class="layui-icon">&#xe624;</i>展开</a>
                     <a class="layui-btn" id="menus-cat" v-show="@system.menus/category"><i class="layui-icon layui-icon-rate"></i> 分类</a>
                     <a class="layui-btn" id="menus-out" v-show="@system.menus/out"><i class="layui-icon layui-icon-download-circle"></i> 导出</a>
                     <a class="layui-btn" id="menus-up" v-show="@system.menus/up"><i class="layui-icon layui-icon-upload-drag"></i> 导入</a>
+                    <a class="layui-btn" id="menus-reset" v-show="@system.menus/reset"><i class="layui-icon layui-icon-component"></i> 重构</a>
                 </div>
             </div>
             <table lay-filter="menus" id="menus"></table>
@@ -105,7 +105,7 @@ layui.use(['trTable','xmSelect','iconPicker','buildItems'],function(){
             }
         });
     });/**/
-    /*顶部重构按钮*/
+    /*顶部重构管理*/
     $('#menus-reset').on('click', function(){
         var btn = $(this);
         if (btn.attr('stop')) return false;
@@ -238,13 +238,13 @@ layui.use(['trTable','xmSelect','iconPicker','buildItems'],function(){
             btn: ['保存', '取消'],
             area: ['660px', '90%'],
             title: (Dt ? '编辑' : '添加') + '菜单',
-            success: function(l,index){
+            success: function(lay,index){
                 layui.buildItems.build({
                     bid: 'menus_items',
                     data: [
                         {name:"menuid",type:"hidden"},
                         {name:"catid",title:"配置分组",type:"radio",options:cates,value:catid,must:true},
-                        {name:"parent_id",title:"上级菜单",type:"html",html:'<div id="menus-list-tree" class="v-xmselect-tree"></div>',must:true},
+                        {name:"parent_id",title:"上级菜单",type:"html",html:'<div id="mparent-select" v-dict="MPARENTID" options="{name:\'parent_id\',prop:{name:\'menu_name\',value:\'menuid\'},initValue:['+(Dt ? Dt.parent_id : 0)+']}" class="v-xmselect-tree"></div>',must:true},
                         {name:"menu_name",title:"菜单名称",type:"html",html:'<div class="layui-input-inline" style="width:82px;float:left;"><input type="text" name="icon" value="" id="menusIconPicker" lay-filter="menusIconPicker" autocomplete="off" class="layui-input"></div><div class="layui-input-block" style="margin-left:105px;margin-right:0;"><input type="text" name="menu_name" value="" lay-verify="required" lay-reqtext="请输入菜单名称" placeholder="请输入菜单名称" autocomplete="off" class="layui-input"></div>',must:true},
                         {name:"role_name",title:"权限名称",type:"text",value:'',verify:'required',placeholder:"请输入权限名称",must:true},
                         {name:"menu_url",title:"菜单标识",type:"text",value:'',placeholder:"请输入菜单标识"},
@@ -263,23 +263,10 @@ layui.use(['trTable','xmSelect','iconPicker','buildItems'],function(){
                     search: true,
                     page: false
                 });
-                /*渲染下拉树 https://maplemei.gitee.io/xm-select/#/component/options*/
+                /* 手动渲染字典:上级菜单 渲染下拉树 https://maplemei.gitee.io/xm-select/#/component/options */
                 var data = JSON.parse(JSON.stringify(menusTb.options.data));
                 if(Dt) Exitem(data,Dt.menuid,true);
-                layui.xmSelect.render({
-                    el: '#menus-list-tree',
-                    name: 'parent_id',
-                    tips: '顶级菜单',
-                    height: '430px',
-                    data: data,
-                    filterable: true,
-                    radio: true,
-                    clickClose: true,
-                    model: {label:{type:'text'}},
-                    initValue: [Dt ? Dt.parent_id : ''],
-                    prop: {name:'menu_name',value:'menuid',disabled:'disabled'},
-                    tree: {show:true,indent:25,strict:false,expandedKeys:true}
-                });
+                admin.vDict(lay,{MPARENTID:data});/**/
                 form.on('submit(menus_items)',function(data){
                     var btn = $(this);
                     if (btn.attr('stop')){return false}else{btn.attr('stop',1)}

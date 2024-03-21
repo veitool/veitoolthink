@@ -54,7 +54,7 @@ class Manager extends Base
             $where[] = ['logintime','>=',strtotime($t[0]." 00:00:00")];
             $where[] = ['logintime','<=',strtotime($t[1]." 23:59:59")];
         }
-        if($roleid) $where[] = ['roleid','=',$roleid];
+        if($roleid) $where[] = \think\facade\Db::raw("FIND_IN_SET($roleid,roleids)");
         if($areaid) $where[] = [\think\facade\Db::raw("CONCAT(areaid,',')"), 'LIKE', $areaid.',%'];
         if(is_numeric($groupid)) $where[] = ['groupid','IN', Organ::getChild($groupid)];
         if(is_numeric($state))   $where[] = ['state','=',$state];

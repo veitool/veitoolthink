@@ -68,6 +68,7 @@ CREATE TABLE `vt_manager` (
   `password` varchar(32) NOT NULL DEFAULT '' COMMENT '密码',
   `passsalt` varchar(8) NOT NULL COMMENT '秘钥',
   `roleid` int(10) unsigned NOT NULL DEFAULT '1' COMMENT '角色ID',
+  `roleids` varchar(100) NOT NULL DEFAULT '' COMMENT '角色ID集',
   `groupid` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '部门ID',
   `truename` varchar(30) NOT NULL DEFAULT '' COMMENT '姓名',
   `nickname` varchar(30) NOT NULL DEFAULT '' COMMENT '昵称',
@@ -91,7 +92,7 @@ CREATE TABLE `vt_manager` (
 -- ----------------------------
 -- Records of vt_manager
 -- ----------------------------
-INSERT INTO `vt_manager` VALUES ('1', 'admin', '7e618aaa25356b3049e608a9a29790b1', 'Rt4UBXRZ', '1', '1', '超管员', '超管', '1', '', '15900000001', '26843818@qq.com', '20', '广州', '127.0.0.1', '1', '1671545877', '1553999489', '1671423568', 'system', '1');
+INSERT INTO `vt_manager` VALUES ('1', 'admin', '7e618aaa25356b3049e608a9a29790b1', 'Rt4UBXRZ', '1', '1', '1', '超管员', '超管', '1', '', '15900000001', '26843818@qq.com', '20', '广州', '127.0.0.1', '1', '1671545877', '1553999489', '1671423568', 'system', '1');
 
 -- ----------------------------
 -- Table structure for vt_manager_log
@@ -189,71 +190,72 @@ INSERT INTO `vt_menus` VALUES ('53', '1', '', '修改密码', '修改密码', ''
 INSERT INTO `vt_menus` VALUES ('54', '1', '', '重置密码', '重置密码', '', '', 'system.manager/resetpwd', '', '15', '6', '0', '0', '1', '1700289715');
 INSERT INTO `vt_menus` VALUES ('55', '1', '', '用户中心', '用户中心', '', '', 'system.manager/index/info', '', '15', '7', '0', '0', '1', '1700289715');
 INSERT INTO `vt_menus` VALUES ('56', '1', '', '个人修改', '个人修改', '', '', 'system.manager/edits', '', '15', '8', '0', '0', '1', '1700289715');
-INSERT INTO `vt_menus` VALUES ('57', '1', '', '机构添加', '机构添加', '', '', 'system.manager/oadd', '', '15', '10', '0', '0', '1', '1700289715');
+INSERT INTO `vt_menus` VALUES ('57', '1', '', '机构添加', '机构添加', '', '', 'system.manager/oadd', '', '15', '9', '0', '0', '1', '1700289715');
 INSERT INTO `vt_menus` VALUES ('58', '1', '', '机构编辑', '机构编辑', '', '', 'system.manager/oedit', '', '15', '10', '0', '0', '1', '1700289715');
-INSERT INTO `vt_menus` VALUES ('59', '1', '', '机构删除', '机构删除', '', '', 'system.manager/odel', '', '15', '10', '0', '0', '1', '1700289715');
-INSERT INTO `vt_menus` VALUES ('60', '1', '', '上传入口', '上传入口', '', '', '', '', '16', '1', '0', '0', '1', '1700289715');
-INSERT INTO `vt_menus` VALUES ('61', '1', '', '弹出文件管理', '弹出文件管理', '', '', '', '', '16', '2', '0', '0', '1', '1700289715');
-INSERT INTO `vt_menus` VALUES ('62', '1', '', '百度编辑器', '百度编辑器', '', '', '', '', '16', '3', '0', '0', '1', '1700289715');
-INSERT INTO `vt_menus` VALUES ('63', '1', '', '上传图片', '上传图片', '', '', 'system.upload/upfile/image', '', '60', '1', '0', '0', '1', '1700289715');
-INSERT INTO `vt_menus` VALUES ('64', '1', '', '上传视频', '上传视频', '', '', 'system.upload/upfile/video', '', '60', '2', '0', '0', '1', '1700289715');
-INSERT INTO `vt_menus` VALUES ('65', '1', '', '上传文件', '上传文件', '', '', 'system.upload/upfile/file', '', '60', '3', '0', '0', '1', '1700289715');
-INSERT INTO `vt_menus` VALUES ('66', '1', '', '上传音频', '上传音频', '', '', 'system.upload/upfile/audio', '', '60', '4', '0', '0', '1', '1700289715');
-INSERT INTO `vt_menus` VALUES ('67', '1', '', '文件列表', '文件列表', '', '', 'system.upload/files', '', '61', '1', '0', '0', '1', '1700289715');
-INSERT INTO `vt_menus` VALUES ('68', '1', '', '文件移动', '文件移动', '', '', 'system.upload/files/move', '', '61', '2', '0', '0', '1', '1700289715');
-INSERT INTO `vt_menus` VALUES ('69', '1', '', '文件删除', '文件删除', '', '', 'system.upload/files/del', '', '61', '3', '0', '0', '1', '1700289715');
-INSERT INTO `vt_menus` VALUES ('70', '1', '', '分组添加', '分组添加', '', '', 'system.upload/group/add', '', '61', '4', '0', '0', '1', '1700289715');
-INSERT INTO `vt_menus` VALUES ('71', '1', '', '分组编辑', '分组编辑', '', '', 'system.upload/group/edit', '', '61', '5', '0', '0', '1', '1700289715');
-INSERT INTO `vt_menus` VALUES ('72', '1', '', '分组删除', '分组删除', '', '', 'system.upload/group/del', '', '61', '6', '0', '0', '1', '1700289715');
-INSERT INTO `vt_menus` VALUES ('73', '1', '', '接口配置', '接口配置', '', '', 'system.upload/ueditor/config', '', '62', '1', '0', '0', '1', '1700289715');
-INSERT INTO `vt_menus` VALUES ('74', '1', '', '上传图片', '上传图片', '', '', 'system.upload/ueditor/image', '', '62', '2', '0', '0', '1', '1700289715');
-INSERT INTO `vt_menus` VALUES ('75', '1', '', '上传视频', '上传视频', '', '', 'system.upload/ueditor/video', '', '62', '3', '0', '0', '1', '1700289715');
-INSERT INTO `vt_menus` VALUES ('76', '1', '', '上传附件', '上传附件', '', '', 'system.upload/ueditor/file', '', '62', '4', '0', '0', '1', '1700289715');
-INSERT INTO `vt_menus` VALUES ('77', '1', '', '图片列表', '图片列表', '', '', 'system.upload/ueditor/listimage', '', '62', '5', '0', '0', '1', '1700289715');
-INSERT INTO `vt_menus` VALUES ('78', '1', '', '附件列表', '附件列表', '', '', 'system.upload/ueditor/listfile', '', '62', '6', '0', '0', '1', '1700289715');
-INSERT INTO `vt_menus` VALUES ('79', '1', '', '文件列表', '文件列表', '', '', 'system.filemanage/index', '', '17', '1', '0', '0', '1', '1700289715');
-INSERT INTO `vt_menus` VALUES ('80', '1', '', '文件名编辑', '文件名编辑', '', '', 'system.filemanage/edit', '', '17', '2', '0', '0', '1', '1700289715');
-INSERT INTO `vt_menus` VALUES ('81', '1', '', '文件软删除', '文件软删除', '', '', 'system.filemanage/del', '', '17', '3', '0', '0', '1', '1700289715');
-INSERT INTO `vt_menus` VALUES ('82', '1', '', '文件恢复', '文件恢复', '', '', 'system.filemanage/reset', '', '17', '4', '0', '0', '1', '1700289715');
-INSERT INTO `vt_menus` VALUES ('83', '1', '', '文件清理', '文件清理', '', '', 'system.filemanage/clear', '', '17', '5', '0', '0', '1', '1700289715');
-INSERT INTO `vt_menus` VALUES ('84', '1', '', '登录日志', '日志查看', '', '', 'system.log/login', '', '18', '1', '0', '0', '1', '1700289715');
-INSERT INTO `vt_menus` VALUES ('85', '1', '', '登录日志清理', '日志删除', '', '', 'system.log/ldel', '', '18', '2', '0', '0', '1', '1700289715');
-INSERT INTO `vt_menus` VALUES ('86', '1', '', '后台日志', '后台日志', '', '', 'system.log/manager', '', '18', '3', '0', '0', '1', '1700289715');
-INSERT INTO `vt_menus` VALUES ('87', '1', '', '后台日志清理', '日志列表', '', '', 'system.log/mdel', '', '18', '4', '0', '0', '1', '1700289715');
-INSERT INTO `vt_menus` VALUES ('88', '1', '', '访问日志', '访问日志', '', '', 'system.log/web', '', '18', '5', '0', '0', '1', '1700289715');
-INSERT INTO `vt_menus` VALUES ('89', '1', '', '访问日志清理', '访问日志清理', '', '', 'system.log/wdel', '', '18', '6', '0', '0', '1', '1700289715');
-INSERT INTO `vt_menus` VALUES ('90', '1', '', '地区列表', '地区列表', '', '', 'system.area/index', '', '19', '10', '0', '0', '1', '1700289715');
-INSERT INTO `vt_menus` VALUES ('91', '1', '', '地区添加', '地区添加', '', '', 'system.area/add', '', '19', '10', '0', '0', '1', '1700289715');
-INSERT INTO `vt_menus` VALUES ('92', '1', '', '地区编辑', '地区编辑', '', '', 'system.area/edit', '', '19', '10', '0', '0', '1', '1700289715');
-INSERT INTO `vt_menus` VALUES ('93', '1', '', '地区删除', '地区删除', '', '', 'system.area/del', '', '19', '10', '0', '0', '1', '1700289715');
-INSERT INTO `vt_menus` VALUES ('94', '1', '', '内置导入', '内置导入', '', '', 'system.area/import', '', '19', '10', '0', '0', '1', '1700289715');
-INSERT INTO `vt_menus` VALUES ('95', '1', '', '发送记录', '发送记录', '', '', 'system.sms/index', '', '20', '10', '0', '0', '1', '1700289715');
-INSERT INTO `vt_menus` VALUES ('96', '1', '', '发送短信', '发送短信', '', '', 'system.sms/send', '', '20', '10', '0', '0', '1', '1700289715');
-INSERT INTO `vt_menus` VALUES ('97', '1', '', '记录删除', '记录删除', '', '', 'system.sms/del', '', '20', '10', '0', '0', '1', '1700289715');
-INSERT INTO `vt_menus` VALUES ('98', '1', '', '数据列表', '数据列表', '', '', 'system.database/index', '', '21', '10', '0', '0', '1', '1700289715');
-INSERT INTO `vt_menus` VALUES ('99', '1', '', '数据备份', '数据备份', '', '', 'system.database/backup', '', '21', '10', '0', '0', '1', '1700289715');
-INSERT INTO `vt_menus` VALUES ('100', '1', '', '备份列表', '备份列表', '', '', 'system.database/imports', '', '21', '10', '0', '0', '1', '1700289715');
-INSERT INTO `vt_menus` VALUES ('101', '1', '', '备份恢复', '备份恢复', '', '', 'system.database/import', '', '21', '10', '0', '0', '1', '1700289715');
-INSERT INTO `vt_menus` VALUES ('102', '1', '', '备份删除', '备份删除', '', '', 'system.database/del', '', '21', '10', '0', '0', '1', '1700289715');
-INSERT INTO `vt_menus` VALUES ('103', '1', '', '注释修改', '注释修改', '', '', 'system.database/edit', '', '21', '10', '0', '0', '1', '1700289715');
-INSERT INTO `vt_menus` VALUES ('104', '1', '', '查看字典', '查看字典', '', '', 'system.database/dict', '', '21', '10', '0', '0', '1', '1700289715');
-INSERT INTO `vt_menus` VALUES ('105', '1', '', '备份下载', '备份下载', '', '', 'system.database/download', '', '21', '10', '0', '0', '1', '1700289715');
-INSERT INTO `vt_menus` VALUES ('106', '1', '', '数据表修复', '数据表修复', '', '', 'system.database/xiufu', '', '21', '10', '0', '0', '1', '1700289715');
-INSERT INTO `vt_menus` VALUES ('107', '1', '', '数据表优化', '数据表优化', '', '', 'system.database/youhua', '', '21', '10', '0', '0', '1', '1700289715');
-INSERT INTO `vt_menus` VALUES ('108', '1', '', '用户列表', '用户列表', '', '', 'system.online/index', '', '22', '10', '0', '0', '1', '1700289715');
-INSERT INTO `vt_menus` VALUES ('109', '1', '', '字典列表', '字典列表', '', '', 'system.dict/index', '', '23', '10', '0', '0', '1', '1700289715');
-INSERT INTO `vt_menus` VALUES ('110', '1', '', '字典添加', '字典添加', '', '', 'system.dict/add', '', '23', '10', '0', '0', '1', '1700289715');
-INSERT INTO `vt_menus` VALUES ('111', '1', '', '字典编辑', '字典编辑', '', '', 'system.dict/edit', '', '23', '10', '0', '0', '1', '1700289715');
-INSERT INTO `vt_menus` VALUES ('112', '1', '', '字典删除', '字典删除', '', '', 'system.dict/del', '', '23', '10', '0', '0', '1', '1700289715');
-INSERT INTO `vt_menus` VALUES ('113', '1', '', '字典组添加', '字典组添加', '', '', 'system.dict/gadd', '', '23', '10', '0', '0', '1', '1700289715');
-INSERT INTO `vt_menus` VALUES ('114', '1', '', '字典组编辑', '字典组编辑', '', '', 'system.dict/gedit', '', '23', '10', '0', '0', '1', '1700289715');
-INSERT INTO `vt_menus` VALUES ('115', '1', '', '字典组删除', '字典组删除', '', '', 'system.dict/gdel', '', '23', '10', '0', '0', '1', '1700289715');
-INSERT INTO `vt_menus` VALUES ('116', '1', '', '字典项列表', '字典项列表', '', '', 'system.dict/items', '', '23', '11', '0', '0', '1', '1700289715');
-INSERT INTO `vt_menus` VALUES ('117', '1', '', '字典项添加', '字典项添加', '', '', 'system.dict/iadd', '', '23', '12', '0', '0', '1', '1700289715');
-INSERT INTO `vt_menus` VALUES ('118', '1', '', '字典项批量', '字典项批量', '', '', 'system.dict/iadds', '', '23', '13', '0', '0', '1', '1700289715');
-INSERT INTO `vt_menus` VALUES ('119', '1', '', '字典项编辑', '字典项编辑', '', '', 'system.dict/iedit', '', '23', '14', '0', '0', '1', '1700289715');
-INSERT INTO `vt_menus` VALUES ('120', '1', '', '字典项删除', '字典项删除', '', '', 'system.dict/idel', '', '23', '15', '0', '0', '1', '1700289715');
-INSERT INTO `vt_menus` VALUES ('121', '1', '', '字典项接口', '字典项接口', '', '', 'system.dict/json', '', '23', '16', '0', '0', '1', '1700289715');
+INSERT INTO `vt_menus` VALUES ('59', '1', '', '机构删除', '机构删除', '', '', 'system.manager/odel', '', '15', '11', '0', '0', '1', '1700289715');
+INSERT INTO `vt_menus` VALUES ('60', '1', '', '角色切换', '角色切换', '', '', 'system.manager/index/role', '', '15', '12', '0', '0', '1', '1700289715');
+INSERT INTO `vt_menus` VALUES ('61', '1', '', '上传入口', '上传入口', '', '', '', '', '16', '1', '0', '0', '1', '1700289715');
+INSERT INTO `vt_menus` VALUES ('62', '1', '', '弹出文件管理', '弹出文件管理', '', '', '', '', '16', '2', '0', '0', '1', '1700289715');
+INSERT INTO `vt_menus` VALUES ('63', '1', '', '百度编辑器', '百度编辑器', '', '', '', '', '16', '3', '0', '0', '1', '1700289715');
+INSERT INTO `vt_menus` VALUES ('64', '1', '', '上传图片', '上传图片', '', '', 'system.upload/upfile/image', '', '61', '1', '0', '0', '1', '1700289715');
+INSERT INTO `vt_menus` VALUES ('65', '1', '', '上传视频', '上传视频', '', '', 'system.upload/upfile/video', '', '61', '2', '0', '0', '1', '1700289715');
+INSERT INTO `vt_menus` VALUES ('66', '1', '', '上传文件', '上传文件', '', '', 'system.upload/upfile/file', '', '61', '3', '0', '0', '1', '1700289715');
+INSERT INTO `vt_menus` VALUES ('67', '1', '', '上传音频', '上传音频', '', '', 'system.upload/upfile/audio', '', '61', '4', '0', '0', '1', '1700289715');
+INSERT INTO `vt_menus` VALUES ('68', '1', '', '文件列表', '文件列表', '', '', 'system.upload/files', '', '62', '1', '0', '0', '1', '1700289715');
+INSERT INTO `vt_menus` VALUES ('69', '1', '', '文件移动', '文件移动', '', '', 'system.upload/files/move', '', '62', '2', '0', '0', '1', '1700289715');
+INSERT INTO `vt_menus` VALUES ('70', '1', '', '文件删除', '文件删除', '', '', 'system.upload/files/del', '', '62', '3', '0', '0', '1', '1700289715');
+INSERT INTO `vt_menus` VALUES ('71', '1', '', '分组添加', '分组添加', '', '', 'system.upload/group/add', '', '62', '4', '0', '0', '1', '1700289715');
+INSERT INTO `vt_menus` VALUES ('72', '1', '', '分组编辑', '分组编辑', '', '', 'system.upload/group/edit', '', '62', '5', '0', '0', '1', '1700289715');
+INSERT INTO `vt_menus` VALUES ('73', '1', '', '分组删除', '分组删除', '', '', 'system.upload/group/del', '', '62', '6', '0', '0', '1', '1700289715');
+INSERT INTO `vt_menus` VALUES ('74', '1', '', '接口配置', '接口配置', '', '', 'system.upload/ueditor/config', '', '63', '1', '0', '0', '1', '1700289715');
+INSERT INTO `vt_menus` VALUES ('75', '1', '', '上传图片', '上传图片', '', '', 'system.upload/ueditor/image', '', '63', '2', '0', '0', '1', '1700289715');
+INSERT INTO `vt_menus` VALUES ('76', '1', '', '上传视频', '上传视频', '', '', 'system.upload/ueditor/video', '', '63', '3', '0', '0', '1', '1700289715');
+INSERT INTO `vt_menus` VALUES ('77', '1', '', '上传附件', '上传附件', '', '', 'system.upload/ueditor/file', '', '63', '4', '0', '0', '1', '1700289715');
+INSERT INTO `vt_menus` VALUES ('78', '1', '', '图片列表', '图片列表', '', '', 'system.upload/ueditor/listimage', '', '63', '5', '0', '0', '1', '1700289715');
+INSERT INTO `vt_menus` VALUES ('79', '1', '', '附件列表', '附件列表', '', '', 'system.upload/ueditor/listfile', '', '63', '6', '0', '0', '1', '1700289715');
+INSERT INTO `vt_menus` VALUES ('80', '1', '', '文件列表', '文件列表', '', '', 'system.filemanage/index', '', '17', '1', '0', '0', '1', '1700289715');
+INSERT INTO `vt_menus` VALUES ('81', '1', '', '文件名编辑', '文件名编辑', '', '', 'system.filemanage/edit', '', '17', '2', '0', '0', '1', '1700289715');
+INSERT INTO `vt_menus` VALUES ('82', '1', '', '文件软删除', '文件软删除', '', '', 'system.filemanage/del', '', '17', '3', '0', '0', '1', '1700289715');
+INSERT INTO `vt_menus` VALUES ('83', '1', '', '文件恢复', '文件恢复', '', '', 'system.filemanage/reset', '', '17', '4', '0', '0', '1', '1700289715');
+INSERT INTO `vt_menus` VALUES ('84', '1', '', '文件清理', '文件清理', '', '', 'system.filemanage/clear', '', '17', '5', '0', '0', '1', '1700289715');
+INSERT INTO `vt_menus` VALUES ('85', '1', '', '登录日志', '日志查看', '', '', 'system.log/login', '', '18', '1', '0', '0', '1', '1700289715');
+INSERT INTO `vt_menus` VALUES ('86', '1', '', '登录日志清理', '日志删除', '', '', 'system.log/ldel', '', '18', '2', '0', '0', '1', '1700289715');
+INSERT INTO `vt_menus` VALUES ('87', '1', '', '后台日志', '后台日志', '', '', 'system.log/manager', '', '18', '3', '0', '0', '1', '1700289715');
+INSERT INTO `vt_menus` VALUES ('88', '1', '', '后台日志清理', '日志列表', '', '', 'system.log/mdel', '', '18', '4', '0', '0', '1', '1700289715');
+INSERT INTO `vt_menus` VALUES ('89', '1', '', '访问日志', '访问日志', '', '', 'system.log/web', '', '18', '5', '0', '0', '1', '1700289715');
+INSERT INTO `vt_menus` VALUES ('90', '1', '', '访问日志清理', '访问日志清理', '', '', 'system.log/wdel', '', '18', '6', '0', '0', '1', '1700289715');
+INSERT INTO `vt_menus` VALUES ('91', '1', '', '地区列表', '地区列表', '', '', 'system.area/index', '', '19', '10', '0', '0', '1', '1700289715');
+INSERT INTO `vt_menus` VALUES ('92', '1', '', '地区添加', '地区添加', '', '', 'system.area/add', '', '19', '10', '0', '0', '1', '1700289715');
+INSERT INTO `vt_menus` VALUES ('93', '1', '', '地区编辑', '地区编辑', '', '', 'system.area/edit', '', '19', '10', '0', '0', '1', '1700289715');
+INSERT INTO `vt_menus` VALUES ('94', '1', '', '地区删除', '地区删除', '', '', 'system.area/del', '', '19', '10', '0', '0', '1', '1700289715');
+INSERT INTO `vt_menus` VALUES ('95', '1', '', '内置导入', '内置导入', '', '', 'system.area/import', '', '19', '10', '0', '0', '1', '1700289715');
+INSERT INTO `vt_menus` VALUES ('96', '1', '', '发送记录', '发送记录', '', '', 'system.sms/index', '', '20', '10', '0', '0', '1', '1700289715');
+INSERT INTO `vt_menus` VALUES ('97', '1', '', '发送短信', '发送短信', '', '', 'system.sms/send', '', '20', '10', '0', '0', '1', '1700289715');
+INSERT INTO `vt_menus` VALUES ('98', '1', '', '记录删除', '记录删除', '', '', 'system.sms/del', '', '20', '10', '0', '0', '1', '1700289715');
+INSERT INTO `vt_menus` VALUES ('99', '1', '', '数据列表', '数据列表', '', '', 'system.database/index', '', '21', '10', '0', '0', '1', '1700289715');
+INSERT INTO `vt_menus` VALUES ('100', '1', '', '数据备份', '数据备份', '', '', 'system.database/backup', '', '21', '10', '0', '0', '1', '1700289715');
+INSERT INTO `vt_menus` VALUES ('101', '1', '', '备份列表', '备份列表', '', '', 'system.database/imports', '', '21', '10', '0', '0', '1', '1700289715');
+INSERT INTO `vt_menus` VALUES ('102', '1', '', '备份恢复', '备份恢复', '', '', 'system.database/import', '', '21', '10', '0', '0', '1', '1700289715');
+INSERT INTO `vt_menus` VALUES ('103', '1', '', '备份删除', '备份删除', '', '', 'system.database/del', '', '21', '10', '0', '0', '1', '1700289715');
+INSERT INTO `vt_menus` VALUES ('104', '1', '', '注释修改', '注释修改', '', '', 'system.database/edit', '', '21', '10', '0', '0', '1', '1700289715');
+INSERT INTO `vt_menus` VALUES ('105', '1', '', '查看字典', '查看字典', '', '', 'system.database/dict', '', '21', '10', '0', '0', '1', '1700289715');
+INSERT INTO `vt_menus` VALUES ('106', '1', '', '备份下载', '备份下载', '', '', 'system.database/download', '', '21', '10', '0', '0', '1', '1700289715');
+INSERT INTO `vt_menus` VALUES ('107', '1', '', '数据表修复', '数据表修复', '', '', 'system.database/xiufu', '', '21', '10', '0', '0', '1', '1700289715');
+INSERT INTO `vt_menus` VALUES ('108', '1', '', '数据表优化', '数据表优化', '', '', 'system.database/youhua', '', '21', '10', '0', '0', '1', '1700289715');
+INSERT INTO `vt_menus` VALUES ('109', '1', '', '用户列表', '用户列表', '', '', 'system.online/index', '', '22', '10', '0', '0', '1', '1700289715');
+INSERT INTO `vt_menus` VALUES ('110', '1', '', '字典列表', '字典列表', '', '', 'system.dict/index', '', '23', '10', '0', '0', '1', '1700289715');
+INSERT INTO `vt_menus` VALUES ('111', '1', '', '字典添加', '字典添加', '', '', 'system.dict/add', '', '23', '10', '0', '0', '1', '1700289715');
+INSERT INTO `vt_menus` VALUES ('112', '1', '', '字典编辑', '字典编辑', '', '', 'system.dict/edit', '', '23', '10', '0', '0', '1', '1700289715');
+INSERT INTO `vt_menus` VALUES ('113', '1', '', '字典删除', '字典删除', '', '', 'system.dict/del', '', '23', '10', '0', '0', '1', '1700289715');
+INSERT INTO `vt_menus` VALUES ('114', '1', '', '字典组添加', '字典组添加', '', '', 'system.dict/gadd', '', '23', '10', '0', '0', '1', '1700289715');
+INSERT INTO `vt_menus` VALUES ('115', '1', '', '字典组编辑', '字典组编辑', '', '', 'system.dict/gedit', '', '23', '10', '0', '0', '1', '1700289715');
+INSERT INTO `vt_menus` VALUES ('116', '1', '', '字典组删除', '字典组删除', '', '', 'system.dict/gdel', '', '23', '10', '0', '0', '1', '1700289715');
+INSERT INTO `vt_menus` VALUES ('117', '1', '', '字典项列表', '字典项列表', '', '', 'system.dict/items', '', '23', '11', '0', '0', '1', '1700289715');
+INSERT INTO `vt_menus` VALUES ('118', '1', '', '字典项添加', '字典项添加', '', '', 'system.dict/iadd', '', '23', '12', '0', '0', '1', '1700289715');
+INSERT INTO `vt_menus` VALUES ('119', '1', '', '字典项批量', '字典项批量', '', '', 'system.dict/iadds', '', '23', '13', '0', '0', '1', '1700289715');
+INSERT INTO `vt_menus` VALUES ('120', '1', '', '字典项编辑', '字典项编辑', '', '', 'system.dict/iedit', '', '23', '14', '0', '0', '1', '1700289715');
+INSERT INTO `vt_menus` VALUES ('121', '1', '', '字典项删除', '字典项删除', '', '', 'system.dict/idel', '', '23', '15', '0', '0', '1', '1700289715');
+INSERT INTO `vt_menus` VALUES ('122', '1', '', '字典项接口', '字典项接口', '', '', 'system.dict/json', '', '23', '16', '0', '0', '1', '1700289715');
 
 -- ----------------------------
 -- Table structure for vt_online

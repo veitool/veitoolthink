@@ -215,8 +215,8 @@ abstract class BaseController
             $code = $data['code'] ?? $code;
             unset($data['msg'],$data['code']);
             $data = $data['data'] ?? $data;
-        }elseif(!$this->msgTpl){
-            $this->logon($msg);
+        }elseif($this->msgTpl === ''){
+            $this->logon((string)$msg);
         }
         $token = $this->token;
         $count = isset($count) ? $count : (is_array($data) ? count($data) : 1);

@@ -46,10 +46,9 @@
 layui.use(function(){
     var app_root = layui.cache.maps + 'system.filemanage/';
     var table=layui.table,admin=layui.admin;
-    //分组渲染
-    var Group = {$group|raw};
-    var filemanage_select = '<option value="">文件分组</option><option value="0">尚未分组</option>'; $.each(Group,function(k,v){filemanage_select += '<option value="'+ k +'">'+ v +'</option>';});
-    $('#search_filemanage_select').html(filemanage_select);
+    var Group = {$group|raw}; Group[0] = '尚未分组';
+    /*顶部类别构建*/
+    admin.util.buildOption('#search_filemanage_select',Group,'文件分组');
     /*渲染数据*/
     table.render({
         elem: '#filemanage',
@@ -110,8 +109,7 @@ layui.use(function(){
         }else if(obj.event === 'reset'){
             doup(data.fileid,'reset');
         }else if(obj.event === 'file-event-image'){
-            var src = $(this).attr('src');
-            var alt = $(this).attr('alt');
+            var src = $(this).attr('src'), alt = $(this).attr('alt');
             layer.photos({photos:{data:[{alt:alt,src:src}],start:'0'},anim:5,shade:[0.4,'#000']});
         }
     });/**/

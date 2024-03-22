@@ -82,7 +82,7 @@ layui.use(['form', 'layer'],function(){
     form.on('submit(install)',function(data){
         if($(this).hasClass('layui-btn-disabled')) return false;
         var d = data.field;
-        var url = '?s=4&dbhost='+d.dbhost+'&dbname='+d.dbname+'&dbpre='+d.dbpre+'&dbuser='+d.dbuser+'&dbpwd='+d.dbpwd+'&dbport='+d.dbport+'&adminmap='+d.adminmap+'&adminuser='+d.adminuser+'&adminpass='+d.adminpass;
+        var url = '?s=4&dbhost='+d.dbhost+'&dbname='+d.dbname+'&dbpre='+d.dbpre+'&dbuser='+d.dbuser+'&dbpwd='+encodeURIComponent(d.dbpwd)+'&dbport='+d.dbport+'&adminmap='+d.adminmap+'&adminuser='+d.adminuser+'&adminpass='+d.adminpass;
         layer.open({
             type: 1,
             area: ['500px', '300px'],

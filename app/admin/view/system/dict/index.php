@@ -127,12 +127,12 @@ layui.use(['vinfo', 'xmSelect', 'buildItems'], function(){
             btn: ['保存', '取消'],
             area: ['500px', '500px'],
             title: (Dt ? '修改' : '添加') + '类型',
-            success: function(l,index){
+            success: function(lay,index){
                 layui.buildItems.build({
                     bid: 'organ_items',
                     data: [
                         {name:"id",type:"hidden"},
-                        {name:"parentid",title:"上级类型",type:"html",html:'<div id="organ-list-tree" class="v-xmselect-tree"></div>',must:true},
+                        {name:"parentid",title:"上级类型",type:"html",html:'<div id="parentid-select" v-dict="PARENTID" options="{name:\'parentid\',prop:{name:\'title\',value:\'id\'},initValue:['+(Dt ? Dt.parentid : (dictData ? dictData.id : 0))+']}" class="v-xmselect-tree"></div>',must:true},
                         {name:"title",title:"类型名称",type:"text",value:'',verify:'required',placeholder:"请输入类型名称",must:true},
                         {name:"note",title:"备注说明",type:"textarea",value:'',placeholder:"请输入备注说明(选填)"}
                     ]
@@ -141,20 +141,7 @@ layui.use(['vinfo', 'xmSelect', 'buildItems'], function(){
                 /*渲染下拉树 https://maplemei.gitee.io/xm-select/#/component/options*/
                 var data = JSON.parse(JSON.stringify(dictData));
                 if(Dt) Exitem(data,Dt.id,true);
-                layui.xmSelect.render({
-                    el: '#organ-list-tree',
-                    name: 'parentid',
-                    tips: '顶级类型',
-                    height: '240px',
-                    data: data,
-                    filterable: true,
-                    radio: true,
-                    clickClose: true,
-                    model: {label:{type:'text'}},
-                    initValue: [Dt ? Dt.parentid : (dictObj ? dictObj.id : 0)],
-                    prop: {name:'title',value:'id',disabled:'disabled'},
-                    tree: {show:true,indent:25,strict:false,expandedKeys:true}
-                });
+                admin.vDict(lay,{PARENTID:data});/**/
                 form.on('submit(organ_items)',function(data){
                     var btn = $(this);
                     if (btn.attr('stop')){return false}else{btn.attr('stop',1)}
@@ -280,12 +267,12 @@ layui.use(['vinfo', 'xmSelect', 'buildItems'], function(){
             btn: ['保存', '取消'],
             area: ['800px','550px'],
             title: (Dt ? '编辑' : '添加') + '字典',
-            success: function(l,index){
+            success: function(lay,index){
                 layui.buildItems.build({
                     bid: 'dict_items',
                     data: [
                         {name:"id",type:"hidden"},
-                        {name:"groupid",title:"所属类型",type:"html",html:'<div id="organ-list-tree" class="v-xmselect-tree"></div>',must:true},
+                        {name:"groupid",title:"所属类型",type:"html",html:'<div id="groupid-select" v-dict="GROUPID" options="{name:\'groupid\',prop:{name:\'title\',value:\'id\'},layVerify:\'required\',layVerType:\'tips\',layReqText:\'请选择所属类型\',initValue:['+(Dt ? Dt.groupid : 0)+']}" class="v-xmselect-tree"></div>',must:true},
                         {name:"title",title:"字典名称",type:"text",value:'',verify:'required',vertype:'tips',placeholder:"请输入字典名称",must:true},
                         {name:"code",title:"字典编码",type:"text",value:'',verify:'required',vertype:'tips',placeholder:"请输入字典编码",must:true},
                         {name:"sql",title:"查询语句",type:"textarea",id:'sql_str',value:'',placeholder:"若设置了查询语句，请确保原生SQL语法正确"},
@@ -305,25 +292,8 @@ layui.use(['vinfo', 'xmSelect', 'buildItems'], function(){
                         return ;
                     }
                 });
-                /*渲染下拉树 https://maplemei.gitee.io/xm-select/#/component/options*/
-                var data = JSON.parse(JSON.stringify(dictData));
-                layui.xmSelect.render({
-                    el: '#organ-list-tree',
-                    name: 'groupid',
-                    tips: '所属类型',
-                    height: '300px',
-                    data: data,
-                    filterable: true,
-                    radio: true,
-                    clickClose: true,
-                    layVerify: 'required',
-                    layVerType: 'tips',
-                    layReqText: '请选择所属类型',
-                    model: {label:{type:'text'}},
-                    initValue: [Dt ? Dt.groupid : 0],
-                    prop: {name:'title',value:'id',disabled:'disabled'},
-                    tree: {show:true,indent:25,strict:false,expandedKeys:true}
-                });
+                /* 手动渲染字典:所属类型 渲染下拉树 https://maplemei.gitee.io/xm-select/#/component/options */
+                admin.vDict(lay,{GROUPID:dictData});/**/
                 layui.dropdown.render({
                     elem: '#sql_str',
                     data: [{id:'1',title:'SELECT id,title as name,id as value,parentid as pid,arrparentid as pids FROM vt_organ WHERE id > 1'}],

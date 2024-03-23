@@ -141,7 +141,7 @@ layui.use(['vinfo', 'xmSelect', 'buildItems'], function(){
                     bid: 'organ_items',
                     data: [
                         {name:"id",type:"hidden"},
-                        {name:"parentid",title:"上级机构",type:"html",html:'<div id="parentid-select" v-dict="PARENTID" options="{name:\'parentid\',prop:{name:\'title\',value:\'id\',disabled:\'disabled\'},initValue:['+(Dt ? Dt.parentid : (organObj ? organObj.id : 0))+']}" class="v-xmselect-tree"></div>',must:true},
+                        {name:"parentid",title:"上级机构",type:"html",html:'<div id="parentid-select" v-dict="PARENTID" options="{name:\'parentid\',prop:{name:\'title\',value:\'id\'},initValue:['+(Dt ? Dt.parentid : (organObj ? organObj.id : 0))+']}" class="v-xmselect-tree"></div>',must:true},
                         {name:"title",title:"机构简称",type:"text",value:'',verify:'required',placeholder:"请输入机构简称",must:true},
                         {name:"titles",title:"机构全称",type:"text",value:'',verify:'required',placeholder:"请输入机构全称",must:true},
                         {name:"note",title:"备注说明",type:"textarea",value:'',placeholder:"请输入备注说明(选填)"},

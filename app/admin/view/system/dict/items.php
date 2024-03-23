@@ -194,13 +194,13 @@ layui.use(['xmSelect','buildItems'],function(){
             btn: ['保存', '取消'],
             area: ['660px', '600px'],
             title: (Dt ? '编辑' : '添加') + '字典项',
-            success: function(l,index){
+            success: function(lay,index){
                 layui.buildItems.build({
                     bid: 'dictItems_items',
                     data: [
                         {name:"id",type:"hidden"},
                         {name:"groupid",type:"hidden",value:groupid},
-                        {name:"parentid",title:"上级字项",type:"html",html:'<div id="dictItems-list-tree" class="v-xmselect-tree"></div>',must:true},
+                        {name:"parentid",title:"上级字项",type:"html",html:'<div id="parentid-select" v-dict="PARENTID" options="{name:\'parentid\',prop:{name:\'name\',value:\'id\'},initValue:['+(Dt ? Dt.parentid : 0)+']}" class="v-xmselect-tree"></div>',must:true},
                         {name:"name",title:"字典项名",type:"text",value:'',verify:'required',placeholder:"请输入字典项名称",must:true},
                         {name:"value",title:"字典项值",type:"text",value:'',verify:'required',placeholder:"请输入字典项值",must:true},
                         {name:"listorder",title:"排序编号",type:"number",value:'100',verify:'required',placeholder:"请输入排序数字"},
@@ -208,23 +208,10 @@ layui.use(['xmSelect','buildItems'],function(){
                     ]
                 });
                 form.val('dictItems_items_form',Dt);
-                /*渲染下拉树 https://maplemei.gitee.io/xm-select/#/component/options*/
+                /* 手动渲染字典:上级字项 渲染下拉树 https://maplemei.gitee.io/xm-select/#/component/options */
                 var data = JSON.parse(JSON.stringify(treeTable.getData('dictItems')));
                 if(Dt) Exitem(data,Dt.id,true);
-                layui.xmSelect.render({
-                    el: '#dictItems-list-tree',
-                    name: 'parentid',
-                    tips: '顶级字典项',
-                    height: '430px',
-                    data: data,
-                    filterable: true,
-                    radio: true,
-                    clickClose: true,
-                    model: {label:{type:'text'}},
-                    initValue: [Dt ? Dt.parentid : ''],
-                    prop: {name:'name',value:'id',disabled:'disabled'},
-                    tree: {show:true,indent:25,strict:false,expandedKeys:true}
-                });
+                admin.vDict(lay,{PARENTID:data});/**/
                 form.on('submit(dictItems_items)',function(data){
                     var btn = $(this);
                     if (btn.attr('stop')){return false}else{btn.attr('stop',1)}

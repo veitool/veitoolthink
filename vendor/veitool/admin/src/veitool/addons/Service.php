@@ -898,7 +898,7 @@ class Service
             ]
         ];
         static $client;
-        return empty($client) ? new Client($options) : $client;
+        return empty($client) ? $client = new Client($options) : $client;
     }
 
     /**

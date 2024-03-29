@@ -75,8 +75,8 @@
 layui.use(['vinfo', 'xmSelect', 'buildItems'], function(){
     var map_root = layui.cache.maps;
     var app_root = map_root + 'system.manager/';
-    var layer=layui.layer,table=layui.table,form=layui.form,admin=layui.admin;
-    var Roles = {$roles|raw};
+    var layer = layui.layer,table=layui.table,form=layui.form,admin=layui.admin;
+    var Roles = <?=$roles?>;
     /*顶部类别构建*/
     admin.util.buildOption('#search_roles_select',Roles,'选择角色');
     /*==============左树结构===============*/

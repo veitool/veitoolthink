@@ -156,9 +156,9 @@ abstract class Base
         fclose($fop);
     }
 
-    //必须实现安装
+    //必须实现的插件安装方法
     abstract public function install();
 
-    //必须卸载插件方法
+    //必须实现的插件卸载方法
     abstract public function uninstall();
 }

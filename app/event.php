@@ -4,9 +4,7 @@ return [
     'bind'   => [],
     'listen' => [
         //应用初始化标签位
-        'AppInit'  => [
-            //'app\event\AppInit',
-        ],
+        'AppInit'  => [],
         //应用开始标签位
         'HttpRun'  => [],
         //应用结束标签位

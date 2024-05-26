@@ -3,6 +3,7 @@
 namespace Qcloud\Cos;
 
 use GuzzleHttp\Client as HttpClient;
+use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\HandlerStack;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -13,6 +14,7 @@ use GuzzleHttp\Command\CommandInterface;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\Psr7;
+use GuzzleHttp\Psr7\Uri;
 
 /**
  * @method object AbortMultipartUpload(array $args) 舍弃一个分块上传且删除已上传的分片块
@@ -213,6 +215,7 @@ use GuzzleHttp\Psr7;
  * @method object GetPicBucketList(array $args) 查询图片处理服务状态
  * @method object GetAiBucketList(array $args) 查询 AI 内容识别服务状态
  * @method object OpenAiService(array $args) 开通 AI 内容识别
+ * @method object CloseAiService(array $args) 关闭AI内容识别服务
  * @method object GetAiQueueList(array $args) 搜索 AI 内容识别队列
  * @method object UpdateAiQueue(array $args) 更新 AI 内容识别队列
  * @method object CreateMediaTranscodeProTemplate(array $args) 创建音视频转码 pro 模板
@@ -233,10 +236,30 @@ use GuzzleHttp\Psr7;
  * @method object OpenImageSlim(array $args) 开通图片瘦身
  * @method object CloseImageSlim(array $args) 关闭图片瘦身
  * @method object GetImageSlim(array $args) 查询图片瘦身状态
+ * @method object AutoTranslationBlockProcess(array $args) 实时文字翻译
+ * @method object RecognizeLogoProcess(array $args) Logo 识别
+ * @method object DetectLabelProcess(array $args) 图片标签
+ * @method object AIGameRecProcess(array $args) 游戏场景识别
+ * @method object AIBodyRecognitionProcess(array $args) 人体识别
+ * @method object DetectPetProcess(array $args) 宠物识别
+ * @method object AILicenseRecProcess(array $args) 卡证识别
+ * @method object CreateMediaTargetRecTemplate(array $args) 创建视频目标检测模板
+ * @method object UpdateMediaTargetRecTemplate(array $args) 更新视频目标检测模板
+ * @method object CreateMediaTargetRecJobs(array $args) 提交视频目标检测任务
+ * @method object CreateMediaSegmentVideoBodyJobs(array $args) 提交视频人像抠图任务
+ * @method object OpenAsrService(array $args) 开通智能语音服务
+ * @method object GetAsrBucketList(array $args) 开通智能语音服务
+ * @method object CloseAsrService(array $args) 查询智能语音服务
+ * @method object GetAsrQueueList(array $args) 关闭智能语音服务
+ * @method object UpdateAsrQueue(array $args) 查询智能语音队列
+ * @method object CreateMediaNoiseReductionTemplate(array $args) 创建音频降噪模板
+ * @method object UpdateMediaNoiseReductionTemplate(array $args) 更新音频降噪模板
+ * @method object CreateVoiceSoundHoundJobs(array $args) 提交听歌识曲任务
+ * @method object CreateVoiceVocalScoreJobs(array $args) 提交音乐评分任务
  * @see \Qcloud\Cos\Service::getService()
  */
 class Client extends GuzzleClient {
-    const VERSION = '2.6.7';
+    const VERSION = '2.6.9';
 
     public $httpClient;
 
@@ -264,7 +287,7 @@ class Client extends GuzzleClient {
         'endpoint' => null,
         'domain' => null,
         'proxy' => null,
-        'retry' => 1,
+        'retry' => 6,
         'userAgent' => 'cos-php-sdk-v5.' . Client::VERSION,
         'pathStyle' => false,
         'signHost' => true,
@@ -272,6 +295,8 @@ class Client extends GuzzleClient {
         'allow_accelerate' => false,
         'timezone' => 'PRC',
         'locationWithScheme' => false,
+        'autoChange' => true,
+        'limit_flag' => false,
     ];
 
     public function __construct(array $cosConfig) {
@@ -284,10 +309,80 @@ class Client extends GuzzleClient {
 
         $service = Service::getService();
         $handler = HandlerStack::create();
-        $handler->push(Middleware::retry($this->retryDecide(), $this->retryDelay()));
+
+        $handler->push(Middleware::retry(function ($retries, $request, $response, $exception) use (&$retryCount) {
+
+            $this->cosConfig['limit_flag'] = false;
+
+            $retryCount = $retries;
+            if ($retryCount >= $this->cosConfig['retry']) {
+                return false;
+            }
+
+
+            if ($response) {
+                if ($response->getStatusCode() >= 300 && !$response->hasHeader('x-cos-request-id')) {
+                    $this->cosConfig['limit_flag'] = true;
+                    return true;
+                }
+
+                if ($response->getStatusCode() >= 500 ) {
+                    return true;
+                }
+            } elseif ($exception) {
+                if ($exception instanceof Exception\ServiceResponseException) {
+                    if ($exception->getStatusCode() >= 500) {
+                        $this->cosConfig['limit_flag'] = true;
+                        return true;
+                    }
+
+                }
+                if ($exception instanceof ConnectException) {
+                    return true;
+                }
+            }
+            return false;
+        }, $this->retryDelay()));
+
+        $handler->push(Middleware::mapRequest(function (RequestInterface $request) use (&$retryCount) {
+            // 获取域名
+            $origin_host = $request->getUri()->getHost();
+
+            // 匹配 *.cos.{Region}.myqcloud.com
+            $pattern1 = '/\.cos\.[a-z0-9-]+\.myqcloud\.com$/';
+
+            if ($retryCount > 2 && $this->cosConfig['autoChange'] && $this->cosConfig['limit_flag'] && preg_match($pattern1, $origin_host)) {
+                $origin = $request->getUri();
+                $host = str_replace("myqcloud.com", "tencentcos.cn", $origin->getHost());
+
+                // 将 URI 转换为字符串，然后替换主机名
+                $originUriString = (string) $origin;
+                $originUriString = str_replace("myqcloud.com", "tencentcos.cn", $originUriString);
+                $originUriString = str_replace($origin->getScheme() . "://", "", $originUriString);
+
+                // 创建新的 URI 对象
+                $uri = new Uri($originUriString);
+
+                // 获取路径，并从路径中移除主机名
+                $path = $uri->getPath();
+                $path = str_replace($host, '', $path);
+
+                // 使用新的路径创建新的 URI
+                $uri = $uri->withPath($path);
+                $uri = $uri->withHost($host)->withScheme($origin->getScheme());
+
+
+                // 更新请求的 URI 和主机头
+                $request = $request->withUri($uri)->withHeader('Host', $host);
+                return $request;
+            }
+            return $request;
+        }));
+
 		$handler->push(Middleware::mapRequest(function (RequestInterface $request) {
 			return $request->withHeader('User-Agent', $this->cosConfig['userAgent']);
         }));
+
         if ($this->cosConfig['anonymous'] != true) {
             $handler->push($this::handleSignature($this->cosConfig['secretId'], $this->cosConfig['secretKey'], $this->cosConfig));
         }
@@ -310,8 +405,8 @@ class Client extends GuzzleClient {
         $this->desc = new Description($service);
         $this->api = (array) $this->desc->getOperations();
         parent::__construct($this->httpClient, $this->desc, [$this,
-        'commandToRequestTransformer'], [$this, 'responseToResultTransformer'],
-        null);
+            'commandToRequestTransformer'], [$this, 'responseToResultTransformer'],
+            null);
     }
 
     public function inputCheck() {
@@ -335,34 +430,6 @@ class Client extends GuzzleClient {
         }
     }
 
-
-    public function retryDecide() {
-      return function (
-        $retries,
-        RequestInterface $request,
-        ResponseInterface $response = null,
-        \Exception $exception = null
-      ) {
-        if ($retries >= $this->cosConfig['retry']) {
-          return false;
-        }
-        if ($response != null && $response->getStatusCode() >= 400 ) {
-            return true;
-        }
-        if ($exception instanceof Exception\ServiceResponseException) {
-            if ($exception->getStatusCode() >= 400) {
-                return true;
-            }
-        }
-  
-        if ($exception instanceof ConnectException) {
-          return true;
-        }
-  
-        return false;
-      };
-    }
-
     public function retryDelay() {
         return function ($numberOfRetries) {
             return 1000 * $numberOfRetries;
@@ -373,7 +440,7 @@ class Client extends GuzzleClient {
     {
         $this->action = $command->GetName();
         $this->operation = $this->api[$this->action];
-        $transformer = new CommandToRequestTransformer($this->cosConfig, $this->operation); 
+        $transformer = new CommandToRequestTransformer($this->cosConfig, $this->operation);
         $seri = new Serializer($this->desc);
         $request = $seri($command);
         $request = $transformer->bucketStyleTransformer($command, $request);
@@ -390,6 +457,7 @@ class Client extends GuzzleClient {
 
     public function responseToResultTransformer(ResponseInterface $response, RequestInterface $request, CommandInterface $command)
     {
+
         $transformer = new ResultTransformer($this->cosConfig, $this->operation); 
         $transformer->writeDataToLocal($command, $request, $response);
         $deseri = new Deserializer($this->desc, true);

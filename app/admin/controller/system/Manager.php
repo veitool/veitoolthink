@@ -88,7 +88,7 @@ class Manager extends AdminBase
         $d["passsalt"] = random(8);
         $d["password"] = set_password($d["password"],$d["passsalt"]);
         $d["edit"]     = $this->manUser['username'];
-        $d["addtime"]  = VT_TIME;
+        $d["addtime"]  = time();
         $d["roleid"]   = explode(",",$d['roleids'])[0];
         if(M::insert($d)){
             return $this->returnMsg("添加用户成功", 1);
@@ -125,7 +125,7 @@ class Manager extends AdminBase
         }else{
             if($userid == 1 && $userid != $this->manUser['userid']) return $this->returnMsg("您的身份不能修改超级用户的信息");
             if(M::get("username='$d[username]' AND userid<>$userid")) return $this->returnMsg("帐号【".$d['username']."】已经存在");
-            $d["edittime"] = VT_TIME;
+            $d["edittime"] = time();
             $d["roleid"]   = explode(",",$d['roleids'])[0];
             if($Myobj->save($d)){
                 return $this->returnMsg("编辑用户成功", 1);
@@ -144,7 +144,7 @@ class Manager extends AdminBase
         $d = $this->only(['@token'=>'','nickname/*/n/昵称','truename/*/n','email/?/e','mobile/?/m','areaid/?/i/地区','address/?/{2,100}/详细地址','gender/d']);
         $d["userid"] = $this->manUser['userid'];
         $d['gender'] = in_array($d['gender'],[1,2]) ? $d['gender'] : 1;
-        $d["edittime"] = VT_TIME;
+        $d["edittime"] = time();
         if(M::update($d)){
             return $this->returnMsg("修改成功", 1);
         }else{

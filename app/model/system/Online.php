@@ -57,7 +57,7 @@ class Online extends Base
         $page = $d['page'] ?? 1;
         if($page==1){
             //5分钟未活动的删除
-            $this->where('etime', '<', VT_TIME - 300)->delete();
+            $this->where('etime', '<', time() - 300)->delete();
             $msg = $this->where($where)->count();
         }
         $rs = $this->where($where)->order($order)->field($fields)->paginate($limit)->toArray();
@@ -84,7 +84,7 @@ class Online extends Base
             session(VT_VISITOR,$Online);
         }
         // 模型中支持 replace 为 create 的第3个参数设为 true 或者 \think\facade\Db::name('online')->replace()->insert([数据集])
-        self::create(['uid'=>$Online['uid'],'userid'=>$Online['userid'],'username'=>$Online['username'],'url'=>$url,'etime'=>VT_TIME,'ip'=>VT_IP,'type'=>$type],['uid','userid','username','url','etime','ip','type'],true);
+        self::create(['uid'=>$Online['uid'],'userid'=>$Online['userid'],'username'=>$Online['username'],'url'=>$url,'etime'=>time(),'ip'=>request()->ip(),'type'=>$type],['uid','userid','username','url','etime','ip','type'],true);
     }
 
 }

@@ -48,7 +48,7 @@ layui.use(['vinfo'],function(){
         url: app_root+"index?do=json",
         cols: [[
             {type:'checkbox',fixed:'left'},
-            {field:"username",align:'center',width:120,title:"用户",templet:function(d){return '<a style="cursor:pointer;" lay-event="userinfo"><font'+ (!d.type && d.ip == '{:VT_IP}' ? ' color=blue' : '') +'>'+ d.username +'</font></a>'}},
+            {field:"username",align:'center',width:120,title:"用户",templet:function(d){return '<a style="cursor:pointer;" lay-event="userinfo"><font'+ (!d.type && d.ip == '{:request()->ip()}' ? ' color=blue' : '') +'>'+ d.username +'</font></a>'}},
             {field:"uid",align:'center',width:150,title:"编号"},
             {field:"url",title:"路径"},
             {field:"type",width:80,align:'center',title:"类型",templet:function(d){return d.type==1 ? '会员': '后台'}},

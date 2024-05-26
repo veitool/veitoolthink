@@ -16,7 +16,7 @@ allow you to read and write various spreadsheet file formats such as Excel and L
 LTS: Support for PHP versions will only be maintained for a period of six months beyond the
 [end of life](https://www.php.net/supported-versions) of that PHP version.
 
-Currently the required PHP minimum version is PHP __7.4__, and we [will support that version](https://www.php.net/eol.php) until 28th June 2023.
+Currently the required PHP minimum version is PHP __8.0__, and we [will support that version](https://www.php.net/eol.php) until May 2024.
 
 See the `composer.json` for other requirements.
 
@@ -31,12 +31,9 @@ composer require phpoffice/phpspreadsheet
 If you are building your installation on a development machine that is on a different PHP version to the server where it will be deployed, or if your PHP CLI version is not the same as your run-time such as `php-fpm` or Apache's `mod_php`, then you might want to add the following to your `composer.json` before installing:
 ```json
 {
-    "require": {
-        "phpoffice/phpspreadsheet": "^1.28"
-    },
     "config": {
         "platform": {
-            "php": "7.4"
+            "php": "8.0"
         }
     }
 }

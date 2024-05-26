@@ -25,6 +25,12 @@ abstract class AdminBase extends BaseController
     protected $manUser = [];
 
     /**
+     * 映射路径
+     * @var string
+     */
+    protected $appMap = '';
+
+    /**
      * 当前路由uri
      * @var string
      */
@@ -46,12 +52,14 @@ abstract class AdminBase extends BaseController
      */
     protected final function __auth()
     {
+        //映射路径
+        $this->appMap = VT_DIR . '/' . (array_search("admin", config('app.app_map')) ?: 'admin');
         //验证登录
         $this->isLogin();
         //载入权限菜单
         $this->loadMenusRoles();
         //构组路由: 控制器 + 方法 + （参数action的传值）
-        $this->routeUri = strtolower(ADDON_APP.$this->request->controller()."/".$this->request->action().(($action = $this->request->get('action')) ? '/'.$action : ''));
+        $this->routeUri = strtolower(config()['ADDON_APP'][0].$this->request->controller()."/".$this->request->action().(($action = $this->request->get('action')) ? '/'.$action : ''));
         //验证权限
         $this->isPower();
     }
@@ -62,11 +70,11 @@ abstract class AdminBase extends BaseController
     private function isLogin()
     {
         if(is_null($this->manUser = session(VT_MANAGER))){
-            $url = ADDON_APP ? '/' : APP_MAP.'/login/index';
+            $url = $this->appMap.'/login/index';
             if($this->request->isAjax()){
                 $this->exitMsg('您还未登录或已过期，请先登录！',401,['url'=>$url]);
             }else{
-                exit(header("Location:".$url));
+                $this->redirect($url);
             }
         }
     }
@@ -79,14 +87,10 @@ abstract class AdminBase extends BaseController
         $us = Manager::get("username = '{$this->manUser['username']}' AND state > 0");
         if($us && $this->manUser['password'] == $us['password'] && $this->manUser['passsalt'] == $us['passsalt']){
             //禁止同帐号同时异地登录处理
-            if(in_array(vconfig('ip_login',0),[2,3]) && $us['loginip'] != VT_IP){
+            if(in_array(vconfig('ip_login',0),[2,3]) && $us['loginip'] != $this->request->ip()){
                 session(null);
-                $url = ADDON_APP ? '/' : APP_MAP.'/login/index';
-                if($this->request->isAjax()){
-                    $this->exitMsg('您的帐号已在其他终端登录！',401,['url'=>$url]);
-                }else{
-                    $this->exitMsg('您的帐号已在其他终端登录！',303,['url'=>$url]);
-                }
+                $url = $this->appMap.'/login/index';
+                $this->exitMsg('您的帐号已在其他终端登录！',$this->request->isAjax() ? 401 : 303,['url'=>$url]);
             }
             $us = $us->toArray();
             $us['role_menuid'] = '';
@@ -96,12 +100,8 @@ abstract class AdminBase extends BaseController
             $this->manUser = $us['userid']>1 ? array_merge($us, Roles::cache($us['roleid'])) : $us;
         }else{
             session(null);
-            $url = ADDON_APP ? '/' : APP_MAP.'/login/index';
-            if($this->request->isAjax()){
-                $this->exitMsg('您还未登录或已过期，请先登录！',401,['url'=>$url]);
-            }else{
-                $this->exitMsg('您还未登录或已过期，请重新登录！',303,['url'=>$url]);
-            }
+            $url = $this->appMap.'/login/index';
+            $this->exitMsg('您还未登录或已过期，请先登录！',$this->request->isAjax() ? 401 : 303,['url'=>$url]);
         }
     }
 
@@ -111,12 +111,7 @@ abstract class AdminBase extends BaseController
     private function isPower()
     {
         if($this->manUser['userid']>1 && !in_array($this->routeUri,$this->manUser['actions'])){
-            if($this->request->isAjax()){
-                $this->exitMsg('抱歉，您没有该项权限请联系管理员！',401);
-            }else{
-                header("Content-type:text/html;charset=utf-8");
-                exit('抱歉，您没有该项权限请联系管理员！');
-            }
+            $this->exitMsg('抱歉，您没有该项权限请联系管理员！',$this->request->isAjax() ? 401 : 400);
         }
     }
 
@@ -129,7 +124,7 @@ abstract class AdminBase extends BaseController
     {
         //操作日志
         if(vconfig('admin_log',0)){
-            \app\model\system\ManagerLog::add(['url'=>$this->routeUri.($tip ? ' '.$tip : ''),'username'=>$this->manUser['username'],'ip'=>VT_IP]);
+            \app\model\system\ManagerLog::add(['url'=>$this->routeUri.($tip ? ' '.$tip : ''),'username'=>$this->manUser['username'],'ip'=>$this->request->ip()]);
         }
         //在线统计 【online_on = 0:关闭全部 1:开启后台 2:开启会员 3:开启全部】 
         if(in_array(vconfig('online_on',0),[1,3])){

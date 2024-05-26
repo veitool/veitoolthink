@@ -57,11 +57,12 @@ class Menus
      */
     private static function menuUpdate($newMenu, $parentid = 0, $name = '')
     {
+        $time = time();
         $allow = ['catid'=>'1','name'=>'','menu_name'=>'莫名菜单','role_name'=>'','link_url'=>'','menu_url'=>'','role_url'=>'','link_url'=>'','icon'=>'','ismenu'=>'0','listorder'=>10,'state'=>'0','type'=>'1'];
         foreach($newMenu as $k => $v){
             $data = array_intersect_key($v, $allow);
             $data = array_merge($allow, $data);
-            $data['addtime']   = VT_TIME;
+            $data['addtime']   = $time;
             $data['parent_id'] = $parentid;
             $data['role_name'] = $data['role_name'] ?: $data['menu_name'];
             $data['name'] = $name ?: $data['name'];
@@ -161,10 +162,11 @@ class Menus
             return 'ok';
         }else{
             $data = [];
+            $time = time();
             foreach($rs as $v){
                 if($v['parent_id']==$id){
                     $menuid = $v['menuid']; unset($v['menuid']);
-                    $v['addtime']   = VT_TIME;
+                    $v['addtime']   = $time;
                     $v['parent_id'] = $pd;
                     $data[$menuid]  = Db::name('menus')->insertGetId($v);
                 }

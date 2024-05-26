@@ -60,8 +60,8 @@ class WebLog extends Base
      */
     public static function add($d=[])
     {
-        $a = substr(vhtmlspecialchars(strip_sql($_SERVER['HTTP_USER_AGENT'] ?? '')),0,200);
-        $d = array_merge(['url'=>'','username'=>'','ip'=>'0','logtime'=>VT_TIME,'agent'=>$a],$d);
+        $a = substr(vhtmlspecialchars(strip_sql(request()->header('user-agent'))),0,200);
+        $d = array_merge(['url'=>'','username'=>'','ip'=>'0','logtime'=>time(),'agent'=>$a],$d);
         return self::create($d);
     }
 

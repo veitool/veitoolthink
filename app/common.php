@@ -16,8 +16,6 @@ define('VT_MANAGER', 'V_MANAGER');
 define('VT_MEMBER', 'V_MEMBER');
 // 前台游客 session 标识
 define('VT_VISITOR', 'V_VISITOR');
-// 时间戳
-define('VT_TIME', time());
 // 分隔符
 define('VT_DS', DIRECTORY_SEPARATOR);
 // 资源目录 运行目录为根目录时请设为空\其他二级或多级目录时后面无斜杠如：/mydir 或 /mydir/xyz

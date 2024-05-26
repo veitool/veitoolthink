@@ -151,7 +151,7 @@ class Setting extends AdminBase
     {
         $d = $this->only(['@token'=>'',$this->ptype,$this->pname,$this->ptitle,$this->pgroup,$this->ptips,$this->paddon,'value/u','options/u','listorder/d']);
         if(S::get("name = '$d[name]' AND addon = '$d[addon]'")) return $this->returnMsg("该配置名称已经存在");
-        $d["addtime"] = VT_TIME;
+        $d["addtime"] = time();
         if(S::insert($d)){
             S::cache(1);
             return $this->returnMsg("添加配置项成功", 1);
@@ -197,7 +197,7 @@ class Setting extends AdminBase
         }else{
             if(S::get("name = '$d[name]' AND addon = '' AND id<>$id")) return $this->returnMsg("该配置名称已经存在");
             if(strpos($d['value'], '***') !== false) unset($d['value']);
-            $d["edittime"] = VT_TIME;
+            $d["edittime"] = time();
             if($Myobj->save($d)){
                 S::cache(1);
                 return $this->returnMsg("编辑成功", 1);

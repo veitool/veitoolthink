@@ -5,7 +5,7 @@ return [
     'listen' => [
         //应用初始化标签位
         'AppInit'  => [
-            'app\event\AppInit',
+            //'app\event\AppInit',
         ],
         //应用开始标签位
         'HttpRun'  => [],

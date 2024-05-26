@@ -54,7 +54,7 @@ class Roles extends AdminBase
     {
         $d = $this->only(['@token'=>'','role_name/*/{2,30}/角色名称','listorder/d','state/d','role_menuid']);
         $d['role_menuid'] = is_array($d['role_menuid']) ? implode(',', array_map('intval', $d['role_menuid'])) : '';
-        $d['addtime'] = VT_TIME;
+        $d['addtime'] = time();
         if($rsid = R::insertGetId($d)){
             R::cache(['roleid'=>$rsid,'role_name'=>$d['role_name'],'role_menuid'=>$d['role_menuid']],1);
             return $this->returnMsg("添加成功", 1);

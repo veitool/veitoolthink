@@ -40,7 +40,7 @@ class AppInit extends Service
             $module .= '/';
         }/**/
         /* 插件应用名 用于AdminBase.php中兼容插件权限 */
-        define('ADDON_APP', $module);
+        defined('ADDON_APP') || define('ADDON_APP', $module);
     }
 
 }

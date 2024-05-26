@@ -68,7 +68,7 @@ class Upload extends AdminBase
             'default'=>$this->CF['upload_engine'],
             'engine'=> array(
                 'local'=>array(
-                    'domain'=> '/file/upload',//上传的本地地址
+                    'domain'=> '/static/file/upload',//上传的本地地址
                     'image' => array('ext'=>$this->CF['upload_image_type'],'size'=>$this->CF['upload_image_size']),
                     'file'  => array('ext'=>$this->CF['upload_file_type'],'size'=>$this->CF['upload_file_size']),
                     'video' => array('ext'=>$this->CF['upload_video_type'],'size'=>$this->CF['upload_video_size']),
@@ -136,7 +136,7 @@ class Upload extends AdminBase
         $data['filetype'] = $action;
         $data['groupid']  = intval($groupid)>=0 ? intval($groupid) : 0;
         $data['fileext']  = $fileInfo['ext'];
-        $data['addtime']  = VT_TIME;
+        $data['addtime']  = time();
         $data['username'] = $this->manUser['username'];
         $data['fileid']   = UploadFile::insertGetId($data);
         //压缩容量
@@ -292,7 +292,7 @@ class Upload extends AdminBase
             $data['filetype'] = $action;
             $data['groupid']  = intval($groupid)>=0 ? intval($groupid) : 0;
             $data['fileext']  = $fileInfo['ext'];
-            $data['addtime']  = VT_TIME;
+            $data['addtime']  = time();
             $data['username'] = $this->manUser['username'];
             $data['fileid']   = UploadFile::insertGetId($data);
             //百度编辑器返回数据
@@ -360,7 +360,7 @@ class Upload extends AdminBase
         $d = $this->only(['groupid/d','groupname/h','grouptype/h']);
         if($action=='add'){
             if(!$d['groupname']) return $this->returnMsg("分组名称不能为空");
-            $d["addtime"] = VT_TIME;
+            $d["addtime"] = time();
             $d["listorder"] = 10;
             $id = UploadGroup::insertGetId($d);
             if($id){
@@ -372,7 +372,7 @@ class Upload extends AdminBase
             }
         }elseif($action=='edit'){
             if(!$d['groupname']) return $this->returnMsg("分组名称不能为空");
-            $d["edittime"] = VT_TIME;
+            $d["edittime"] = time();
             unset($d['grouptype']);
             $rs = UploadGroup::update($d);
             if($rs !== false){

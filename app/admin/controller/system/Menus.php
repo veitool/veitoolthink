@@ -77,7 +77,7 @@ class Menus extends AdminBase
             $arr  = explode("\n", $d['titles']);
             foreach($arr as $v){
                 if(!is_preg($v,'{2,20}')) continue;
-                $data[] = ['menu_name'=>$v,'role_name'=>$v,'catid'=>$d['catid'],'parent_id'=>$id,'state'=>0,'listorder'=>10,'addtime'=>VT_TIME];
+                $data[] = ['menu_name'=>$v,'role_name'=>$v,'catid'=>$d['catid'],'parent_id'=>$id,'state'=>0,'listorder'=>10,'addtime'=>time()];
             }
             if(M::insertAll($data)){
                 M::cache(1);

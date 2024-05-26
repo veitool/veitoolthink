@@ -13,20 +13,36 @@ $cosClient = new Qcloud\Cos\Client(
             'secretId'  => $secretId,
             'secretKey' => $secretKey)));
 try {
-    // https://cloud.tencent.com/document/product/436/64324 通用文字识别
+    // -------------------- 1. 通用文字识别 原图存储在COS -------------------- //
     $result = $cosClient->opticalOcrRecognition(array(
         'Bucket' => 'examplebucket-125000000', //存储桶名称，由BucketName-Appid 组成，可以在COS控制台查看 https://console.cloud.tencent.com/cos5/bucket
-        'Key' => 'test01.pdf',
-        'CiProcess' => 'OCR',
-        'Type' => 'general',
-        'LanguageType' => 'zh',
-        'IsPDF' => 'true',
-        'PdfPageNumber' => 2,
-        'IsWord' => 'true',
-        'EnableWordPolygon' => 'false',
+        'Key' => 'test.jpg',
+//        'Type' => 'general',
+//        'LanguageType' => 'zh',
+//        'IsPDF' => 'true',
+//        'PdfPageNumber' => 2,
+//        'IsWord' => 'true',
+//        'EnableWordPolygon' => 'false',
     ));
     // 请求成功
     print_r($result);
+    // -------------------- 1. 通用文字识别 原图存储在COS -------------------- //
+
+    // -------------------- 2. 通用文字识别 原图来自其他链接 -------------------- //
+    $result = $cosClient->opticalOcrRecognition(array(
+        'Bucket' => 'examplebucket-125000000', //存储桶名称，由BucketName-Appid 组成，可以在COS控制台查看 https://console.cloud.tencent.com/cos5/bucket
+        'Key' => '', // 该值为空即可
+        'DetectUrl' => 'https://www.xxx.com/xxx.jpg',
+//        'Type' => 'general',
+//        'LanguageType' => 'zh',
+//        'IsPDF' => 'true',
+//        'PdfPageNumber' => 2,
+//        'IsWord' => 'true',
+//        'EnableWordPolygon' => 'false',
+    ));
+    // 请求成功
+    print_r($result);
+    // -------------------- 2. 通用文字识别 原图来自其他链接 -------------------- //
 } catch (\Exception $e) {
     // 请求失败
     echo($e);

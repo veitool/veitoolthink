@@ -42,7 +42,7 @@ class SendSms
      */
     public function __construct()
     {
-        $this->cache_key = 'sms_'.VT_IP;
+        $this->cache_key = 'sms_'. request()->ip();
     }
 
     /**
@@ -66,10 +66,11 @@ class SendSms
      */
     public function qiniu_send($mobile = [], $message = '', $tpid = 0, $tips = '', $lent = 0)
     {
+        $time = time();
         //屏蔽频繁发送
         $arr = cache($this->cache_key);
         $lent = $lent ? $lent : vconfig('sms_times');
-        if(isset($arr['time']) && (VT_TIME-$arr['time'])<$lent) return ['msg'=>'发送过于频繁！','code'=>0];
+        if(isset($arr['time']) && ($time-$arr['time'])<$lent) return ['msg'=>'发送过于频繁！','code'=>0];
         //整合配置
         $this->config = array_merge($this->config, vconfig());
         if(!$this->config['sms_state']) return ['msg'=>'短信接口未开启','code'=>0];
@@ -94,14 +95,14 @@ class SendSms
             }else{
                 $txt = '成功';$code = 1;
                 //记入发送成功时间缓存，防止下次频繁发送
-                cache($this->cache_key,['time'=>VT_TIME]);
+                cache($this->cache_key,['time'=>$time]);
             }
         }catch(\Exception $e){
             $txt = '失败';$code = 0;
             $this->clear_time_cache();
         }
         $word = function_exists('mb_strlen') ? mb_strlen($message,'utf8') : 0;
-        $data = ['mobile'=> implode(',',$mobile),'message'=>$tips.$message,'word'=>$word,'editor'=>'system','sendtime'=>VT_TIME,'code'=>$txt];
+        $data = ['mobile'=> implode(',',$mobile),'message'=>$tips.$message,'word'=>$word,'editor'=>'system','sendtime'=>$time,'code'=>$txt];
         Db::name('sms')->data($data)->insert();
         return ['msg'=>'发送'.$txt,'code'=>$code];
     }
@@ -117,10 +118,11 @@ class SendSms
      */
     public function smsbao_send($mobile = '', $message = '', $word = 0, $lent = 0)
     {
+        $time = time();
         //屏蔽频繁发送
         $arr = cache($this->cache_key);
         $lent = $lent ? $lent : vconfig('sms_times');
-        if(isset($arr['time']) && (VT_TIME-$arr['time'])<$lent) return ['msg'=>'发送过于频繁！','code'=>0];
+        if(isset($arr['time']) && ($time-$arr['time'])<$lent) return ['msg'=>'发送过于频繁！','code'=>0];
         //整合配置
         $this->config = array_merge($this->config, vconfig());
         if(!$this->config['sms_state']) return ['msg'=>'短信接口未开启','code'=>0];
@@ -158,10 +160,10 @@ class SendSms
             '51' => '手机号码不正确'
         );
         $txt = $keys[$key];
-        $data = ['mobile'=>$mobile,'message'=>$message,'word'=>$word,'editor'=>'system','sendtime'=>VT_TIME,'code'=>$txt];
+        $data = ['mobile'=>$mobile,'message'=>$message,'word'=>$word,'editor'=>'system','sendtime'=>$time,'code'=>$txt];
         Db::name('sms')->data($data)->insert();
         //记入发送成功时间缓存，防止下次频繁发送
-        cache($this->cache_key,['time'=>VT_TIME]);
+        cache($this->cache_key,['time'=>$time]);
         return ['msg'=>$txt,'code'=>($key==0 ? 1 : 0)];
     }
 

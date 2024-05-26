@@ -4,72 +4,55 @@ namespace PhpOffice\PhpSpreadsheet\Writer;
 
 use PhpOffice\PhpSpreadsheet\Calculation\Calculation;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use Stringable;
 
 class Csv extends BaseWriter
 {
     /**
      * PhpSpreadsheet object.
-     *
-     * @var Spreadsheet
      */
-    private $spreadsheet;
+    private Spreadsheet $spreadsheet;
 
     /**
      * Delimiter.
-     *
-     * @var string
      */
-    private $delimiter = ',';
+    private string $delimiter = ',';
 
     /**
      * Enclosure.
-     *
-     * @var string
      */
-    private $enclosure = '"';
+    private string $enclosure = '"';
 
     /**
      * Line ending.
-     *
-     * @var string
      */
-    private $lineEnding = PHP_EOL;
+    private string $lineEnding = PHP_EOL;
 
     /**
      * Sheet index to write.
-     *
-     * @var int
      */
-    private $sheetIndex = 0;
+    private int $sheetIndex = 0;
 
     /**
      * Whether to write a UTF8 BOM.
-     *
-     * @var bool
      */
-    private $useBOM = false;
+    private bool $useBOM = false;
 
     /**
      * Whether to write a Separator line as the first line of the file
      *     sep=x.
-     *
-     * @var bool
      */
-    private $includeSeparatorLine = false;
+    private bool $includeSeparatorLine = false;
 
     /**
      * Whether to write a fully Excel compatible CSV file.
-     *
-     * @var bool
      */
-    private $excelCompatibility = false;
+    private bool $excelCompatibility = false;
 
     /**
      * Output encoding.
-     *
-     * @var string
      */
-    private $outputEncoding = '';
+    private string $outputEncoding = '';
 
     /**
      * Create a new CSV.
@@ -122,11 +105,8 @@ class Csv extends BaseWriter
         $maxRow = $sheet->getHighestDataRow();
 
         // Write rows to file
-        for ($row = 1; $row <= $maxRow; ++$row) {
-            // Convert the row to an array...
-            $cellsArray = $sheet->rangeToArray('A' . $row . ':' . $maxCol . $row, '', $this->preCalculateFormulas);
-            // ... and write to the file
-            $this->writeLine($this->fileHandle, $cellsArray[0]);
+        foreach ($sheet->rangeToArrayYieldRows("A1:$maxCol$maxRow", '', $this->preCalculateFormulas) as $cellsArray) {
+            $this->writeLine($this->fileHandle, $cellsArray);
         }
 
         $this->maybeCloseFileHandle();
@@ -251,8 +231,7 @@ class Csv extends BaseWriter
         return $this;
     }
 
-    /** @var bool */
-    private $enclosureRequired = true;
+    private bool $enclosureRequired = true;
 
     public function setEnclosureRequired(bool $value): self
     {
@@ -269,9 +248,9 @@ class Csv extends BaseWriter
     /**
      * Convert boolean to TRUE/FALSE; otherwise return element cast to string.
      *
-     * @param mixed $element
+     * @param null|bool|float|int|string|Stringable $element element to be converted
      */
-    private static function elementToString($element): string
+    private static function elementToString(mixed $element): string
     {
         if (is_bool($element)) {
             return $element ? 'TRUE' : 'FALSE';
@@ -294,6 +273,7 @@ class Csv extends BaseWriter
         // Build the line
         $line = '';
 
+        /** @var null|bool|float|int|string|Stringable $element */
         foreach ($values as $element) {
             $element = self::elementToString($element);
             // Add delimiter
@@ -321,6 +301,6 @@ class Csv extends BaseWriter
         if ($this->outputEncoding != '') {
             $line = mb_convert_encoding($line, $this->outputEncoding);
         }
-        fwrite($fileHandle, /** @scrutinizer ignore-type */ $line);
+        fwrite($fileHandle, $line);
     }
 }

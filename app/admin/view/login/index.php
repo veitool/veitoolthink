@@ -102,7 +102,7 @@
             //提交数据
             $.ajax({
                 type: "POST",
-                url: "{:APP_MAP}/login/check",
+                url: "{$appMap}/login/check",
                 data: {username:username,password:hex_md5(password),captcha:captcha},
                 dataType: "json",
                 success:function(res){

@@ -4,24 +4,25 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit9122fa90498c7c375ee553d2b3d1f3e7
+class ComposerStaticInit020915b87d4ab8ac8119337ca936e79b
 {
     public static $files = array (
         '9b552a3cc426e3287cc811caefa3cf53' => __DIR__ . '/..' . '/topthink/think-helper/src/helper.php',
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
         '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
+        'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
         '35fab96057f1bf5e7aba31a8a6d5fdde' => __DIR__ . '/..' . '/topthink/think-orm/stubs/load_stubs.php',
         '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
-        'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
         'a1105708a18b76903365ca1c4aa61b02' => __DIR__ . '/..' . '/symfony/translation/Resources/functions.php',
-        '2cffec82183ee1cea088009cef9a6fc3' => __DIR__ . '/..' . '/ezyang/htmlpurifier/library/HTMLPurifier.composer.php',
+        '9a31621970d4295d5f00acf4e277e6f9' => __DIR__ . '/..' . '/stechstudio/backoff/src/helpers.php',
         'cd5441689b14144e5573bf989ee47b34' => __DIR__ . '/..' . '/qcloud/cos-sdk-v5/src/Common.php',
         '841780ea2e1d6545ea3a253239d59c05' => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu/functions.php',
         '5dd19d8a547b7318af0c3a93c8bd6565' => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu/Http/Middleware/Middleware.php',
         '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
         '1cfd2761b63b0a29ed23657ea394cb2d' => __DIR__ . '/..' . '/topthink/think-captcha/src/helper.php',
         'cc56288302d9df745d97c934d6a6e5f0' => __DIR__ . '/..' . '/topthink/think-queue/src/common.php',
+        'af46dcea2921209ac30627b964175f13' => __DIR__ . '/..' . '/topthink/think-swoole/src/helpers.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -34,6 +35,7 @@ class ComposerStaticInit9122fa90498c7c375ee553d2b3d1f3e7
             'think\\worker\\' => 13,
             'think\\view\\driver\\' => 18,
             'think\\trace\\' => 12,
+            'think\\swoole\\' => 13,
             'think\\captcha\\' => 14,
             'think\\app\\' => 10,
             'think\\' => 6,
@@ -51,6 +53,10 @@ class ComposerStaticInit9122fa90498c7c375ee553d2b3d1f3e7
         array (
             'Workerman\\' => 10,
         ),
+        'T' => 
+        array (
+            'Tests\\PhpOffice\\Math\\' => 21,
+        ),
         'S' => 
         array (
             'Symfony\\Polyfill\\Php80\\' => 23,
@@ -60,6 +66,8 @@ class ComposerStaticInit9122fa90498c7c375ee553d2b3d1f3e7
             'Symfony\\Component\\Translation\\' => 30,
             'Symfony\\Component\\Process\\' => 26,
             'Symfony\\Component\\Finder\\' => 25,
+            'Smf\\ConnectionPool\\' => 19,
+            'STS\\Backoff\\' => 12,
         ),
         'Q' => 
         array (
@@ -77,6 +85,7 @@ class ComposerStaticInit9122fa90498c7c375ee553d2b3d1f3e7
             'PhpZip\\' => 7,
             'PhpOffice\\PhpWord\\' => 18,
             'PhpOffice\\PhpSpreadsheet\\' => 25,
+            'PhpOffice\\Math\\' => 15,
         ),
         'O' => 
         array (
@@ -91,7 +100,6 @@ class ComposerStaticInit9122fa90498c7c375ee553d2b3d1f3e7
         array (
             'League\\MimeTypeDetection\\' => 25,
             'League\\Flysystem\\' => 17,
-            'Laminas\\Escaper\\' => 16,
         ),
         'G' => 
         array (
@@ -106,6 +114,7 @@ class ComposerStaticInit9122fa90498c7c375ee553d2b3d1f3e7
         'C' => 
         array (
             'Complex\\' => 8,
+            'Carbon\\Doctrine\\' => 16,
             'Carbon\\' => 7,
         ),
     );
@@ -126,6 +135,10 @@ class ComposerStaticInit9122fa90498c7c375ee553d2b3d1f3e7
         'think\\trace\\' => 
         array (
             0 => __DIR__ . '/..' . '/topthink/think-trace/src',
+        ),
+        'think\\swoole\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/topthink/think-swoole/src',
         ),
         'think\\captcha\\' => 
         array (
@@ -163,6 +176,10 @@ class ComposerStaticInit9122fa90498c7c375ee553d2b3d1f3e7
         array (
             0 => __DIR__ . '/..' . '/workerman/workerman',
         ),
+        'Tests\\PhpOffice\\Math\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpoffice/math/tests/Math',
+        ),
         'Symfony\\Polyfill\\Php80\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-php80',
@@ -190,6 +207,14 @@ class ComposerStaticInit9122fa90498c7c375ee553d2b3d1f3e7
         'Symfony\\Component\\Finder\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/finder',
+        ),
+        'Smf\\ConnectionPool\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/open-smf/connection-pool/src',
+        ),
+        'STS\\Backoff\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/stechstudio/backoff/src',
         ),
         'Qiniu\\' => 
         array (
@@ -236,6 +261,10 @@ class ComposerStaticInit9122fa90498c7c375ee553d2b3d1f3e7
         array (
             0 => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet',
         ),
+        'PhpOffice\\Math\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpoffice/math/src/Math',
+        ),
         'OSS\\' => 
         array (
             0 => __DIR__ . '/..' . '/aliyuncs/oss-sdk-php/src/OSS',
@@ -255,10 +284,6 @@ class ComposerStaticInit9122fa90498c7c375ee553d2b3d1f3e7
         'League\\Flysystem\\' => 
         array (
             0 => __DIR__ . '/..' . '/league/flysystem/src',
-        ),
-        'Laminas\\Escaper\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/laminas/laminas-escaper/src',
         ),
         'GuzzleHttp\\UriTemplate\\' => 
         array (
@@ -292,19 +317,13 @@ class ComposerStaticInit9122fa90498c7c375ee553d2b3d1f3e7
         array (
             0 => __DIR__ . '/..' . '/markbaker/complex/classes/src',
         ),
+        'Carbon\\Doctrine\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/carbonphp/carbon-doctrine-types/src/Carbon/Doctrine',
+        ),
         'Carbon\\' => 
         array (
             0 => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon',
-        ),
-    );
-
-    public static $prefixesPsr0 = array (
-        'H' => 
-        array (
-            'HTMLPurifier' => 
-            array (
-                0 => __DIR__ . '/..' . '/ezyang/htmlpurifier/library',
-            ),
         ),
     );
 
@@ -315,6 +334,90 @@ class ComposerStaticInit9122fa90498c7c375ee553d2b3d1f3e7
     public static $classMap = array (
         'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+        'Nette\\ArgumentOutOfRangeException' => __DIR__ . '/..' . '/nette/utils/src/exceptions.php',
+        'Nette\\DeprecatedException' => __DIR__ . '/..' . '/nette/utils/src/exceptions.php',
+        'Nette\\DirectoryNotFoundException' => __DIR__ . '/..' . '/nette/utils/src/exceptions.php',
+        'Nette\\FileNotFoundException' => __DIR__ . '/..' . '/nette/utils/src/exceptions.php',
+        'Nette\\HtmlStringable' => __DIR__ . '/..' . '/nette/utils/src/HtmlStringable.php',
+        'Nette\\IOException' => __DIR__ . '/..' . '/nette/utils/src/exceptions.php',
+        'Nette\\InvalidArgumentException' => __DIR__ . '/..' . '/nette/utils/src/exceptions.php',
+        'Nette\\InvalidStateException' => __DIR__ . '/..' . '/nette/utils/src/exceptions.php',
+        'Nette\\Iterators\\CachingIterator' => __DIR__ . '/..' . '/nette/utils/src/Iterators/CachingIterator.php',
+        'Nette\\Iterators\\Mapper' => __DIR__ . '/..' . '/nette/utils/src/Iterators/Mapper.php',
+        'Nette\\Localization\\ITranslator' => __DIR__ . '/..' . '/nette/utils/src/compatibility.php',
+        'Nette\\Localization\\Translator' => __DIR__ . '/..' . '/nette/utils/src/Translator.php',
+        'Nette\\MemberAccessException' => __DIR__ . '/..' . '/nette/utils/src/exceptions.php',
+        'Nette\\NotImplementedException' => __DIR__ . '/..' . '/nette/utils/src/exceptions.php',
+        'Nette\\NotSupportedException' => __DIR__ . '/..' . '/nette/utils/src/exceptions.php',
+        'Nette\\OutOfRangeException' => __DIR__ . '/..' . '/nette/utils/src/exceptions.php',
+        'Nette\\PhpGenerator\\Attribute' => __DIR__ . '/..' . '/nette/php-generator/src/PhpGenerator/Attribute.php',
+        'Nette\\PhpGenerator\\ClassLike' => __DIR__ . '/..' . '/nette/php-generator/src/PhpGenerator/ClassLike.php',
+        'Nette\\PhpGenerator\\ClassType' => __DIR__ . '/..' . '/nette/php-generator/src/PhpGenerator/ClassType.php',
+        'Nette\\PhpGenerator\\Closure' => __DIR__ . '/..' . '/nette/php-generator/src/PhpGenerator/Closure.php',
+        'Nette\\PhpGenerator\\Constant' => __DIR__ . '/..' . '/nette/php-generator/src/PhpGenerator/Constant.php',
+        'Nette\\PhpGenerator\\Dumper' => __DIR__ . '/..' . '/nette/php-generator/src/PhpGenerator/Dumper.php',
+        'Nette\\PhpGenerator\\EnumCase' => __DIR__ . '/..' . '/nette/php-generator/src/PhpGenerator/EnumCase.php',
+        'Nette\\PhpGenerator\\EnumType' => __DIR__ . '/..' . '/nette/php-generator/src/PhpGenerator/EnumType.php',
+        'Nette\\PhpGenerator\\Extractor' => __DIR__ . '/..' . '/nette/php-generator/src/PhpGenerator/Extractor.php',
+        'Nette\\PhpGenerator\\Factory' => __DIR__ . '/..' . '/nette/php-generator/src/PhpGenerator/Factory.php',
+        'Nette\\PhpGenerator\\GlobalFunction' => __DIR__ . '/..' . '/nette/php-generator/src/PhpGenerator/GlobalFunction.php',
+        'Nette\\PhpGenerator\\Helpers' => __DIR__ . '/..' . '/nette/php-generator/src/PhpGenerator/Helpers.php',
+        'Nette\\PhpGenerator\\InterfaceType' => __DIR__ . '/..' . '/nette/php-generator/src/PhpGenerator/InterfaceType.php',
+        'Nette\\PhpGenerator\\Literal' => __DIR__ . '/..' . '/nette/php-generator/src/PhpGenerator/Literal.php',
+        'Nette\\PhpGenerator\\Method' => __DIR__ . '/..' . '/nette/php-generator/src/PhpGenerator/Method.php',
+        'Nette\\PhpGenerator\\Parameter' => __DIR__ . '/..' . '/nette/php-generator/src/PhpGenerator/Parameter.php',
+        'Nette\\PhpGenerator\\PhpFile' => __DIR__ . '/..' . '/nette/php-generator/src/PhpGenerator/PhpFile.php',
+        'Nette\\PhpGenerator\\PhpLiteral' => __DIR__ . '/..' . '/nette/php-generator/src/PhpGenerator/PhpLiteral.php',
+        'Nette\\PhpGenerator\\PhpNamespace' => __DIR__ . '/..' . '/nette/php-generator/src/PhpGenerator/PhpNamespace.php',
+        'Nette\\PhpGenerator\\Printer' => __DIR__ . '/..' . '/nette/php-generator/src/PhpGenerator/Printer.php',
+        'Nette\\PhpGenerator\\PromotedParameter' => __DIR__ . '/..' . '/nette/php-generator/src/PhpGenerator/PromotedParameter.php',
+        'Nette\\PhpGenerator\\Property' => __DIR__ . '/..' . '/nette/php-generator/src/PhpGenerator/Property.php',
+        'Nette\\PhpGenerator\\PsrPrinter' => __DIR__ . '/..' . '/nette/php-generator/src/PhpGenerator/PsrPrinter.php',
+        'Nette\\PhpGenerator\\TraitType' => __DIR__ . '/..' . '/nette/php-generator/src/PhpGenerator/TraitType.php',
+        'Nette\\PhpGenerator\\TraitUse' => __DIR__ . '/..' . '/nette/php-generator/src/PhpGenerator/TraitUse.php',
+        'Nette\\PhpGenerator\\Traits\\AttributeAware' => __DIR__ . '/..' . '/nette/php-generator/src/PhpGenerator/Traits/AttributeAware.php',
+        'Nette\\PhpGenerator\\Traits\\CommentAware' => __DIR__ . '/..' . '/nette/php-generator/src/PhpGenerator/Traits/CommentAware.php',
+        'Nette\\PhpGenerator\\Traits\\ConstantsAware' => __DIR__ . '/..' . '/nette/php-generator/src/PhpGenerator/Traits/ConstantsAware.php',
+        'Nette\\PhpGenerator\\Traits\\FunctionLike' => __DIR__ . '/..' . '/nette/php-generator/src/PhpGenerator/Traits/FunctionLike.php',
+        'Nette\\PhpGenerator\\Traits\\MethodsAware' => __DIR__ . '/..' . '/nette/php-generator/src/PhpGenerator/Traits/MethodsAware.php',
+        'Nette\\PhpGenerator\\Traits\\NameAware' => __DIR__ . '/..' . '/nette/php-generator/src/PhpGenerator/Traits/NameAware.php',
+        'Nette\\PhpGenerator\\Traits\\PropertiesAware' => __DIR__ . '/..' . '/nette/php-generator/src/PhpGenerator/Traits/PropertiesAware.php',
+        'Nette\\PhpGenerator\\Traits\\TraitsAware' => __DIR__ . '/..' . '/nette/php-generator/src/PhpGenerator/Traits/TraitsAware.php',
+        'Nette\\PhpGenerator\\Traits\\VisibilityAware' => __DIR__ . '/..' . '/nette/php-generator/src/PhpGenerator/Traits/VisibilityAware.php',
+        'Nette\\PhpGenerator\\Type' => __DIR__ . '/..' . '/nette/php-generator/src/PhpGenerator/Type.php',
+        'Nette\\SmartObject' => __DIR__ . '/..' . '/nette/utils/src/SmartObject.php',
+        'Nette\\StaticClass' => __DIR__ . '/..' . '/nette/utils/src/StaticClass.php',
+        'Nette\\UnexpectedValueException' => __DIR__ . '/..' . '/nette/utils/src/exceptions.php',
+        'Nette\\Utils\\ArrayHash' => __DIR__ . '/..' . '/nette/utils/src/Utils/ArrayHash.php',
+        'Nette\\Utils\\ArrayList' => __DIR__ . '/..' . '/nette/utils/src/Utils/ArrayList.php',
+        'Nette\\Utils\\Arrays' => __DIR__ . '/..' . '/nette/utils/src/Utils/Arrays.php',
+        'Nette\\Utils\\AssertionException' => __DIR__ . '/..' . '/nette/utils/src/Utils/exceptions.php',
+        'Nette\\Utils\\Callback' => __DIR__ . '/..' . '/nette/utils/src/Utils/Callback.php',
+        'Nette\\Utils\\DateTime' => __DIR__ . '/..' . '/nette/utils/src/Utils/DateTime.php',
+        'Nette\\Utils\\FileInfo' => __DIR__ . '/..' . '/nette/utils/src/Utils/FileInfo.php',
+        'Nette\\Utils\\FileSystem' => __DIR__ . '/..' . '/nette/utils/src/Utils/FileSystem.php',
+        'Nette\\Utils\\Finder' => __DIR__ . '/..' . '/nette/utils/src/Utils/Finder.php',
+        'Nette\\Utils\\Floats' => __DIR__ . '/..' . '/nette/utils/src/Utils/Floats.php',
+        'Nette\\Utils\\Helpers' => __DIR__ . '/..' . '/nette/utils/src/Utils/Helpers.php',
+        'Nette\\Utils\\Html' => __DIR__ . '/..' . '/nette/utils/src/Utils/Html.php',
+        'Nette\\Utils\\IHtmlString' => __DIR__ . '/..' . '/nette/utils/src/compatibility.php',
+        'Nette\\Utils\\Image' => __DIR__ . '/..' . '/nette/utils/src/Utils/Image.php',
+        'Nette\\Utils\\ImageColor' => __DIR__ . '/..' . '/nette/utils/src/Utils/ImageColor.php',
+        'Nette\\Utils\\ImageException' => __DIR__ . '/..' . '/nette/utils/src/Utils/exceptions.php',
+        'Nette\\Utils\\ImageType' => __DIR__ . '/..' . '/nette/utils/src/Utils/ImageType.php',
+        'Nette\\Utils\\Iterables' => __DIR__ . '/..' . '/nette/utils/src/Utils/Iterables.php',
+        'Nette\\Utils\\Json' => __DIR__ . '/..' . '/nette/utils/src/Utils/Json.php',
+        'Nette\\Utils\\JsonException' => __DIR__ . '/..' . '/nette/utils/src/Utils/exceptions.php',
+        'Nette\\Utils\\ObjectHelpers' => __DIR__ . '/..' . '/nette/utils/src/Utils/ObjectHelpers.php',
+        'Nette\\Utils\\Paginator' => __DIR__ . '/..' . '/nette/utils/src/Utils/Paginator.php',
+        'Nette\\Utils\\Random' => __DIR__ . '/..' . '/nette/utils/src/Utils/Random.php',
+        'Nette\\Utils\\Reflection' => __DIR__ . '/..' . '/nette/utils/src/Utils/Reflection.php',
+        'Nette\\Utils\\ReflectionMethod' => __DIR__ . '/..' . '/nette/utils/src/Utils/ReflectionMethod.php',
+        'Nette\\Utils\\RegexpException' => __DIR__ . '/..' . '/nette/utils/src/Utils/exceptions.php',
+        'Nette\\Utils\\Strings' => __DIR__ . '/..' . '/nette/utils/src/Utils/Strings.php',
+        'Nette\\Utils\\Type' => __DIR__ . '/..' . '/nette/utils/src/Utils/Type.php',
+        'Nette\\Utils\\UnknownImageFileException' => __DIR__ . '/..' . '/nette/utils/src/Utils/exceptions.php',
+        'Nette\\Utils\\Validators' => __DIR__ . '/..' . '/nette/utils/src/Utils/Validators.php',
         'PhpToken' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/PhpToken.php',
         'Stringable' => __DIR__ . '/..' . '/myclabs/php-enum/stubs/Stringable.php',
         'UnhandledMatchError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/UnhandledMatchError.php',
@@ -324,11 +427,10 @@ class ComposerStaticInit9122fa90498c7c375ee553d2b3d1f3e7
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit9122fa90498c7c375ee553d2b3d1f3e7::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit9122fa90498c7c375ee553d2b3d1f3e7::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit9122fa90498c7c375ee553d2b3d1f3e7::$prefixesPsr0;
-            $loader->fallbackDirsPsr0 = ComposerStaticInit9122fa90498c7c375ee553d2b3d1f3e7::$fallbackDirsPsr0;
-            $loader->classMap = ComposerStaticInit9122fa90498c7c375ee553d2b3d1f3e7::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit020915b87d4ab8ac8119337ca936e79b::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit020915b87d4ab8ac8119337ca936e79b::$prefixDirsPsr4;
+            $loader->fallbackDirsPsr0 = ComposerStaticInit020915b87d4ab8ac8119337ca936e79b::$fallbackDirsPsr0;
+            $loader->classMap = ComposerStaticInit020915b87d4ab8ac8119337ca936e79b::$classMap;
 
         }, null, ClassLoader::class);
     }

@@ -6,5 +6,7 @@ return [
     // 多语言加载
     // \think\middleware\LoadLangPack::class,
     // Session初始化 或者 'think\middleware\SessionInit'
-    \think\middleware\SessionInit::class
+    \think\middleware\SessionInit::class,
+    // 初始化
+    \app\AppInit::class
 ];

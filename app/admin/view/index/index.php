@@ -22,7 +22,7 @@
             <li class="layui-nav-item" lay-unselect><a v-event="refresh" title="刷新"><i class="layui-icon layui-icon-refresh-3"></i></a></li>
         </ul>
         <ul class="layui-nav layui-layout-right">
-            <li class="layui-nav-item" lay-unselect><a v-event="clearCache" title="缓存" data-url="{:APP_MAP}/index/clear"><i class="layui-icon layui-icon-clear"></i></a></li>
+            <li class="layui-nav-item" lay-unselect><a v-event="clearCache" title="缓存" data-url="{$appMap}/index/clear"><i class="layui-icon layui-icon-clear"></i></a></li>
             <li class="layui-nav-item" lay-unselect><a href="{PUBLIC__PATH}/" target="_blank" title="前台"><i class="layui-icon layui-icon-website"></i></a></li>
             <li class="layui-nav-item" lay-unselect><a v-event="lockScreen" data-url="{PUBLIC__PATH}/static/admin/page/tpl/lock.html" title="锁屏"><i class="layui-icon layui-icon-password"></i></a></li>
             <li class="layui-nav-item" lay-unselect><a v-event="fullScreen" title="全屏"><i class="layui-icon layui-icon-screen-full"></i></a></li>
@@ -31,7 +31,7 @@
                 <dl class="layui-nav-child">
                     <dd><a id="vName"></a></dd><hr>
                     <dd><a href="#/system.manager/index/action=info">个人中心</a></dd><hr><span id="vRole"></span>
-                    <dd><a v-event="logout" data-url="{:APP_MAP}/login/logout">退出</a></dd>
+                    <dd><a v-event="logout" data-url="{$appMap}/login/logout">退出</a></dd>
                 </dl>
             </li>
             <li class="layui-nav-item" lay-unselect><a v-event="popupRight" data-url="{PUBLIC__PATH}/static/admin/page/tpl/theme.html" title="主题"><i class="layui-icon layui-icon-more-vertical"></i></a></li>
@@ -52,7 +52,7 @@
 var $ = jQuery = layui.$;
 layui.config({
     base: "{STATIC__PATH}admin/module/",
-    maps: ("{:APP_MAP}" || "/admin") + "/", // 映射后的后台根路径
+    maps: ("{$appMap}" || "/admin") + "/", // 映射后的后台根路径
     static: "{STATIC__PATH}",  // 静态资源根路径 buildItems.js中有用
     version: "{:VT_VERSION}",  // 框架版本
     bins:{
@@ -88,7 +88,7 @@ layui.config({
         // 构造角色选项
         var r_str = '';
         $.each(res.user.rolem,function(k,val){
-            r_str += (res.user.roleid == val.id ? '<dd style="background-color:#e9cccc;"><a>' : '<dd><a href="{:APP_MAP}/system.manager/index?action=role&roleid='+ val.id +'">') + val.name +'</a></dd>';
+            r_str += (res.user.roleid == val.id ? '<dd style="background-color:#e9cccc;"><a>' : '<dd><a href="{$appMap}/system.manager/index?action=role&roleid='+ val.id +'">') + val.name +'</a></dd>';
         });
         $('#vRole').html(r_str + '<hr>');
     });

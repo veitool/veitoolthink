@@ -98,7 +98,7 @@ abstract class Response
      * @param  mixed  $data 输出数据
      * @param  string $type 输出类型
      * @param  int    $code 状态码
-     * @return Response
+     * @return Response/obj
      */
     public static function create($data = '', string $type = 'html', int $code = 200): Response
     {

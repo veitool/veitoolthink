@@ -2,27 +2,27 @@
     "packages": [
         {
             "name": "aliyuncs/oss-sdk-php",
-            "version": "v2.6.0",
-            "version_normalized": "2.6.0.0",
+            "version": "v2.7.1",
+            "version_normalized": "2.7.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aliyun/aliyun-oss-php-sdk.git",
-                "reference": "572d0f8e099e8630ae7139ed3fdedb926c7a760f"
+                "reference": "ce5d34dae9868237a32248788ea175c7e9da14b1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://repo.huaweicloud.com/repository/php/aliyuncs/oss-sdk-php/v2.6.0/aliyuncs-oss-sdk-php-v2.6.0.zip",
-                "reference": "572d0f8e099e8630ae7139ed3fdedb926c7a760f",
+                "url": "https://api.github.com/repos/aliyun/aliyun-oss-php-sdk/zipball/ce5d34dae9868237a32248788ea175c7e9da14b1",
+                "reference": "ce5d34dae9868237a32248788ea175c7e9da14b1",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3"
             },
             "require-dev": {
-                "phpunit/phpunit": "*",
-                "satooshi/php-coveralls": "*"
+                "php-coveralls/php-coveralls": "*",
+                "phpunit/phpunit": "*"
             },
-            "time": "2022-08-03T08:06:01+00:00",
+            "time": "2024-02-28T11:22:18+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -30,6 +30,7 @@
                     "OSS\\": "src/OSS"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -41,93 +42,110 @@
             ],
             "description": "Aliyun OSS SDK for PHP",
             "homepage": "http://www.aliyun.com/product/oss/",
+            "support": {
+                "issues": "https://github.com/aliyun/aliyun-oss-php-sdk/issues",
+                "source": "https://github.com/aliyun/aliyun-oss-php-sdk/tree/v2.7.1"
+            },
             "install-path": "../aliyuncs/oss-sdk-php"
         },
         {
-            "name": "ezyang/htmlpurifier",
-            "version": "v4.16.0",
-            "version_normalized": "4.16.0.0",
+            "name": "carbonphp/carbon-doctrine-types",
+            "version": "3.2.0",
+            "version_normalized": "3.2.0.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/ezyang/htmlpurifier.git",
-                "reference": "523407fb06eb9e5f3d59889b3978d5bfe94299c8"
+                "url": "https://github.com/CarbonPHP/carbon-doctrine-types.git",
+                "reference": "18ba5ddfec8976260ead6e866180bd5d2f71aa1d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://repo.huaweicloud.com/repository/php/ezyang/htmlpurifier/v4.16.0/ezyang-htmlpurifier-v4.16.0.zip",
-                "reference": "523407fb06eb9e5f3d59889b3978d5bfe94299c8",
+                "url": "https://api.github.com/repos/CarbonPHP/carbon-doctrine-types/zipball/18ba5ddfec8976260ead6e866180bd5d2f71aa1d",
+                "reference": "18ba5ddfec8976260ead6e866180bd5d2f71aa1d",
                 "shasum": ""
             },
             "require": {
-                "php": "~5.6.0 || ~7.0.0 || ~7.1.0 || ~7.2.0 || ~7.3.0 || ~7.4.0 || ~8.0.0 || ~8.1.0 || ~8.2.0"
+                "php": "^8.1"
+            },
+            "conflict": {
+                "doctrine/dbal": "<4.0.0 || >=5.0.0"
             },
             "require-dev": {
-                "cerdic/css-tidy": "^1.7 || ^2.0",
-                "simpletest/simpletest": "dev-master"
+                "doctrine/dbal": "^4.0.0",
+                "nesbot/carbon": "^2.71.0 || ^3.0.0",
+                "phpunit/phpunit": "^10.3"
             },
-            "suggest": {
-                "cerdic/css-tidy": "If you want to use the filter 'Filter.ExtractStyleBlocks'.",
-                "ext-bcmath": "Used for unit conversion and imagecrash protection",
-                "ext-iconv": "Converts text to and from non-UTF-8 encodings",
-                "ext-tidy": "Used for pretty-printing HTML"
-            },
-            "time": "2022-09-18T07:06:19+00:00",
+            "time": "2024-02-09T16:56:22+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
-                "files": [
-                    "library/HTMLPurifier.composer.php"
-                ],
-                "psr-0": {
-                    "HTMLPurifier": "library/"
-                },
-                "exclude-from-classmap": [
-                    "/library/HTMLPurifier/Language/"
-                ]
+                "psr-4": {
+                    "Carbon\\Doctrine\\": "src/Carbon/Doctrine/"
+                }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "LGPL-2.1-or-later"
+                "MIT"
             ],
             "authors": [
                 {
-                    "name": "Edward Z. Yang",
-                    "email": "admin@htmlpurifier.org",
-                    "homepage": "http://ezyang.com"
+                    "name": "KyleKatarn",
+                    "email": "kylekatarnls@gmail.com"
                 }
             ],
-            "description": "Standards compliant HTML filter written in PHP",
-            "homepage": "http://htmlpurifier.org/",
+            "description": "Types to use Carbon in Doctrine",
             "keywords": [
-                "html"
+                "carbon",
+                "date",
+                "datetime",
+                "doctrine",
+                "time"
             ],
-            "install-path": "../ezyang/htmlpurifier"
+            "support": {
+                "issues": "https://github.com/CarbonPHP/carbon-doctrine-types/issues",
+                "source": "https://github.com/CarbonPHP/carbon-doctrine-types/tree/3.2.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/kylekatarnls",
+                    "type": "github"
+                },
+                {
+                    "url": "https://opencollective.com/Carbon",
+                    "type": "open_collective"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/nesbot/carbon",
+                    "type": "tidelift"
+                }
+            ],
+            "install-path": "../carbonphp/carbon-doctrine-types"
         },
         {
             "name": "guzzlehttp/command",
-            "version": "1.3.0",
-            "version_normalized": "1.3.0.0",
+            "version": "1.3.1",
+            "version_normalized": "1.3.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/command.git",
-                "reference": "3372bcfd79d4b357b6871665bf06155515e8d844"
+                "reference": "0eebc653784f4902b3272e826fe8e88743d14e77"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://repo.huaweicloud.com/repository/php/guzzlehttp/command/1.3.0/guzzlehttp-command-1.3.0.zip",
-                "reference": "3372bcfd79d4b357b6871665bf06155515e8d844",
+                "url": "https://api.github.com/repos/guzzle/command/zipball/0eebc653784f4902b3272e826fe8e88743d14e77",
+                "reference": "0eebc653784f4902b3272e826fe8e88743d14e77",
                 "shasum": ""
             },
             "require": {
-                "guzzlehttp/guzzle": "^7.5.1",
-                "guzzlehttp/promises": "^1.5.3 || ^2.0",
-                "guzzlehttp/psr7": "^1.9.1 || ^2.4.5",
+                "guzzlehttp/guzzle": "^7.8",
+                "guzzlehttp/promises": "^1.5.3 || ^2.0.1",
+                "guzzlehttp/psr7": "^1.9.1 || ^2.5.1",
                 "php": "^7.2.5 || ^8.0"
             },
             "require-dev": {
-                "bamarni/composer-bin-plugin": "^1.8.1",
+                "bamarni/composer-bin-plugin": "^1.8.2",
                 "phpunit/phpunit": "^8.5.19 || ^9.5.8"
             },
-            "time": "2023-05-21T14:15:09+00:00",
+            "time": "2023-12-03T20:46:20+00:00",
             "type": "library",
             "extra": {
                 "bamarni-bin": {
@@ -141,6 +159,7 @@
                     "GuzzleHttp\\Command\\": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -167,6 +186,10 @@
                 }
             ],
             "description": "Provides the foundation for building command-based web service clients",
+            "support": {
+                "issues": "https://github.com/guzzle/command/issues",
+                "source": "https://github.com/guzzle/command/tree/1.3.1"
+            },
             "funding": [
                 {
                     "url": "https://github.com/GrahamCampbell",
@@ -185,17 +208,17 @@
         },
         {
             "name": "guzzlehttp/guzzle",
-            "version": "7.8.0",
-            "version_normalized": "7.8.0.0",
+            "version": "7.8.1",
+            "version_normalized": "7.8.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "1110f66a6530a40fe7aea0378fe608ee2b2248f9"
+                "reference": "41042bc7ab002487b876a0683fc8dce04ddce104"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://repo.huaweicloud.com/repository/php/guzzlehttp/guzzle/7.8.0/guzzlehttp-guzzle-7.8.0.zip",
-                "reference": "1110f66a6530a40fe7aea0378fe608ee2b2248f9",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/41042bc7ab002487b876a0683fc8dce04ddce104",
+                "reference": "41042bc7ab002487b876a0683fc8dce04ddce104",
                 "shasum": ""
             },
             "require": {
@@ -210,11 +233,11 @@
                 "psr/http-client-implementation": "1.0"
             },
             "require-dev": {
-                "bamarni/composer-bin-plugin": "^1.8.1",
+                "bamarni/composer-bin-plugin": "^1.8.2",
                 "ext-curl": "*",
                 "php-http/client-integration-tests": "dev-master#2c025848417c1135031fdf9c728ee53d0a7ceaee as 3.0.999",
                 "php-http/message-factory": "^1.1",
-                "phpunit/phpunit": "^8.5.29 || ^9.5.23",
+                "phpunit/phpunit": "^8.5.36 || ^9.6.15",
                 "psr/log": "^1.1 || ^2.0 || ^3.0"
             },
             "suggest": {
@@ -222,7 +245,7 @@
                 "ext-intl": "Required for Internationalized Domain Name (IDN) support",
                 "psr/log": "Required for using the Log middleware"
             },
-            "time": "2023-08-27T10:20:53+00:00",
+            "time": "2023-12-03T20:35:24+00:00",
             "type": "library",
             "extra": {
                 "bamarni-bin": {
@@ -239,6 +262,7 @@
                     "GuzzleHttp\\": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -291,6 +315,10 @@
                 "rest",
                 "web service"
             ],
+            "support": {
+                "issues": "https://github.com/guzzle/guzzle/issues",
+                "source": "https://github.com/guzzle/guzzle/tree/7.8.1"
+            },
             "funding": [
                 {
                     "url": "https://github.com/GrahamCampbell",
@@ -309,34 +337,34 @@
         },
         {
             "name": "guzzlehttp/guzzle-services",
-            "version": "1.4.0",
-            "version_normalized": "1.4.0.0",
+            "version": "1.4.1",
+            "version_normalized": "1.4.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle-services.git",
-                "reference": "f4bb1c205152a56741624b88753732e01a60565c"
+                "reference": "bcab7c0d61672b606510a6fe5af3039d04968c0f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://repo.huaweicloud.com/repository/php/guzzlehttp/guzzle-services/1.4.0/guzzlehttp-guzzle-services-1.4.0.zip",
-                "reference": "f4bb1c205152a56741624b88753732e01a60565c",
+                "url": "https://api.github.com/repos/guzzle/guzzle-services/zipball/bcab7c0d61672b606510a6fe5af3039d04968c0f",
+                "reference": "bcab7c0d61672b606510a6fe5af3039d04968c0f",
                 "shasum": ""
             },
             "require": {
-                "guzzlehttp/command": "^1.3",
-                "guzzlehttp/guzzle": "^7.7",
-                "guzzlehttp/psr7": "^1.9.1 || ^2.4.5",
+                "guzzlehttp/command": "^1.3.1",
+                "guzzlehttp/guzzle": "^7.8",
+                "guzzlehttp/psr7": "^1.9.1 || ^2.5.1",
                 "guzzlehttp/uri-template": "^1.0.1",
                 "php": "^7.2.5 || ^8.0"
             },
             "require-dev": {
-                "bamarni/composer-bin-plugin": "^1.8.1",
+                "bamarni/composer-bin-plugin": "^1.8.2",
                 "phpunit/phpunit": "^8.5.19 || ^9.5.8"
             },
             "suggest": {
                 "gimler/guzzle-description-loader": "^0.0.4"
             },
-            "time": "2023-05-21T14:21:30+00:00",
+            "time": "2023-12-03T20:48:14+00:00",
             "type": "library",
             "extra": {
                 "bamarni-bin": {
@@ -350,6 +378,7 @@
                     "GuzzleHttp\\Command\\Guzzle\\": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -376,6 +405,10 @@
                 }
             ],
             "description": "Provides an implementation of the Guzzle Command library that uses Guzzle service descriptions to describe web services, serialize requests, and parse responses into easy to use model structures.",
+            "support": {
+                "issues": "https://github.com/guzzle/guzzle-services/issues",
+                "source": "https://github.com/guzzle/guzzle-services/tree/1.4.1"
+            },
             "funding": [
                 {
                     "url": "https://github.com/GrahamCampbell",
@@ -394,27 +427,27 @@
         },
         {
             "name": "guzzlehttp/promises",
-            "version": "2.0.1",
-            "version_normalized": "2.0.1.0",
+            "version": "2.0.2",
+            "version_normalized": "2.0.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/promises.git",
-                "reference": "111166291a0f8130081195ac4556a5587d7f1b5d"
+                "reference": "bbff78d96034045e58e13dedd6ad91b5d1253223"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://repo.huaweicloud.com/repository/php/guzzlehttp/promises/2.0.1/guzzlehttp-promises-2.0.1.zip",
-                "reference": "111166291a0f8130081195ac4556a5587d7f1b5d",
+                "url": "https://api.github.com/repos/guzzle/promises/zipball/bbff78d96034045e58e13dedd6ad91b5d1253223",
+                "reference": "bbff78d96034045e58e13dedd6ad91b5d1253223",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.2.5 || ^8.0"
             },
             "require-dev": {
-                "bamarni/composer-bin-plugin": "^1.8.1",
-                "phpunit/phpunit": "^8.5.29 || ^9.5.23"
+                "bamarni/composer-bin-plugin": "^1.8.2",
+                "phpunit/phpunit": "^8.5.36 || ^9.6.15"
             },
-            "time": "2023-08-03T15:11:55+00:00",
+            "time": "2023-12-03T20:19:20+00:00",
             "type": "library",
             "extra": {
                 "bamarni-bin": {
@@ -428,6 +461,7 @@
                     "GuzzleHttp\\Promise\\": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -457,6 +491,10 @@
             "keywords": [
                 "promise"
             ],
+            "support": {
+                "issues": "https://github.com/guzzle/promises/issues",
+                "source": "https://github.com/guzzle/promises/tree/2.0.2"
+            },
             "funding": [
                 {
                     "url": "https://github.com/GrahamCampbell",
@@ -475,17 +513,17 @@
         },
         {
             "name": "guzzlehttp/psr7",
-            "version": "2.6.1",
-            "version_normalized": "2.6.1.0",
+            "version": "2.6.2",
+            "version_normalized": "2.6.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/psr7.git",
-                "reference": "be45764272e8873c72dbe3d2edcfdfcc3bc9f727"
+                "reference": "45b30f99ac27b5ca93cb4831afe16285f57b8221"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://repo.huaweicloud.com/repository/php/guzzlehttp/psr7/2.6.1/guzzlehttp-psr7-2.6.1.zip",
-                "reference": "be45764272e8873c72dbe3d2edcfdfcc3bc9f727",
+                "url": "https://api.github.com/repos/guzzle/psr7/zipball/45b30f99ac27b5ca93cb4831afe16285f57b8221",
+                "reference": "45b30f99ac27b5ca93cb4831afe16285f57b8221",
                 "shasum": ""
             },
             "require": {
@@ -499,14 +537,14 @@
                 "psr/http-message-implementation": "1.0"
             },
             "require-dev": {
-                "bamarni/composer-bin-plugin": "^1.8.1",
+                "bamarni/composer-bin-plugin": "^1.8.2",
                 "http-interop/http-factory-tests": "^0.9",
-                "phpunit/phpunit": "^8.5.29 || ^9.5.23"
+                "phpunit/phpunit": "^8.5.36 || ^9.6.15"
             },
             "suggest": {
                 "laminas/laminas-httphandlerrunner": "Emit PSR-7 responses"
             },
-            "time": "2023-08-27T10:13:57+00:00",
+            "time": "2023-12-03T20:05:35+00:00",
             "type": "library",
             "extra": {
                 "bamarni-bin": {
@@ -520,6 +558,7 @@
                     "GuzzleHttp\\Psr7\\": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -571,6 +610,10 @@
                 "uri",
                 "url"
             ],
+            "support": {
+                "issues": "https://github.com/guzzle/psr7/issues",
+                "source": "https://github.com/guzzle/psr7/tree/2.6.2"
+            },
             "funding": [
                 {
                     "url": "https://github.com/GrahamCampbell",
@@ -589,36 +632,43 @@
         },
         {
             "name": "guzzlehttp/uri-template",
-            "version": "v1.0.2",
-            "version_normalized": "1.0.2.0",
+            "version": "v1.0.3",
+            "version_normalized": "1.0.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/uri-template.git",
-                "reference": "61bf437fc2197f587f6857d3ff903a24f1731b5d"
+                "reference": "ecea8feef63bd4fef1f037ecb288386999ecc11c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://repo.huaweicloud.com/repository/php/guzzlehttp/uri-template/v1.0.2/guzzlehttp-uri-template-v1.0.2.zip",
-                "reference": "61bf437fc2197f587f6857d3ff903a24f1731b5d",
+                "url": "https://api.github.com/repos/guzzle/uri-template/zipball/ecea8feef63bd4fef1f037ecb288386999ecc11c",
+                "reference": "ecea8feef63bd4fef1f037ecb288386999ecc11c",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.2.5 || ^8.0",
-                "symfony/polyfill-php80": "^1.17"
+                "symfony/polyfill-php80": "^1.24"
             },
             "require-dev": {
-                "bamarni/composer-bin-plugin": "^1.8.1",
-                "phpunit/phpunit": "^8.5.19 || ^9.5.8",
+                "bamarni/composer-bin-plugin": "^1.8.2",
+                "phpunit/phpunit": "^8.5.36 || ^9.6.15",
                 "uri-template/tests": "1.0.0"
             },
-            "time": "2023-08-27T10:19:19+00:00",
+            "time": "2023-12-03T19:50:20+00:00",
             "type": "library",
+            "extra": {
+                "bamarni-bin": {
+                    "bin-links": true,
+                    "forward-command": false
+                }
+            },
             "installation-source": "dist",
             "autoload": {
                 "psr-4": {
                     "GuzzleHttp\\UriTemplate\\": "src"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -649,6 +699,10 @@
                 "guzzlehttp",
                 "uri-template"
             ],
+            "support": {
+                "issues": "https://github.com/guzzle/uri-template/issues",
+                "source": "https://github.com/guzzle/uri-template/tree/v1.0.3"
+            },
             "funding": [
                 {
                     "url": "https://github.com/GrahamCampbell",
@@ -666,62 +720,6 @@
             "install-path": "../guzzlehttp/uri-template"
         },
         {
-            "name": "laminas/laminas-escaper",
-            "version": "2.13.0",
-            "version_normalized": "2.13.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/laminas/laminas-escaper.git",
-                "reference": "af459883f4018d0f8a0c69c7a209daef3bf973ba"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://repo.huaweicloud.com/repository/php/laminas/laminas-escaper/2.13.0/laminas-laminas-escaper-2.13.0.zip",
-                "reference": "af459883f4018d0f8a0c69c7a209daef3bf973ba",
-                "shasum": ""
-            },
-            "require": {
-                "ext-ctype": "*",
-                "ext-mbstring": "*",
-                "php": "~8.1.0 || ~8.2.0 || ~8.3.0"
-            },
-            "conflict": {
-                "zendframework/zend-escaper": "*"
-            },
-            "require-dev": {
-                "infection/infection": "^0.27.0",
-                "laminas/laminas-coding-standard": "~2.5.0",
-                "maglnet/composer-require-checker": "^3.8.0",
-                "phpunit/phpunit": "^9.6.7",
-                "psalm/plugin-phpunit": "^0.18.4",
-                "vimeo/psalm": "^5.9"
-            },
-            "time": "2023-10-10T08:35:13+00:00",
-            "type": "library",
-            "installation-source": "dist",
-            "autoload": {
-                "psr-4": {
-                    "Laminas\\Escaper\\": "src/"
-                }
-            },
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "description": "Securely and safely escape HTML, HTML attributes, JavaScript, CSS, and URLs",
-            "homepage": "https://laminas.dev",
-            "keywords": [
-                "escaper",
-                "laminas"
-            ],
-            "funding": [
-                {
-                    "url": "https://funding.communitybridge.org/projects/laminas-project",
-                    "type": "community_bridge"
-                }
-            ],
-            "install-path": "../laminas/laminas-escaper"
-        },
-        {
             "name": "league/flysystem",
             "version": "2.5.0",
             "version_normalized": "2.5.0.0",
@@ -732,7 +730,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://repo.huaweicloud.com/repository/php/league/flysystem/2.5.0/league-flysystem-2.5.0.zip",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/8aaffb653c5777781b0f7f69a5d937baf7ab6cdb",
                 "reference": "8aaffb653c5777781b0f7f69a5d937baf7ab6cdb",
                 "shasum": ""
             },
@@ -766,6 +764,7 @@
                     "League\\Flysystem\\": "src"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -789,6 +788,10 @@
                 "sftp",
                 "storage"
             ],
+            "support": {
+                "issues": "https://github.com/thephpleague/flysystem/issues",
+                "source": "https://github.com/thephpleague/flysystem/tree/2.5.0"
+            },
             "funding": [
                 {
                     "url": "https://ecologi.com/frankdejonge",
@@ -807,17 +810,17 @@
         },
         {
             "name": "league/mime-type-detection",
-            "version": "1.14.0",
-            "version_normalized": "1.14.0.0",
+            "version": "1.15.0",
+            "version_normalized": "1.15.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/mime-type-detection.git",
-                "reference": "b6a5854368533df0295c5761a0253656a2e52d9e"
+                "reference": "ce0f4d1e8a6f4eb0ddff33f57c69c50fd09f4301"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://repo.huaweicloud.com/repository/php/league/mime-type-detection/1.14.0/league-mime-type-detection-1.14.0.zip",
-                "reference": "b6a5854368533df0295c5761a0253656a2e52d9e",
+                "url": "https://api.github.com/repos/thephpleague/mime-type-detection/zipball/ce0f4d1e8a6f4eb0ddff33f57c69c50fd09f4301",
+                "reference": "ce0f4d1e8a6f4eb0ddff33f57c69c50fd09f4301",
                 "shasum": ""
             },
             "require": {
@@ -829,7 +832,7 @@
                 "phpstan/phpstan": "^0.12.68",
                 "phpunit/phpunit": "^8.5.8 || ^9.3 || ^10.0"
             },
-            "time": "2023-10-17T14:13:20+00:00",
+            "time": "2024-01-28T23:22:08+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -837,6 +840,7 @@
                     "League\\MimeTypeDetection\\": "src"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -847,6 +851,10 @@
                 }
             ],
             "description": "Mime-type detection for Flysystem",
+            "support": {
+                "issues": "https://github.com/thephpleague/mime-type-detection/issues",
+                "source": "https://github.com/thephpleague/mime-type-detection/tree/1.15.0"
+            },
             "funding": [
                 {
                     "url": "https://github.com/frankdejonge",
@@ -870,7 +878,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://repo.huaweicloud.com/repository/php/maennchen/zipstream-php/3.1.0/maennchen-zipstream-php-3.1.0.zip",
+                "url": "https://api.github.com/repos/maennchen/ZipStream-PHP/zipball/b8174494eda667f7d13876b4a7bfef0f62a7c0d1",
                 "reference": "b8174494eda667f7d13876b4a7bfef0f62a7c0d1",
                 "shasum": ""
             },
@@ -900,6 +908,7 @@
                     "ZipStream\\": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -926,6 +935,10 @@
                 "stream",
                 "zip"
             ],
+            "support": {
+                "issues": "https://github.com/maennchen/ZipStream-PHP/issues",
+                "source": "https://github.com/maennchen/ZipStream-PHP/tree/3.1.0"
+            },
             "funding": [
                 {
                     "url": "https://github.com/maennchen",
@@ -949,7 +962,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://repo.huaweicloud.com/repository/php/markbaker/complex/3.0.2/markbaker-complex-3.0.2.zip",
+                "url": "https://api.github.com/repos/MarkBaker/PHPComplex/zipball/95c56caa1cf5c766ad6d65b6344b807c1e8405b9",
                 "reference": "95c56caa1cf5c766ad6d65b6344b807c1e8405b9",
                 "shasum": ""
             },
@@ -970,6 +983,7 @@
                     "Complex\\": "classes/src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -985,6 +999,10 @@
                 "complex",
                 "mathematics"
             ],
+            "support": {
+                "issues": "https://github.com/MarkBaker/PHPComplex/issues",
+                "source": "https://github.com/MarkBaker/PHPComplex/tree/3.0.2"
+            },
             "install-path": "../markbaker/complex"
         },
         {
@@ -998,7 +1016,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://repo.huaweicloud.com/repository/php/markbaker/matrix/3.0.1/markbaker-matrix-3.0.1.zip",
+                "url": "https://api.github.com/repos/MarkBaker/PHPMatrix/zipball/728434227fe21be27ff6d86621a1b13107a2562c",
                 "reference": "728434227fe21be27ff6d86621a1b13107a2562c",
                 "shasum": ""
             },
@@ -1023,6 +1041,7 @@
                     "Matrix\\": "classes/src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1039,6 +1058,10 @@
                 "matrix",
                 "vector"
             ],
+            "support": {
+                "issues": "https://github.com/MarkBaker/PHPMatrix/issues",
+                "source": "https://github.com/MarkBaker/PHPMatrix/tree/3.0.1"
+            },
             "install-path": "../markbaker/matrix"
         },
         {
@@ -1052,7 +1075,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://repo.huaweicloud.com/repository/php/myclabs/php-enum/1.8.4/myclabs-php-enum-1.8.4.zip",
+                "url": "https://api.github.com/repos/myclabs/php-enum/zipball/a867478eae49c9f59ece437ae7f9506bfaa27483",
                 "reference": "a867478eae49c9f59ece437ae7f9506bfaa27483",
                 "shasum": ""
             },
@@ -1076,6 +1099,7 @@
                     "stubs/Stringable.php"
                 ]
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1090,6 +1114,10 @@
             "keywords": [
                 "enum"
             ],
+            "support": {
+                "issues": "https://github.com/myclabs/php-enum/issues",
+                "source": "https://github.com/myclabs/php-enum/tree/1.8.4"
+            },
             "funding": [
                 {
                     "url": "https://github.com/mnapoli",
@@ -1113,7 +1141,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://repo.huaweicloud.com/repository/php/nelexa/zip/4.0.2/nelexa-zip-4.0.2.zip",
+                "url": "https://api.github.com/repos/Ne-Lexa/php-zip/zipball/88a1b6549be813278ff2dd3b6b2ac188827634a7",
                 "reference": "88a1b6549be813278ff2dd3b6b2ac188827634a7",
                 "shasum": ""
             },
@@ -1151,6 +1179,7 @@
                     "PhpZip\\": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1171,24 +1200,29 @@
                 "zip",
                 "ziparchive"
             ],
+            "support": {
+                "issues": "https://github.com/Ne-Lexa/php-zip/issues",
+                "source": "https://github.com/Ne-Lexa/php-zip/tree/4.0.2"
+            },
             "install-path": "../nelexa/zip"
         },
         {
             "name": "nesbot/carbon",
-            "version": "2.71.0",
-            "version_normalized": "2.71.0.0",
+            "version": "2.72.3",
+            "version_normalized": "2.72.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/briannesbitt/Carbon.git",
-                "reference": "98276233188583f2ff845a0f992a235472d9466a"
+                "reference": "0c6fd108360c562f6e4fd1dedb8233b423e91c83"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://repo.huaweicloud.com/repository/php/nesbot/carbon/2.71.0/nesbot-carbon-2.71.0.zip",
-                "reference": "98276233188583f2ff845a0f992a235472d9466a",
+                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/0c6fd108360c562f6e4fd1dedb8233b423e91c83",
+                "reference": "0c6fd108360c562f6e4fd1dedb8233b423e91c83",
                 "shasum": ""
             },
             "require": {
+                "carbonphp/carbon-doctrine-types": "*",
                 "ext-json": "*",
                 "php": "^7.1.8 || ^8.0",
                 "psr/clock": "^1.0",
@@ -1200,8 +1234,8 @@
                 "psr/clock-implementation": "1.0"
             },
             "require-dev": {
-                "doctrine/dbal": "^2.0 || ^3.1.4",
-                "doctrine/orm": "^2.7",
+                "doctrine/dbal": "^2.0 || ^3.1.4 || ^4.0",
+                "doctrine/orm": "^2.7 || ^3.0",
                 "friendsofphp/php-cs-fixer": "^3.0",
                 "kylekatarnls/multi-tester": "^2.0",
                 "ondrejmirtes/better-reflection": "*",
@@ -1212,7 +1246,7 @@
                 "phpunit/phpunit": "^7.5.20 || ^8.5.26 || ^9.5.20",
                 "squizlabs/php_codesniffer": "^3.4"
             },
-            "time": "2023-09-25T11:31:05+00:00",
+            "time": "2024-01-25T10:35:09+00:00",
             "bin": [
                 "bin/carbon"
             ],
@@ -1239,6 +1273,7 @@
                     "Carbon\\": "src/Carbon/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1260,6 +1295,11 @@
                 "datetime",
                 "time"
             ],
+            "support": {
+                "docs": "https://carbon.nesbot.com/docs",
+                "issues": "https://github.com/briannesbitt/Carbon/issues",
+                "source": "https://github.com/briannesbitt/Carbon"
+            },
             "funding": [
                 {
                     "url": "https://github.com/sponsors/kylekatarnls",
@@ -1277,18 +1317,292 @@
             "install-path": "../nesbot/carbon"
         },
         {
-            "name": "phpoffice/phpspreadsheet",
-            "version": "1.29.0",
-            "version_normalized": "1.29.0.0",
+            "name": "nette/php-generator",
+            "version": "v4.1.5",
+            "version_normalized": "4.1.5.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/PHPOffice/PhpSpreadsheet.git",
-                "reference": "fde2ccf55eaef7e86021ff1acce26479160a0fa0"
+                "url": "https://github.com/nette/php-generator.git",
+                "reference": "690b00d81d42d5633e4457c43ef9754573b6f9d6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://repo.huaweicloud.com/repository/php/phpoffice/phpspreadsheet/1.29.0/phpoffice-phpspreadsheet-1.29.0.zip",
-                "reference": "fde2ccf55eaef7e86021ff1acce26479160a0fa0",
+                "url": "https://api.github.com/repos/nette/php-generator/zipball/690b00d81d42d5633e4457c43ef9754573b6f9d6",
+                "reference": "690b00d81d42d5633e4457c43ef9754573b6f9d6",
+                "shasum": ""
+            },
+            "require": {
+                "nette/utils": "^3.2.9 || ^4.0",
+                "php": "8.0 - 8.3"
+            },
+            "require-dev": {
+                "jetbrains/phpstorm-attributes": "dev-master",
+                "nette/tester": "^2.4",
+                "nikic/php-parser": "^4.18 || ^5.0",
+                "phpstan/phpstan": "^1.0",
+                "tracy/tracy": "^2.8"
+            },
+            "suggest": {
+                "nikic/php-parser": "to use ClassType::from(withBodies: true) & ClassType::fromCode()"
+            },
+            "time": "2024-05-12T17:31:02+00:00",
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "4.1-dev"
+                }
+            },
+            "installation-source": "dist",
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause",
+                "GPL-2.0-only",
+                "GPL-3.0-only"
+            ],
+            "authors": [
+                {
+                    "name": "David Grudl",
+                    "homepage": "https://davidgrudl.com"
+                },
+                {
+                    "name": "Nette Community",
+                    "homepage": "https://nette.org/contributors"
+                }
+            ],
+            "description": "🐘 Nette PHP Generator: generates neat PHP code for you. Supports new PHP 8.3 features.",
+            "homepage": "https://nette.org",
+            "keywords": [
+                "code",
+                "nette",
+                "php",
+                "scaffolding"
+            ],
+            "support": {
+                "issues": "https://github.com/nette/php-generator/issues",
+                "source": "https://github.com/nette/php-generator/tree/v4.1.5"
+            },
+            "install-path": "../nette/php-generator"
+        },
+        {
+            "name": "nette/utils",
+            "version": "v4.0.4",
+            "version_normalized": "4.0.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nette/utils.git",
+                "reference": "d3ad0aa3b9f934602cb3e3902ebccf10be34d218"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nette/utils/zipball/d3ad0aa3b9f934602cb3e3902ebccf10be34d218",
+                "reference": "d3ad0aa3b9f934602cb3e3902ebccf10be34d218",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.0 <8.4"
+            },
+            "conflict": {
+                "nette/finder": "<3",
+                "nette/schema": "<1.2.2"
+            },
+            "require-dev": {
+                "jetbrains/phpstorm-attributes": "dev-master",
+                "nette/tester": "^2.5",
+                "phpstan/phpstan": "^1.0",
+                "tracy/tracy": "^2.9"
+            },
+            "suggest": {
+                "ext-gd": "to use Image",
+                "ext-iconv": "to use Strings::webalize(), toAscii(), chr() and reverse()",
+                "ext-intl": "to use Strings::webalize(), toAscii(), normalize() and compare()",
+                "ext-json": "to use Nette\\Utils\\Json",
+                "ext-mbstring": "to use Strings::lower() etc...",
+                "ext-tokenizer": "to use Nette\\Utils\\Reflection::getUseStatements()"
+            },
+            "time": "2024-01-17T16:50:36+00:00",
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "4.0-dev"
+                }
+            },
+            "installation-source": "dist",
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause",
+                "GPL-2.0-only",
+                "GPL-3.0-only"
+            ],
+            "authors": [
+                {
+                    "name": "David Grudl",
+                    "homepage": "https://davidgrudl.com"
+                },
+                {
+                    "name": "Nette Community",
+                    "homepage": "https://nette.org/contributors"
+                }
+            ],
+            "description": "🛠  Nette Utils: lightweight utilities for string & array manipulation, image handling, safe JSON encoding/decoding, validation, slug or strong password generating etc.",
+            "homepage": "https://nette.org",
+            "keywords": [
+                "array",
+                "core",
+                "datetime",
+                "images",
+                "json",
+                "nette",
+                "paginator",
+                "password",
+                "slugify",
+                "string",
+                "unicode",
+                "utf-8",
+                "utility",
+                "validation"
+            ],
+            "support": {
+                "issues": "https://github.com/nette/utils/issues",
+                "source": "https://github.com/nette/utils/tree/v4.0.4"
+            },
+            "install-path": "../nette/utils"
+        },
+        {
+            "name": "open-smf/connection-pool",
+            "version": "v2.0.0",
+            "version_normalized": "2.0.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/open-smf/connection-pool.git",
+                "reference": "b7b06d26385540bc528f1a8567c8067b36715368"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/open-smf/connection-pool/zipball/b7b06d26385540bc528f1a8567c8067b36715368",
+                "reference": "b7b06d26385540bc528f1a8567c8067b36715368",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "ext-swoole": ">=4.2.9",
+                "php": ">=8.0.0"
+            },
+            "require-dev": {
+                "swoole/ide-helper": "@dev"
+            },
+            "suggest": {
+                "ext-redis": "A PHP extension for Redis."
+            },
+            "time": "2023-08-25T10:17:56+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "Smf\\ConnectionPool\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Xie Biao",
+                    "email": "hhxsv5@sina.com"
+                }
+            ],
+            "description": "A common connection pool based on Swoole is usually used as the database connection pool.",
+            "homepage": "https://github.com/open-smf/connection-pool",
+            "keywords": [
+                "connection-pool",
+                "database-connection-pool",
+                "swoole"
+            ],
+            "support": {
+                "issues": "https://github.com/open-smf/connection-pool/issues",
+                "source": "https://github.com/open-smf/connection-pool"
+            },
+            "install-path": "../open-smf/connection-pool"
+        },
+        {
+            "name": "phpoffice/math",
+            "version": "0.1.0",
+            "version_normalized": "0.1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PHPOffice/Math.git",
+                "reference": "f0f8cad98624459c540cdd61d2a174d834471773"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PHPOffice/Math/zipball/f0f8cad98624459c540cdd61d2a174d834471773",
+                "reference": "f0f8cad98624459c540cdd61d2a174d834471773",
+                "shasum": ""
+            },
+            "require": {
+                "ext-dom": "*",
+                "ext-xml": "*",
+                "php": "^7.1|^8.0"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^0.12.88 || ^1.0.0",
+                "phpunit/phpunit": "^7.0 || ^9.0"
+            },
+            "time": "2023-09-25T12:08:20+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "PhpOffice\\Math\\": "src/Math/",
+                    "Tests\\PhpOffice\\Math\\": "tests/Math/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Progi1984",
+                    "homepage": "https://lefevre.dev"
+                }
+            ],
+            "description": "Math - Manipulate Math Formula",
+            "homepage": "https://phpoffice.github.io/Math/",
+            "keywords": [
+                "MathML",
+                "officemathml",
+                "php"
+            ],
+            "support": {
+                "issues": "https://github.com/PHPOffice/Math/issues",
+                "source": "https://github.com/PHPOffice/Math/tree/0.1.0"
+            },
+            "install-path": "../phpoffice/math"
+        },
+        {
+            "name": "phpoffice/phpspreadsheet",
+            "version": "2.1.0",
+            "version_normalized": "2.1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PHPOffice/PhpSpreadsheet.git",
+                "reference": "dbed77bd3a0f68f96c0dd68ad4499d5674fecc3e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/dbed77bd3a0f68f96c0dd68ad4499d5674fecc3e",
+                "reference": "dbed77bd3a0f68f96c0dd68ad4499d5674fecc3e",
                 "shasum": ""
             },
             "require": {
@@ -1305,25 +1619,24 @@
                 "ext-xmlwriter": "*",
                 "ext-zip": "*",
                 "ext-zlib": "*",
-                "ezyang/htmlpurifier": "^4.15",
                 "maennchen/zipstream-php": "^2.1 || ^3.0",
                 "markbaker/complex": "^3.0",
                 "markbaker/matrix": "^3.0",
-                "php": "^7.4 || ^8.0",
+                "php": "^8.0",
                 "psr/http-client": "^1.0",
                 "psr/http-factory": "^1.0",
                 "psr/simple-cache": "^1.0 || ^2.0 || ^3.0"
             },
             "require-dev": {
                 "dealerdirect/phpcodesniffer-composer-installer": "dev-main",
-                "dompdf/dompdf": "^1.0 || ^2.0",
+                "dompdf/dompdf": "^2.0",
                 "friendsofphp/php-cs-fixer": "^3.2",
                 "mitoteam/jpgraph": "^10.3",
                 "mpdf/mpdf": "^8.1.1",
                 "phpcompatibility/php-compatibility": "^9.3",
                 "phpstan/phpstan": "^1.1",
                 "phpstan/phpstan-phpunit": "^1.0",
-                "phpunit/phpunit": "^8.5 || ^9.0 || ^10.0",
+                "phpunit/phpunit": "^9.6",
                 "squizlabs/php_codesniffer": "^3.7",
                 "tecnickcom/tcpdf": "^6.5"
             },
@@ -1334,7 +1647,7 @@
                 "mpdf/mpdf": "Option for rendering PDF with PDF Writer",
                 "tecnickcom/tcpdf": "Option for rendering PDF with PDF Writer"
             },
-            "time": "2023-06-14T22:48:31+00:00",
+            "time": "2024-05-11T04:17:56+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -1342,6 +1655,7 @@
                     "PhpOffice\\PhpSpreadsheet\\": "src/PhpSpreadsheet"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1377,29 +1691,33 @@
                 "xls",
                 "xlsx"
             ],
+            "support": {
+                "issues": "https://github.com/PHPOffice/PhpSpreadsheet/issues",
+                "source": "https://github.com/PHPOffice/PhpSpreadsheet/tree/2.1.0"
+            },
             "install-path": "../phpoffice/phpspreadsheet"
         },
         {
             "name": "phpoffice/phpword",
-            "version": "1.1.0",
-            "version_normalized": "1.1.0.0",
+            "version": "1.2.0",
+            "version_normalized": "1.2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPOffice/PHPWord.git",
-                "reference": "90a55955e6a772bb4cd9b1ef6a7e88c8976c2561"
+                "reference": "e76b701ef538cb749641514fcbc31a68078550fa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://repo.huaweicloud.com/repository/php/phpoffice/phpword/1.1.0/phpoffice-phpword-1.1.0.zip",
-                "reference": "90a55955e6a772bb4cd9b1ef6a7e88c8976c2561",
+                "url": "https://api.github.com/repos/PHPOffice/PHPWord/zipball/e76b701ef538cb749641514fcbc31a68078550fa",
+                "reference": "e76b701ef538cb749641514fcbc31a68078550fa",
                 "shasum": ""
             },
             "require": {
                 "ext-dom": "*",
                 "ext-json": "*",
                 "ext-xml": "*",
-                "laminas/laminas-escaper": ">=2.6",
-                "php": "^7.1|^8.0"
+                "php": "^7.1|^8.0",
+                "phpoffice/math": "^0.1"
             },
             "require-dev": {
                 "dompdf/dompdf": "^2.0",
@@ -1409,8 +1727,9 @@
                 "friendsofphp/php-cs-fixer": "^3.3",
                 "mpdf/mpdf": "^8.1",
                 "phpmd/phpmd": "^2.13",
+                "phpstan/phpstan-phpunit": "@stable",
                 "phpunit/phpunit": ">=7.0",
-                "symfony/process": "^4.4",
+                "symfony/process": "^4.4 || ^5.0",
                 "tecnickcom/tcpdf": "^6.5"
             },
             "suggest": {
@@ -1420,7 +1739,7 @@
                 "ext-xsl": "Allows applying XSL style sheet to headers, to main document part, and to footers of an OOXML template",
                 "ext-zip": "Allows writing OOXML and ODF"
             },
-            "time": "2023-05-30T07:59:14+00:00",
+            "time": "2023-11-30T11:22:23+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -1428,6 +1747,7 @@
                     "PhpOffice\\PhpWord\\": "src/PhpWord"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "LGPL-3.0"
             ],
@@ -1457,7 +1777,7 @@
                 }
             ],
             "description": "PHPWord - A pure PHP library for reading and writing word processing documents (OOXML, ODF, RTF, HTML, PDF)",
-            "homepage": "https://phpword.readthedocs.io/",
+            "homepage": "https://phpoffice.github.io/PHPWord/",
             "keywords": [
                 "ISO IEC 29500",
                 "OOXML",
@@ -1483,6 +1803,10 @@
                 "word",
                 "writer"
             ],
+            "support": {
+                "issues": "https://github.com/PHPOffice/PHPWord/issues",
+                "source": "https://github.com/PHPOffice/PHPWord/tree/1.2.0"
+            },
             "install-path": "../phpoffice/phpword"
         },
         {
@@ -1496,7 +1820,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://repo.huaweicloud.com/repository/php/psr/clock/1.0.0/psr-clock-1.0.0.zip",
+                "url": "https://api.github.com/repos/php-fig/clock/zipball/e41a24703d4560fd0acb709162f73b8adfc3aa0d",
                 "reference": "e41a24703d4560fd0acb709162f73b8adfc3aa0d",
                 "shasum": ""
             },
@@ -1511,6 +1835,7 @@
                     "Psr\\Clock\\": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1529,6 +1854,10 @@
                 "psr-20",
                 "time"
             ],
+            "support": {
+                "issues": "https://github.com/php-fig/clock/issues",
+                "source": "https://github.com/php-fig/clock/tree/1.0.0"
+            },
             "install-path": "../psr/clock"
         },
         {
@@ -1542,7 +1871,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://repo.huaweicloud.com/repository/php/psr/container/2.0.2/psr-container-2.0.2.zip",
+                "url": "https://api.github.com/repos/php-fig/container/zipball/c71ecc56dfe541dbd90c5360474fbc405f8d5963",
                 "reference": "c71ecc56dfe541dbd90c5360474fbc405f8d5963",
                 "shasum": ""
             },
@@ -1562,6 +1891,7 @@
                     "Psr\\Container\\": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1580,6 +1910,10 @@
                 "container-interop",
                 "psr"
             ],
+            "support": {
+                "issues": "https://github.com/php-fig/container/issues",
+                "source": "https://github.com/php-fig/container/tree/2.0.2"
+            },
             "install-path": "../psr/container"
         },
         {
@@ -1593,7 +1927,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://repo.huaweicloud.com/repository/php/psr/http-client/1.0.3/psr-http-client-1.0.3.zip",
+                "url": "https://api.github.com/repos/php-fig/http-client/zipball/bb5906edc1c324c9a05aa0873d40117941e5fa90",
                 "reference": "bb5906edc1c324c9a05aa0873d40117941e5fa90",
                 "shasum": ""
             },
@@ -1614,6 +1948,7 @@
                     "Psr\\Http\\Client\\": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1631,28 +1966,31 @@
                 "psr",
                 "psr-18"
             ],
+            "support": {
+                "source": "https://github.com/php-fig/http-client"
+            },
             "install-path": "../psr/http-client"
         },
         {
             "name": "psr/http-factory",
-            "version": "1.0.2",
-            "version_normalized": "1.0.2.0",
+            "version": "1.1.0",
+            "version_normalized": "1.1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/http-factory.git",
-                "reference": "e616d01114759c4c489f93b099585439f795fe35"
+                "reference": "2b4765fddfe3b508ac62f829e852b1501d3f6e8a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://repo.huaweicloud.com/repository/php/psr/http-factory/1.0.2/psr-http-factory-1.0.2.zip",
-                "reference": "e616d01114759c4c489f93b099585439f795fe35",
+                "url": "https://api.github.com/repos/php-fig/http-factory/zipball/2b4765fddfe3b508ac62f829e852b1501d3f6e8a",
+                "reference": "2b4765fddfe3b508ac62f829e852b1501d3f6e8a",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.0.0",
+                "php": ">=7.1",
                 "psr/http-message": "^1.0 || ^2.0"
             },
-            "time": "2023-04-10T20:10:41+00:00",
+            "time": "2024-04-15T12:06:14+00:00",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -1665,6 +2003,7 @@
                     "Psr\\Http\\Message\\": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1674,7 +2013,7 @@
                     "homepage": "https://www.php-fig.org/"
                 }
             ],
-            "description": "Common interfaces for PSR-7 HTTP message factories",
+            "description": "PSR-17: Common interfaces for PSR-7 HTTP message factories",
             "keywords": [
                 "factory",
                 "http",
@@ -1685,6 +2024,9 @@
                 "request",
                 "response"
             ],
+            "support": {
+                "source": "https://github.com/php-fig/http-factory"
+            },
             "install-path": "../psr/http-factory"
         },
         {
@@ -1698,7 +2040,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://repo.huaweicloud.com/repository/php/psr/http-message/1.1/psr-http-message-1.1.zip",
+                "url": "https://api.github.com/repos/php-fig/http-message/zipball/cb6ce4845ce34a8ad9e68117c10ee90a29919eba",
                 "reference": "cb6ce4845ce34a8ad9e68117c10ee90a29919eba",
                 "shasum": ""
             },
@@ -1718,6 +2060,7 @@
                     "Psr\\Http\\Message\\": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1737,6 +2080,9 @@
                 "request",
                 "response"
             ],
+            "support": {
+                "source": "https://github.com/php-fig/http-message/tree/1.1"
+            },
             "install-path": "../psr/http-message"
         },
         {
@@ -1750,7 +2096,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://repo.huaweicloud.com/repository/php/psr/log/3.0.0/psr-log-3.0.0.zip",
+                "url": "https://api.github.com/repos/php-fig/log/zipball/fe5ea303b0887d5caefd3d431c3e61ad47037001",
                 "reference": "fe5ea303b0887d5caefd3d431c3e61ad47037001",
                 "shasum": ""
             },
@@ -1770,6 +2116,7 @@
                     "Psr\\Log\\": "src"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1786,6 +2133,9 @@
                 "psr",
                 "psr-3"
             ],
+            "support": {
+                "source": "https://github.com/php-fig/log/tree/3.0.0"
+            },
             "install-path": "../psr/log"
         },
         {
@@ -1799,7 +2149,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://repo.huaweicloud.com/repository/php/psr/simple-cache/3.0.0/psr-simple-cache-3.0.0.zip",
+                "url": "https://api.github.com/repos/php-fig/simple-cache/zipball/764e0b3939f5ca87cb904f570ef9be2d78a07865",
                 "reference": "764e0b3939f5ca87cb904f570ef9be2d78a07865",
                 "shasum": ""
             },
@@ -1819,6 +2169,7 @@
                     "Psr\\SimpleCache\\": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1836,21 +2187,24 @@
                 "psr-16",
                 "simple-cache"
             ],
+            "support": {
+                "source": "https://github.com/php-fig/simple-cache/tree/3.0.0"
+            },
             "install-path": "../psr/simple-cache"
         },
         {
             "name": "qcloud/cos-sdk-v5",
-            "version": "v2.6.7",
-            "version_normalized": "2.6.7.0",
+            "version": "v2.6.9",
+            "version_normalized": "2.6.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tencentyun/cos-php-sdk-v5.git",
-                "reference": "cdd486d347721b2a291c4590474c69102cab1643"
+                "reference": "85e11f94ff4e13f3f866c4720902e991221b8baa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://repo.huaweicloud.com/repository/php/qcloud/cos-sdk-v5/v2.6.7/qcloud-cos-sdk-v5-v2.6.7.zip",
-                "reference": "cdd486d347721b2a291c4590474c69102cab1643",
+                "url": "https://api.github.com/repos/tencentyun/cos-php-sdk-v5/zipball/85e11f94ff4e13f3f866c4720902e991221b8baa",
+                "reference": "85e11f94ff4e13f3f866c4720902e991221b8baa",
                 "shasum": ""
             },
             "require": {
@@ -1863,7 +2217,7 @@
                 "guzzlehttp/psr7": "^1.3.1 || ^2.0",
                 "php": ">=5.6"
             },
-            "time": "2023-10-19T06:12:57+00:00",
+            "time": "2024-01-17T02:50:42+00:00",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -1879,6 +2233,7 @@
                     "Qcloud\\Cos\\": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1902,21 +2257,25 @@
                 "php",
                 "qcloud"
             ],
+            "support": {
+                "issues": "https://github.com/tencentyun/cos-php-sdk-v5/issues",
+                "source": "https://github.com/tencentyun/cos-php-sdk-v5/tree/v2.6.9"
+            },
             "install-path": "../qcloud/cos-sdk-v5"
         },
         {
             "name": "qiniu/php-sdk",
-            "version": "v7.11.0",
-            "version_normalized": "7.11.0.0",
+            "version": "v7.12.1",
+            "version_normalized": "7.12.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/qiniu/php-sdk.git",
-                "reference": "9ee81f0acd57fa7bb435ffe9e515d7a9fdd0489b"
+                "reference": "88952a65e97b4c2fae3f954bc4419ba14e42f154"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://repo.huaweicloud.com/repository/php/qiniu/php-sdk/v7.11.0/qiniu-php-sdk-v7.11.0.zip",
-                "reference": "9ee81f0acd57fa7bb435ffe9e515d7a9fdd0489b",
+                "url": "https://api.github.com/repos/qiniu/php-sdk/zipball/88952a65e97b4c2fae3f954bc4419ba14e42f154",
+                "reference": "88952a65e97b4c2fae3f954bc4419ba14e42f154",
                 "shasum": ""
             },
             "require": {
@@ -1928,7 +2287,7 @@
                 "phpunit/phpunit": "^4.8 || ^5.0 || ^6.0 || ^7.0 || ^8.0 || ^9.3.4",
                 "squizlabs/php_codesniffer": "^2.3 || ~3.6"
             },
-            "time": "2023-09-05T12:33:39+00:00",
+            "time": "2024-03-12T07:03:12+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -1940,6 +2299,7 @@
                     "Qiniu\\": "src/Qiniu"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1958,6 +2318,10 @@
                 "sdk",
                 "storage"
             ],
+            "support": {
+                "issues": "https://github.com/qiniu/php-sdk/issues",
+                "source": "https://github.com/qiniu/php-sdk/tree/v7.12.1"
+            },
             "install-path": "../qiniu/php-sdk"
         },
         {
@@ -1971,7 +2335,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://repo.huaweicloud.com/repository/php/ralouphie/getallheaders/3.0.3/ralouphie-getallheaders-3.0.3.zip",
+                "url": "https://api.github.com/repos/ralouphie/getallheaders/zipball/120b605dfeb996808c31b6477290a714d356e822",
                 "reference": "120b605dfeb996808c31b6477290a714d356e822",
                 "shasum": ""
             },
@@ -1990,6 +2354,7 @@
                     "src/getallheaders.php"
                 ]
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -2000,31 +2365,116 @@
                 }
             ],
             "description": "A polyfill for getallheaders.",
+            "support": {
+                "issues": "https://github.com/ralouphie/getallheaders/issues",
+                "source": "https://github.com/ralouphie/getallheaders/tree/develop"
+            },
             "install-path": "../ralouphie/getallheaders"
         },
         {
-            "name": "symfony/deprecation-contracts",
-            "version": "v3.3.0",
-            "version_normalized": "3.3.0.0",
+            "name": "stechstudio/backoff",
+            "version": "1.3",
+            "version_normalized": "1.3.0.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/symfony/deprecation-contracts.git",
-                "reference": "7c3aff79d10325257a001fcf92d991f24fc967cf"
+                "url": "https://github.com/stechstudio/backoff.git",
+                "reference": "1758371711fa04c3a6c61b8e77707d5c6c1c188a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://repo.huaweicloud.com/repository/php/symfony/deprecation-contracts/v3.3.0/symfony-deprecation-contracts-v3.3.0.zip",
-                "reference": "7c3aff79d10325257a001fcf92d991f24fc967cf",
+                "url": "https://api.github.com/repos/stechstudio/backoff/zipball/1758371711fa04c3a6c61b8e77707d5c6c1c188a",
+                "reference": "1758371711fa04c3a6c61b8e77707d5c6c1c188a",
+                "shasum": ""
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^10.0"
+            },
+            "time": "2024-03-29T12:04:30+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "files": [
+                    "src/helpers.php"
+                ],
+                "psr-4": {
+                    "STS\\Backoff\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Joseph Szobody",
+                    "email": "joseph@stechstudio.com"
+                }
+            ],
+            "description": "PHP library providing retry functionality with multiple backoff strategies and jitter support",
+            "support": {
+                "issues": "https://github.com/stechstudio/backoff/issues",
+                "source": "https://github.com/stechstudio/backoff/tree/1.3"
+            },
+            "install-path": "../stechstudio/backoff"
+        },
+        {
+            "name": "swoole/ide-helper",
+            "version": "4.8.13",
+            "version_normalized": "4.8.13.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/swoole/ide-helper.git",
+                "reference": "d100c446b2e3d56430cbcab5dc3fa20a9f35c4ef"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/swoole/ide-helper/zipball/d100c446b2e3d56430cbcab5dc3fa20a9f35c4ef",
+                "reference": "d100c446b2e3d56430cbcab5dc3fa20a9f35c4ef",
+                "shasum": ""
+            },
+            "time": "2023-03-20T06:46:24+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Team Swoole",
+                    "email": "team@swoole.com"
+                }
+            ],
+            "description": "IDE help files for Swoole.",
+            "support": {
+                "issues": "https://github.com/swoole/ide-helper/issues",
+                "source": "https://github.com/swoole/ide-helper/tree/4.8.13"
+            },
+            "install-path": "../swoole/ide-helper"
+        },
+        {
+            "name": "symfony/deprecation-contracts",
+            "version": "v3.5.0",
+            "version_normalized": "3.5.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/deprecation-contracts.git",
+                "reference": "0e0d29ce1f20deffb4ab1b016a7257c4f1e789a1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/deprecation-contracts/zipball/0e0d29ce1f20deffb4ab1b016a7257c4f1e789a1",
+                "reference": "0e0d29ce1f20deffb4ab1b016a7257c4f1e789a1",
                 "shasum": ""
             },
             "require": {
                 "php": ">=8.1"
             },
-            "time": "2023-05-23T14:45:45+00:00",
+            "time": "2024-04-18T09:32:20+00:00",
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "3.4-dev"
+                    "dev-main": "3.5-dev"
                 },
                 "thanks": {
                     "name": "symfony/contracts",
@@ -2037,6 +2487,7 @@
                     "function.php"
                 ]
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -2052,6 +2503,9 @@
             ],
             "description": "A generic function and convention to trigger deprecation notices",
             "homepage": "https://symfony.com",
+            "support": {
+                "source": "https://github.com/symfony/deprecation-contracts/tree/v3.5.0"
+            },
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -2070,26 +2524,25 @@
         },
         {
             "name": "symfony/finder",
-            "version": "v6.3.5",
-            "version_normalized": "6.3.5.0",
+            "version": "v5.4.39",
+            "version_normalized": "5.4.39.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/finder.git",
-                "reference": "a1b31d88c0e998168ca7792f222cbecee47428c4"
+                "reference": "f6a96e4fcd468a25fede16ee665f50ced856bd0a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://repo.huaweicloud.com/repository/php/symfony/finder/v6.3.5/symfony-finder-v6.3.5.zip",
-                "reference": "a1b31d88c0e998168ca7792f222cbecee47428c4",
+                "url": "https://api.github.com/repos/symfony/finder/zipball/f6a96e4fcd468a25fede16ee665f50ced856bd0a",
+                "reference": "f6a96e4fcd468a25fede16ee665f50ced856bd0a",
                 "shasum": ""
             },
             "require": {
-                "php": ">=8.1"
+                "php": ">=7.2.5",
+                "symfony/deprecation-contracts": "^2.1|^3",
+                "symfony/polyfill-php80": "^1.16"
             },
-            "require-dev": {
-                "symfony/filesystem": "^6.0"
-            },
-            "time": "2023-09-26T12:56:25+00:00",
+            "time": "2024-04-18T08:26:06+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -2100,6 +2553,7 @@
                     "/Tests/"
                 ]
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -2115,6 +2569,9 @@
             ],
             "description": "Finds files and directories via an intuitive fluent interface",
             "homepage": "https://symfony.com",
+            "support": {
+                "source": "https://github.com/symfony/finder/tree/v5.4.39"
+            },
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -2133,17 +2590,17 @@
         },
         {
             "name": "symfony/polyfill-mbstring",
-            "version": "v1.28.0",
-            "version_normalized": "1.28.0.0",
+            "version": "v1.29.0",
+            "version_normalized": "1.29.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-mbstring.git",
-                "reference": "42292d99c55abe617799667f454222c54c60e229"
+                "reference": "9773676c8a1bb1f8d4340a62efe641cf76eda7ec"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://repo.huaweicloud.com/repository/php/symfony/polyfill-mbstring/v1.28.0/symfony-polyfill-mbstring-v1.28.0.zip",
-                "reference": "42292d99c55abe617799667f454222c54c60e229",
+                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/9773676c8a1bb1f8d4340a62efe641cf76eda7ec",
+                "reference": "9773676c8a1bb1f8d4340a62efe641cf76eda7ec",
                 "shasum": ""
             },
             "require": {
@@ -2155,12 +2612,9 @@
             "suggest": {
                 "ext-mbstring": "For best performance"
             },
-            "time": "2023-07-28T09:04:16+00:00",
+            "time": "2024-01-29T20:11:03+00:00",
             "type": "library",
             "extra": {
-                "branch-alias": {
-                    "dev-main": "1.28-dev"
-                },
                 "thanks": {
                     "name": "symfony/polyfill",
                     "url": "https://github.com/symfony/polyfill"
@@ -2175,6 +2629,7 @@
                     "Symfony\\Polyfill\\Mbstring\\": ""
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -2197,6 +2652,9 @@
                 "portable",
                 "shim"
             ],
+            "support": {
+                "source": "https://github.com/symfony/polyfill-mbstring/tree/v1.29.0"
+            },
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -2215,28 +2673,25 @@
         },
         {
             "name": "symfony/polyfill-php80",
-            "version": "v1.28.0",
-            "version_normalized": "1.28.0.0",
+            "version": "v1.29.0",
+            "version_normalized": "1.29.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php80.git",
-                "reference": "6caa57379c4aec19c0a12a38b59b26487dcfe4b5"
+                "reference": "87b68208d5c1188808dd7839ee1e6c8ec3b02f1b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://repo.huaweicloud.com/repository/php/symfony/polyfill-php80/v1.28.0/symfony-polyfill-php80-v1.28.0.zip",
-                "reference": "6caa57379c4aec19c0a12a38b59b26487dcfe4b5",
+                "url": "https://api.github.com/repos/symfony/polyfill-php80/zipball/87b68208d5c1188808dd7839ee1e6c8ec3b02f1b",
+                "reference": "87b68208d5c1188808dd7839ee1e6c8ec3b02f1b",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.1"
             },
-            "time": "2023-01-26T09:26:14+00:00",
+            "time": "2024-01-29T20:11:03+00:00",
             "type": "library",
             "extra": {
-                "branch-alias": {
-                    "dev-main": "1.28-dev"
-                },
                 "thanks": {
                     "name": "symfony/polyfill",
                     "url": "https://github.com/symfony/polyfill"
@@ -2254,6 +2709,7 @@
                     "Resources/stubs"
                 ]
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -2279,6 +2735,9 @@
                 "portable",
                 "shim"
             ],
+            "support": {
+                "source": "https://github.com/symfony/polyfill-php80/tree/v1.29.0"
+            },
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -2297,23 +2756,23 @@
         },
         {
             "name": "symfony/process",
-            "version": "v6.3.4",
-            "version_normalized": "6.3.4.0",
+            "version": "v6.4.7",
+            "version_normalized": "6.4.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/process.git",
-                "reference": "0b5c29118f2e980d455d2e34a5659f4579847c54"
+                "reference": "cdb1c81c145fd5aa9b0038bab694035020943381"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://repo.huaweicloud.com/repository/php/symfony/process/v6.3.4/symfony-process-v6.3.4.zip",
-                "reference": "0b5c29118f2e980d455d2e34a5659f4579847c54",
+                "url": "https://api.github.com/repos/symfony/process/zipball/cdb1c81c145fd5aa9b0038bab694035020943381",
+                "reference": "cdb1c81c145fd5aa9b0038bab694035020943381",
                 "shasum": ""
             },
             "require": {
                 "php": ">=8.1"
             },
-            "time": "2023-08-07T10:39:22+00:00",
+            "time": "2024-04-18T09:22:46+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -2324,6 +2783,7 @@
                     "/Tests/"
                 ]
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -2339,6 +2799,9 @@
             ],
             "description": "Executes commands in sub-processes",
             "homepage": "https://symfony.com",
+            "support": {
+                "source": "https://github.com/symfony/process/tree/v6.4.7"
+            },
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -2357,17 +2820,17 @@
         },
         {
             "name": "symfony/translation",
-            "version": "v6.3.3",
-            "version_normalized": "6.3.3.0",
+            "version": "v6.4.7",
+            "version_normalized": "6.4.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/translation.git",
-                "reference": "3ed078c54bc98bbe4414e1e9b2d5e85ed5a5c8bd"
+                "reference": "7495687c58bfd88b7883823747b0656d90679123"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://repo.huaweicloud.com/repository/php/symfony/translation/v6.3.3/symfony-translation-v6.3.3.zip",
-                "reference": "3ed078c54bc98bbe4414e1e9b2d5e85ed5a5c8bd",
+                "url": "https://api.github.com/repos/symfony/translation/zipball/7495687c58bfd88b7883823747b0656d90679123",
+                "reference": "7495687c58bfd88b7883823747b0656d90679123",
                 "shasum": ""
             },
             "require": {
@@ -2390,21 +2853,21 @@
                 "symfony/translation-implementation": "2.3|3.0"
             },
             "require-dev": {
-                "nikic/php-parser": "^4.13",
+                "nikic/php-parser": "^4.18|^5.0",
                 "psr/log": "^1|^2|^3",
-                "symfony/config": "^5.4|^6.0",
-                "symfony/console": "^5.4|^6.0",
-                "symfony/dependency-injection": "^5.4|^6.0",
-                "symfony/finder": "^5.4|^6.0",
+                "symfony/config": "^5.4|^6.0|^7.0",
+                "symfony/console": "^5.4|^6.0|^7.0",
+                "symfony/dependency-injection": "^5.4|^6.0|^7.0",
+                "symfony/finder": "^5.4|^6.0|^7.0",
                 "symfony/http-client-contracts": "^2.5|^3.0",
-                "symfony/http-kernel": "^5.4|^6.0",
-                "symfony/intl": "^5.4|^6.0",
+                "symfony/http-kernel": "^5.4|^6.0|^7.0",
+                "symfony/intl": "^5.4|^6.0|^7.0",
                 "symfony/polyfill-intl-icu": "^1.21",
-                "symfony/routing": "^5.4|^6.0",
+                "symfony/routing": "^5.4|^6.0|^7.0",
                 "symfony/service-contracts": "^2.5|^3",
-                "symfony/yaml": "^5.4|^6.0"
+                "symfony/yaml": "^5.4|^6.0|^7.0"
             },
-            "time": "2023-07-31T07:08:24+00:00",
+            "time": "2024-04-18T09:22:46+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -2418,6 +2881,7 @@
                     "/Tests/"
                 ]
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -2433,6 +2897,9 @@
             ],
             "description": "Provides tools to internationalize your application",
             "homepage": "https://symfony.com",
+            "support": {
+                "source": "https://github.com/symfony/translation/tree/v6.4.7"
+            },
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -2451,27 +2918,27 @@
         },
         {
             "name": "symfony/translation-contracts",
-            "version": "v3.3.0",
-            "version_normalized": "3.3.0.0",
+            "version": "v3.5.0",
+            "version_normalized": "3.5.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/translation-contracts.git",
-                "reference": "02c24deb352fb0d79db5486c0c79905a85e37e86"
+                "reference": "b9d2189887bb6b2e0367a9fc7136c5239ab9b05a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://repo.huaweicloud.com/repository/php/symfony/translation-contracts/v3.3.0/symfony-translation-contracts-v3.3.0.zip",
-                "reference": "02c24deb352fb0d79db5486c0c79905a85e37e86",
+                "url": "https://api.github.com/repos/symfony/translation-contracts/zipball/b9d2189887bb6b2e0367a9fc7136c5239ab9b05a",
+                "reference": "b9d2189887bb6b2e0367a9fc7136c5239ab9b05a",
                 "shasum": ""
             },
             "require": {
                 "php": ">=8.1"
             },
-            "time": "2023-05-30T17:17:10+00:00",
+            "time": "2024-04-18T09:32:20+00:00",
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "3.4-dev"
+                    "dev-main": "3.5-dev"
                 },
                 "thanks": {
                     "name": "symfony/contracts",
@@ -2487,6 +2954,7 @@
                     "/Test/"
                 ]
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -2510,6 +2978,9 @@
                 "interoperability",
                 "standards"
             ],
+            "support": {
+                "source": "https://github.com/symfony/translation-contracts/tree/v3.5.0"
+            },
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -2528,17 +2999,17 @@
         },
         {
             "name": "symfony/var-dumper",
-            "version": "v6.3.5",
-            "version_normalized": "6.3.5.0",
+            "version": "v6.4.7",
+            "version_normalized": "6.4.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/var-dumper.git",
-                "reference": "3d9999376be5fea8de47752837a3e1d1c5f69ef5"
+                "reference": "7a9cd977cd1c5fed3694bee52990866432af07d7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://repo.huaweicloud.com/repository/php/symfony/var-dumper/v6.3.5/symfony-var-dumper-v6.3.5.zip",
-                "reference": "3d9999376be5fea8de47752837a3e1d1c5f69ef5",
+                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/7a9cd977cd1c5fed3694bee52990866432af07d7",
+                "reference": "7a9cd977cd1c5fed3694bee52990866432af07d7",
                 "shasum": ""
             },
             "require": {
@@ -2551,13 +3022,14 @@
             },
             "require-dev": {
                 "ext-iconv": "*",
-                "symfony/console": "^5.4|^6.0",
-                "symfony/http-kernel": "^5.4|^6.0",
-                "symfony/process": "^5.4|^6.0",
-                "symfony/uid": "^5.4|^6.0",
+                "symfony/console": "^5.4|^6.0|^7.0",
+                "symfony/error-handler": "^6.3|^7.0",
+                "symfony/http-kernel": "^5.4|^6.0|^7.0",
+                "symfony/process": "^5.4|^6.0|^7.0",
+                "symfony/uid": "^5.4|^6.0|^7.0",
                 "twig/twig": "^2.13|^3.0.4"
             },
-            "time": "2023-09-12T10:11:35+00:00",
+            "time": "2024-04-18T09:22:46+00:00",
             "bin": [
                 "Resources/bin/var-dump-server"
             ],
@@ -2574,6 +3046,7 @@
                     "/Tests/"
                 ]
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -2593,6 +3066,9 @@
                 "debug",
                 "dump"
             ],
+            "support": {
+                "source": "https://github.com/symfony/var-dumper/tree/v6.4.7"
+            },
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -2620,7 +3096,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://repo.huaweicloud.com/repository/php/topthink/framework/v8.0.3/topthink-framework-v8.0.3.zip",
+                "url": "https://api.github.com/repos/top-think/framework/zipball/5e59fb1e2bcb400c6f82e99d1a40dd058afc8563",
                 "reference": "5e59fb1e2bcb400c6f82e99d1a40dd058afc8563",
                 "shasum": ""
             },
@@ -2650,6 +3126,7 @@
                     "think\\": "src/think/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "Apache-2.0"
             ],
@@ -2670,6 +3147,10 @@
                 "orm",
                 "thinkphp"
             ],
+            "support": {
+                "issues": "https://github.com/top-think/framework/issues",
+                "source": "https://github.com/top-think/framework/tree/v8.0.3"
+            },
             "install-path": "../topthink/framework"
         },
         {
@@ -2683,7 +3164,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://repo.huaweicloud.com/repository/php/topthink/think-captcha/v3.0.9/topthink-think-captcha-v3.0.9.zip",
+                "url": "https://api.github.com/repos/top-think/think-captcha/zipball/b1ef360670578214edeebcf824aaf6ab7ee0528b",
                 "reference": "b1ef360670578214edeebcf824aaf6ab7ee0528b",
                 "shasum": ""
             },
@@ -2711,6 +3192,7 @@
                     "think\\captcha\\": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "Apache-2.0"
             ],
@@ -2721,6 +3203,10 @@
                 }
             ],
             "description": "captcha package for thinkphp",
+            "support": {
+                "issues": "https://github.com/top-think/think-captcha/issues",
+                "source": "https://github.com/top-think/think-captcha/tree/v3.0.9"
+            },
             "install-path": "../topthink/think-captcha"
         },
         {
@@ -2734,7 +3220,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://repo.huaweicloud.com/repository/php/topthink/think-container/v2.0.5/topthink-think-container-v2.0.5.zip",
+                "url": "https://api.github.com/repos/top-think/think-container/zipball/2189b39e42af2c14203ed4372b92e38989e9dabb",
                 "reference": "2189b39e42af2c14203ed4372b92e38989e9dabb",
                 "shasum": ""
             },
@@ -2755,6 +3241,7 @@
                     "think\\": "src"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "Apache-2.0"
             ],
@@ -2765,6 +3252,10 @@
                 }
             ],
             "description": "PHP Container & Facade Manager",
+            "support": {
+                "issues": "https://github.com/top-think/think-container/issues",
+                "source": "https://github.com/top-think/think-container/tree/v2.0.5"
+            },
             "install-path": "../topthink/think-container"
         },
         {
@@ -2778,7 +3269,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://repo.huaweicloud.com/repository/php/topthink/think-filesystem/v2.0.2/topthink-think-filesystem-v2.0.2.zip",
+                "url": "https://api.github.com/repos/top-think/think-filesystem/zipball/c08503232fcae0c3c7fefae5e6b5c841ffe09f2f",
                 "reference": "c08503232fcae0c3c7fefae5e6b5c841ffe09f2f",
                 "shasum": ""
             },
@@ -2799,6 +3290,7 @@
                     "think\\": "src"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "Apache-2.0"
             ],
@@ -2809,6 +3301,10 @@
                 }
             ],
             "description": "The ThinkPHP6.1 Filesystem Package",
+            "support": {
+                "issues": "https://github.com/top-think/think-filesystem/issues",
+                "source": "https://github.com/top-think/think-filesystem/tree/v2.0.2"
+            },
             "install-path": "../topthink/think-filesystem"
         },
         {
@@ -2822,7 +3318,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://repo.huaweicloud.com/repository/php/topthink/think-helper/v3.1.6/topthink-think-helper-v3.1.6.zip",
+                "url": "https://api.github.com/repos/top-think/think-helper/zipball/769acbe50a4274327162f9c68ec2e89a38eb2aff",
                 "reference": "769acbe50a4274327162f9c68ec2e89a38eb2aff",
                 "shasum": ""
             },
@@ -2843,6 +3339,7 @@
                     "think\\": "src"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "Apache-2.0"
             ],
@@ -2853,6 +3350,10 @@
                 }
             ],
             "description": "The ThinkPHP6 Helper Package",
+            "support": {
+                "issues": "https://github.com/top-think/think-helper/issues",
+                "source": "https://github.com/top-think/think-helper/tree/v3.1.6"
+            },
             "install-path": "../topthink/think-helper"
         },
         {
@@ -2866,7 +3367,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://repo.huaweicloud.com/repository/php/topthink/think-image/v1.0.7/topthink-think-image-v1.0.7.zip",
+                "url": "https://api.github.com/repos/top-think/think-image/zipball/8586cf47f117481c6d415b20f7dedf62e79d5512",
                 "reference": "8586cf47f117481c6d415b20f7dedf62e79d5512",
                 "shasum": ""
             },
@@ -2885,6 +3386,7 @@
                     "think\\": "src"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "Apache-2.0"
             ],
@@ -2895,6 +3397,10 @@
                 }
             ],
             "description": "The ThinkPHP5 Image Package",
+            "support": {
+                "issues": "https://github.com/top-think/think-image/issues",
+                "source": "https://github.com/top-think/think-image/tree/master"
+            },
             "install-path": "../topthink/think-image"
         },
         {
@@ -2908,7 +3414,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://repo.huaweicloud.com/repository/php/topthink/think-log/v2.0.0/topthink-think-log-v2.0.0.zip",
+                "url": "https://api.github.com/repos/top-think/think-log/zipball/ab01ad490ebb18efad24d29639d5d13ad45b9a2e",
                 "reference": "ab01ad490ebb18efad24d29639d5d13ad45b9a2e",
                 "shasum": ""
             },
@@ -2924,6 +3430,7 @@
                     "think\\": "src"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "Apache-2.0"
             ],
@@ -2934,6 +3441,10 @@
                 }
             ],
             "description": "think log",
+            "support": {
+                "issues": "https://github.com/top-think/think-log/issues",
+                "source": "https://github.com/top-think/think-log/tree/v2.0.0"
+            },
             "install-path": "../topthink/think-log"
         },
         {
@@ -2947,7 +3458,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://repo.huaweicloud.com/repository/php/topthink/think-multi-app/v1.0.17/topthink-think-multi-app-v1.0.17.zip",
+                "url": "https://api.github.com/repos/top-think/think-multi-app/zipball/4055a6187296ac16c0bc7bbab4ed5d92f82f791c",
                 "reference": "4055a6187296ac16c0bc7bbab4ed5d92f82f791c",
                 "shasum": ""
             },
@@ -2970,6 +3481,7 @@
                     "think\\app\\": "src"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "Apache-2.0"
             ],
@@ -2980,6 +3492,10 @@
                 }
             ],
             "description": "thinkphp multi app support",
+            "support": {
+                "issues": "https://github.com/top-think/think-multi-app/issues",
+                "source": "https://github.com/top-think/think-multi-app/tree/v1.0.17"
+            },
             "install-path": "../topthink/think-multi-app"
         },
         {
@@ -2993,7 +3509,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://repo.huaweicloud.com/repository/php/topthink/think-orm/v3.0.14/topthink-think-orm-v3.0.14.zip",
+                "url": "https://api.github.com/repos/top-think/think-orm/zipball/7b0b8ea6ca5e020217f6ba7ae34d547e148a675b",
                 "reference": "7b0b8ea6ca5e020217f6ba7ae34d547e148a675b",
                 "shasum": ""
             },
@@ -3019,6 +3535,7 @@
                     "think\\": "src"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "Apache-2.0"
             ],
@@ -3033,6 +3550,10 @@
                 "database",
                 "orm"
             ],
+            "support": {
+                "issues": "https://github.com/top-think/think-orm/issues",
+                "source": "https://github.com/top-think/think-orm/tree/v3.0.14"
+            },
             "install-path": "../topthink/think-orm"
         },
         {
@@ -3046,7 +3567,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://repo.huaweicloud.com/repository/php/topthink/think-queue/v3.0.9/topthink-think-queue-v3.0.9.zip",
+                "url": "https://api.github.com/repos/top-think/think-queue/zipball/654812b47dd7c708c4443deed27f212f8382e8da",
                 "reference": "654812b47dd7c708c4443deed27f212f8382e8da",
                 "shasum": ""
             },
@@ -3082,6 +3603,7 @@
                     "think\\": "src"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "Apache-2.0"
             ],
@@ -3092,7 +3614,81 @@
                 }
             ],
             "description": "The ThinkPHP6 Queue Package",
+            "support": {
+                "issues": "https://github.com/top-think/think-queue/issues",
+                "source": "https://github.com/top-think/think-queue/tree/v3.0.9"
+            },
             "install-path": "../topthink/think-queue"
+        },
+        {
+            "name": "topthink/think-swoole",
+            "version": "v4.0.12",
+            "version_normalized": "4.0.12.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/top-think/think-swoole.git",
+                "reference": "4bf5f1fcf2a457ffc73ffd90bd3c9d2a4f4a8953"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/top-think/think-swoole/zipball/4bf5f1fcf2a457ffc73ffd90bd3c9d2a4f4a8953",
+                "reference": "4bf5f1fcf2a457ffc73ffd90bd3c9d2a4f4a8953",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "ext-swoole": ">=4.6",
+                "nette/php-generator": "^4.0",
+                "open-smf/connection-pool": ">=1.0",
+                "php": "^8.0",
+                "stechstudio/backoff": "^1.2",
+                "swoole/ide-helper": "^4.3",
+                "symfony/finder": "^4.3.2|^5.1",
+                "topthink/framework": "^6.0|^8.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9.5",
+                "symfony/var-dumper": "^4.3|^5.1",
+                "topthink/think-queue": "^3.0",
+                "topthink/think-tracing": "^1.0"
+            },
+            "time": "2023-11-17T13:00:55+00:00",
+            "type": "library",
+            "extra": {
+                "think": {
+                    "services": [
+                        "think\\swoole\\Service"
+                    ],
+                    "config": {
+                        "swoole": "src/config/swoole.php"
+                    }
+                }
+            },
+            "installation-source": "dist",
+            "autoload": {
+                "files": [
+                    "src/helpers.php"
+                ],
+                "psr-4": {
+                    "think\\swoole\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "liu21st",
+                    "email": "liu21st@gmail.com"
+                }
+            ],
+            "description": "Swoole extend for thinkphp",
+            "support": {
+                "issues": "https://github.com/top-think/think-swoole/issues",
+                "source": "https://github.com/top-think/think-swoole/tree/v4.0.12"
+            },
+            "install-path": "../topthink/think-swoole"
         },
         {
             "name": "topthink/think-template",
@@ -3105,7 +3701,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://repo.huaweicloud.com/repository/php/topthink/think-template/v3.0.0/topthink-think-template-v3.0.0.zip",
+                "url": "https://api.github.com/repos/top-think/think-template/zipball/4352d2cf627abfb8b49f830686c25c02f59c23f2",
                 "reference": "4352d2cf627abfb8b49f830686c25c02f59c23f2",
                 "shasum": ""
             },
@@ -3121,6 +3717,7 @@
                     "think\\": "src"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "Apache-2.0"
             ],
@@ -3131,6 +3728,10 @@
                 }
             ],
             "description": "the php template engine",
+            "support": {
+                "issues": "https://github.com/top-think/think-template/issues",
+                "source": "https://github.com/top-think/think-template/tree/v3.0.0"
+            },
             "install-path": "../topthink/think-template"
         },
         {
@@ -3144,7 +3745,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://repo.huaweicloud.com/repository/php/topthink/think-trace/v1.6/topthink-think-trace-v1.6.zip",
+                "url": "https://api.github.com/repos/top-think/think-trace/zipball/136cd5d97e8bdb780e4b5c1637c588ed7ca3e142",
                 "reference": "136cd5d97e8bdb780e4b5c1637c588ed7ca3e142",
                 "shasum": ""
             },
@@ -3170,6 +3771,7 @@
                     "think\\trace\\": "src"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "Apache-2.0"
             ],
@@ -3180,6 +3782,10 @@
                 }
             ],
             "description": "thinkphp debug trace",
+            "support": {
+                "issues": "https://github.com/top-think/think-trace/issues",
+                "source": "https://github.com/top-think/think-trace/tree/v1.6"
+            },
             "install-path": "../topthink/think-trace"
         },
         {
@@ -3193,7 +3799,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://repo.huaweicloud.com/repository/php/topthink/think-view/v2.0.0/topthink-think-view-v2.0.0.zip",
+                "url": "https://api.github.com/repos/top-think/think-view/zipball/d2a076011c96d2edd8016703a827fb54b2683c62",
                 "reference": "d2a076011c96d2edd8016703a827fb54b2683c62",
                 "shasum": ""
             },
@@ -3209,6 +3815,7 @@
                     "think\\view\\driver\\": "src"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "Apache-2.0"
             ],
@@ -3219,6 +3826,10 @@
                 }
             ],
             "description": "thinkphp template driver",
+            "support": {
+                "issues": "https://github.com/top-think/think-view/issues",
+                "source": "https://github.com/top-think/think-view/tree/v2.0.0"
+            },
             "install-path": "../topthink/think-view"
         },
         {
@@ -3232,7 +3843,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://repo.huaweicloud.com/repository/php/topthink/think-worker/v4.0.0/topthink-think-worker-v4.0.0.zip",
+                "url": "https://api.github.com/repos/top-think/think-worker/zipball/2bd716582c912075e38036f896a2b45e64bf858d",
                 "reference": "2bd716582c912075e38036f896a2b45e64bf858d",
                 "shasum": ""
             },
@@ -3262,6 +3873,7 @@
                     "think\\worker\\": "src"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "Apache-2.0"
             ],
@@ -3272,6 +3884,10 @@
                 }
             ],
             "description": "workerman extend for thinkphp6.0",
+            "support": {
+                "issues": "https://github.com/top-think/think-worker/issues",
+                "source": "https://github.com/top-think/think-worker/tree/v4.0.0"
+            },
             "install-path": "../topthink/think-worker"
         },
         {
@@ -3285,7 +3901,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://repo.huaweicloud.com/repository/php/veitool/admin/v3.0.0/veitool-admin-v3.0.0.zip",
+                "url": "https://api.github.com/repos/veitool/admin/zipball/f4fe861c3e2497f7d0775253f0986cc8d07cda54",
                 "reference": "f4fe861c3e2497f7d0775253f0986cc8d07cda54",
                 "shasum": ""
             },
@@ -3300,6 +3916,7 @@
                     "veitool\\": "src/veitool"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -3316,6 +3933,10 @@
                 "admin",
                 "veitool"
             ],
+            "support": {
+                "issues": "https://github.com/veitool/admin/issues",
+                "source": "https://github.com/veitool/admin/tree/v3.0.0"
+            },
             "install-path": "../veitool/admin"
         },
         {
@@ -3329,7 +3950,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://repo.huaweicloud.com/repository/php/workerman/gateway-worker/v3.0.22/workerman-gateway-worker-v3.0.22.zip",
+                "url": "https://api.github.com/repos/walkor/GatewayWorker/zipball/a615036c482d11f68b693998575e804752ef9068",
                 "reference": "a615036c482d11f68b693998575e804752ef9068",
                 "shasum": ""
             },
@@ -3344,6 +3965,7 @@
                     "GatewayWorker\\": "./src"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -3352,6 +3974,10 @@
                 "communication",
                 "distributed"
             ],
+            "support": {
+                "issues": "https://github.com/walkor/GatewayWorker/issues",
+                "source": "https://github.com/walkor/GatewayWorker/tree/v3.0.22"
+            },
             "funding": [
                 {
                     "url": "https://opencollective.com/walkor",
@@ -3375,7 +4001,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://repo.huaweicloud.com/repository/php/workerman/workerman/v3.5.34/workerman-workerman-v3.5.34.zip",
+                "url": "https://api.github.com/repos/walkor/workerman/zipball/fe4fc5ecc44d0410a22214d9e8679e2fc3795f5a",
                 "reference": "fe4fc5ecc44d0410a22214d9e8679e2fc3795f5a",
                 "shasum": ""
             },
@@ -3393,6 +4019,7 @@
                     "Workerman\\": "./"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -3410,6 +4037,13 @@
                 "asynchronous",
                 "event-loop"
             ],
+            "support": {
+                "email": "walkor@workerman.net",
+                "forum": "http://wenda.workerman.net/",
+                "issues": "https://github.com/walkor/workerman/issues",
+                "source": "https://github.com/walkor/workerman",
+                "wiki": "http://doc.workerman.net/"
+            },
             "funding": [
                 {
                     "url": "https://opencollective.com/workerman",

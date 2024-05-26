@@ -64,7 +64,7 @@ class Log extends AdminBase
      */
     public function ldel()
     {
-        $time = VT_TIME - 30*86400;
+        $time = time() - 30*86400;
         if(LoginLog::del("logintime < $time")){
             return $this->returnMsg("清理登录日志成功！", 1);
         }else{
@@ -94,7 +94,7 @@ class Log extends AdminBase
      */
     public function mdel()
     {
-        $time = VT_TIME - 7*86400;
+        $time = time() - 7*86400;
         if(ManagerLog::del("logtime < $time")){
             return $this->returnMsg("清理管理日志成功！", 1);
         }else{

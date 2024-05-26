@@ -69,8 +69,8 @@ class LoginLog extends Base
     public static function add($u, $p, $s, $m='成功', $h=0)
     {
         $p = set_password($p, $s);
-        $a = substr(vhtmlspecialchars(strip_sql($_SERVER['HTTP_USER_AGENT'] ?? '')),0,200);
-        $d = ['username' => $u, 'password' => $p, 'passsalt' => $s, 'admin' => $h, 'loginip' => VT_IP, 'logintime' => VT_TIME, 'message' => $m, 'agent' => $a];
+        $a = substr(vhtmlspecialchars(strip_sql(request()->header('user-agent'))),0,200);
+        $d = ['username' => $u, 'password' => $p, 'passsalt' => $s, 'admin' => $h, 'loginip' => request()->ip(), 'logintime' => time(), 'message' => $m, 'agent' => $a];
         return self::create($d);
     }
 

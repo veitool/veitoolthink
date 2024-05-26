@@ -21,11 +21,27 @@ use tool\Lock;
 class Login extends BaseController
 {
     /**
+     * 映射路径
+     * @var string
+     */
+    protected $appMap = '';
+
+    /**
+     * 覆盖无需业务 & 初始映射路径
+     */
+    protected function __home(){
+        $this->appMap = VT_DIR . '/' . (array_search("admin", config('app.app_map')) ?: 'admin');
+    }
+
+    /**
      * 登录首页
      */
     public function index()
     {
-        if(!empty(session(VT_MANAGER))) return $this->redirect(APP_MAP ?: '/');
+        if(!empty(session(VT_MANAGER))) return $this->redirect($this->appMap);
+        $this->assign([
+            "appMap" => $this->appMap
+        ]);
         return $this->fetch();
     }
 
@@ -34,10 +50,9 @@ class Login extends BaseController
      */
     public function logout()
     {
-        $User = session(VT_MANAGER);
-        if($User) Online::del(['uid'=>$User['uid'],'userid'=>$User['userid']]); //删除在线数据
-        session(null); //清空Session
-        return $this->redirect(APP_MAP ?: '/');
+        if($User = session(VT_MANAGER)) Online::del(['uid'=>$User['uid'],'userid'=>$User['userid']]); //删除在线数据
+        session(null);
+        return $this->redirect($this->appMap);
     }
 
     /**
@@ -62,7 +77,8 @@ class Login extends BaseController
     public function check()
     {
         //多次尝试验证
-        if(Lock::check(['key'=>'LOGIN_'.VT_IP])) return $this->returnMsg(Lock::msg());
+        $ip = $this->request->ip();
+        if(Lock::check(['key'=>'LOGIN_'.$ip])) return $this->returnMsg(Lock::msg());
         $d = $this->only(['username/*/u/管理帐号','password/*/p/登录密码','captcha']);
         if(vconfig('admin_captcha',1) && !captcha_check($d['captcha'])) return $this->returnMsg('验证码错误！');
         $username = $d['username'];
@@ -77,8 +93,8 @@ class Login extends BaseController
         }
         if($rs->state == 0) return $this->returnMsg('帐号已被停用！');
         if($rs['password'] === set_password($password,$rs['passsalt'])){
-            $rs->logintime = VT_TIME;
-            $rs->loginip   = VT_IP;
+            $rs->logintime = time();
+            $rs->loginip   = $ip;
             $rs->logins ++;
             $rs->save();
             $rs = $rs->toArray();
@@ -86,7 +102,7 @@ class Login extends BaseController
             LoginLog::add($username, $password, $rs['passsalt']);
             session(VT_MANAGER,$rs);
             Lock::del();
-            return $this->returnMsg('登录成功！',1,['url'=>(APP_MAP ?: '/')]);
+            return $this->returnMsg('登录成功！',1,['url'=>($this->appMap ?: '/')]);
         }
         LoginLog::add($username, $password, $rs['passsalt'], '密码错误');
         captcha('admin'); //重建验证码

@@ -25,6 +25,7 @@ class Index extends AdminBase
     public function index()
     {
         $this->assign([
+            "appMap"    => $this->appMap,
             "tokenName" => $this->tokenName
         ]);
         return $this->fetch('','',false);

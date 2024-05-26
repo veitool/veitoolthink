@@ -32,7 +32,7 @@ class Lock
         self::$config = array_merge(self::$config,$c);
         $data = Cache::get(self::$config['key']);
         $flag = false;
-        if(isset($data['times']) && $data['times'] >= self::$config['times'] && (VT_TIME - $data['time']) < self::$config['time']){
+        if(isset($data['times']) && $data['times'] >= self::$config['times'] && (time() - $data['time']) < self::$config['time']){
             self::$config['msg'] = self::$config['msg'] ?: '多次'.self::$config['tips'].'失败，您已被锁定'.(intval(self::$config['time']/60)).'分钟';
             $flag = true;
         }elseif(self::$config['add']){
@@ -52,7 +52,7 @@ class Lock
         $key  = self::$config['key'];
         $data = Cache::get($key);
         $flag = false;
-        if(isset($data['time']) && (VT_TIME - $data['time']) < self::$config['time']){
+        if(isset($data['time']) && (time() - $data['time']) < self::$config['time']){
             self::$config['msg'] = '请勿重复操作';
             $flag = true;
         }elseif(self::$config['add']){
@@ -70,7 +70,7 @@ class Lock
     {
         $key  = self::$config['key'];
         $data = Cache::get($key);
-        $data = $flag ? ['times'=>(isset($data['times']) ? $data['times'] + 1 : 1), 'time'=>VT_TIME] : ['time'=>VT_TIME];
+        $data = $flag ? ['times'=>(isset($data['times']) ? $data['times'] + 1 : 1), 'time'=>time()] : ['time'=>time()];
         Cache::set($key, $data);
     }
 

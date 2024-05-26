@@ -59,7 +59,7 @@ class Dict extends AdminBase
         if($d['groupid'] == 1) return $this->returnMsg("所属类型不能为顶级类型");
         if(DG::get("code = '$d[code]'")) return $this->returnMsg("字典编码【{$d['code']}】已经存在");
         $d["editor"]   = $this->manUser['username'];
-        $d["addtime"]  = VT_TIME;
+        $d["addtime"]  = time();
         if(DG::insert($d)){
             return $this->returnMsg("添加字典成功", 1);
         }else{
@@ -132,7 +132,7 @@ class Dict extends AdminBase
         $d = $this->only(['@token'=>'','title/*/{2,10}/类型名称','parentid/d','note/h']);
         $rs = DG::get("id = $d[parentid]");
         $d['arrparentid'] = $rs ? (empty($rs['arrparentid']) ? $rs['id'] : $rs['arrparentid'].','.$rs['id']) : '';
-        $d['addtime'] = VT_TIME;
+        $d['addtime'] = time();
         $d["editor"]  = $this->manUser['username'];
         if(DG::insert($d)){
             return $this->returnMsg("添加成功", 1, DG::where("groupid = 0")->order(['id'=>'asc'])->column('id,title,parentid'));
@@ -224,7 +224,7 @@ class Dict extends AdminBase
         $d = $this->only(['@token'=>'','groupid/d','parentid/d','name/s/字典项名','value/s/字典项值','listorder/d','state/d']);
         $rs = D::get("id = $d[parentid]");
         $d['arrparentid'] = $rs ? (empty($rs['arrparentid']) ? $rs['id'] : $rs['arrparentid'].','.$rs['id']) : '';
-        $d['addtime'] = VT_TIME;
+        $d['addtime'] = time();
         $d["editor"]  = $this->manUser['username'];
         if(D::insert($d)){
             D::cache(1);
@@ -251,7 +251,7 @@ class Dict extends AdminBase
             foreach($arr as $v){
                 if(word_count($v) < 1) continue;
                 $vs = explode('|', $v);
-                $data[] = ['name'=>$vs[0],'value'=>$vs[1] ?? $vs[0],'groupid'=>$d['groupid'],'parentid'=>$id,'arrparentid'=>$arrparentid,'listorder'=>100,'addtime'=>VT_TIME,'editor'=>$this->manUser['username']];
+                $data[] = ['name'=>$vs[0],'value'=>$vs[1] ?? $vs[0],'groupid'=>$d['groupid'],'parentid'=>$id,'arrparentid'=>$arrparentid,'listorder'=>100,'addtime'=>time(),'editor'=>$this->manUser['username']];
             }
             if(D::insertAll($data)){
                 D::cache(1);

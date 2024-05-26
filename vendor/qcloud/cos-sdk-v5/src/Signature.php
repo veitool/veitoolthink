@@ -32,7 +32,6 @@ class Signature {
             'content-length',
             'content-md5',
             'content-type',
-            'expect',
             'expires',
             'host',
             'if-match',
@@ -42,6 +41,7 @@ class Signature {
             'origin',
             'range',
             'transfer-encoding',
+            'pic-operations',
         ];
         date_default_timezone_set($this->options['timezone']);
     }

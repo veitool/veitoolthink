@@ -13,15 +13,15 @@ use think\Response;
 use think\exception\HttpResponseException;
 
 /**
- * 控制器抽象基类
+ * 前台控制器
  */
-class Error
+class Index extends \app\BaseController
 {
     /**
-     * 空方法
+     * 首页
      */ 
-    public function __call($method, $args){
-        $re = Response::create(app()->getRootPath().'app/v_msg.tpl','view')->assign(['msg'=>'Controller does not exist!','site'=>vconfig('site_title')])->header();
+    public function index(){
+        $re = Response::create(app()->getRootPath().'app/v_msg.tpl','view')->assign(['msg'=>'欢迎使用 Veitool 后台管理开发框架！这是前台首页展示内容。','site'=>vconfig('site_title')])->header();
         throw new HttpResponseException($re);
     }
 

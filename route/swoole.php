@@ -9,4 +9,4 @@ Route::get('static/:path', function (string $path) {
 Route::get('favicon.ico', function () {
     $filename = public_path() .'favicon.ico';
     return new \think\swoole\response\File($filename);
-})->pattern(['path' => '.*\.\w+$']);
+});

@@ -71,7 +71,7 @@
 </script>
 <!--JS部分-->
 <script>
-var addons = {$addons|raw};
+var addons = <?=$addons?>;
 layui.use(function(){
     var type  = 0; // 0全部 1免费 2付费
     var table = layui.table,admin=layui.admin,form=layui.form;
@@ -257,29 +257,24 @@ layui.use(function(){
         }else if(obj.event === 'install' || obj.event === 'upgrade'){
             doReq(data.name,data.version,obj.event);
         }else if(obj.event === 'uninstall'){
-            if(addons[data.name].state==1){
-                return layer.msg('请先禁用插件再进行卸载',{shade:[0.4,'#000'],time:2000});
-            }
-            layer.confirm('确定要卸载该插件吗？',function(){
-                var loadIndex = layer.load(2);
-                admin.req(app_root + "uninstall",{name:data.name},function(res){
-                    layer.close(loadIndex);
-                    layer.msg(res.msg,{shade:[0.4,'#000'],time:1000},function(){
-                        if(res.code==1){
-                            addons = res.data.addons;
-                            table.reloadData('addon');
-                        }
-                    });
-                },'post',{headersToken:true});
-            });
+            uninstall(data.name);
         }else if(obj.event === 'versionlist' || obj.event === 'versionlists'){
             var way = obj.event == 'versionlist' ? 'install' : 'upgrade';
+            let _Dt = admin.util.deepClone(data.releaselist);
+            if(typeof addons[data.name] != 'undefined'){
+                _Dt = _Dt.filter(item => item.title !== addons[data.name].version);
+                _Dt.push({require:"uninstall",title:"卸 载"});
+            }
             layui.dropdown.render({
                 elem: this,
                 show: true,
-                data: data.releaselist,
+                data: _Dt,
                 click: function(obj){
-                    doReq(data.name,obj.title,way);
+                    if(obj.require == 'uninstall'){
+                        uninstall(data.name);
+                    }else{
+                        doReq(data.name,obj.title,way);
+                    }
                 },
                 style: 'width:40px;margin-left:-35px;text-align:center;'
             });
@@ -364,6 +359,27 @@ layui.use(function(){
             });
         },'post');
     }/**/
+    /**
+     * 卸载插件
+     * @param {string}  name   插件名
+     */
+    function uninstall(name){
+        if(addons[name].state==1){
+            return layer.msg('请先禁用插件再进行卸载',{shade:[0.4,'#000'],time:2000});
+        }
+        layer.confirm('确定要卸载该插件吗？',function(){
+            var loadIndex = layer.load(2);
+            admin.req(app_root + "uninstall",{name:name},function(res){
+                layer.close(loadIndex);
+                layer.msg(res.msg,{shade:[0.4,'#000'],time:1000},function(){
+                    if(res.code==1){
+                        addons = res.data.addons;
+                        table.reloadData('addon');
+                    }
+                });
+            },'post',{headersToken:true});
+        });
+    }
     /*获取token*/
     function getUser(t){
         var UT = admin.getToken();

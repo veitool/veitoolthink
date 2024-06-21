@@ -53,7 +53,7 @@ class Menus extends AdminBase
     public function add()
     {
         $d = $this->only(['@token'=>'','catid/d','menu_name/*/{2,20}/菜单名称','role_name/*/{2,20}/权限名称','link_url/u','menu_url/u','role_url/u','icon/u','parent_id/d','listorder/d','ismenu/d','state/d']);
-        $d['addtime'] = VT_TIME;
+        $d['addtime'] = time();
         if(M::insert($d)){
             M::cache(1);
             return $this->returnMsg("添加菜单成功", 1);
@@ -118,7 +118,7 @@ class Menus extends AdminBase
                 return $this->returnMsg("设置失败");
             }
         }else{
-            $d['addtime'] = VT_TIME;
+            $d['addtime'] = time();
             $ocatid = intval($d['ocatid']); //旧Catid
             unset($d['ocatid']);
             if($Myobj->save($d)){

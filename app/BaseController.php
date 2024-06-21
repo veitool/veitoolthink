@@ -123,7 +123,7 @@ abstract class BaseController
         if($flag1 || $flag2) $url = substr(vhtmlspecialchars(strip_sql($this->request->url())),0,200);
         /*访问日志*/
         if($flag1){
-            \app\model\system\WebLog::add(['url'=>$url.$tip,'username'=>$this->memUser['username'] ?? '','ip'=>VT_IP]);
+            \app\model\system\WebLog::add(['url'=>$url.$tip,'username'=>$this->memUser['username'] ?? '','ip'=>$this->request->ip()]);
         }/**/
         /*在线统计【0:关闭全部 1:开启后台 2:开启会员 3:开启全部】*/
         if($flag2){

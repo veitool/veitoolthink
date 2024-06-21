@@ -61,7 +61,7 @@ class ManagerLog extends Base
     public static function add($d=[])
     {
         $d['url'] = isset($d['url']) ? substr($d['url'],0,230) : '';
-        $d = array_merge(['url'=>'','username'=>'','ip'=>'0','logtime'=>VT_TIME],$d);
+        $d = array_merge(['url'=>'','username'=>'','ip'=>'0','logtime'=>time()],$d);
         return self::create($d,['url','username','ip','logtime']);
     }
 

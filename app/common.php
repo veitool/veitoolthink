@@ -105,7 +105,7 @@ function set_password($p,$s){
  * @retrun  string 
  */
 function set_order_id(){
-    return date('YmdHis',VT_TIME).substr(microtime(),2,6).sprintf('%03d',rand(0,999));
+    return date('YmdHis',time()).substr(microtime(),2,6).sprintf('%03d',rand(0,999));
 }
 
 /**
@@ -355,7 +355,7 @@ function vconfig($name='',$default=''){
  */
 function show_time($time){
     $rtime = date("Y-m-d H:i", $time);
-    $time = VT_TIME - $time;
+    $time = time() - $time;
     if($time < 60){
         $str = '刚刚';
     }elseif($time < 3600){

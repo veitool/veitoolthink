@@ -601,7 +601,7 @@ layui.define(['tagsInput','fileLibrary','cascader'], function(e){
         },
         getCM: function(success){
             if(window.Cherry){
-                typeof success === 'function' && setTimeout(function(){success()},100);/*延迟：解决存在于OPEN窗口中时编辑区的渲染尺寸问题*/
+                typeof success === 'function' && setTimeout(function(){success()},500);/*延迟：解决存在于OPEN窗口中时编辑区的渲染尺寸问题*/
             }else{
                 layui.link(static + "cherrymd/cherry-markdown.min.css");
                 $.getScript(static + "cherrymd/cherry-markdown.min.js", function(){

@@ -293,7 +293,7 @@ layui.use(['vinfo', 'xmSelect', 'buildItems'], function(){
                     }
                 });
                 /* 手动渲染字典:所属类型 渲染下拉树 https://maplemei.gitee.io/xm-select/#/component/options */
-                admin.vDict(lay,{GROUPID:admin.util.deepClone(dictData)});/**/
+                admin.vDict(lay,{GROUPID:dictData});/**/
                 layui.dropdown.render({
                     elem: '#sql_str',
                     data: [{id:'1',title:'SELECT id,title as name,id as value,parentid as pid,arrparentid as pids FROM vt_organ WHERE id > 1'}],

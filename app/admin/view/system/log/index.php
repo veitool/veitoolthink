@@ -117,7 +117,7 @@ layui.use(['vinfo'],function(){
                 url: app_root+"login",
                 cols: [[
                     {field:"logid",fixed:"left",width:80,align:'center',title:"ID",sort:!0},
-                    {field:"username",width:120,title:"帐号",toolbar:'<div><a style="cursor:pointer;" lay-event="userinfo">{{d.username}}</a></div>'},
+                    {field:"username",width:120,title:"帐号",align:'center',toolbar:'<div><a style="cursor:pointer;" lay-event="userinfo">{{d.username}}</a></div>'},
                     {field:"password",width:200,align:'center',title:"密码"},
                     {field:"logintime",width:150,align:'center',title:"时间",sort:!0,templet:function(d){return layui.util.toDateString(d.logintime*1000)}},
                     {field:"loginip",align:'center',width:150,title:"IP",toolbar:'<div><a style="cursor:pointer;" lay-event="showip">{{d.loginip}}</a></div>'},

@@ -40,6 +40,7 @@ layui.use(['iconPicker','buildItems'], function(){
         var state = obj.elem.checked ? 1 : 0;
         admin.req(cat_root+"catedit?do=up",{catid:json.catid,av:state,af:'state'},function(res){
             layer.tips(res.msg,obj.othis,{time:1000,tips:[3,'#333']});
+            if(res.code === 0) obj.elem.checked = parseInt(obj.value);
         },'post',{headersToken:true});
     });/**/
     /*快编监听*/

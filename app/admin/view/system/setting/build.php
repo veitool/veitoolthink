@@ -116,6 +116,7 @@ layui.use(['buildItems'],function(){
         var av = obj.elem.checked ? 1 : 0;
         admin.req(app_root+"bedit?do=up",{id:json.id,av:av,af:obj.elem.name},function(res){
             layer.tips(res.msg,obj.othis,{time:2000});
+            if(res.code === 0) obj.elem.checked = parseInt(obj.value);
         },'post',{headersToken:true});
     });/**/
     /*工具条监听*/
@@ -151,13 +152,13 @@ layui.use(['buildItems'],function(){
                     data: [
                         {name:"id",type:"hidden"},
                         {name:"group",title:"配置分组",type:group ? "radio" : "text",options:datas.groups,value:group,placeholder:"插件分组（选填）",must:true},
+                        {name:"addon",title:"插件名称",type:group ? "hidden" : "text",value:'',placeholder:"请输入所属插件标识名称",verify:group ? '' : 'required',must:group ? false : true},
                         {name:"type",title:"配置类型",type:"select",options:types,value:'',verify:'required',reqtext:'请选择配置类型',must:true},
                         {name:"name",title:"配置名称",type:"text",value:'',verify:'required',placeholder:"请输入配置名称",must:true},
                         {name:"title",title:"配置标题",type:"text",value:'',verify:'required',placeholder:"请输入配置标题",must:true},
                         {name:"value",title:"配置初值",type:"textarea",value:'',placeholder:"请输入配置初值"},
                         {name:"options",title:"配置选项",type:"textarea",value:'',placeholder:"用于单选、多选、下拉、联动等类型时请输入；时间选择器时用于配置range参数；文件上传时用于filetype[image、file、video、audio]参数"},
                         {name:"tips",title:"配置说明",type:"text",value:'',placeholder:"请输入配置说明"},
-                        {name:"addon",title:"插件名称",type:"text",value:'',placeholder:"所属插件标识名称（选填）",verify:group ? '' : 'required',must:group ? false : true},
                         {name:"listorder",title:"排序编号",type:"number",value:10,verify:'required',placeholder:"请输入排序数字",must:true}
                     ]
                 });

@@ -54,7 +54,8 @@ layui.use(['zTree','buildItems'], function(){
         var json = JSON.parse(decodeURIComponent($(this).data('json')));
         var av = obj.elem.checked ? 1 : 0;
         admin.req(app_root+"edit?do=up",{roleid:json.roleid,av:av,af:obj.elem.name},function(res){
-            layer.tips(res.msg,obj.othis,{time:2000});
+            layer.tips(res.msg,obj.othis,{time:1000});
+            if(res.code === 0) obj.elem.checked = parseInt(obj.value);
         },'post',{headersToken:true});
     });/**/
     /*工具条监听*/

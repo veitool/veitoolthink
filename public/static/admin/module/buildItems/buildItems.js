@@ -7,6 +7,7 @@ layui.define(['tagsInput','fileLibrary','cascader'], function(e){
     layui.link(layui.cache.base+"buildItems/buildItems.css");
     var $ = layui.$,layer=layui.layer,form=layui.form,tagsInput=layui.tagsInput,fileLibrary=layui.fileLibrary;
     var static = layui.cache.static;
+    var f = []; //方法组
     var c = []; //配置组
     var $h; //构建的容器
     //基础模板
@@ -138,7 +139,7 @@ layui.define(['tagsInput','fileLibrary','cascader'], function(e){
         },
         sett: function(data){ //data: 二维数组[{name:标识,title:标题,group:分组,type:类型,value:值,options:选项},{}]
             var html = '', str = '', tab_t = '', tab_c = '';
-            $h = $("#"+ c.bid);
+            $h = $("#"+ c.bid); f = []; //清空方法组
             for(var i in data){
                 var d = data[i];
                 if(d.type=='layui_tab'){
@@ -148,12 +149,14 @@ layui.define(['tagsInput','fileLibrary','cascader'], function(e){
                         var dd = d.data[j];
                         if(c[dd.type]){
                             str = b.tpl(c[dd.type],dd);
+                            if(dd.callBack && typeof dd.callBack === 'function') f[dd.name] = dd.callBack;
                             tab_c += (dd.itemCol ? '<div class="'+ dd.itemCol +'">' + str + '</div>' : str);
                         }
                     }
                     tab_c += '</div>';
                 }else if(c[d.type]){
                     str = b.tpl(c[d.type],d);
+                    if(d.callBack && typeof d.callBack === 'function') f[d.name] = d.callBack;
                     html += (d.itemCol ? '<div class="'+ d.itemCol +'">' + str + '</div>' : str);
                 }
             }
@@ -209,13 +212,14 @@ layui.define(['tagsInput','fileLibrary','cascader'], function(e){
             if($h.find("[id^='areas-']").length > 0){
                 b.getCT(function(){
                     $h.find("[id^='areas-']").each(function(){
-                        var id = $(this).attr('id');
+                        var id = $(this).attr('id'), name = $(this).attr('name');
                         layui.cascader.render({
                             elem: "#"+ id,
                             data: cityData,
                             itemHeight: '260px',
                             filterable: true, //开启搜索
                             changeOnSelect: true, //选择即改变
+                            onChange: f[name]
                         });
                     });
                 });

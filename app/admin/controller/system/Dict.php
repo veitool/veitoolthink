@@ -61,6 +61,7 @@ class Dict extends AdminBase
         $d["editor"]   = $this->manUser['username'];
         $d["addtime"]  = time();
         if(DG::insert($d)){
+            D::cache(1);
             return $this->returnMsg("添加字典成功", 1);
         }else{
             return $this->returnMsg('添加字典失败');
@@ -117,6 +118,7 @@ class Dict extends AdminBase
         if(!$id) return $this->returnMsg('参数错误');
         if(DG::del("id IN($id)")){
             D::del("groupid IN($id)");
+            D::cache(1);
             return $this->returnMsg("删除成功", 1);
         }else{
             return $this->returnMsg("删除失败");

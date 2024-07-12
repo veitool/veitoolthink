@@ -54,6 +54,7 @@
                         <div class="layui-btn-group">
                             <a class="layui-btn" id="dict-add" v-show="@system.dict/add"><i class="layui-icon layui-icon-add-circle"></i> 添加</a>
                             <a class="layui-btn" id="dict-del" v-show="@system.dict/del"><i class="layui-icon layui-icon-delete"></i> 删除</a>
+                            <a class="layui-btn" id="dict-reload"><i class="layui-icon layui-icon-success"></i> 重载缓存</a>
                         </div>
                     </div>
                     <table lay-filter="dict" id="dict"></table>
@@ -223,6 +224,11 @@ layui.use(['vinfo', 'xmSelect', 'buildItems'], function(){
         if(checkRows.length === 0){return layer.msg('请选择需删除的字典');}
         var ids = checkRows.map(function(d){return d.id;});
         del(ids);
+    });/**/
+    /*顶部重载缓存*/
+    $('#dict-reload').on('click', function(){
+        admin.loadLeft(1);
+        layer.msg('重载字典缓存成功!');
     });/**/
     /*快编监听*/
     table.on('edit(dict)',function(obj){

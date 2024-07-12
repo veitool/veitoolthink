@@ -42,16 +42,17 @@ class Index extends AdminBase
 
     /**
      * 获取左侧菜单和用户信息
+     * @param  int   $do   是否更新字典缓存0否1是
      * @return json
      */
-    public function json()
+    public function json($do=0)
     {
         $arr = [];
         $cat = Category::catList([['state','=',1],['type','=','01']],0,'title,icon,catid'); // 获取菜单分类
         $data = Menus::getMenus(array_intersect_key($this->manUser, ['userid'=>"",'role_menuid'=>""])); // 获取拥有的菜单数据
         $rs =[
             'menus' => $cat ? ['cat'=>$cat,'menus'=>$data['menus']]: $data['menus'],
-            'user'  => $this->manUser + ['roles' => $data['roles']] + ['rolem' => \app\model\system\Roles::where("state = 1 AND roleid IN(".$this->manUser['roleids'].")")->column("roleid id,role_name name")] + ['dict' => Dict::cache()]
+            'user'  => $this->manUser + ['roles' => $data['roles']] + ['rolem' => \app\model\system\Roles::where("state = 1 AND roleid IN(".$this->manUser['roleids'].")")->column("roleid id,role_name name")] + ['dict' => Dict::cache((int)$do)]
         ];
         unset($rs['user']['password'],$rs['user']['passsalt']);
         return json($rs);

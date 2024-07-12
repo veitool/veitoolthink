@@ -290,7 +290,7 @@ layui.use(function(){
         admin.req(app_root + "state",{name:json.name,state:state},function(res){
             addons = res.data.addons;
             layer.tips(res.msg,obj.othis,{time:2000});
-            if(res.code == 1) loadLeftMenu();
+            if(res.code == 1) admin.loadLeft();
         },'post');
     });/**/
     /*请求处理*/
@@ -351,7 +351,7 @@ layui.use(function(){
                 if(res.code==1){
                     addons = res.data.addons;
                     table.reloadData('addon');
-                    if(way=='install') loadLeftMenu();
+                    if(way=='install') admin.loadLeft();
                 }else if(res.code==5){
                     admin.removeToken();
                     $("#top-addon-user").trigger("click");
@@ -391,13 +391,6 @@ layui.use(function(){
             return UT ? UT.token : '';
         }
         return UT ? UT : '';
-    }/**/
-    /*重载左侧主菜单*/
-    var loadLeftMenu = function(){
-        admin.req(layui.cache.maps + 'index/json',function(res){
-            admin.putUser(res.user);
-            layui.index.buildLeftMenus(res.menus);
-        });
     }/**/
 });
 </script>

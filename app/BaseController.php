@@ -85,8 +85,6 @@ abstract class BaseController
      */
     protected function __home()
     {
-        //前台映射路径
-        defined('APP_MAP') || define('APP_MAP', VT_DIR . '/');
         // 前台统一开关 需后台配置参数 开关类型:site_close 和 文本域类型:site_close_tip
         if(vconfig('site_close')) $this->exitMsg(vconfig('site_close_tip','系统升级维护中，请稍后访问！'),400);
         // 获取会员信息

@@ -39,7 +39,7 @@ class Manager extends AdminBase
             if($roleid!=$this->manUser['roleid'] && in_array($roleid, explode(',',$this->manUser['roleids']))){
                 M::update(['userid'=>$this->manUser['userid'],'roleid'=>$roleid]);
             }
-            return $this->redirect(APP_MAP);
+            return $this->redirect($this->appMap);
         }
         $organ = Organ::order(['listorder'=>'asc'])->column('*');
         if($do){

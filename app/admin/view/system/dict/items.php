@@ -12,7 +12,7 @@
 </div>
 <!--JS部分-->
 <script type="text/javascript">
-layui.use(['xmSelect','buildItems'],function(){
+layui.use(['buildItems'],function(){
     var map_root = layui.cache.maps;
     var app_root = map_root + 'system.dict/';
     var layer = layui.layer,form = layui.form,admin = layui.admin,treeTable = layui.treeTable;

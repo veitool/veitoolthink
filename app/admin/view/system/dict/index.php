@@ -65,7 +65,7 @@
 </div>
 <!--JS部分-->
 <script type="text/javascript">
-layui.use(['vinfo', 'xmSelect', 'buildItems'], function(){
+layui.use(['vinfo', 'buildItems'], function(){
     var map_root = layui.cache.maps;
     var app_root = map_root + 'system.dict/';
     var layer=layui.layer,table=layui.table,form=layui.form,admin=layui.admin;

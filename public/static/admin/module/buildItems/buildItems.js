@@ -21,8 +21,8 @@ layui.define(['tagsInput','fileLibrary','cascader'], function(e){
     c.affix_html = '{{# if(d.affix){ }}lay-affix="{{ d.affix }}" {{# } }}';
     c.item_style = '{{# if(d.style){ }}style="{{ d.style }}" {{# } }}';
     //表单元素
-    c.text_html = '<input type="text" name="{{ d.name }}" value="{{ d.value }}" ' + c.item_style + c.vers_html + '{{# if(d.maxlength){ }}maxlength="{{ d.maxlength }}"{{# } }} ' + c.plac_html + c.affix_html;
-    c.number_html = '<input type="number" name="{{ d.name }}" value="{{ d.value }}" ' + c.item_style + c.vers_html + c.plac_html + '{{# if(d.id){ }}id="{{ d.id }}"{{# } }} class="layui-input" lay-affix="number">';
+    c.text_html = '<input type="text" name="{{ d.name }}" lay-filter="{{ d.name }}" value="{{ d.value }}" ' + c.item_style + c.vers_html + '{{# if(d.maxlength){ }}maxlength="{{ d.maxlength }}"{{# } }} ' + c.plac_html + c.affix_html;
+    c.number_html = '<input type="number" name="{{ d.name }}" lay-filter="{{ d.name }}" value="{{ d.value }}" ' + c.item_style + c.vers_html + c.plac_html + '{{# if(d.id){ }}id="{{ d.id }}"{{# } }} class="layui-input" lay-affix="number">';
     c.switch_html = '{{# if(d.relation){layui.buildItems.rela(d.name,d.relation,"switch");} }}<input type="checkbox" name="{{ d.name }}" lay-skin="switch" lay-text="ON|OFF" lay-filter="{{ d.name }}" value="1" {{ d.value ==1 ? "checked" : "" }}/>';
     c.radio_html = '{{# if(d.relation){layui.buildItems.rela(d.name,d.relation,"radio");} layui.each(d.options, function(key, txt){ }}<input type="radio" name="{{ d.name }}" lay-filter="{{ d.name }}" value="{{ key }}" title="{{ txt }}" {{ d.value == key ? "checked" : "" }} />{{# }); }}';
     c.checkbox_html = '{{# layui.each(d.options, function(key, txt){ }}<input type="checkbox" name="{{ d.name }}[]" lay-filter="{{ d.name }}" lay-skin="{{ d.skin }}" value="{{ key }}" title="{{ txt }}" {{ (d.value).split(",").indexOf(String(key))>-1 ? "checked" : "" }}/>{{# }); }}';

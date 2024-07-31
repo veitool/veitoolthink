@@ -248,18 +248,39 @@ use GuzzleHttp\Psr7\Uri;
  * @method object CreateMediaTargetRecJobs(array $args) 提交视频目标检测任务
  * @method object CreateMediaSegmentVideoBodyJobs(array $args) 提交视频人像抠图任务
  * @method object OpenAsrService(array $args) 开通智能语音服务
- * @method object GetAsrBucketList(array $args) 开通智能语音服务
- * @method object CloseAsrService(array $args) 查询智能语音服务
- * @method object GetAsrQueueList(array $args) 关闭智能语音服务
- * @method object UpdateAsrQueue(array $args) 查询智能语音队列
+ * @method object GetAsrBucketList(array $args) 查询智能语音服务
+ * @method object CloseAsrService(array $args) 关闭智能语音服务
+ * @method object GetAsrQueueList(array $args) 查询智能语音队列
+ * @method object UpdateAsrQueue(array $args) 更新智能语音队列
  * @method object CreateMediaNoiseReductionTemplate(array $args) 创建音频降噪模板
  * @method object UpdateMediaNoiseReductionTemplate(array $args) 更新音频降噪模板
  * @method object CreateVoiceSoundHoundJobs(array $args) 提交听歌识曲任务
  * @method object CreateVoiceVocalScoreJobs(array $args) 提交音乐评分任务
+ * @method object CreateDataset(array $args) 创建数据集
+ * @method object CreateDatasetBinding(array $args) 绑定存储桶与数据集
+ * @method object CreateFileMetaIndex(array $args) 创建元数据索引
+ * @method object DatasetFaceSearch(array $args) 人脸搜索
+ * @method object DatasetSimpleQuery(array $args) 简单查询
+ * @method object DeleteDataset(array $args) 删除数据集
+ * @method object DeleteDatasetBinding(array $args) 解绑存储桶与数据集
+ * @method object DeleteFileMetaIndex(array $args) 删除元数据索引
+ * @method object DescribeDataset(array $args) 查询数据集
+ * @method object DescribeDatasetBinding(array $args) 查询数据集与存储桶的绑定关系
+ * @method object DescribeDatasetBindings(array $args) 查询绑定关系列表
+ * @method object DescribeDatasets(array $args) 列出数据集
+ * @method object DescribeFileMetaIndex(array $args) 查询元数据索引
+ * @method object SearchImage(array $args) 图像检索
+ * @method object UpdateDataset(array $args) 更新数据集
+ * @method object UpdateFileMetaIndex(array $args) 更新元数据索引
+ * @method object ZipFilePreview(array $args) 压缩包预览同步请求
+ * @method object GetHLSPlayKey(array $args) 获取hls播放密钥
+ * @method object PostWatermarkJobs(array $args) 视频明水印-提交任务
+ * @method object GeneratePlayList(array $args) 生成播放列表
+ * @method object CreateWatermarkTemplate(array $args) 创建明水印模板
  * @see \Qcloud\Cos\Service::getService()
  */
 class Client extends GuzzleClient {
-    const VERSION = '2.6.9';
+    const VERSION = '2.6.14';
 
     public $httpClient;
 
@@ -295,14 +316,18 @@ class Client extends GuzzleClient {
         'allow_accelerate' => false,
         'timezone' => 'PRC',
         'locationWithScheme' => false,
-        'autoChange' => true,
+        'autoChange' => false,
         'limit_flag' => false,
+        'isCheckRequestPath' => true,
     ];
 
     public function __construct(array $cosConfig) {
         $this->rawCosConfig = $cosConfig;
 
         $this->cosConfig = processCosConfig(array_replace_recursive($this->cosConfig, $cosConfig));
+
+        global $globalCosConfig;
+        $globalCosConfig = $this->cosConfig;
 
         // check config
         $this->inputCheck();
@@ -409,6 +434,7 @@ class Client extends GuzzleClient {
             null);
     }
 
+
     public function inputCheck() {
         $message = null;
         //检查Region
@@ -458,7 +484,7 @@ class Client extends GuzzleClient {
     public function responseToResultTransformer(ResponseInterface $response, RequestInterface $request, CommandInterface $command)
     {
 
-        $transformer = new ResultTransformer($this->cosConfig, $this->operation); 
+        $transformer = new ResultTransformer($this->cosConfig, $this->operation);
         $transformer->writeDataToLocal($command, $request, $response);
         $deseri = new Deserializer($this->desc, true);
         $result = $deseri($response, $request, $command);
@@ -469,7 +495,7 @@ class Client extends GuzzleClient {
         $result = $transformer->ciContentInfoTransformer($command, $result);
         return $result;
     }
-    
+
     public function __destruct() {
     }
 
@@ -553,10 +579,29 @@ class Client extends GuzzleClient {
         return $rt;
     }
 
+    public static function simplifyPath($path) {
+        $names = explode("/", $path);
+        $stack = array();
+        foreach ($names as $name) {
+            if ($name == "..") {
+                if (!empty($stack)) {
+                    array_pop($stack);
+                }
+            } elseif ($name && $name != ".") {
+                array_push($stack, $name);
+            }
+        }
+        return "/" . implode("/", $stack);
+    }
+
     public function download($bucket, $key, $saveAs, $options = array()) {
         $options['PartSize'] = isset($options['PartSize']) ? $options['PartSize'] : RangeDownload::DEFAULT_PART_SIZE;
         $versionId = isset($options['VersionId']) ? $options['VersionId'] : '';
-
+        if ($this->cosConfig['isCheckRequestPath'] && "/" == self::simplifyPath($key)) {
+            $e = new Exception\CosException('Getobject Key is illegal');
+            $e->setExceptionCode('404');
+            throw $e;
+        }
         $rt = $this->headObject(array(
                 'Bucket'=>$bucket,
                 'Key'=>$key,
@@ -664,6 +709,12 @@ class Client extends GuzzleClient {
     }
     
     public static function explodeKey($key) {
+        global $globalCosConfig;
+        if ($globalCosConfig['isCheckRequestPath'] && "/" == self::simplifyPath($key)) {
+            $e = new Exception\CosException('Getobject Key is illegal');
+            $e->setExceptionCode('404');
+            throw $e;
+        }
         // Remove a leading slash if one is found
         $split_key = explode('/', $key && $key[0] == '/' ? substr($key, 1) : $key);
         // Remove empty element

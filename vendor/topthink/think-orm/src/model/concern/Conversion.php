@@ -132,7 +132,7 @@ trait Conversion
                     throw new Exception('bind attr has exists:' . $key);
                 }
 
-                $this->data[$key] = $model->$attr;
+                $this->data[$key] = $model->getAttr($attr);
             }
         }
 

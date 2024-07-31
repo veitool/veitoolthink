@@ -35,7 +35,7 @@
         "aliyuncs/oss-sdk-php": "^2.7",
         "qcloud/cos-sdk-v5": "^2.6",
         "qiniu/php-sdk": "^7.12",
-        "phpoffice/phpspreadsheet": "^2.1",
+        "phpoffice/phpspreadsheet": "^2.2",
         "phpoffice/phpword": "^1.2",
         "nelexa/zip": "^4.0",
         "veitool/admin": "^3.0"

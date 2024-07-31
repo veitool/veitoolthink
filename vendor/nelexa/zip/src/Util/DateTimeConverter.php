@@ -63,15 +63,19 @@ class DateTimeConverter
         } elseif ($dosTime > self::MAX_DOS_TIME) {
             $dosTime = self::MAX_DOS_TIME;
         }
-//        date_default_timezone_set('UTC');
-        return mktime(
-            (($dosTime >> 11) & 0x1F),         // hours
-            (($dosTime >> 5) & 0x3F),          // minutes
-            (($dosTime << 1) & 0x3E),          // seconds
-            (($dosTime >> 21) & 0x0F),         // month
-            (($dosTime >> 16) & 0x1F),         // day
-            ((($dosTime >> 25) & 0x7F) + 1980) // year
-        );
+        //date_default_timezone_set('UTC');
+        if (PHP_INT_SIZE == 8) {
+            return mktime(
+                (($dosTime >> 11) & 0x1F),         // hours
+                (($dosTime >> 5) & 0x3F),          // minutes
+                (($dosTime << 1) & 0x3E),          // seconds
+                (($dosTime >> 21) & 0x0F),         // month
+                (($dosTime >> 16) & 0x1F),         // day
+                ((($dosTime >> 25) & 0x7F) + 1980) // year
+            );
+        } else {
+            return time();
+        }
     }
 
     /**

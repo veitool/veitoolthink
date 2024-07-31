@@ -3843,14 +3843,36 @@ class Service {
                 'CreateMediaTargetRecJobs' => Descriptions::CreateMediaTargetRecJobs(), // 提交视频目标检测任务
                 'CreateMediaSegmentVideoBodyJobs' => Descriptions::CreateMediaSegmentVideoBodyJobs(), // 提交视频人像抠图任务
                 'OpenAsrService' => Descriptions::OpenAsrService(), //开通智能语音服务
-                'GetAsrBucketList' => Descriptions::GetAsrBucketList(), // 开通智能语音服务
-                'CloseAsrService' => Descriptions::CloseAsrService(), // 查询智能语音服务
-                'GetAsrQueueList' => Descriptions::GetAsrQueueList(), // 关闭智能语音服务
-                'UpdateAsrQueue' => Descriptions::UpdateAsrQueue(), // 查询智能语音队列
+                'GetAsrBucketList' => Descriptions::GetAsrBucketList(), // 查询智能语音服务
+                'CloseAsrService' => Descriptions::CloseAsrService(), // 关闭智能语音服务
+                'GetAsrQueueList' => Descriptions::GetAsrQueueList(), // 查询智能语音队列
+                'UpdateAsrQueue' => Descriptions::UpdateAsrQueue(), // 更新智能语音队列
                 'CreateMediaNoiseReductionTemplate' => Descriptions::CreateMediaNoiseReductionTemplate(), // 创建音频降噪模板
                 'UpdateMediaNoiseReductionTemplate' => Descriptions::UpdateMediaNoiseReductionTemplate(), // 更新音频降噪模板
                 'CreateVoiceSoundHoundJobs' => Descriptions::CreateVoiceSoundHoundJobs(), // 提交听歌识曲任务
                 'CreateVoiceVocalScoreJobs' => Descriptions::CreateVoiceVocalScoreJobs(), // 提交音乐评分任务
+                'CreateDataset' => Descriptions::CreateDataset(), // 创建数据集
+                'CreateDatasetBinding' => Descriptions::CreateDatasetBinding(), // 绑定存储桶与数据集
+                'CreateFileMetaIndex' => Descriptions::CreateFileMetaIndex(), // 创建元数据索引
+                'DatasetFaceSearch' => Descriptions::DatasetFaceSearch(), // 人脸搜索
+                'DatasetSimpleQuery' => Descriptions::DatasetSimpleQuery(), // 简单查询
+                'DeleteDataset' => Descriptions::DeleteDataset(), // 删除数据集
+                'DeleteDatasetBinding' => Descriptions::DeleteDatasetBinding(), // 解绑存储桶与数据集
+                'DeleteFileMetaIndex' => Descriptions::DeleteFileMetaIndex(), // 删除元数据索引
+                'DescribeDataset' => Descriptions::DescribeDataset(), // 查询数据集
+                'DescribeDatasetBinding' => Descriptions::DescribeDatasetBinding(), // 查询数据集与存储桶的绑定关系
+                'DescribeDatasetBindings' => Descriptions::DescribeDatasetBindings(), // 查询绑定关系列表
+                'DescribeDatasets' => Descriptions::DescribeDatasets(), // 列出数据集
+                'DescribeFileMetaIndex' => Descriptions::DescribeFileMetaIndex(), // 查询元数据索引
+                'SearchImage' => Descriptions::SearchImage(), // 图像检索
+                'UpdateDataset' => Descriptions::UpdateDataset(), // 更新数据集
+                'UpdateFileMetaIndex' => Descriptions::UpdateFileMetaIndex(), // 更新元数据索引
+                'ZipFilePreview' => Descriptions::ZipFilePreview(), // 压缩包预览同步请求
+                'GetHLSPlayKey' => Descriptions::GetHLSPlayKey(), // 获取hls播放密钥
+                'PostWatermarkJobs' => Descriptions::PostWatermarkJobs(), // 视频明水印-提交任务
+                'GeneratePlayList' => Descriptions::GeneratePlayList(), // 生成播放列表
+                'CreateWatermarkTemplate' => Descriptions::CreateWatermarkTemplate(), // 创建明水印模板
+
             ),
             'models' => array(
                 'AbortMultipartUploadOutput' => array(
@@ -7525,6 +7547,28 @@ class Service {
                 'UpdateMediaNoiseReductionTemplateOutput' => Descriptions::UpdateMediaNoiseReductionTemplateOutput(),
                 'CreateVoiceSoundHoundJobsOutput' => Descriptions::CreateVoiceSoundHoundJobsOutput(),
                 'CreateVoiceVocalScoreJobsOutput' => Descriptions::CreateVoiceVocalScoreJobsOutput(),
+                'CreateDatasetOutput' => Descriptions::CreateDatasetOutput(),
+                'CreateDatasetBindingOutput' => Descriptions::CreateDatasetBindingOutput(),
+                'CreateFileMetaIndexOutput' => Descriptions::CreateFileMetaIndexOutput(),
+                'DatasetFaceSearchOutput' => Descriptions::DatasetFaceSearchOutput(),
+                'DatasetSimpleQueryOutput' => Descriptions::DatasetSimpleQueryOutput(),
+                'DeleteDatasetOutput' => Descriptions::DeleteDatasetOutput(),
+                'DeleteDatasetBindingOutput' => Descriptions::DeleteDatasetBindingOutput(),
+                'DeleteFileMetaIndexOutput' => Descriptions::DeleteFileMetaIndexOutput(),
+                'DescribeDatasetOutput' => Descriptions::DescribeDatasetOutput(),
+                'DescribeDatasetBindingOutput' => Descriptions::DescribeDatasetBindingOutput(),
+                'DescribeDatasetBindingsOutput' => Descriptions::DescribeDatasetBindingsOutput(),
+                'DescribeDatasetsOutput' => Descriptions::DescribeDatasetsOutput(),
+                'DescribeFileMetaIndexOutput' => Descriptions::DescribeFileMetaIndexOutput(),
+                'SearchImageOutput' => Descriptions::SearchImageOutput(),
+                'UpdateDatasetOutput' => Descriptions::UpdateDatasetOutput(),
+                'UpdateFileMetaIndexOutput' => Descriptions::UpdateFileMetaIndexOutput(),
+                'ZipFilePreviewOutput' => Descriptions::ZipFilePreviewOutput(),
+                'GetHLSPlayKeyOutput' => Descriptions::GetHLSPlayKeyOutput(),
+                'PostWatermarkJobsOutput' => Descriptions::PostWatermarkJobsOutput(),
+                'GeneratePlayListOutput' => Descriptions::GeneratePlayListOutput(),
+                'CreateWatermarkTemplateOutput' => Descriptions::CreateWatermarkTemplateOutput(),
+
             )
         );
     }

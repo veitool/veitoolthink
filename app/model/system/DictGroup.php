@@ -24,13 +24,13 @@ class DictGroup extends Base
 
     /**
      * 管理员列表（分页）
-     * @param  array   $where    查询条件
-     * @param  string  $fields   排除字段
-     * @param  int     $limit    查询条数
-     * @param  array   $order    查询排序
+     * @param  array          $where    查询条件
+     * @param  string         $fields   排除字段
+     * @param  int            $limit    查询条数
+     * @param  array/string   $order    查询排序
      * @return obj
      */
-    public function listQuery($where = [], $fields = '', $limit = 0, $order = ['id'=>'asc'])
+    public function listQuery(array $where = [], string $fields = '', int $limit = 0, array|string $order = ['id'=>'asc'])
     {
         $d = request()->get('','','strip_sql');
         $kw = $d['kw'] ?? '';
@@ -61,7 +61,7 @@ class DictGroup extends Base
      * @param  int   $id   ID
      * @return string
      */
-    public static function getChild($id=0)
+    public static function getChild(int $id = 0)
     {
         $id = abs($id);
         if($id>0){

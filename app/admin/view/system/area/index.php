@@ -25,7 +25,7 @@ layui.use(['buildItems'], function(){
     /*渲染数据*/
     var box = {
         elem: '#areas',
-        data: {$list|raw},
+        data: <?=$list?>,
         even: true,
         limit:100,
         cols: [[

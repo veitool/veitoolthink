@@ -23,7 +23,7 @@ class Filemanage extends AdminBase
      * @param  string  $do  异步数据
      * @return mixed
      */
-    public function index($do='')
+    public function index(string $do = '')
     {
         if($do=='json'){
             $d = $this->only(['kw','fields','sotime','groupid','isdel','limit'=>'10/d'],'get');
@@ -62,7 +62,7 @@ class Filemanage extends AdminBase
      * 编辑文件
      * @return json
      */
-    public function edit($do='')
+    public function edit()
     {
         $d = $this->only(['@token'=>'','fileid/d/参数错误','av','af']);
         $fileid = $d['fileid'];

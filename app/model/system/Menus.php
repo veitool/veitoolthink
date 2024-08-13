@@ -31,7 +31,7 @@ class Menus extends Base
      * @param   int      $pid     上级ID
      * @return  array
      */
-    public static function getMenus($data=[], $pid=0)
+    public static function getMenus(array $data = [])
     {
         $arr = []; $str = ',';
         if(isset($data['userid'])){
@@ -68,7 +68,7 @@ class Menus extends Base
      * @param   int     $t    菜单区分 默认1 1:后台菜单 2:会员菜单
      * @return  array
      */
-    public static function cache($s=0, $t=1)
+    public static function cache(int $s = 0, int $t = 1)
     {
         $k = 'VMENUS_'.$t;
         $r = cache($k);

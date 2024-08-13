@@ -16,7 +16,7 @@ layui.use(['buildItems'], function(){
     var cat_root = map_root + '{$act}/', cat_roots = cat_root.split("@");
         cat_root = cat_roots[1] == undefined ? cat_root : cat_roots[1];
     var layer=layui.layer,table=layui.table,form=layui.form,admin=layui.admin;
-    var cats = {$list|raw};
+    var cats = <?=$list?>;
     /*类列表*/
     table.render({
         elem: '#categorys',

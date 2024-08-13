@@ -29,7 +29,7 @@ abstract class Base
      * @param  string  $name  插件名
      * @access public
      */
-    public function __construct($name = null)
+    public function __construct(string $name = null)
     {
         $name = is_null($name) ? $this->getName() : $name;
         //设置插件标识
@@ -50,7 +50,7 @@ abstract class Base
      * @param  bool    $force  是否重读
      * @return array
      */
-    final public function getInfo($name = '', $force = false)
+    final public function getInfo(string $name = '', bool $force = false)
     {
         $info = [];
         $name = $name ?: $this->getName();
@@ -75,7 +75,7 @@ abstract class Base
      * @param  array   $data   内容值
      * @return array
      */
-    final public function setInfo($name = '', $data = [])
+    final public function setInfo(string $name = '', array $data = [])
     {
         $name = $name ?: $this->getName();
         $info = $this->getInfo($name);
@@ -119,7 +119,7 @@ abstract class Base
      * @param  bool    $type   方式true表追加/false表剔除 默认true
      * @return mixed
      */
-    final public function setAddons($data = [], $type = true)
+    final public function setAddons(array $data = [], bool $type = true)
     {
         if(is_array($data) && $data){
             $arr = config('veitool.addons',[]);
@@ -139,7 +139,7 @@ abstract class Base
      * @param   string   $tofile   目标文件
      * @param   string   $form     来源文件【为空时则会清空 相关合并的函数库】
      */
-    final public function mergeFun($addon = '', $tofile = '', $form = ''){
+    final public function mergeFun(string $addon = '', string $tofile = '', string $form = ''){
         if($addon == '' || !is_file($tofile)) return;
         $f1 = file_get_contents($tofile);
         $f2 = $form && is_file($form) ? str_replace(['<?php',"<?php\n"],['',''],file_get_contents($form)) : '';

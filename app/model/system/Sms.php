@@ -24,13 +24,13 @@ class Sms extends Base
 
     /**
      * 短信记录（分页）
-     * @param  array   $where    条件
-     * @param  array   $order    排序
-     * @param  string  $fields   字段
-     * @param  int     $limit    条数
+     * @param  array          $where    条件
+     * @param  array/string   $order    排序
+     * @param  string         $fields   字段
+     * @param  int            $limit    条数
      * @return obj
      */
-    public function listQuery($where=[], $order=['itemid'=>'desc'], $fields='*', $limit=0)
+    public function listQuery(array $where = [], array|string $order = ['itemid'=>'desc'], string $fields = '*', int $limit = 0)
     {
         $d = request()->get('','','strip_sql');
         $kw = $d['kw'] ?? '';

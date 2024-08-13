@@ -28,7 +28,7 @@ class Dict extends Base
      * @param  int   $id   ID
      * @return string
      */
-    public static function getChild($id=0)
+    public static function getChild(int $id = 0)
     {
         $id = abs($id);
         if($id>0){
@@ -43,7 +43,7 @@ class Dict extends Base
      * @param   int   $s   是否重置缓存
      * @return  array
      */
-    public static function cache($s=0)
+    public static function cache(int $s = 0)
     {
         $k = 'DICTS_ARRAY';
         $r = cache($k);

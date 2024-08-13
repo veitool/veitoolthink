@@ -7,10 +7,10 @@
                 <a class="layui-btn" id="database-xiufu" v-show="@system.database/xiufu"><i class="layui-icon layui-icon-set"></i> 修复表</a>
                 <a class="layui-btn" id="database-youhua" v-show="@system.database/youhua"><i class="layui-icon layui-icon-rate"></i> 优化表</a>
             </div>
-            <div style="float:right;padding:10px 5px 0 0;">共<b> <?php echo $tables ?? '0';?></b> 张表 / <b><?php echo $totalsize ?? '0';?></b> Mb</div>
+            <div style="float:right;padding:10px 5px 0 0;">共<b>{$tables}</b> 张表 / <b>{$totalsize}</b> Mb</div>
         </div>
         <div class="layui-card-body">
-            <table lay-filter="database" id="database"></table>
+            <table id="database"></table>
         </div>
     </div>
 </div>
@@ -24,7 +24,7 @@ layui.use(['buildItems'],function(){
     table.render({
         elem: '#database',
         even: true,
-        data: {$list|raw},
+        data: <?=$list?>,
         cols: [[
             {type:"checkbox",fixed:"left"},
             {field:"name",title: "表名"},
@@ -86,8 +86,8 @@ layui.use(['buildItems'],function(){
                 '<div style="margin-bottom:10px;"><a class="layui-btn" id="database-open-imports-del" v-show="@system.database/del"><i class="layui-icon layui-icon-delete"></i> 删除备份</a></div>',
                 '<table id="database_open_imports_table"></table></div>'
             ].join(''),
-            success: function(){
-                admin.vShow();/*移除无权限项*/
+            success: function(lay){
+                admin.vShow(lay);/*移除无权限项*/
                 /*备份列表*/
                 table.render({
                     elem: '#database_open_imports_table',

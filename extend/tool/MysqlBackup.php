@@ -37,7 +37,7 @@ class MysqlBackup
      * 初始化
      * @param  array  $config  备份配置
      */
-    public function __construct($config = [])
+    public function __construct(array $config = [])
     {
         $this->config['path'] = ROOT_PATH . 'backup'. VT_DS .'database'. VT_DS;
         $this->config = array_merge($this->config, $config);
@@ -64,7 +64,7 @@ class MysqlBackup
      * @param  int      $type    有传入表名时获取的类型
      * @return array
      */
-    public function dataList($table = null, $type = 1)
+    public function dataList(string $table = null, int $type = 1)
     {
         $db = self::connect();
         if(is_null($table)){
@@ -479,10 +479,10 @@ class MysqlBackup
 
     /**
      * 优化表
-     * @param   array|string  $tables  数据表名
+     * @param   string/array  $tables  数据表名
      * @return  mixed
      */
-    public function optimize($tables)
+    public function optimize(string|array $tables = null)
     {
         if($tables){
             $db = self::connect();
@@ -502,10 +502,10 @@ class MysqlBackup
 
     /**
      * 修复表
-     * @param    string|null   $tables   数据表名
-     * @return   array
+     * @param    string/array   $tables   数据表名
+     * @return   array/json
      */
-    public function repair($tables = null)
+    public function repair(string|array $tables = null)
     {
         if($tables){
             $db = self::connect();
@@ -553,7 +553,7 @@ class MysqlBackup
      * @param   string   $path   文件夹路径
      * @return  bool
      */
-    protected function checkPath(string $path)
+    protected function checkPath(string $path = null)
     {
         if(is_dir($path)){
             return true;

@@ -24,12 +24,12 @@ class UploadFile extends Base
 
     /**
      * 获取上传文件记录(分页)
-     * @param  int     $where    条件
-     * @param  array   $order    排序
-     * @param  string  $field    字段
+     * @param  string/array   $where    条件
+     * @param  string/array   $order    排序
+     * @param  string         $field    字段
      * @return obj
      */
-    public function listQuery($where='', $order=['fileid'=>'desc'], $field='*')
+    public function listQuery(string|array $where = '', string|array $order = ['fileid'=>'desc'], string $field = '*')
     {
         $d = request()->param();
         $limit = isset($d['limit']) ? intval($d['limit']) : (isset($d['size']) ? intval($d['size']) : 10); // 兼容百度编辑器附件列表

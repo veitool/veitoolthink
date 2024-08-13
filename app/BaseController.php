@@ -112,7 +112,7 @@ abstract class BaseController
     /**
      * 日志/在线处理
      * @access  protected
-     * @param   sting   $tip   提示
+     * @param   string   $tip   提示
      */
     protected function logon(string $tip = '')
     {
@@ -132,7 +132,7 @@ abstract class BaseController
     /**
      * 模板赋值
      * @access  protected
-     * @param   sting/array  $vars  赋值表达式/数组
+     * @param   string/array  $vars  赋值表达式/数组
      */
     protected final function assign(...$vars)
     {
@@ -142,9 +142,9 @@ abstract class BaseController
     /**
      * 模板渲染
      * @access  protected
-     * @param   string  $tmp    模板名称
-     * @param   sting   $tip    提示
-     * @param   bool    $logon  记录日志
+     * @param   string   $tmp    模板名称
+     * @param   string   $tip    提示
+     * @param   bool     $logon  记录日志
      */
     protected final function fetch(string $tmp = '', string $tip = '', bool $logon = true)
     {

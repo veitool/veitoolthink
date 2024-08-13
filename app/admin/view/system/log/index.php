@@ -90,7 +90,7 @@ layui.use(['vinfo'],function(){
     var map_root = layui.cache.maps;
     var app_root = map_root + 'system.log/';
     var table=layui.table,admin=layui.admin;
-    var limit = {$limit}, PT = {$PT|raw};
+    var limit = {$limit}, PT = <?=$PT?>;
     /*位置选择*/
     admin.util.buildOption('#search_log_select',PT,'位置');
     /*初始选中选卡*/

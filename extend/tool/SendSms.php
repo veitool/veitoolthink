@@ -64,7 +64,7 @@ class SendSms
      * @param   int         $lent          间隔时间(秒)
      * @return  array
      */
-    public function qiniu_send($mobile = [], $message = '', $tpid = 0, $tips = '', $lent = 0)
+    public function qiniu_send(array $mobile = [], string $message = '', int $tpid = 0, string $tips = '', int $lent = 0)
     {
         $time = time();
         //屏蔽频繁发送
@@ -116,7 +116,7 @@ class SendSms
      * @param   int       $lent       间隔时间(秒)
      * @return  array
      */
-    public function smsbao_send($mobile = '', $message = '', $word = 0, $lent = 0)
+    public function smsbao_send(string $mobile = '', string $message = '', int $word = 0, int $lent = 0)
     {
         $time = time();
         //屏蔽频繁发送

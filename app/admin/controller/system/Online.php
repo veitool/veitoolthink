@@ -19,10 +19,10 @@ class Online extends AdminBase
 {
     /**
      * 在线日志
-     * @param  array   $do   异步数据
+     * @param  string   $do   异步数据
      * @return mixed
      */
-    public function index($do='')
+    public function index(string $do = '')
     {
         if($do=='json'){
             $list = (new OL())->listQuery();

@@ -45,7 +45,7 @@ class Index extends AdminBase
      * @param  int   $do   是否更新字典缓存0否1是
      * @return json
      */
-    public function json($do=0)
+    public function json(int $do = 0)
     {
         $arr = [];
         $cat = Category::catList([['state','=',1],['type','=','01']],0,'title,icon,catid'); // 获取菜单分类

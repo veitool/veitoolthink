@@ -37,7 +37,7 @@ class Log extends AdminBase
      * @param  string  $do  异步操作
      * @return json
      */
-    public function login($do='')
+    public function login(string $do = '')
     {
         $Log = new LoginLog();
         if($do=='check'){

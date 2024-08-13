@@ -30,7 +30,7 @@ class Manager extends Base
      * @param  array   $order    查询排序
      * @return obj
      */
-    public function listQuery($where = [], $fields = '', $limit = 0, $order = ['userid'=>'asc'])
+    public function listQuery(array $where = [], string $fields = '', int $limit = 0, array|string $order = ['userid'=>'asc'])
     {
         $d = request()->get('','','strip_sql');
         $kw = $d['kw'] ?? '';

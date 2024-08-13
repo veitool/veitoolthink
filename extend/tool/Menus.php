@@ -20,11 +20,11 @@ class Menus
     /**
      * 创建菜单
      * @param   array    $menus    菜单数组
-     * @param   type     $parent   父类ID
+     * @param   int      $parent   父类ID
      * @param   string   $name     插件标识名
      * @return  mixed
      */
-    public static function create($menus = [], $parent = 0, $name = '')
+    public static function create(array $menus = [], int $parent = 0, string $name = '')
     {
         $old = [];
         self::menuUpdate($menus, $parent, $name);
@@ -36,7 +36,7 @@ class Menus
      * @param   string  $name  插件名
      * @return  int  删除的记录数
      */
-    public static function delete($name)
+    public static function delete(string $name)
     {
         $i = 0;
         if($name){
@@ -53,9 +53,9 @@ class Menus
      * @param  array    $newMenu    新菜单数据
      * @param  int      $parentid   父类ID
      * @param  string   $name       插件标识名
-     * @throws Exception
+     * @return mixed
      */
-    private static function menuUpdate($newMenu, $parentid = 0, $name = '')
+    private static function menuUpdate(array $newMenu = [], int $parentid = 0, string $name = '')
     {
         $time = time();
         $allow = ['catid'=>'1','name'=>'','menu_name'=>'莫名菜单','role_name'=>'','link_url'=>'','menu_url'=>'','role_url'=>'','link_url'=>'','icon'=>'','ismenu'=>'0','listorder'=>10,'state'=>'0','type'=>'1'];
@@ -77,9 +77,9 @@ class Menus
      * 菜单导出
      * @param  int            $menuid   菜单ID
      * @param  string/array   $where    查询条件
-     * @throws Exception
+     * @return array
      */
-    public static function menuOut($menuid = 0, $where = '')
+    public static function menuOut(int $menuid = 0, string|array $where = '')
     {
         global $_MES;
         $_MES = $_MES ?: M::where($where)->order(['listorder'=>'asc','menuid'=>'asc'])->column('*');
@@ -103,7 +103,7 @@ class Menus
      * @param   string  $name   插件名
      * @return  int
      */
-    public static function enable($name)
+    public static function enable(string $name)
     {
         $i = 0;
         if($name){
@@ -120,7 +120,7 @@ class Menus
      * @param   string  $name   插件名
      * @return  int
      */
-    public static function disable($name)
+    public static function disable(string $name)
     {
         $i = 0;
         if($name){
@@ -137,7 +137,7 @@ class Menus
      * @param   string   $name   插件名
      * @return  string
      */
-    public static function getAuthRuleIdsByName($name)
+    public static function getAuthRuleIdsByName(string $name)
     {
         return implode(',', M::where('name',$name)->column('menuid'));
     }
@@ -149,7 +149,7 @@ class Menus
      * @param   array   $rs   菜单集
      * @return  string
      */
-    public static function reset($id = 0, $pd = 0, $rs = [])
+    public static function reset(int $id = 0, int $pd = 0, array $rs = [])
     {
         if(!$rs){
             $rs = Db::name('menus')->order(['listorder'=>'asc','menuid'=>'asc'])->column('*');

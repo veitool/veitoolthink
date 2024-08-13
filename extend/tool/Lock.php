@@ -27,7 +27,7 @@ class Lock
      * @param  array  $c  [times:失败的次数 time:失败后锁定时长[默认1800秒] tips:提示 key:缓存KEY msg:信息 add:是否检查时立即追加缓存记录 默认false]
      * @return boolean
      */
-    public static function check($c = [])
+    public static function check(array $c = [])
     {
         self::$config = array_merge(self::$config,$c);
         $data = Cache::get(self::$config['key']);
@@ -46,7 +46,7 @@ class Lock
      * @param  array  $c  [time:重复操作的时间间隔[默认1800秒] tips:提示 key:缓存KEY msg:信息]
      * @return boolean
      */
-    public static function often($c = [])
+    public static function often(array $c = [])
     {
         self::$config = array_merge(self::$config,$c);
         $key  = self::$config['key'];
@@ -66,7 +66,7 @@ class Lock
      * @param  bool  $flag  是否记录次数
      * @return mixed
      */
-    public static function add($flag = true)
+    public static function add(bool $flag = true)
     {
         $key  = self::$config['key'];
         $data = Cache::get($key);

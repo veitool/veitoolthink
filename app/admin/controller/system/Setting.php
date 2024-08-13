@@ -27,10 +27,10 @@ class Setting extends AdminBase
 
     /**
      * 系统设置
-     * @param  array   $do   异步数据
+     * @param  string   $do   异步数据
      * @return mixed
      */
-    public function index($do='')
+    public function index(string $do = '')
     {
         $groups = vconfig('sys_group',[]); reset($groups);
         if($do=='json'){
@@ -103,7 +103,7 @@ class Setting extends AdminBase
      * @param  string   $do   异步数据/操作
      * @return json
      */
-    public function build($do='')
+    public function build(string $do = '')
     {
         $groups = vconfig('sys_group');
         $types  = vconfig('sys_type');
@@ -162,10 +162,10 @@ class Setting extends AdminBase
 
     /**
      * 配置项编辑
-     * @param  array   $do   快编操作
+     * @param  string   $do   快编操作
      * @return json
      */
-    public function bedit($do='')
+    public function bedit(string $do = '')
     {
         $d = $this->only($do ? ['@token'=>'','id/d/ID参数错误','av','af'] : ['@token'=>'','id/d/ID参数错误',$this->ptype,$this->pname,$this->ptitle,$this->pgroup,$this->ptips,'value/u','options/u','listorder/d']);
         $id = $d['id'];

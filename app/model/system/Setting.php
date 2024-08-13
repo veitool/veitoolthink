@@ -18,31 +18,31 @@ class Setting extends Base
 {
     /**
      * 列表(分页)
-     * @param  string  $where  查询条件
+     * @param  string/array  $where  查询条件
      * @return obj
      */
-    public function listQuery($where='')
+    public function listQuery(string|array $where = '')
     {
-        return $this->field('*')->where($where)->order('listorder', 'asc')->paginate(input('limit/d'));
+        return $this->where($where)->field('*')->order('listorder', 'asc')->paginate(input('limit/d'));
     }
 
     /**
      * 列表
-     * @param  string  $where  查询条件
-     * @param  string  $field  查询的字段
+     * @param  string/array  $where  查询条件
+     * @param  string        $field  查询的字段
      * @return array
      */
-    public function listArray($where='', $field='*')
+    public function listArray(string|array $where = '', string $field = '*')
     {
         return $this->where($where)->order('listorder', 'asc')->column($field);
     }
 
     /**
      * 获取配置信息
-     * @param  string $name  配置名
+     * @param  string  $name  配置名
      * @return array
      */
-    public static function getSetting($name='')
+    public static function getSetting(string $name = null)
     {
         $configs = self::column('value,type,name,addon');
         $result = [];
@@ -60,15 +60,15 @@ class Setting extends Base
                 $result[$config['name']] = $val;
             }
         }
-        return $name != '' ? $result[$name] : $result;
+        return is_null($name) ? $result : $result[$name];
     }
 
     /**
     * 载入配置数据
-    * @param   int    $reset   是否重置缓存
+    * @param   int   $reset   是否重置缓存
     * @return  array
     */
-    public static function cache($reset=0)
+    public static function cache(int $reset = 0)
     {
         $key = 'VSETTING';
         $rs = cache($key);

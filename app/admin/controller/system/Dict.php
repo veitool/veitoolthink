@@ -23,7 +23,7 @@ class Dict extends AdminBase
      * @param  string  $do  操作参数
      * @return mixed
      */
-    public function index($do='')
+    public function index(string $do = '')
     {
         $Types = DG::where("groupid = 0")->order(['id'=>'asc'])->column('id,title,parentid');
         if($do){
@@ -73,7 +73,7 @@ class Dict extends AdminBase
      * @param  string   $do   快编操作
      * @return json
      */
-    public function edit($do='')
+    public function edit(string $do = '')
     {
         $d = $this->only($do ? ['@token'=>'','id/d/参数错误','av','af'] : ['@token'=>'','id/d/参数错误','title/*/{2,100}/字典名称','code/*/{2,30}/字典编码/1,2,3/_','groupid/d','@sql/s','note/h']);
         $id = $d['id'];
@@ -206,7 +206,7 @@ class Dict extends AdminBase
      * @param  string  $do        操作参数
      * @param  int     $groupid   所属字典ID
      */
-    function items($do='',$groupid=0)
+    function items(string $do = '', int $groupid = 0)
     {
         if($do=='json'){
             return $this->returnMsg(D::where("groupid=".(int)$groupid)->order(['listorder'=>'asc','id'=>'asc'])->select());
@@ -271,7 +271,7 @@ class Dict extends AdminBase
      * @param  string   $do   快编参数
      * @return json
      */
-    public function iedit($do='')
+    public function iedit(string $do = '')
     {
         $d = $this->only($do ? ['@token'=>'','id/d/参数错误','av/u','af'] : ['@token'=>'','id/d/参数错误','groupid/d','parentid/d','name/s/请输入字典项名','value/s/请输入字典项值','listorder/d','state/d']);
         $id = $d['id'];
@@ -349,7 +349,7 @@ class Dict extends AdminBase
      * @param  string  $code  字典编码
      * @return json
      */
-    public function json($code='')
+    public function json(string $code = '')
     {
         $rs = D::cache();
         return $this->returnMsg($code && isset($rs[$code]) ? $rs[$code] : $rs);

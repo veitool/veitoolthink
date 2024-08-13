@@ -41,7 +41,7 @@ class Database extends AdminBase
     public function index()
     {
         $rs = $this->db->dataList();
-        $total_size = $num = 0;
+        $num = $total_size = 0;
         foreach ($rs as $k => $v){
             $rs[$k]['data_length']  = round($v['data_length']/1024/1024, 3);  //数据大小
             $rs[$k]['index_length'] = round($v['index_length']/1024/1024, 3); //索引大小
@@ -139,15 +139,14 @@ class Database extends AdminBase
 
     /**
      * 数据表字典
-     * @param  array   $table   操作表名
+     * @param  string   $table   操作表名
      * @return json
      */
-    public function dict($table = '')
+    public function dict(string $table = '')
     {
         if(!$table) return $this->returnMsg('参数错误');
         $table = strip_sql($table, 0);
-        $rs = $this->db->dataList($table);
-        return $this->returnMsg($rs);
+        return $this->returnMsg($this->db->dataList($table));
     }
 
     /**

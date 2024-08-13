@@ -30,7 +30,7 @@ class ManagerLog extends Base
      * @param  int     $limit    条数
      * @return obj
      */
-    public function listQuery($where=[], $order=['logid'=>'desc'], $fields = '*', $limit=0)
+    public function listQuery(array $where = [], array|string $order=['logid'=>'desc'], string $fields = '*', int $limit = 0)
     {
         $d = request()->get('','','strip_sql');
         $kw = $d['kw'] ?? '';
@@ -58,7 +58,7 @@ class ManagerLog extends Base
      * @param   array   $d   日志数据
      * @return  static
      */
-    public static function add($d=[])
+    public static function add(array $d = [])
     {
         $d['url'] = isset($d['url']) ? substr($d['url'],0,230) : '';
         $d = array_merge(['url'=>'','username'=>'','ip'=>'0','logtime'=>time()],$d);

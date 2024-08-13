@@ -23,7 +23,7 @@ class Sms extends AdminBase
      * @param  string  $do  异步数据
      * @return mixed
      */
-    public function index($do='')
+    public function index(string $do = '')
     {
         if($do=='json'){
             return $this->returnMsg((new S())->listQuery());

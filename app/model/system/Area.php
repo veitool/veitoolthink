@@ -30,11 +30,11 @@ class Area extends Base
 
     /**
      * 获取地区名称串
-     * @param  int     $aid     地区ID串
-     * @param  int     $fg      分隔符
-     * @return string  返回地区名，如：广东-广州-番禺
+     * @param  string   $aid   地区ID串
+     * @param  string   $fg    分隔符
+     * @return string   返回地区名，如：广东-广州-番禺
      */
-    public static function getAreaStr($aid='', $fg='-')
+    public static function getAreaStr(string $aid = '', string $fg = '-')
     {
         if(empty(self::$area)){
             $rs = self::cache();
@@ -58,7 +58,7 @@ class Area extends Base
      * @param   int      $pid   上级ID
      * @return  array
      */
-    public static function getAreaJson($data=[], $pid=0)
+    public static function getAreaJson(array $data = [], int $pid = 0)
     {
         if(!$data){
             $data = self::cache(0);
@@ -80,10 +80,10 @@ class Area extends Base
 
     /**
      * 缓存地区数据
-     * @param   int    $reset    是否重置缓存
+     * @param   int   $reset   是否重置缓存
      * @return  array
      */
-    public static function cache($reset=0)
+    public static function cache(int $reset = 0)
     {
         $key = 'VAREAS';
         $rs = cache($key);

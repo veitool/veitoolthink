@@ -24,13 +24,13 @@ class Online extends Base
 
     /**
      * 列表（分页）
-     * @param  array   $where    条件
-     * @param  array   $order    排序
-     * @param  string  $fields   字段
-     * @param  int     $limit    条数
+     * @param  array          $where    条件
+     * @param  array/string   $order    排序
+     * @param  string         $fields   字段
+     * @param  int            $limit    条数
      * @return array
      */
-    public function listQuery($where=[], $order=['etime'=>'desc'], $fields = '*', $limit=0)
+    public function listQuery(array $where = [], array|string $order = ['etime'=>'desc'], string $fields = '*', int $limit = 0)
     {
         $d = request()->get('','','strip_sql');
         $kw = $d['kw'] ?? '';
@@ -71,7 +71,7 @@ class Online extends Base
      * @param  string  $url   在线地址
      * @param  int     $type  在线类型默认1前台 0后台 
      */
-    public static function recod($user, $url = '', $type = 1)
+    public static function recod(array $user, string $url = '', int $type = 1)
     {
         if($Online = $user){
             if($yk = session(VT_VISITOR)){ //删除登录前的游客在线

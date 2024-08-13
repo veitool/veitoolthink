@@ -26,7 +26,7 @@ class Manager extends AdminBase
      * @param  string  $action  操作参数 有权限限制
      * @return mixed
      */
-    public function index($do='', $action='')
+    public function index(string $do = '', string $action = '')
     {
         if($action=='info'){ //个人中心
             if(!Area::cache()) $this->exitMsg('请到地区管理设置或导入地区数据',400);
@@ -99,10 +99,10 @@ class Manager extends AdminBase
 
     /**
      * 用户编辑
-     * @param  array   $do   快编操作
+     * @param  string   $do   快编操作
      * @return json
      */
-    public function edit($do='')
+    public function edit(string $do = '')
     {
         $d = $this->only($do ? ['@token'=>'','userid/d/参数错误','av','af'] : ['@token'=>'','userid/d/参数错误','username/*/u/管理帐号','groupid/d/请选择所属机构','roleids/*/i/请选择所属角色','truename/?/n','mobile/?/m','email/?/e']);
         $userid = $d['userid'];

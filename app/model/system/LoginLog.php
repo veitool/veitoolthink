@@ -24,13 +24,13 @@ class LoginLog extends Base
 
     /**
      * 获取日志（分页）
-     * @param  array   $where    条件
-     * @param  array   $order    排序
-     * @param  string  $fields   字段
-     * @param  int     $limit    条数
+     * @param  array         $where    条件
+     * @param  array/string  $order    排序
+     * @param  string        $fields   字段
+     * @param  int           $limit    条数
      * @return obj
      */
-    public function listQuery($where=[], $order=['logid'=>'desc'], $fields = '*', $limit=0)
+    public function listQuery(array $where = [], array|string $order = ['logid'=>'desc'], string $fields = '*', int $limit = 0)
     {
         $d = request()->get('','','strip_sql');
         $kw = $d['kw'] ?? '';
@@ -66,7 +66,7 @@ class LoginLog extends Base
      * @param   int         $h     类型 0后台 1会员 2门店 3终端
      * @return  mixed
      */
-    public static function add($u, $p, $s, $m='成功', $h=0)
+    public static function add(string $u, string $p, string $s, string $m = '成功', int $h = 0)
     {
         $p = set_password($p, $s);
         $a = substr(vhtmlspecialchars(strip_sql(request()->header('user-agent'))),0,200);

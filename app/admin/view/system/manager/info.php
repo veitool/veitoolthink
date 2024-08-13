@@ -167,7 +167,7 @@
 <script>
 layui.use(['fileLibrary', 'cascader'], function () {
     var gid = 1;
-    var userid = {$User.userid};
+    var userid = <?=$User['userid']?>;
     var map_root = layui.cache.maps;
     var app_root = map_root + 'system.manager/';
     var layer=layui.layer,form=layui.form,admin=layui.admin;

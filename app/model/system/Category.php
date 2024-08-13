@@ -29,7 +29,7 @@ class Category extends Base
      * @param   string          $field     查询的字段(主键作为索引时只查询1个字段时为1维数组)
      * @return  array
      */
-    public static function catList($where = '', $iskey = 0, $field = '*')
+    public static function catList(string|array $where = '', int $iskey = 0, string $field = '*')
     {
         $where = is_array($where) ? $where : [['type','=',$where]];
         $obj = self::where($where)->order('listorder', 'asc');
@@ -41,7 +41,7 @@ class Category extends Base
      * @param  int   $catid   ID
      * @return string
      */
-    public static function getChild($catid=0)
+    public static function getChild(int $catid = 0)
     {
         $catid = abs($catid);
         if($catid>0){
@@ -57,7 +57,7 @@ class Category extends Base
      * @param  string   $type   标识
      * @return array
      */
-    public static function cadd($type='')
+    public static function cadd(string $type = '')
     {
         $d = request()->post(['title','icon','parentid','listorder'],'','strip_sql');
         if(!$d['title']) return ['msg'=>'请输入类别名称'];
@@ -77,11 +77,11 @@ class Category extends Base
 
     /**
      * 类别编辑
-     * @param  array    $do     快编
+     * @param  string   $do     快编
      * @param  string   $type   标识
      * @return array
      */
-    public static function cedit($do='', $type='')
+    public static function cedit(string $do = '', string $type = '')
     {
         $d = request()->post(['catid','title','icon','parentid','listorder','av','af'],'','strip_sql');
         $catid = $d['catid'] = intval($d['catid']);
@@ -144,7 +144,7 @@ class Category extends Base
      * @param  string   $type   标识
      * @return array
      */
-    public static function cdel($type='')
+    public static function cdel(string $type = '')
     {
         $catid = request()->post('catid','','intval');
         $catid = is_array($catid) ? implode(',',$catid) : $catid;

@@ -165,12 +165,12 @@ class Addon extends AdminBase
 
     /**
      * 插件配置管理
-     * @param  array    $do      操作参数
+     * @param  string   $do      操作参数
      * @param  string   $addon   插件名称
      * @param  string   $group   配置分组
      * @return mixed
      */
-    public function setting($do='', $addon='', $group='')
+    public function setting(string $do = '', string $addon = '', string $group = '')
     {
         $groups = (array) vconfig('@'.$addon.'.'.'group',[]); reset($groups);
         if($do=='json'){

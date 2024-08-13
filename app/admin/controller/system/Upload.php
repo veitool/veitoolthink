@@ -102,11 +102,11 @@ class Upload extends AdminBase
      * @param   string   $file     上传文件form名称
      * @param   int      $groupid  上传的文件分组ID
      * @param   string   $action   上传的文件类型
-     * @param   int      $thum     是否生成缩略图
+     * @param   string   $thum     是否生成缩略图,如:100|100
      * @return  json
      * @throws \think\Exception
      */
-    public function upfile($file = 'file', $groupid = 0, $action = '', $thum=0)
+    public function upfile(string $file = 'file', int $groupid = 0, string $action = '', string $thum = '')
     {
         if(!$action) return $this->returnMsg('参数错误');
         $this->init();
@@ -162,7 +162,7 @@ class Upload extends AdminBase
      * @param   string   $action   上传的文件类型 或 其他动作
      * @return  json
      */
-    public function ueditor($file = 'file', $groupid = 0, $action = '')
+    public function ueditor(string $file = 'file', int $groupid = 0, string $action = '')
     {
         if(!$action) return $this->returnMsg('参数错误');
         if($action == 'config'){ //百度编辑器获取配置
@@ -312,7 +312,7 @@ class Upload extends AdminBase
      * @param   string   $type      文件类型
      * @return  json
      */
-    public function files($action='', $type='image')
+    public function files(string $action = '', string $type = 'image')
     {
         if($action=='move'){
             $d = $this->only(['groupid/d','fileids/a']);
@@ -354,7 +354,7 @@ class Upload extends AdminBase
      * @param   string   $action   操作参数(有权限)
      * @return  json
      */
-    public function group($action='')
+    public function group(string $action = '')
     {
         if(!$action) return $this->returnMsg('参数错误');
         $d = $this->only(['groupid/d','groupname/h','grouptype/h']);

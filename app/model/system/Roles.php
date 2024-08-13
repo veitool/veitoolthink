@@ -49,9 +49,9 @@ class Roles extends Base
      * @param    int         $reset    是否重置 默认 否
      * @return   array ['roleid'=>角色ID,'role_name'=>角色名,'role_menuid'=>拥有的菜单ID串'actions'=>权限记录集]
      */
-    public static function cache($role, $reset=0)
+    public static function cache(int|array $role, int $reset = 0)
     {
-        $roleid = is_array($role) ? $role['roleid'] : intval($role);
+        $roleid = is_array($role) ? $role['roleid'] : $role;
         $key = 'VMENUS_1_'.$roleid;
         $rs = cache($key);
         if(!$rs || $reset){

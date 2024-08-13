@@ -21,7 +21,7 @@ class Organ extends Base
      * @param  int   $id   ID
      * @return string
      */
-    public static function getChild($id=0)
+    public static function getChild(int $id = 0)
     {
         $id = abs($id);
         if($id>0){

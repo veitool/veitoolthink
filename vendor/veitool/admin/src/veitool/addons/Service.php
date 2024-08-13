@@ -59,19 +59,20 @@ class Service
      * @param  array  $params  插件参数
      * @return array
      */
-    public static function onAddon($params = [])
+    public static function onAddon(array $params = [])
     {
         $addon = Cache::get("addonsOnline");
         if(!is_array($addon) && self::getServerUrl()){
             $addon = $rs = [];
             try{
-                $rs = self::doRequest('/api/addon/index',$params,'GET');
-            }catch(\Exception $e){}
+                $rs = self::doRequest('/api/addon/index', $params, 'GET');
+            }catch(\Exception $e){
+            }
             $data = $rs['data'] ?? [];
             foreach($data as $v){
                 $addon[$v['name']] = $v;
             }
-            Cache::set("addonsOnline",$addon,600);
+            Cache::set("addonsOnline", $addon, 600);
         }
         return $addon;
     }
@@ -85,17 +86,17 @@ class Service
      * @throws  Exception
      * @throws  AddonException
      */
-    public static function install($name, $force = false, $extend = [])
+    public static function install(string $name, bool $force = false, array $extend = [])
     {
         if(!$name || (is_dir(ADDON_PATH . $name) && !$force)){
             throw new Exception('Addon already exists');
         }
-        $tmpFile  = Service::download($name, $extend);
+        $tmpFile  = self::download($name, $extend);
         $addonDir = self::getAddonDir($name);
         try{
-            Service::unzip($name);
-            if(!$force){Service::noConflict($name);}
-            Service::check($name);
+            self::unzip($name);
+            if(!$force){self::noConflict($name);}
+            self::check($name);
         }catch(AddonException $e){
             @rmdirs($addonDir);
             throw new AddonException($e->getMessage(), $e->getCode(), $e->getData());
@@ -106,7 +107,7 @@ class Service
             @unlink($tmpFile);
         }
         $addon = self::getAddonInstance($name);
-        $info = $addon->getInfo($name);
+        //$info = $addon->getInfo($name);
         Db::startTrans();
         try{
             $addon->install();
@@ -116,18 +117,18 @@ class Service
             Db::rollback();
             throw new Exception($e->getMessage());
         }
-        Service::importsql($name,true);
-        return Service::enable($name, $force);
+        self::importsql($name, true);
+        return self::enable($name, $force);
     }
 
     /**
      * 离线安装
-     * @param  string  $file    插件压缩包
-     * @param  bool    $force   强制覆盖
-     * @param  array   $extend  会员信息
+     * @param  \think\File  $file    插件压缩包
+     * @param  bool         $force   强制覆盖
+     * @param  array        $extend  会员信息
      * @return array
      */
-    public static function local($file, $force = false, $extend = [])
+    public static function local(\think\File $file, bool $force = false, array $extend = [])
     {
         if(!$file || !$file instanceof \think\File){
             throw new Exception('No file upload or server upload limit exceeded');
@@ -165,11 +166,11 @@ class Service
             $extend['notes'] = $zip->getArchiveComment();
             $params = array_merge($zipInfo, $extend);
             $check = env('app_debug', true) && config('veitool.unknown');
-            $check || Service::valid($params);
+            $check || self::valid($params);
             @mkdir($newAddonDir, 0755, true);
             $zip->extractTo($newAddonDir);
-            if(!$force){Service::noConflict($name);}
-            $check || Service::check($name);
+            if(!$force){self::noConflict($name);}
+            $check || self::check($name);
         }catch(ZipException $e){
             $zip->close();
             @unlink($tmpFile);
@@ -194,7 +195,7 @@ class Service
             Db::rollback();
             throw new Exception($e->getMessage());
         }
-        Service::importsql($name,true);
+        self::importsql($name,true);
         self::setAddonInfo($name,['state'=>0]);
         self::setAddonEvent();
         return true;
@@ -203,22 +204,22 @@ class Service
     /**
      * 卸载插件
      * @param   string   $name   插件名
-     * @param   boolean  $force  是否强制卸载
-     * @return  boolean
+     * @param   bool     $force  是否强制卸载
+     * @return  bool
      * @throws  Exception
      */
-    public static function uninstall($name, $force = false)
+    public static function uninstall(string $name, bool $force = false)
     {
         if(!$name || !is_dir(ADDON_PATH . $name)){
             throw new Exception('Addon not exists');
         }
         if($force){
-            $list = Service::getGlobalFiles($name);
+            $list = self::getGlobalFiles($name);
             foreach($list as $v){
                 @unlink(ROOT_PATH . ltrim($v,'@'));
             }
         }else{
-            Service::noConflict($name);
+            self::noConflict($name);
         }
         try{
             $addon = self::getAddonInstance($name);
@@ -233,42 +234,38 @@ class Service
 
     /**
      * 更新升级
-     * @param  string  $name    插件名称
-     * @param  array   $extend  扩展参数
+     * @param   string  $name    插件名称
+     * @param   array   $extend  扩展参数
+     * @return  bool
+     * @throws  Exception
      */
-    public static function upgrade($name, $extend = [])
+    public static function upgrade(string $name, array $extend = [])
     {
-        $info = self::getAddonInstance($name)->getInfo($name);
-        if($info['state']){
+        $addonDir = self::getAddonDir($name);
+        $info = parse_ini_file($addonDir . 'info.ini', true, INI_SCANNER_TYPED) ?: [];
+        if($info && $info['state']){
             throw new Exception('请先禁用插件后再进行升级操作！');
         }
-        $tmpFile = Service::download($name, $extend);
-        Service::backup($name);
-        $addonDir = self::getAddonDir($name);
+        $tmpFile = self::download($name, $extend);
+        self::backup($name);
+
         $files = self::getCheckDirs();
         foreach($files as $index => $file){
             @rmdirs($addonDir . $file);
         }
         try{
-            Service::unzip($name);
+            self::unzip($name);
         }catch(Exception $e){
             throw new Exception($e->getMessage());
         }finally{
             @unlink($tmpFile);
         }
-        Service::importsql($name);
+        //self::importsql($name);
         try{
-            $addonName = ucfirst($name);
-            $sourceFile = $addonDir . $addonName . ".php";
-            $destFile = $addonDir . $addonName . "Upgrade.php";
-            $classContent = str_replace("class {$addonName} extends", "class {$addonName}Upgrade extends", file_get_contents($sourceFile));
-            file_put_contents($destFile, $classContent);
-            $className = "\\addons\\" . $name . "\\" . $addonName . "Upgrade";
-            $addon = new $className($name);
+            $addon = self::getAddonInstance($name);
             if(method_exists($addon,"upgrade")){
                 $addon->upgrade();
             }
-            @unlink($destFile);
         }catch(Exception $e){
             throw new Exception($e->getMessage());
         }
@@ -282,8 +279,9 @@ class Service
      * @param   string   $name     插件名称
      * @param   array    $extend   扩展参数
      * @return  string   返回下载后的插件临时路径
+     * @throws  Exception
      */
-    public static function download($name, $extend = [])
+    public static function download(string $name, array $extend = [])
     {
         $addonsTempDir = self::getAddonsBackupDir();
         $tmpFile = $addonsTempDir . $name . ".zip";
@@ -318,14 +316,15 @@ class Service
      * @param   string   $name   插件名称
      * @param   bool     $force  强制覆盖
      * @return  bool
+     * @throws  Exception
      */
-    public static function enable($name, $force = false)
+    public static function enable(string $name, bool $force = false)
     {
         if(!$name || !is_dir(ADDON_PATH . $name)){
             throw new Exception('Addon not exists');
         }
         if(!$force){
-            Service::noConflict($name);
+            self::noConflict($name);
         }
         if(config('veitool.back_up')){
             $conflictFiles = self::getGlobalFiles($name,true);
@@ -348,7 +347,7 @@ class Service
         $onDir = self::getCheckDirs();
         $addonDir = self::getAddonDir($name);
         if($files){
-            Service::aJson($name, ['files' => $files]);
+            self::aJson($name, ['files' => $files]);
         }
         foreach($onDir as $dir){
             if(is_dir($addonDir . $dir)){
@@ -380,13 +379,13 @@ class Service
      * @return  bool
      * @throws  Exception
      */
-    public static function disable($name, $force = false)
+    public static function disable(string $name, bool $force = false)
     {
         if(!$name || !is_dir(ADDON_PATH . $name)){
             throw new Exception('Addon not exists');
         }
         if(!$force){
-            Service::noConflict($name);
+            self::noConflict($name);
         }
         if(config('veitool.back_up')){
             $conflictFiles = self::getGlobalFiles($name,true);
@@ -406,9 +405,9 @@ class Service
             }
         }
         $addonDir = self::getAddonDir($name);
-        $list = Service::getGlobalFiles($name);
+        $list = self::getGlobalFiles($name);
         if(config('veitool.clean') || !$list){
-            $ajson = Service::aJson($name);
+            $ajson = self::aJson($name);
             if(isset($ajson['files']) && is_array($ajson['files'])){
                 foreach($ajson['files'] as $item){
                     $item = str_replace(['/', '\\'], VT_DS, $item);
@@ -452,10 +451,10 @@ class Service
     /**
      * 解压插件到插件目录
      * @param   string   $name   插件名称
-     * @return  string
+     * @return  string   返回插件目录地址
      * @throws  Exception
      */
-    public static function unzip($name)
+    public static function unzip(string $name)
     {
         if(!$name){
             throw new Exception('Invalid parameters');
@@ -488,7 +487,7 @@ class Service
      * @return  bool
      * @throws  Exception
      */
-    public static function check($name)
+    public static function check(string $name)
     {
         if(!$name || !is_dir(ADDON_PATH . $name)){
             throw new Exception('Addon not exists');
@@ -503,10 +502,10 @@ class Service
     /**
      * 是否有冲突
      * @param   string  $name  插件名称
-     * @return  boolean
+     * @return  bool
      * @throws  AddonException
      */
-    public static function noConflict($name)
+    public static function noConflict(string $name)
     {
         $list = self::getGlobalFiles($name, true);
         if($list){
@@ -519,9 +518,10 @@ class Service
      * 导入SQL
      * @param   string  $name  插件名称
      * @param   bool    $conf  导入配置
-     * @return  boolean
+     * @return  bool
+     * @throws  Exception
      */
-    public static function importsql($name,$conf = false)
+    public static function importsql(string $name, bool $conf = false)
     {
         $sqlFile = self::getAddonDir($name) . 'data' . VT_DS . 'install.sql';
         if(is_file($sqlFile)){
@@ -547,7 +547,7 @@ class Service
             }
         }
         if($conf){
-            $configFile = self::getConfigFile($name,true);
+            $configFile = (string)self::getConfigFile($name,true);
             if(is_file($configFile)){
                 try{
                     $data = include_once $configFile;
@@ -566,10 +566,10 @@ class Service
     /**
      * 获取插件在全局的文件
      * @param   string    $name    插件名称
-     * @param   boolean   $flag    是否只返回冲突文件（重名文件内容不同时为冲突文件）
+     * @param   bool      $flag    是否只返回冲突文件（重名文件内容不同时为冲突文件）
      * @return  array
      */
-    public static function getGlobalFiles($name, $flag = false)
+    public static function getGlobalFiles(string $name, bool $flag = false)
     {
         $list = [];
         $addonDir = self::getAddonDir($name);
@@ -607,7 +607,7 @@ class Service
      * @param  string  $class 当前类名
      * @return string
      */
-    public static function getAddonClass($name, $type = '', $class = null)
+    public static function getAddonClass(string $name, string $type = '', string $class = null)
     {
         $name = parse_name($name);
         if(!is_null($class) && strpos($class, '.')){
@@ -627,7 +627,7 @@ class Service
      * @param   bool    $flag  返回类型 默认返回布尔值 1返回路径
      * @return  string/bool
      */
-    protected static function getConfigFile($name,$flag = false)
+    protected static function getConfigFile(string $name, bool $flag = false)
     {
         $str = ADDON_PATH . $name . VT_DS . 'data' . VT_DS . 'config.php';
         return $flag ? $str : is_file($str);
@@ -666,19 +666,21 @@ class Service
 
     /**
      * 获取指定插件的目录
-     * @return  string   $name   插件名
+     * @param   string   $name  插件名称
+     * @return  string
      */
-    public static function getAddonDir($name)
+    public static function getAddonDir(string $name)
     {
         return ADDON_PATH . $name . VT_DS;
     }
 
     /**
      * 获取插件的单例
-     * @param  string  $name  插件名
-     * @return obj|null
+     * @param   string  $name  插件名
+     * @return  obj|json
+     * @throws  Exception
      */
-    public static function getAddonInstance($name)
+    public static function getAddonInstance(string $name)
     {
         if(isset(self::$addon_instance[$name])){
             return self::$addon_instance[$name];
@@ -694,12 +696,12 @@ class Service
 
     /**
      * 设置基础配置信息
-     * @param  string  $name   插件名
-     * @param  array   $array  配置数据
-     * @return boolean
-     * @throws Exception
+     * @param   string  $name   插件名
+     * @param   array   $array  配置数据
+     * @return  bool
+     * @throws  Exception
      */
-    public static function setAddonInfo($name, $array)
+    public static function setAddonInfo(string $name, array $array = [])
     {
         $addon = self::getAddonInstance($name);
         $array = $addon->setInfo($name, $array);
@@ -733,7 +735,7 @@ class Service
      * @param  array    $news    新数据
      * @return array
      */
-    public static function aJson($name, $news = [])
+    public static function aJson(string $name, array $news = [])
     {
         $addonDir = self::getAddonDir($name);
         $file = $addonDir . 'data' . VT_DS . '.ajson';
@@ -753,7 +755,7 @@ class Service
      * @param  string  $name  插件名
      * @return array
      */
-    public static function getAddonTables($name)
+    public static function getAddonTables(string $name)
     {
         $tables = [];
         $addon  = self::getAddonInstance($name);
@@ -780,7 +782,7 @@ class Service
     public static function setAddonEvent()
     {
         $event_file = ROOT_PATH . 'app' . VT_DS . 'event.php';
-        $listen = include $event_file;
+        $listen = $temp = include $event_file;
         $rs = scandir(ADDON_PATH);
         foreach($rs as $name){
             if(in_array($name,['.','..','.htaccess'])) continue;
@@ -810,19 +812,21 @@ class Service
                 }
             }
         }
-        $code = "<?php\nreturn ".var_export($listen,true).";";
-        $code = preg_replace('/(?<==> \n).*?(?=array)/si', '', $code);
-        $code = str_replace(["array (", "),", ");", "=> \n", "  "], ["[", "],", "];", "=> ", "    "], $code);
-        @file_put_contents($event_file, $code);
+        if($listen != $temp){
+            $code = "<?php\nreturn ".var_export($listen,true).";";
+            $code = preg_replace('/(?<==> \n).*?(?=array)/si', '', $code);
+            $code = str_replace(["array (", "),", ");", "=> \n", "  "], ["[", "],", "];", "=> ", "    "], $code);
+            @file_put_contents($event_file, $code);
+        }
     }
 
     /**
      * 匹配配置文件中info信息
-     * @param  ZipFile $zip
-     * @return array|false
-     * @throws Exception
+     * @param   ZipFile $zip
+     * @return  array|false
+     * @throws  Exception
      */
-    protected static function getZipIni($zip)
+    protected static function getZipIni(ZipFile $zip)
     {
         $config = [];
         try{
@@ -840,7 +844,7 @@ class Service
      * @return bool
      * @throws Exception
      */
-    public static function valid($params = [])
+    public static function valid(array $params = [])
     {
         $res = self::doRequest('/api/addon/valid', $params);
         if($res && isset($res['code'])){
@@ -856,12 +860,13 @@ class Service
 
     /**
      * 
-     * @param  strimg   $url      请求地址
+     * @param  string   $url      请求地址
      * @param  array    $params   参数集合
-     * @param  strimg   $method   请求方式默认POST
+     * @param  string   $method   请求方式默认POST
      * @return array
+     * @throws Exception
      */
-    protected static function doRequest($url, $params=[], $method='POST')
+    protected static function doRequest(string $url, array $params = [], string $method = 'POST')
     {
         $arr = [];
         try{
@@ -905,8 +910,9 @@ class Service
      * 备份插件
      * @param   string  $name  插件名称
      * @return  bool
+     * @throws  Exception
      */
-    public static function backup($name)
+    public static function backup(string $name)
     {
         $addonsBackupDir = self::getAddonsBackupDir();
         $file = $addonsBackupDir . $name . '-backup-' . date("YmdHis") . '.zip';

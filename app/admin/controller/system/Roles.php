@@ -23,7 +23,7 @@ class Roles extends AdminBase
      * @param  string  $do  异步数据
      * @return mixed
      */
-    public function index($do='')
+    public function index(string $do = '')
     {
         if($do=='json'){
             return $this->returnMsg((new R())->listQuery());
@@ -68,7 +68,7 @@ class Roles extends AdminBase
      * @param  array   $do   快编操作
      * @return json
      */
-    public function edit($do='')
+    public function edit(string $do = '')
     {
         $d = $this->only($do ? ['@token'=>'','roleid/d/参数错误','av','af'] : ['@token'=>'','roleid/d/参数错误','role_name/*/{2,30}/角色名称','listorder/d','state/d','role_menuid']);
         $roleid = $d['roleid'];

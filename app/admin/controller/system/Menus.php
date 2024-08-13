@@ -21,10 +21,10 @@ class Menus extends AdminBase
 {
     /**
      * 菜单列表
-     * @param  array   $do   异步数据
+     * @param  string   $do   异步数据
      * @return mixed
      */
-    public function index($do='')
+    public function index(string $do = '')
     {
         if($do=='json'){
             $catid = $this->request->get('catid/d',0);
@@ -95,7 +95,7 @@ class Menus extends AdminBase
      * @param  string   $do   快编参数
      * @return json
      */
-    public function edit($do='')
+    public function edit(string $do = '')
     {
         $d = $this->only($do ? ['@token'=>'','menuid/d/参数错误','av/u','af'] : ['@token'=>'','menuid/d/参数错误','catid/d','ocatid/d','menu_name/*/{2,20}/菜单名称','role_name/*/{2,20}/权限名称','link_url/u','menu_url/u','role_url/u','icon/u','parent_id/d','listorder/d','ismenu/d','state/d']);
         $menuid = $d['menuid'];
@@ -239,7 +239,7 @@ class Menus extends AdminBase
      * @param  string   $do   操作参数
      * @return json
      */
-    public function catedit($do='')
+    public function catedit(string $do = '')
     {
         $d = $this->only($do ? ['@token'=>'','catid/d/参数错误','av','af'] : ['@token'=>'','catid/d/参数错误','title/*/{2,20}/类别名称','icon/u','listorder/d']);
         $Myobj = C::get("catid = $d[catid]");

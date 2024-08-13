@@ -46,7 +46,7 @@
 layui.use(function(){
     var app_root = layui.cache.maps + 'system.filemanage/';
     var table=layui.table,admin=layui.admin;
-    var Group = {$group|raw}; Group[0] = '尚未分组';
+    var Group = <?=$group?>; Group[0] = '尚未分组';
     /*顶部类别构建*/
     admin.util.buildOption('#search_filemanage_select',Group,'文件分组');
     /*渲染数据*/

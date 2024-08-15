@@ -58,12 +58,13 @@ trait ModelRelationQuery
      * 设置需要隐藏的输出属性.
      *
      * @param array $hidden 属性列表
+     * @param bool $merge 是否合并
      *
      * @return $this
      */
-    public function hidden(array $hidden = [])
+    public function hidden(array $hidden = [], bool $merge = false)
     {
-        $this->options['hidden'] = $hidden;
+        $this->options['hidden'] = $merge ? array_merge($this->options['hidden'], $hidden) : $hidden;
 
         return $this;
     }
@@ -71,13 +72,14 @@ trait ModelRelationQuery
     /**
      * 设置需要输出的属性.
      *
-     * @param array $visible
+     * @param array $visible 属性列表
+     * @param bool  $merge 是否合并
      *
      * @return $this
      */
-    public function visible(array $visible = [])
+    public function visible(array $visible = [], bool $merge = false)
     {
-        $this->options['visible'] = $visible;
+        $this->options['visible'] = $merge ? array_merge($this->options['visible'], $visible) : $visible;
 
         return $this;
     }
@@ -86,12 +88,13 @@ trait ModelRelationQuery
      * 设置需要附加的输出属性.
      *
      * @param array $append 属性列表
+     * @param bool  $merge  是否合并
      *
      * @return $this
      */
-    public function append(array $append = [])
+    public function append(array $append = [], bool $merge = false)
     {
-        $this->options['append'] = $append;
+        $this->options['append'] = $merge ? array_merge($this->options['append'], $append) : $append;
 
         return $this;
     }
@@ -110,8 +113,7 @@ trait ModelRelationQuery
         array_unshift($args, $this);
 
         if ($scope instanceof Closure) {
-            call_user_func_array($scope, $args);
-
+            $this->options['scope'][] = [$scope, $args];
             return $this;
         }
 
@@ -123,8 +125,9 @@ trait ModelRelationQuery
             // 检查模型类的查询范围方法
             foreach ($scope as $name) {
                 $method = 'scope' . trim($name);
-
-                $this->options['scope'][$name] = [$method, $args];
+                if (method_exists($this->model, $method)) {
+                    $this->options['scope'][$name] = [[$this->model, $method], $args];
+                }
             }
         }
 
@@ -138,12 +141,10 @@ trait ModelRelationQuery
      */
     protected function scopeQuery()
     {
-        if ($this->model && !empty($this->options['scope'])) {
+        if (!empty($this->options['scope'])) {
             foreach ($this->options['scope'] as $name => $val) {
-                [$method, $args] = $val;
-                if (method_exists($this->model, $method)) {
-                    call_user_func_array([$this->model, $method], $args);
-                }
+                [$call, $args] = $val;
+                call_user_func_array($call, $args);
             }
         }
 
@@ -196,11 +197,11 @@ trait ModelRelationQuery
      *
      * @param string|array $fields 搜索字段
      * @param mixed        $data   搜索数据
-     * @param string       $prefix 字段前缀标识
+     * @param bool         $strict 是否严格检查数据
      *
      * @return $this
      */
-    public function withSearch($fields, $data = [], string $prefix = '')
+    public function withSearch($fields, $data = [], bool $strict = true)
     {
         if (is_string($fields)) {
             $fields = explode(',', $fields);
@@ -210,14 +211,17 @@ trait ModelRelationQuery
 
         foreach ($fields as $key => $field) {
             if ($field instanceof Closure) {
-                $field($this, $data[$key] ?? null, $data, $prefix);
+                $field($this, $data[$key] ?? null, $data);
             } elseif ($this->model) {
-                // 检测搜索器
+                // 检查字段是否有数据
+                if ($strict && (!isset($data[$field]) || empty($data[$field]))) {
+                    continue;
+                }
+
                 $fieldName = is_numeric($key) ? $field : $key;
                 $method    = 'search' . Str::studly($fieldName) . 'Attr';
-
                 if (method_exists($this->model, $method)) {
-                    $this->model->$method($this, $data[$field] ?? null, $data, $prefix);
+                    $this->model->$method($this, $data[$field], $data);
                 } elseif (isset($data[$field])) {
                     $this->where($fieldName, in_array($fieldName, $likeFields) ? 'like' : '=', in_array($fieldName, $likeFields) ? '%' . $data[$field] . '%' : $data[$field]);
                 }
@@ -557,6 +561,9 @@ trait ModelRelationQuery
             }
 
             $jsonData = json_decode($result[$name], true);
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                continue;
+            }
 
             if (isset($withAttr[$name])) {
                 foreach ($withAttr[$name] as $key => $closure) {

@@ -71,6 +71,13 @@ abstract class BaseQuery
     protected $prefix = '';
 
     /**
+     * 当前数据表后缀
+     *
+     * @var string
+     */
+    protected $suffix = '';
+
+    /**
      * 当前查询参数.
      *
      * @var array
@@ -130,10 +137,8 @@ abstract class BaseQuery
 
         if ($this->model && method_exists($this->model, 'scope' . $method)) {
             // 动态调用命名范围
-            $call = 'scope' . $method;
             array_unshift($args, $this);
-
-            $this->options['scope'][$method] = [$call, $args];
+            $this->options['scope'][$method] = [[$this->model, 'scope' . $method], $args];
 
             return $this;
         }
@@ -157,7 +162,7 @@ abstract class BaseQuery
         if (isset($this->options['table'])) {
             $query->table($this->options['table']);
         } else {
-            $query->name($this->name);
+            $query->name($this->name)->suffix($this->suffix);
         }
 
         if (!empty($this->options['json'])) {
@@ -195,6 +200,20 @@ abstract class BaseQuery
     public function name(string $name)
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * 指定当前数据表后缀.
+     *
+     * @param string $suffix 后缀
+     *
+     * @return $this
+     */
+    public function suffix(string $suffix)
+    {
+        $this->suffix = $suffix;
 
         return $this;
     }
@@ -261,7 +280,7 @@ abstract class BaseQuery
      *
      * @param string $name 不含前缀的数据表名字
      *
-     * @return mixed
+     * @return string|array|Raw
      */
     public function getTable(string $name = '')
     {
@@ -271,7 +290,7 @@ abstract class BaseQuery
 
         $name = $name ?: $this->name;
 
-        return $this->prefix . Str::snake($name);
+        return $this->prefix . Str::snake($name) . $this->suffix;
     }
 
     /**
@@ -311,7 +330,7 @@ abstract class BaseQuery
     /**
      * 获取最近插入的ID.
      *
-     * @param string $sequence 自增序列名
+     * @param string|null $sequence 自增序列名
      *
      * @return mixed
      */
@@ -542,8 +561,8 @@ abstract class BaseQuery
     /**
      * 指定查询数量.
      *
-     * @param int $offset 起始位置
-     * @param int $length 查询数量
+     * @param int      $offset 起始位置
+     * @param int|null $length 查询数量
      *
      * @return $this
      */
@@ -557,8 +576,8 @@ abstract class BaseQuery
     /**
      * 指定分页.
      *
-     * @param int $page     页数
-     * @param int $listRows 每页数量
+     * @param int      $page     页数
+     * @param int|null $listRows 每页数量
      *
      * @return $this
      */
@@ -700,12 +719,12 @@ abstract class BaseQuery
     /**
      * 分页查询.
      *
-     * @param int|array $listRows 每页数量 数组表示配置参数
-     * @param int|bool  $simple   是否简洁模式或者总记录数
-     *
-     * @throws Exception
+     * @param int|array|null $listRows 每页数量 数组表示配置参数
+     * @param int|bool       $simple   是否简洁模式或者总记录数
      *
      * @return Paginator
+     *
+     * @throws Exception
      */
     public function paginate(int | array $listRows = null, int | bool $simple = false): Paginator
     {
@@ -765,13 +784,13 @@ abstract class BaseQuery
     /**
      * 根据数字类型字段进行分页查询（大数据）.
      *
-     * @param int|array $listRows 每页数量或者分页配置
-     * @param string    $key      分页索引键
-     * @param string    $sort     索引键排序 asc|desc
-     *
-     * @throws Exception
+     * @param int|array|null $listRows 每页数量或者分页配置
+     * @param string|null    $key      分页索引键
+     * @param string|null    $sort     索引键排序 asc|desc
      *
      * @return Paginator
+     *
+     * @throws Exception
      */
     public function paginateX(int | array $listRows = null, string $key = null, string $sort = null): Paginator
     {
@@ -837,14 +856,14 @@ abstract class BaseQuery
     /**
      * 根据最后ID查询更多N个数据.
      *
-     * @param int        $limit  LIMIT
-     * @param int|string $lastId LastId
-     * @param string     $key    分页索引键 默认为主键
-     * @param string     $sort   索引键排序 asc|desc
-     *
-     * @throws Exception
+     * @param int             $limit  数量
+     * @param int|string|null $lastId 最后ID
+     * @param string|null     $key    分页索引键 默认为主键
+     * @param string|null     $sort   索引键排序 asc|desc
      *
      * @return array
+     *
+     * @throws Exception
      */
     public function more(int $limit, int | string $lastId = null, string $key = null, string $sort = null): array
     {
@@ -1010,7 +1029,7 @@ abstract class BaseQuery
     /**
      * 设置自增序列名.
      *
-     * @param string $sequence 自增序列名
+     * @param string|null $sequence 自增序列名
      *
      * @return $this
      */
@@ -1340,7 +1359,8 @@ abstract class BaseQuery
     /**
      * 查找单条记录.
      *
-     * @param mixed $data 主键数据
+     * @param mixed   $data 主键数据
+     * @param Closure $closure 闭包数据
      *
      * @throws Exception
      * @throws ModelNotFoundException
@@ -1348,14 +1368,16 @@ abstract class BaseQuery
      *
      * @return mixed
      */
-    public function find($data = null)
+    public function find($data = null, Closure $closure = null)
     {
-        if (!is_null($data)) {
+        if ($data instanceof Closure) {
+            $closure = $data;
+        } elseif (!is_null($data)) {
             // AR模式分析主键条件
             $this->parsePkWhere($data);
         }
 
-        if (empty($this->options['where']) && empty($this->options['order']) && empty($this->options['sort'])) {
+        if (empty($this->options['where']) && empty($this->options['scope']) && empty($this->options['order']) && empty($this->options['sort'])) {
             $result = [];
         } else {
             $result = $this->connection->find($this);
@@ -1363,7 +1385,7 @@ abstract class BaseQuery
 
         // 数据处理
         if (empty($result)) {
-            return $this->resultToEmpty();
+            return $this->resultToEmpty($closure);
         }
 
         if (!empty($this->model)) {

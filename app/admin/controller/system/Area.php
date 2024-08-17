@@ -36,7 +36,7 @@ class Area extends AdminBase
                     $rs[0]['arrparentid'] .= ','.$v['areaid'].'|'.$v['areaname'];
                 }
             }
-            A::where('areaid',$pid)->update(['childs'=>count($rs)]);
+            A::where('areaid',$pid)->update(['childs'=>count($rs->toArray())]);
             return $this->returnMsg($rs);
         }
     }
@@ -101,7 +101,7 @@ class Area extends AdminBase
      */
     public function import()
     {
-        if(A::get(1)){
+        if(A::count() > 0){
             return $this->returnMsg("地区表非空，不可导入");
         }else{
             @set_time_limit(0);

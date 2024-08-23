@@ -521,4 +521,4 @@ INSERT INTO `vt_dict_group` VALUES ('2', '列表', '', '', '0', '1', '1', '0', '
 INSERT INTO `vt_dict_group` VALUES ('3', '树形', '', '', '0', '1', '1', '0', '', '');
 INSERT INTO `vt_dict_group` VALUES ('4', '支付类型', 'PAY_TYPE', '', '3', '0', '', '1699363736', 'admin', '');
 INSERT INTO `vt_dict_group` VALUES ('5', '常用单位', 'DAN_TYPE', '', '2', '0', '', '1699365171', 'admin', '');
-INSERT INTO `vt_dict_group` VALUES ('6', '组织机构', 'ORGAN', 'select id,title as name,id as value,parentid as pid,arrparentid as pids from vt_organ', '3', '0', '', '1700296237', 'admin', 'SQL调用其他表演示');
+INSERT INTO `vt_dict_group` VALUES ('6', '组织机构', 'ORGAN', 'SELECT id as value,title as name,parentid as pid,arrparentid as pids FROM vt_organ', '3', '0', '', '1700296237', 'admin', 'SQL调用其他表演示');

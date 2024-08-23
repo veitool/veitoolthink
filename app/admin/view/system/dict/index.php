@@ -302,7 +302,7 @@ layui.use(['vinfo', 'buildItems'], function(){
                 admin.vDict(lay,{GROUPID:dictData});/**/
                 layui.dropdown.render({
                     elem: '#sql_str',
-                    data: [{id:'1',title:'SELECT id as value,title as name,parentid as pid,arrparentid as pids FROM vt_organ WHERE id > 1'}],
+                    data: [{id:'1',title:'SELECT id,title as name,id as value,parentid as pid,arrparentid as pids FROM vt_organ WHERE id > 1'}],
                     click: function(d){$('#sql_str').val(d.title);},
                     style: 'width:660px;height:100px;overflow-y:auto;overflow-x:hidden;'
                 });

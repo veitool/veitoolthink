@@ -340,17 +340,21 @@ function vconfig($name='',$default=''){
             $rs = $_VCF[$name];
         }else{
             $dt = explode('.', $name);
-            $rs = $_VCF[$dt[0]] ?? '';
-            if(isset($dt[1])){
-                $rs = $rs[$dt[1]] ?? '';
-                $_VCF[$dt[0].'.'.$dt[1]] = $rs;
+            if(isset($_VCF[$dt[0]])){
+                $rs = $_VCF[$dt[0]];
+                if(isset($dt[1])){
+                    $rs = $rs[$dt[1]] ?? $default;
+                    $_VCF[$dt[0].'.'.$dt[1]] = $rs;
+                }
+            }else{
+                $rs = $default;
+                $_VCF[$dt[0]] = $rs;
             }
         }
-        $rs = is_null($rs) || $rs === '' ?  $default : $rs;
+        return is_null($rs) ? $default : $rs;
     }else{
-        $rs = $_VCF;
+        return $_VCF;
     }
-    return $rs;
 }
 
 /**

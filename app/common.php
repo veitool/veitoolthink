@@ -333,13 +333,18 @@ function idstoname($ids,$arr){
  * @return array|string
  */
 function vconfig($name='',$default=''){
-    global $_VCF;
+    static $_VCF = [];
     $_VCF = $_VCF ?: \app\model\system\Setting::cache();
     if($name){
-        $dt = explode('.', $name);
-        $rs = isset($_VCF[$dt[0]]) ? $_VCF[$dt[0]] : '';
-        if(isset($dt[1])){
-            $rs = isset($rs[$dt[1]]) ? $rs[$dt[1]] : '';
+        if(isset($_VCF[$name])){
+            $rs = $_VCF[$name];
+        }else{
+            $dt = explode('.', $name);
+            $rs = $_VCF[$dt[0]] ?? '';
+            if(isset($dt[1])){
+                $rs = $rs[$dt[1]] ?? '';
+                $_VCF[$dt[0].'.'.$dt[1]] = $rs;
+            }
         }
         $rs = is_null($rs) || $rs === '' ?  $default : $rs;
     }else{

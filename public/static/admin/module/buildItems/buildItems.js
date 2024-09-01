@@ -11,7 +11,7 @@ layui.define(['tagsInput','fileLibrary','cascader'], function(e){
     var c = []; //配置组
     var $h; //构建的容器
     //基础模板
-    c.label_html  = '<label class="layui-form-label{{# if(d.must){ }} layui-form-required{{# } }}">{{ d.title }}</label>';
+    c.label_html  = '<label class="layui-form-label{{# if(d.must){ }} layui-form-required{{# } }}">{{- d.title }}</label>';
     c.block_html  = '<div class="layui-input-block"';
     c.inline_html = '<div class="layui-input-inline"';
     c.item_html = '<div class="layui-form-item" id="item-{{ d.relation ? d.relation + "-" : "" }}{{ d.name }}" style="{{# if(d.itemStyle){ }}{{ d.itemStyle }}{{# } }}{{# if(d.hide || (d.relation && d.relation.indexOf("_")!=-1)){ }}display:none;{{# } }}">' + c.label_html;

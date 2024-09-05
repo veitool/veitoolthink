@@ -22,7 +22,6 @@ layui.use(['zTree','buildItems'], function(){
         page: true,
         limit:{$limit},
         url: app_root+"index?do=json",
-        css: '.layui-table-box .layui-table-cell:not([align]){padding-left:10px;}',
         cols: [[
             {type:'checkbox',fixed:'left'},
             {field:'roleid',width:60,unresize:true,align:'center',title:'ID'},

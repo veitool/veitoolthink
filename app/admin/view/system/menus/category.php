@@ -15,7 +15,6 @@ layui.use(['iconPicker','buildItems'], function(){
     table.render({
         elem: '#menucategory',
         data: <?=$list?>,
-        css: '.layui-table-box .layui-table-cell:not([align]){padding-left:10px;}',
         cols: [[
             {type:"checkbox",fixed:"left"},
             {field:"catid",align:'center',width:60,title:"ID"},

@@ -56,7 +56,7 @@ layui.use(function(){
         limit:{$limit},
         cellExpandedMode:'tips',
         url: app_root+"index?do=json",
-        css: 'td .layui-table-cell{height:80px;line-height:80px;padding:0 5px;}.layui-table-box .layui-table-cell:not([align]){padding-left:10px;}',
+        css: 'td .layui-table-cell{height:80px;line-height:80px;padding:0 5px;}',
         cols: [[
             {type:'checkbox',fixed:'left'},
             {field:"fileurl",align:'center',title:"预览图",width:80,templet:function(d){return '<div class="files_item"><img src="'+ get_icon(d.fileurl,d.filetype,d.fileext) +'" alt="'+d.filename+'" lay-event="file-event-image"/></div>';}},

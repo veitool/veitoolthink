@@ -21,7 +21,7 @@ layui.use(['buildItems'], function(){
     table.render({
         elem: '#categorys',
         data: cats,
-        css: 'td .layui-table-cell{height:50px;line-height:50px;padding:0 5px;}.layui-table-box .layui-table-cell:not([align]){padding-left:10px;}',
+        css: 'td .layui-table-cell{height:50px;line-height:50px;padding:0 5px;}',
         cols: [[
             {type:"checkbox",fixed:"left"},
             {field:"icon",title:"类图",align:'center',width:50,templet:function(d){return '<div class="categorys_item"><img src="'+ (d.icon ? d.icon : '') +'" lay-event="categorys-image"/></div>';}},

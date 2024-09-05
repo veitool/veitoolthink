@@ -48,7 +48,6 @@ layui.use(['buildItems'],function(){
         limit:{$limit},
         where:{group:group},
         url: app_root+"build?do=json",
-        css: '.layui-table-box .layui-table-cell:not([align]){padding-left:10px;}',
         cols: [[
             {type:'checkbox',fixed:'left'},
             {field:"name",edit:'text',title:"名称",width:180},

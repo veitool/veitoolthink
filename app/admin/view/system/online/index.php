@@ -48,7 +48,6 @@ layui.use(['vinfo'],function(){
         page: true,
         limit:{$limit},
         url: app_root+"index?do=json",
-        css: '.layui-table-box .layui-table-cell:not([align]){padding-left:10px;}',
         cols: [[
             {type:'checkbox',fixed:'left'},
             {field:"username",align:'center',width:120,title:"用户",templet:function(d){return '<a style="cursor:pointer;" lay-event="userinfo"><font'+ (!d.type && d.ip == '{:request()->ip()}' ? ' color=blue' : '') +'>'+ d.username +'</font></a>'}},

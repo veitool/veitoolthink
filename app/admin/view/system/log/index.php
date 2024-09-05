@@ -177,7 +177,6 @@ layui.use(['vinfo'],function(){
                 limit: limit,
                 cellExpandedMode:'tips',
                 url: app_root + "manager",
-                css: '.layui-table-box .layui-table-cell:not([align]){padding-left:10px;}',
                 cols: [[
                     {field:"logid",fixed:"left",width:80,align:'center',title:"ID",sort:!0},
                     {field:"url",edit:'text',title:"路径"},
@@ -213,7 +212,6 @@ layui.use(['vinfo'],function(){
                 limit: limit,
                 cellExpandedMode:'tips',
                 url: app_root + "web",
-                css: '.layui-table-box .layui-table-cell:not([align]){padding-left:10px;}',
                 cols: [[
                     {field:"logid",fixed:"left",width:80,align:'center',title:"ID",sort:!0},
                     {field:"url",edit:'text',title:"路径"},

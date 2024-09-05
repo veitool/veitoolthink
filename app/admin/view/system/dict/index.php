@@ -204,7 +204,6 @@ layui.use(['vinfo', 'buildItems'], function(){
         limit:{$limit},
         height: 'full-313',
         url: app_root+"index?do=json",
-        css: '.layui-table-box .layui-table-cell:not([align]){padding-left:10px;}',
         cols: [[
             {type:'checkbox',fixed:'left'},
             {field:"title",edit:'text',title:"名称"},

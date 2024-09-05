@@ -44,8 +44,11 @@ layui.use(['buildItems'],function(){
     /*渲染数据*/
     table.render({
         elem: '#settings',
-        url: app_root+"build?do=json",
+        page: true,
+        limit:{$limit},
         where:{group:group},
+        url: app_root+"build?do=json",
+        css: '.layui-table-box .layui-table-cell:not([align]){padding-left:10px;}',
         cols: [[
             {type:'checkbox',fixed:'left'},
             {field:"name",edit:'text',title:"名称",width:180},
@@ -58,9 +61,7 @@ layui.use(['buildItems'],function(){
             {field:'private',width:80,align:'center',templet:function(d){return '<input type="checkbox" name="private" lay-skin="switch" lay-text="是|否" lay-filter="settings-chang" value="'+d.private+'" data-json="'+encodeURIComponent(JSON.stringify(d))+'"'+(d.private==1 ? ' checked' : '')+'>';},unresize:true,title:'文本隐私'},
             {field:'state',width:80,align:'center',templet:function(d){return '<input type="checkbox" name="state" lay-skin="switch" lay-text="启用|禁用" lay-filter="settings-chang" value="'+d.state+'" data-json="'+encodeURIComponent(JSON.stringify(d))+'"'+(d.state==1 ? ' checked' : '')+'>';},unresize:true,title:'启用状态'},
             {fixed:'right',width:95,align:'center',toolbar:'<div><a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a><a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a></div>',title:'操作'}
-        ]],
-        page: true,
-        limit:{$limit}
+        ]]
     });/**/
     /*顶部选项卡监听*/
     layui.element.on('tab(settings_top_tab)',function(){

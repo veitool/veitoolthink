@@ -200,9 +200,11 @@ layui.use(['vinfo', 'buildItems'], function(){
     /*渲染数据*/
     table.render({
         elem: '#dict',
-        css: '.layui-table[lay-size=sm] td .layui-table-cell{height:38px;line-height:28px;}',
-        url: app_root+"index?do=json",
+        page: true,
+        limit:{$limit},
         height: 'full-313',
+        url: app_root+"index?do=json",
+        css: '.layui-table-box .layui-table-cell:not([align]){padding-left:10px;}',
         cols: [[
             {type:'checkbox',fixed:'left'},
             {field:"title",edit:'text',title:"名称"},
@@ -212,9 +214,7 @@ layui.use(['vinfo', 'buildItems'], function(){
             {field:"addtime",width:100,align:'center',title:"创建",sort:!0,templet:function(d){return layui.util.toDateString(d.addtime*1000,'yyyy-MM-dd')}},
             {field:"editor",width:80,align:'center',title:"编辑"},
             {fixed:'right',width:170,align:'center',toolbar:'<div><a class="layui-btn layui-btn-xs layui-bg-blue" lay-event="list">字典项管理</a><a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a><a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a></div>',title:'操作'}
-        ]],
-        page: true,
-        limit:{$limit}
+        ]]
     });
     /*顶部添加按钮*/
     $('#dict-add').on('click',function(){dictOpen();});/**/

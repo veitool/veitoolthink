@@ -20,9 +20,9 @@ layui.use(['buildItems'],function(){
     /*渲染表格*/
     var dictItemsTree = treeTable.render({
         elem: '#dictItems',
-        url: app_root+"items?do=json",
-        where:{groupid:groupid},
         page: false,
+        where:{groupid:groupid},
+        url: app_root+"items?do=json",
         toolbar: [
             '<p><span class="layui-inline"><input class="layui-input" id="edtSearch" placeholder="输入关键字" style="width:140px;margin-right:5px;height:30px;"></span>',
             '<button id="btnSearch" class="layui-btn layui-btn-sm layui-btn-primary layui-inline"><i class="layui-icon"></i>搜索</button>',

@@ -52,9 +52,11 @@ layui.use(function(){
     /*渲染数据*/
     table.render({
         elem: '#filemanage',
-        url: app_root+"index?do=json",
+        page: true,
+        limit:{$limit},
         cellExpandedMode:'tips',
-        css: 'td .layui-table-cell{height:80px;line-height:80px;padding:0 5px;}',
+        url: app_root+"index?do=json",
+        css: 'td .layui-table-cell{height:80px;line-height:80px;padding:0 5px;}.layui-table-box .layui-table-cell:not([align]){padding-left:10px;}',
         cols: [[
             {type:'checkbox',fixed:'left'},
             {field:"fileurl",align:'center',title:"预览图",width:80,templet:function(d){return '<div class="files_item"><img src="'+ get_icon(d.fileurl,d.filetype,d.fileext) +'" alt="'+d.filename+'" lay-event="file-event-image"/></div>';}},
@@ -67,9 +69,7 @@ layui.use(function(){
             {field:"isdel",align:'center',width:60,title:"软删",templet:function(d){return d.isdel==1 ? '<font color=red>已删</font>' : '-';}},
             {field:"addtime",align:'center',width:150,title:"上传时间",sort:!0,templet:function(d){return layui.util.toDateString(d.addtime*1000)}},
             {fixed:'right',width:100,align:'center',toolbar:'<div><a class="layui-btn layui-btn-xs" lay-event="reset">恢复</a><a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a></div>',title:'操作'}
-        ]],
-        page: true,
-        limit:{$limit}
+        ]]
     });/**/
     /*顶部删除按钮*/
     $('#top-filemanage-del').on('click', function(){

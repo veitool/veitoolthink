@@ -25,9 +25,10 @@ layui.use(['buildItems'], function(){
     /*渲染数据*/
     var box = {
         elem: '#areas',
-        data: <?=$list?>,
-        even: true,
         limit:100,
+        even: true,
+        data: <?=$list?>,
+        css: '.layui-table-box .layui-table-cell:not([align]){padding-left:10px;}',
         cols: [[
             {type:'checkbox',fixed:'left'},
             {field:'areaid',width:60,unresize:true,align:'center',title:'ID'},

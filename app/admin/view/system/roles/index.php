@@ -19,6 +19,10 @@ layui.use(['zTree','buildItems'], function(){
     /*数据表渲染*/
     table.render({
         elem: '#roles',
+        page: true,
+        limit:{$limit},
+        url: app_root+"index?do=json",
+        css: '.layui-table-box .layui-table-cell:not([align]){padding-left:10px;}',
         cols: [[
             {type:'checkbox',fixed:'left'},
             {field:'roleid',width:60,unresize:true,align:'center',title:'ID'},
@@ -27,10 +31,7 @@ layui.use(['zTree','buildItems'], function(){
             {field:'listorder',edit:'text',width:80,align:'center',title:'排序'},
             {field:'state',width:100,align:'center',templet:function(d){return '<input type="checkbox" name="state" lay-skin="switch" lay-text="启用|禁用" lay-filter="roles-chang" value="'+d.state+'" data-json="'+encodeURIComponent(JSON.stringify(d))+'"'+(d.state==1 ? ' checked' : '')+'>';},unresize:true,title:'启用状态'},
             {fixed:'right',width:100,align:'center',toolbar:'<div><a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a><a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a></div>',title:'操作'}
-        ]],
-        url: app_root+"index?do=json",
-        page: true,
-        limit:{$limit}
+        ]]
     });/**/
     /*顶部添加按钮*/
     $('#roles-add').on('click',function(){rolesOpen();});/**/

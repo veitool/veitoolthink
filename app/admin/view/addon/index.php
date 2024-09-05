@@ -1,23 +1,16 @@
 <style>
-#addon + .layui-table-view .layui-table-body tbody > tr > td{padding:0;}
-#addon + .layui-table-view .layui-table-body tbody > tr > td > .layui-table-cell{height:50px;line-height:50px;padding:0 5px;}
 .addon_item{width:30px;height:30px;line-height:10px;cursor:pointer;position:relative;margin:10px 0px 0 2px;padding:0px;border:1px solid #ddd;background:#fff;display:-webkit-box;-moz-box-align:center;-webkit-box-align:center;-moz-box-pack:center;-webkit-box-pack:center;}
 .addon_item img{max-width:24px;max-height:24px;border:0}
 </style>
 <div class="layui-fluid">
     <div class="layui-card">
         <div class="layui-tab layui-tab-admin" lay-filter="addon_top_tab">
-            <ul class="layui-tab-title" id="addon_category">
-                <li lay-id="-1" class="layui-this">全部</li>
-                <li lay-id="0">其他</li>
-            </ul>
+            <ul class="layui-tab-title" id="addon_category"><li lay-id="-1" class="layui-this">全部</li><li lay-id="0">其他</li></ul>
         </div>
         <div class="layui-card-header">
             <form class="layui-form render">
                 <div class="layui-form-item">
-                    <div class="layui-inline" style="width:160px;">
-                        <input type="text" name="kw" id="addon-kw" placeholder="搜索" autocomplete="off" class="layui-input" lay-affix="clear"/>
-                    </div>
+                    <div class="layui-inline" style="width:160px;"><input type="text" name="kw" id="addon-kw" placeholder="搜索" autocomplete="off" class="layui-input" lay-affix="clear"/></div>
                     <div class="layui-inline">
                         <button lay-submit lay-filter="addon-search" style="display:none">搜索</button>
                         <div class="layui-btn-group">
@@ -213,7 +206,7 @@ layui.use(function(){
         limit:{$limit},
         url: app_api + "api/addon/index" + getUser('uids'),
         where:{catid:catid,type:type,version:version,first:1},
-        css: '.layui-table[lay-size=sm] td .layui-table-cell{height:auto;line-height:28px;}',
+        css: '.layui-table[lay-size=sm] td .layui-table-cell{height:50px;line-height:50px;padding:0 5px;}.layui-table[lay-size=sm] .layui-table-cell:not([align]){padding-left:10px;}',
         cols: [[
             {field:"img",title:"配图",align:'center',width:60,templet:function(d){return '<div class="addon_item"><img src="'+ (d.img ? app_api + d.img : '') +'" lay-event="addon-event-image"/></div>';}},
             {field:'title',title:'名称',templet:function(d){return '<a href="'+ app_api + 'addon/'+ d.name +'" target="_blank">'+ d.title +'</a>';}},

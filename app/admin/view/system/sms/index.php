@@ -42,7 +42,10 @@ layui.use(['buildItems'],function(){
     /*渲染数据*/
     table.render({
         elem: '#sms',
+        page: true,
+        limit:{$limit},
         url: app_root+"index?do=json",
+        css: '.layui-table-box .layui-table-cell:not([align]){padding-left:10px;}',
         cols: [[
             {type:'checkbox',fixed:'left'},
             {field:"itemid",fixed:"left",width:60,align:'center',title:"ID",sort:!0},
@@ -53,9 +56,7 @@ layui.use(['buildItems'],function(){
             {field:"editor",width:100,align:'center',title:"发送人"},
             {field:"code",width:80,align:'center',title:"发送结果"},
             {fixed:'right',width:68,align:'center',toolbar:'<div><a class="layui-btn layui-btn-xs" lay-event="del">删除</a></div>',title:'操作'}
-        ]],
-        page: true,
-        limit:{$limit}
+        ]]
     });/**/
     /*顶部发送短信*/
     $('#sms-send').on('click', function(){

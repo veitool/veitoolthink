@@ -191,9 +191,11 @@ layui.use(['vinfo', 'buildItems'], function(){
     table.render({
         elem: '#manager',
         size: 'sm',
-        css: '.layui-table[lay-size=sm] td .layui-table-cell{height:38px;line-height:28px;}',
-        url: app_root+"index?do=json",
+        page: true,
+        limit:{$limit},
         height: 'full-313',
+        url: app_root+"index?do=json",
+        css: '.layui-table[lay-size=sm] td .layui-table-cell{height:38px;line-height:28px;}',
         cols: [[
             {type:'checkbox',fixed:'left'},
             {field:'userid',width:50,unresize:true,align:'center',title:'ID',sort:!0},
@@ -206,9 +208,7 @@ layui.use(['vinfo', 'buildItems'], function(){
             {field:"edit",width:68,align:'center',title:"操作"},
             {field:'state',width:80,align:'center',templet:function(d){return '<input type="checkbox" name="state" lay-skin="switch" lay-text="正常|禁用" lay-filter="manager-chang" value="'+d.state+'" data-json="'+encodeURIComponent(JSON.stringify(d))+'"'+(d.state==1 ? ' checked' : '')+'>';},unresize:true,title:'状态'},
             {fixed:'right',width:130,align:'center',toolbar:'<div><a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a><a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="reset">重置</a><a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a></div>',title:'操作'}
-        ]],
-        page: true,
-        limit:{$limit}
+        ]]
     });
     /*顶部添加按钮*/
     $('#manager-add').on('click',function(){managerOpen();});/**/

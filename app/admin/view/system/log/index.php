@@ -113,6 +113,8 @@ layui.use(['vinfo'],function(){
             do_login = false;
             table.render({
                 elem: '#loginlog',
+                page: true,
+                limit:limit,
                 cellExpandedMode:'tips',
                 url: app_root+"login",
                 cols: [[
@@ -125,9 +127,7 @@ layui.use(['vinfo'],function(){
                     {field:"admin",width:60,align:'center',title:"位置",templet:function(d){return PT[d.admin]}},
                     {field:"message",width:80,align:'center',title:"结果"},
                     {fixed:'right',width:60,align:'center',toolbar:'<div><a class="layui-btn layui-btn-xs" lay-event="check">校验</a></div>',title:'操作'}
-                ]],
-                page: true,
-                limit:limit
+                ]]
             });/**/
             /*日志清理*/
             $('#loginlog-clear').on('click',function(){
@@ -173,17 +173,18 @@ layui.use(['vinfo'],function(){
             do_manager = false;
             table.render({
                 elem: '#managerlog',
+                page: true,
+                limit: limit,
                 cellExpandedMode:'tips',
                 url: app_root + "manager",
+                css: '.layui-table-box .layui-table-cell:not([align]){padding-left:10px;}',
                 cols: [[
                     {field:"logid",fixed:"left",width:80,align:'center',title:"ID",sort:!0},
                     {field:"url",edit:'text',title:"路径"},
                     {field:"username",width:120,align:'center',title: "用户"},
                     {field:"ip",align:'center',width:150,title:"IP",toolbar:'<div><a style="cursor:pointer;" lay-event="showip">{{d.ip}}</a></div>'},
                     {field:"logtime",width:150,align:'center',title:"时间",sort:!0,templet:function(d){return layui.util.toDateString(d.logtime*1000)}}
-                ]],
-                page: true,
-                limit: limit
+                ]]
             });/**/
             /*日志清理*/
             $('#managerlog-clear').on('click',function(){
@@ -208,8 +209,11 @@ layui.use(['vinfo'],function(){
             do_web = false;
             table.render({
                 elem: '#weblog',
+                page: true,
+                limit: limit,
                 cellExpandedMode:'tips',
                 url: app_root + "web",
+                css: '.layui-table-box .layui-table-cell:not([align]){padding-left:10px;}',
                 cols: [[
                     {field:"logid",fixed:"left",width:80,align:'center',title:"ID",sort:!0},
                     {field:"url",edit:'text',title:"路径"},
@@ -217,9 +221,7 @@ layui.use(['vinfo'],function(){
                     {field:"ip",align:'center',width:150,title:"IP",toolbar:'<div><a style="cursor:pointer;" lay-event="showip">{{d.ip}}</a></div>'},
                     {field:"username",width:120,align:'center',title: "用户",toolbar:'<div><a style="cursor:pointer;" lay-event="userinfo">{{d.username}}</a></div>'},
                     {field:"agent",align:'center',expandedMode:'tips',title:"终端"}
-                ]],
-                page: true,
-                limit: limit
+                ]]
             });/**/
             /*日志清理*/
             $('#weblog-clear').on('click',function(){

@@ -25,6 +25,7 @@ layui.use(['buildItems'],function(){
         elem: '#database',
         even: true,
         data: <?=$list?>,
+        css: '.layui-table-box .layui-table-cell:not([align]){padding-left:10px;}',
         cols: [[
             {type:"checkbox",fixed:"left"},
             {field:"name",title: "表名"},

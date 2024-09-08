@@ -10,8 +10,8 @@
 namespace app\admin\controller\system;
 
 use app\admin\controller\AdminBase;
-use app\model\system\Menus as M;
-use app\model\system\Category as C;
+use app\model\system\SystemMenus as M;
+use app\model\system\SystemCategory as C;
 use tool\Menus as T;
 
 /**

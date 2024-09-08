@@ -14,7 +14,7 @@ use app\model\Base;
 /**
  *【登录日志】
  */
-class LoginLog extends Base
+class SystemLoginLog extends Base
 {
     /**
      *定义主键

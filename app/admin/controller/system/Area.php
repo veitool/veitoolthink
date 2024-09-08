@@ -10,7 +10,7 @@
 namespace app\admin\controller\system;
 
 use app\admin\controller\AdminBase;
-use app\model\system\Area as A;
+use app\model\system\SystemArea as A;
 
 /**
  * 后台地区控制器

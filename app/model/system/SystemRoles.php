@@ -17,7 +17,7 @@ use app\model\Base;
  * 后台角色权限缓存：VMENUS_1_角色ID  在角色模型中处理 即当前页
  * 会员分组权限缓存：VMENUS_2_分组ID  在分组模型中处理
  */
-class Roles extends Base
+class SystemRoles extends Base
 {
     /**
      *定义主键

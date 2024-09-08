@@ -10,7 +10,7 @@
 namespace tool;
 
 use think\facade\Db;
-use app\model\system\Menus as M;
+use app\model\system\SystemMenus as M;
 
 /**
  * 菜单操作类（主用于插件管理调用）
@@ -152,10 +152,10 @@ class Menus
     public static function reset(int $id = 0, int $pd = 0, array $rs = [])
     {
         if(!$rs){
-            $rs = Db::name('menus')->order(['listorder'=>'asc','menuid'=>'asc'])->column('*');
+            $rs = Db::name('system_menus')->order(['listorder'=>'asc','menuid'=>'asc'])->column('*');
             if($rs){
                 $prefix = config('database.connections.'.config('database.default').'.prefix');
-                Db::query("truncate {$prefix}menus");
+                Db::query("truncate {$prefix}system_menus");
                 self::reset($id,$pd,$rs);
                 M::cache(1);
             }
@@ -168,7 +168,7 @@ class Menus
                     $menuid = $v['menuid']; unset($v['menuid']);
                     $v['addtime']   = $time;
                     $v['parent_id'] = $pd;
-                    $data[$menuid]  = Db::name('menus')->insertGetId($v);
+                    $data[$menuid]  = Db::name('system_menus')->insertGetId($v);
                 }
             }
             foreach($data as $k=>$v){

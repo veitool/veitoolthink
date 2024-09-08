@@ -14,7 +14,7 @@ use app\model\Base;
 /**
  *【网站日志模型】
  */
-class WebLog extends Base
+class SystemWebLog extends Base
 {
     /**
      *定义主键

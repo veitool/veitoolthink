@@ -11,7 +11,7 @@ return [
     // 模板目录名
     'view_dir_name' => 'view',
     // 模板后缀
-    'view_suffix'   => 'php',
+    'view_suffix'   => 'html',
     // 模板文件名分隔符
     'view_depr'     => DIRECTORY_SEPARATOR,
     // 视图输出字符串内容替换

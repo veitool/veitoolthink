@@ -10,10 +10,10 @@
 namespace app\admin\controller\system;
 
 use app\admin\controller\AdminBase;
-use app\model\system\Area;
-use app\model\system\Roles;
-use app\model\system\Organ;
-use app\model\system\Manager as M;
+use app\model\system\SystemArea as Area;
+use app\model\system\SystemRoles as Roles;
+use app\model\system\SystemOrgan as Organ;
+use app\model\system\SystemManager as M;
 
 /**
  * 后台用户控制器

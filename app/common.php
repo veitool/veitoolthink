@@ -334,7 +334,7 @@ function idstoname($ids,$arr){
  */
 function vconfig($name='',$default=''){
     static $_VCF = [];
-    $_VCF = $_VCF ?: \app\model\system\Setting::cache();
+    $_VCF = $_VCF ?: \app\model\system\SystemSetting::cache();
     if($name){
         if(isset($_VCF[$name])){
             $rs = $_VCF[$name];
@@ -430,7 +430,7 @@ function get_subclass($pid,$box,$ikey='id',$pkey='pid'){
  */
 function area_pos($areaid, $str = ' &raquo; ', $deep = 0, $start = 0){
     $areaid = intval($areaid);
-    $area = \app\model\system\Area::cache();
+    $area = \app\model\system\SystemArea::cache();
     if(!$areaid || !$area) return '';
     $arrparentid = $area[$areaid]['arrparentid'] ? explode(',', $area[$areaid]['arrparentid']) : [];
     $arrparentid[] = $areaid;

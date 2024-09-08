@@ -10,8 +10,8 @@
 namespace app\admin\controller\system;
 
 use app\admin\controller\AdminBase;
-use app\model\system\UploadFile;
-use app\model\system\UploadGroup;
+use app\model\system\SystemUploadFile as UploadFile;
+use app\model\system\SystemUploadGroup as UploadGroup;
 use veitool\storage\Driver as StorageDriver;
 
 /**

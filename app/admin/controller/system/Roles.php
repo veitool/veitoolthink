@@ -10,8 +10,8 @@
 namespace app\admin\controller\system;
 
 use app\admin\controller\AdminBase;
-use app\model\system\Roles as R;
-use app\model\system\Menus;
+use app\model\system\SystemRoles as R;
+use app\model\system\SystemMenus;
 
 /**
  * 后台角色控制器
@@ -35,7 +35,7 @@ class Roles extends AdminBase
                 $rs = R::get(['roleid'=>$roleid]);
                 $ids = empty($rs) ? '' : $rs['role_menuid'];
             }
-            $rs = Menus::cache(); // 获取后台菜单缓存 构建zTree Json数据
+            $rs = SystemMenus::cache(); // 获取后台菜单缓存 构建zTree Json数据
             foreach($rs as $v){
                 $flag = (strpos(",$ids,",",$v[menuid],")!==false) ? true : false;
                 $data[] = ['id'=>$v['menuid'],'pId'=>$v['parent_id'],'name'=>$v['role_name'].' '.$v['role_url'],'checked'=>$flag,'open'=>true];

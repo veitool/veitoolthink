@@ -10,7 +10,7 @@
 namespace app\admin\controller\system;
 
 use app\admin\controller\AdminBase;
-use app\model\system\Setting as S;
+use app\model\system\SystemSetting as S;
 
 /**
  * 后台设置控制器

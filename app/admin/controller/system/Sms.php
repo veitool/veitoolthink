@@ -10,7 +10,7 @@
 namespace app\admin\controller\system;
 
 use app\admin\controller\AdminBase;
-use app\model\system\Sms as S;
+use app\model\system\SystemSms as S;
 use tool\SendSms;
 
 /**

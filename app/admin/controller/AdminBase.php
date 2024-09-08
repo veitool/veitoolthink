@@ -10,8 +10,8 @@
 namespace app\admin\controller;
 
 use app\BaseController;
-use app\model\system\Roles;
-use app\model\system\Manager;
+use app\model\system\SystemRoles as Roles;
+use app\model\system\SystemManager as Manager;
 
 /**
  *【后台控制器抽象基类】
@@ -124,11 +124,11 @@ abstract class AdminBase extends BaseController
     {
         //操作日志
         if(vconfig('admin_log',0)){
-            \app\model\system\ManagerLog::add(['url'=>$this->routeUri.($tip ? ' '.$tip : ''),'username'=>$this->manUser['username'],'ip'=>$this->request->ip()]);
+            \app\model\system\SystemManagerLog::add(['url'=>$this->routeUri.($tip ? ' '.$tip : ''),'username'=>$this->manUser['username'],'ip'=>$this->request->ip()]);
         }
         //在线统计 【online_on = 0:关闭全部 1:开启后台 2:开启会员 3:开启全部】 
         if(in_array(vconfig('online_on',0),[1,3])){
-            \app\model\system\Online::recod($this->manUser, $this->routeUri, 0);
+            \app\model\system\SystemOnline::recod($this->manUser, $this->routeUri, 0);
         }
     }
 

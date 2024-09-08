@@ -10,8 +10,8 @@
 namespace app\admin\controller\system;
 
 use app\admin\controller\AdminBase;
-use app\model\system\UploadFile;
-use app\model\system\UploadGroup;
+use app\model\system\SystemUploadFile as UploadFile;
+use app\model\system\SystemUploadGroup as UploadGroup;
 
 /**
  * 文件管理控制器
@@ -49,7 +49,7 @@ class Filemanage extends AdminBase
             }
             if(is_numeric($groupid)) $where[] = ['u.groupid','=',$groupid];
             if(is_numeric($isdel))   $where[] = ['u.isdel','=',$isdel];
-            return $this->returnMsg(UploadFile::alias('u')->leftJoin('upload_group g','u.groupid=g.groupid')->where($where)->order(['fileid'=>'desc'])->field('u.*,g.groupname')->paginate($limit));
+            return $this->returnMsg(UploadFile::alias('u')->leftJoin('system_upload_group g','u.groupid=g.groupid')->where($where)->order(['fileid'=>'desc'])->field('u.*,g.groupname')->paginate($limit));
         }
         $this->assign([
             'limit' => 10,

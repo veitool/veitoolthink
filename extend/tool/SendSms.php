@@ -103,7 +103,7 @@ class SendSms
         }
         $word = function_exists('mb_strlen') ? mb_strlen($message,'utf8') : 0;
         $data = ['mobile'=> implode(',',$mobile),'message'=>$tips.$message,'word'=>$word,'editor'=>'system','sendtime'=>$time,'code'=>$txt];
-        Db::name('sms')->data($data)->insert();
+        Db::name('system_sms')->data($data)->insert();
         return ['msg'=>'发送'.$txt,'code'=>$code];
     }
 
@@ -161,7 +161,7 @@ class SendSms
         );
         $txt = $keys[$key];
         $data = ['mobile'=>$mobile,'message'=>$message,'word'=>$word,'editor'=>'system','sendtime'=>$time,'code'=>$txt];
-        Db::name('sms')->data($data)->insert();
+        Db::name('system_sms')->data($data)->insert();
         //记入发送成功时间缓存，防止下次频繁发送
         cache($this->cache_key,['time'=>$time]);
         return ['msg'=>$txt,'code'=>($key==0 ? 1 : 0)];

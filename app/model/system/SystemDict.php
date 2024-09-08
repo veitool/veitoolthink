@@ -15,7 +15,7 @@ use think\facade\Db;
 /**
  *【字典模型】
  */
-class Dict extends Base
+class SystemDict extends Base
 {
     /**
      *定义主键
@@ -49,7 +49,7 @@ class Dict extends Base
         $r = cache($k);
         if(!$r || $s){
             $r = [];
-            $g = DictGroup::all("groupid > 0",'id,code,sql');
+            $g = SystemDictGroup::all("groupid > 0",'id,code,sql');
             $p = config('database.connections.'.config('database.default').'.prefix');
             foreach($g as $v){
                 if($v['sql']){

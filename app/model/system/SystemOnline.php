@@ -14,7 +14,7 @@ use app\model\Base;
 /**
  *【在线记录模型】
  */
-class Online extends Base
+class SystemOnline extends Base
 {
     /**
      *定义主键

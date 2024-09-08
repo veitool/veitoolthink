@@ -9,9 +9,9 @@
  */
 namespace app\admin\controller;
 
-use app\model\system\Dict;
-use app\model\system\Menus;
-use app\model\system\Category;
+use app\model\system\SystemDict as Dict;
+use app\model\system\SystemMenus as Menus;
+use app\model\system\SystemCategory as Category;
 
 /**
  * 后台主控制器
@@ -52,7 +52,7 @@ class Index extends AdminBase
         $data = Menus::getMenus(array_intersect_key($this->manUser, ['userid'=>"",'role_menuid'=>""])); // 获取拥有的菜单数据
         $rs =[
             'menus' => $cat ? ['cat'=>$cat,'menus'=>$data['menus']]: $data['menus'],
-            'user'  => $this->manUser + ['roles' => $data['roles']] + ['rolem' => \app\model\system\Roles::where("state = 1 AND roleid IN(".$this->manUser['roleids'].")")->column("roleid id,role_name name")] + ['dict' => Dict::cache((int)$do)]
+            'user'  => $this->manUser + ['roles' => $data['roles']] + ['rolem' => \app\model\system\SystemRoles::where("state = 1 AND roleid IN(".$this->manUser['roleids'].")")->column("roleid id,role_name name")] + ['dict' => Dict::cache((int)$do)]
         ];
         unset($rs['user']['password'],$rs['user']['passsalt']);
         return json($rs);

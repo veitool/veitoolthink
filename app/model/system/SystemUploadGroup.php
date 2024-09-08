@@ -14,7 +14,7 @@ use app\model\Base;
 /**
  *【上传文件分类模型】
  */
-class UploadGroup extends Base
+class SystemUploadGroup extends Base
 {
     /**
      * 定义主键

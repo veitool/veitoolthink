@@ -14,7 +14,7 @@ use app\model\Base;
 /**
  *【短信模型】
  */
-class Sms extends Base
+class SystemSms extends Base
 {
     /**
      *定义主键

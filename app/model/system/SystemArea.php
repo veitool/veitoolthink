@@ -14,7 +14,7 @@ use app\model\Base;
 /**
  *【地区模型】
  */
-class Area extends Base
+class SystemArea extends Base
 {
     /**
      * 定义主键

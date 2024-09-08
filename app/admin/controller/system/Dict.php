@@ -10,8 +10,8 @@
 namespace app\admin\controller\system;
 
 use app\admin\controller\AdminBase;
-use app\model\system\Dict as D;
-use app\model\system\DictGroup as DG;
+use app\model\system\SystemDict as D;
+use app\model\system\SystemDictGroup as DG;
 
 /**
  * 后台字典控制器

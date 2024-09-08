@@ -14,7 +14,7 @@ use app\model\Base;
 /**
  *【组织机构模型】
  */
-class Organ extends Base
+class SystemOrgan extends Base
 {
     /**
      * 获取所有子类ID串

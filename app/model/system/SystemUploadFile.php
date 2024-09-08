@@ -14,7 +14,7 @@ use app\model\Base;
 /**
  *【上传文件记录模型】
  */
-class UploadFile extends Base
+class SystemUploadFile extends Base
 {
     /**
      * 定义主键

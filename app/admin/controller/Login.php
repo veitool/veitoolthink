@@ -10,9 +10,9 @@
 namespace app\admin\controller;
 
 use app\BaseController;
-use app\model\system\Manager;
-use app\model\system\LoginLog;
-use app\model\system\Online;
+use app\model\system\SystemManager as Manager;
+use app\model\system\SystemLoginLog as LoginLog;
+use app\model\system\SystemOnline as Online;
 use tool\Lock;
 
 /**

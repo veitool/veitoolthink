@@ -14,7 +14,7 @@ use app\model\Base;
 /**
  *【公用分类模型】
  */
-class Category extends Base
+class SystemCategory extends Base
 {
     /**
      *定义主键

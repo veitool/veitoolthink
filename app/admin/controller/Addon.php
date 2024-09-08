@@ -13,7 +13,7 @@ use think\facade\Db;
 use think\Exception;
 use veitool\addons\Service;
 use veitool\addons\AddonException;
-use app\model\system\Setting as S;
+use app\model\system\SystemSetting as S;
 
 /**
  * 插件管理控制器
@@ -117,7 +117,7 @@ class Addon extends AdminBase
                     if(!preg_match("/^{$prefix}{$d['name']}/", $table)) continue;
                     Db::execute("DROP TABLE IF EXISTS `{$table}`");
                 }
-                Db::name('setting')->where('addon',$d['name'])->delete();
+                Db::name('system_setting')->where('addon',$d['name'])->delete();
             }
         }catch(AddonException $e){
             return $this->returnMsg($e->getMessage(),$e->getCode(),$e->getData());

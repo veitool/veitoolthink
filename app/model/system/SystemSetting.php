@@ -14,7 +14,7 @@ use app\model\Base;
 /**
  *【设置模型】
  */
-class Setting extends Base
+class SystemSetting extends Base
 {
     /**
      * 列表(分页)

@@ -16,7 +16,7 @@
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
     <div class="layui-header">
-        <div class="layui-logo"><img src="{STATIC__PATH}admin/img/logo.png"/><cite>&nbsp;{:vconfig('sys_title','后台管理')}</cite></div>
+        <div class="layui-logo"><img src="{STATIC__PATH}admin/img/logo.png" alt="Logo"/><cite>&nbsp;{:vconfig('sys_title','后台管理')}</cite></div>
         <ul class="layui-nav layui-layout-left">
             <li class="layui-nav-item" lay-unselect><a v-event="flexible" title="侧边伸缩"><i class="layui-icon layui-icon-shrink-right"></i></a></li>
             <li class="layui-nav-item" lay-unselect><a v-event="refresh" title="刷新"><i class="layui-icon layui-icon-refresh-3"></i></a></li>
@@ -27,7 +27,7 @@
             <li class="layui-nav-item" lay-unselect><a v-event="lockScreen" data-url="{PUBLIC__PATH}/static/admin/page/tpl/lock.html" title="锁屏"><i class="layui-icon layui-icon-password"></i></a></li>
             <li class="layui-nav-item" lay-unselect><a v-event="fullScreen" title="全屏"><i class="layui-icon layui-icon-screen-full"></i></a></li>
             <li class="layui-nav-item" lay-unselect>
-                <a><img src="" id="vFace" class="layui-nav-img"><cite id="vUser"></cite></a>
+                <a><img src="" id="vFace" class="layui-nav-img" alt="Face"/><cite id="vUser"></cite></a>
                 <dl class="layui-nav-child">
                     <dd><a id="vName"></a></dd><hr>
                     <dd><a href="#/system.manager/index/action=info">个人中心</a></dd><hr><span id="vRole"></span>
@@ -47,7 +47,7 @@
 <!-- 加载动画 -->
 <div class="page-loading"><div class="v-loader"><div></div></div></div>
 <!-- js部分 -->
-<script type="text/javascript" src="{STATIC__PATH}layui/layui.js"></script>
+<script src="{STATIC__PATH}layui/layui.js"></script>
 <script>
 var $ = jQuery = layui.$;
 layui.config({

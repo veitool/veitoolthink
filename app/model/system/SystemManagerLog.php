@@ -14,7 +14,7 @@ use app\model\Base;
 /**
  *【管理员日志模型】
  */
-class ManagerLog extends Base
+class SystemManagerLog extends Base
 {
     /**
      *定义主键

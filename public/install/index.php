@@ -172,7 +172,7 @@ if($s == 2){
     include (ROOT_DIR . '/app/common.php');
     $passsalt = random(8);
     $adminpass = set_password($adminpass,$passsalt);
-    $pdo->exec("UPDATE {$dbpre}manager SET `username` ='{$adminuser}',`password`='{$adminpass}',`passsalt`='{$passsalt}' WHERE userid = 1");
+    $pdo->exec("UPDATE {$dbpre}system_manager SET `username` ='{$adminuser}',`password`='{$adminpass}',`passsalt`='{$passsalt}' WHERE userid = 1");
 
     tipMsg("管理员信息设置完成！");
     ob_flush();

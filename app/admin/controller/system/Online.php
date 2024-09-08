@@ -10,7 +10,7 @@
 namespace app\admin\controller\system;
 
 use app\admin\controller\AdminBase;
-use app\model\system\Online as OL;
+use app\model\system\SystemOnline as OL;
 
 /**
  * 在线用户制器

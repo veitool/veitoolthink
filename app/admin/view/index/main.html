@@ -141,7 +141,7 @@
                     <ul class="layui-timeline layui-timeline-dynamic">
                         <?php
                             $str = '';
-                            $rs = \app\model\system\LoginLog::order("logid desc")->field("username,admin,loginip,logintime,message")->limit(10)->select()->toArray();
+                            $rs = \app\model\system\SystemLoginLog::order("logid desc")->field("username,admin,loginip,logintime,message")->limit(10)->select()->toArray();
                             foreach($rs as $v){
                                 $active = $v['admin'] ? '' :' active';
                                 $str .= '<li class="layui-timeline-item">';

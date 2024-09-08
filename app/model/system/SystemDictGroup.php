@@ -12,36 +12,34 @@ namespace app\model\system;
 use app\model\Base;
 
 /**
- *【管理员模型】
+ *【字典组模型】
  */
-class Manager extends Base
+class SystemDictGroup extends Base
 {
     /**
      *定义主键
      * @var string 
      */
-    protected $pk = 'userid';
+    protected $pk = 'id';
 
     /**
      * 管理员列表（分页）
-     * @param  array   $where    查询条件
-     * @param  string  $fields   排除字段
-     * @param  int     $limit    查询条数
-     * @param  array   $order    查询排序
+     * @param  array          $where    查询条件
+     * @param  string         $fields   排除字段
+     * @param  int            $limit    查询条数
+     * @param  array/string   $order    查询排序
      * @return obj
      */
-    public function listQuery(array $where = [], string $fields = '', int $limit = 0, array|string $order = ['userid'=>'asc'])
+    public function listQuery(array $where = [], string $fields = '', int $limit = 0, array|string $order = ['id'=>'asc'])
     {
         $d = request()->get('','','strip_sql');
         $kw = $d['kw'] ?? '';
-        $fds = ['username','truename','mobile','loginip'];
+        $fds = ['title','code','sql','editor','note'];
         $field = isset($d['fields']) && isset($fds[$d['fields']]) ? $d['fields'] : -1;
         $sotime  = $d['sotime'] ?? '';
-        $roleid  = isset($d['roleid']) ? intval($d['roleid']) : 0;
-        $areaid  = isset($d['areaid']) ? intval($d['areaid']) : 0;
         $groupid = $d['groupid'] ?? '';
-        $state = $d['state'] ?? '';
         $limit = $limit>0 ? $limit : (isset($d['limit']) ? intval($d['limit']) : 10);
+        $where[] = ['groupid','>',0];
         if($kw!=''){
             if($field>-1){
                 $where[] = [$fds[$field],'=',$kw];
@@ -51,14 +49,26 @@ class Manager extends Base
         }
         if(strpos($sotime,' - ')!==false){
             $t = explode(' - ',$sotime);
-            $where[] = ['logintime','>=',strtotime($t[0]." 00:00:00")];
-            $where[] = ['logintime','<=',strtotime($t[1]." 23:59:59")];
+            $where[] = ['addtime','>=',strtotime($t[0]." 00:00:00")];
+            $where[] = ['addtime','<=',strtotime($t[1]." 23:59:59")];
         }
-        if($roleid) $where[] = \think\facade\Db::raw("FIND_IN_SET($roleid,roleids)");
-        if($areaid) $where[] = [\think\facade\Db::raw("CONCAT(areaid,',')"), 'LIKE', $areaid.',%'];
-        if(is_numeric($groupid)) $where[] = ['groupid','IN', Organ::getChild($groupid)];
-        if(is_numeric($state))   $where[] = ['state','=',$state];
+        if(is_numeric($groupid)) $where[] = ['groupid','IN', SystemDictGroup::getChild($groupid)];
         return $this->where($where)->order($order)->withoutField($fields)->paginate($limit);
+    }
+
+    /**
+     * 获取所有子类ID串
+     * @param  int   $id   ID
+     * @return string
+     */
+    public static function getChild(int $id = 0)
+    {
+        $id = abs($id);
+        if($id>0){
+            $rs = self::where("groupid = 0 AND (id = $id OR FIND_IN_SET($id,arrparentid))")->column('id');
+            $id = $rs ? implode(',', $rs) : '';
+        }
+        return $id;
     }
 
 }

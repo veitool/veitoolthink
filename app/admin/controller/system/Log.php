@@ -10,9 +10,9 @@
 namespace app\admin\controller\system;
 
 use app\admin\controller\AdminBase;
-use app\model\system\LoginLog;
-use app\model\system\ManagerLog;
-use app\model\system\WebLog;
+use app\model\system\SystemLoginLog as LoginLog;
+use app\model\system\SystemManagerLog as ManagerLog;
+use app\model\system\SystemWebLog as WebLog;
 
 /**
  * 后台管理日志控制器

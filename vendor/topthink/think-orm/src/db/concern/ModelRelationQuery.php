@@ -142,7 +142,7 @@ trait ModelRelationQuery
     protected function scopeQuery()
     {
         if (!empty($this->options['scope'])) {
-            foreach ($this->options['scope'] as $name => $val) {
+            foreach ($this->options['scope'] as $val) {
                 [$call, $args] = $val;
                 call_user_func_array($call, $args);
             }
@@ -214,7 +214,7 @@ trait ModelRelationQuery
                 $field($this, $data[$key] ?? null, $data);
             } elseif ($this->model) {
                 // 检查字段是否有数据
-                if ($strict && (!isset($data[$field]) || empty($data[$field]))) {
+                if ($strict && (!isset($data[$field]) || (empty($data[$field]) && !in_array($data[$field], ['0', 0])))) {
                     continue;
                 }
 
@@ -270,6 +270,19 @@ trait ModelRelationQuery
     {
         $this->options['default_model'] = $data;
 
+        return $this;
+    }
+
+    /**
+     * 设置关联模型的动态绑定
+     *
+     * @param array $attr 绑定数据
+     *
+     * @return $this
+     */
+    public function withBind(array $attr)
+    {
+        $this->options['bind_attr'] = $attr;
         return $this;
     }
 
@@ -675,11 +688,11 @@ trait ModelRelationQuery
 
         // 动态获取器
         if (!empty($this->options['with_attr'])) {
-            $result->withAttr($this->options['with_attr']);
+            $result->withFieldAttr($this->options['with_attr']);
         }
 
         foreach (['hidden', 'visible', 'append'] as $name) {
-            if (!empty($this->options[$name])) {
+            if (isset($this->options[$name])) {
                 $result->$name($this->options[$name]);
             }
         }

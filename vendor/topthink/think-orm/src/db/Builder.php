@@ -13,6 +13,7 @@ declare (strict_types = 1);
 
 namespace think\db;
 
+use BackedEnum;
 use Closure;
 use Stringable;
 use think\db\BaseQuery as Query;
@@ -59,8 +60,9 @@ class Builder extends BaseBuilder
 
         foreach ($data as $key => $val) {
             $item = $this->parseKey($query, $key, true);
-
-            if ($val instanceof Raw) {
+            if ($val instanceof BackedEnum) {
+                $val = $val->value;
+            } elseif ($val instanceof Raw) {
                 $result[$item] = $this->parseRaw($query, $val);
                 continue;
             } elseif (is_null($val) && in_array($key, $fields, true)) {
@@ -265,6 +267,8 @@ class Builder extends BaseBuilder
         } elseif ($value instanceof Stringable) {
             // 对象数据写入
             $value = $value->__toString();
+        } elseif ($value instanceof BackedEnum) {
+            $value = $value->value;
         }
 
         if (is_scalar($value) && !in_array($exp, ['EXP', 'NOT NULL', 'NULL', 'IN', 'NOT IN', 'BETWEEN', 'NOT BETWEEN']) && !str_contains($exp, 'TIME')) {

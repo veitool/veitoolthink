@@ -13,6 +13,7 @@ declare (strict_types = 1);
 
 namespace think\db;
 
+use BackedEnum;
 use Closure;
 use think\db\BaseQuery as Query;
 use think\db\exception\DbException as Exception;
@@ -532,6 +533,8 @@ abstract class BaseBuilder
             $value = $this->parseClosure($query, $value);
         } elseif ($value instanceof Raw) {
             $value = $this->parseRaw($query, $value);
+        } elseif ($value instanceof BackedEnum) {
+            $value = $value->value;
         }
 
         if ('=' == $exp && is_null($value)) {

@@ -13,6 +13,7 @@ declare (strict_types = 1);
 
 namespace think\model\concern;
 
+use BackedEnum;
 use Closure;
 use InvalidArgumentException;
 use Stringable;
@@ -131,6 +132,13 @@ trait Attribute
      * @var array
      */
     private $withAttr = [];
+
+    /**
+     * 自动写入字段.
+     *
+     * @var array
+     */
+    protected $insert = [];
 
     /**
      * 获取模型对象的主键.
@@ -355,7 +363,7 @@ trait Attribute
         });
 
         // 只读字段不允许更新
-        foreach ($this->readonly as $key => $field) {
+        foreach ($this->readonly as $field) {
             if (array_key_exists($field, $data)) {
                 unset($data[$field]);
             }
@@ -418,7 +426,7 @@ trait Attribute
             if (is_null($value) && $array !== $this->data) {
                 return;
             }
-        } elseif (isset($this->type[$name])) {
+        } elseif (!in_array($name, $this->json) && isset($this->type[$name])) {
             // 类型转换
             $value = $this->writeTransform($value, $this->type[$name]);
         } elseif ($this->isRelationAttr($name)) {
@@ -461,7 +469,9 @@ trait Attribute
 
         $typeTransform = static function (string $type, $value, $model) {
             if (str_contains($type, '\\') && class_exists($type)) {
-                if (is_subclass_of($type, FieldTypeTransform::class)) {
+                if ($value instanceof BackedEnum) {
+                    $value = $value->value;
+                } elseif (is_subclass_of($type, FieldTypeTransform::class)) {
                     $value = $type::set($value, $model);
                 } elseif ($value instanceof Stringable) {
                     $value = $value->__toString();
@@ -548,7 +558,7 @@ trait Attribute
             }
 
             $value = $this->$method($value, $this->data);
-        } elseif (isset($this->type[$fieldName])) {
+        } elseif (!in_array($fieldName, $this->json) && isset($this->type[$fieldName])) {
             // 类型转换
             $value = $this->readTransform($value, $this->type[$fieldName]);
         } elseif ($this->autoWriteTimestamp && in_array($fieldName, [$this->createTime, $this->updateTime])) {
@@ -580,9 +590,9 @@ trait Attribute
 
         foreach ($this->withAttr[$name] as $key => $closure) {
             if ($this->jsonAssoc) {
-                $value[$key] = $closure($value[$key], $value);
+                $value[$key] = $closure($value[$key] ?? '', $value);
             } else {
-                $value->$key = $closure($value->$key, $value);
+                $value->$key = $closure($value->$key ?? '', $value);
             }
         }
 
@@ -634,7 +644,9 @@ trait Attribute
 
         $typeTransform = static function (string $type, $value, $model) {
             if (str_contains($type, '\\') && class_exists($type)) {
-                if (is_subclass_of($type, FieldTypeTransform::class)) {
+                if (is_subclass_of($type, BackedEnum::class)) {
+                    $value = $type::from($value);
+                } elseif (is_subclass_of($type, FieldTypeTransform::class)) {
                     $value = $type::get($value, $model);
                 } else {
                     // 对象类型
@@ -668,11 +680,11 @@ trait Attribute
      *
      * @return $this
      */
-    public function withAttr(string | array $name, Closure $callback = null)
+    public function withFieldAttr(string | array $name, Closure $callback = null)
     {
         if (is_array($name)) {
             foreach ($name as $key => $val) {
-                $this->withAttr($key, $val);
+                $this->withFieldAttr($key, $val);
             }
         } else {
             $name = $this->getRealFieldName($name);

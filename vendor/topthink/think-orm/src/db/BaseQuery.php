@@ -308,6 +308,20 @@ abstract class BaseQuery
     }
 
     /**
+     * 设置只读字段.
+     *
+     * @param array $fields 只读字段
+     *
+     * @return $this
+     */
+    public function readonly(array $fields)
+    {
+        $this->options['readonly_fields'] = $fields;
+
+        return $this;
+    }
+
+    /**
      * 获取最近一次查询的sql语句.
      *
      * @return string
@@ -344,17 +358,38 @@ abstract class BaseQuery
      *
      * @param string $field   字段名
      * @param mixed  $default 默认值
+     * @param bool   $useModelAttr 是否使用模型获取器
      *
      * @return mixed
      */
-    public function value(string $field, $default = null)
+    public function value(string $field, $default = null, bool $useModelAttr = false)
     {
         $result = $this->connection->value($this, $field, $default);
 
         $array[$field] = $result;
-        $this->result($array);
+        if ($this->model && $useModelAttr) {
+            // JSON数据处理
+            if (!empty($this->options['json'])) {
+                $this->jsonModelResult($array);
+            }
+            return $this->model->newInstance($array)->getAttr($field);
+        }
 
+        $this->result($array);
         return $array[$field];
+    }
+
+    /**
+     * 得到某个字段的值 并且经过模型的获取器处理
+     *
+     * @param string $field   字段名
+     * @param mixed  $default 默认值
+     *
+     * @return mixed
+     */
+    public function valueWithAttr(string $field, $default = null)
+    {
+        return $this->value($field, $default, true);
     }
 
     /**
@@ -362,18 +397,48 @@ abstract class BaseQuery
      *
      * @param string|array $field 字段名 多个字段用逗号分隔
      * @param string       $key   索引
+     * @param bool         $useModelAttr 是否使用模型获取器
      *
      * @return array
      */
-    public function column(string | array $field, string $key = ''): array
+    public function column(string | array $field, string $key = '', bool $useModelAttr = false): array
     {
         $result = $this->connection->column($this, $field, $key);
+        return array_map(function ($item) use ($field, $useModelAttr) {
+            if (is_array($item)) {
+                if ($this->model && $useModelAttr) {
+                    // JSON数据处理
+                    if (!empty($this->options['json'])) {
+                        $this->jsonModelResult($item);
+                    }
+                    return $this->model->newInstance($item)->toArray();
+                }
+                $this->result($item);
+                return $item;
+            }
+            $array[$field] = $item;
+            if ($this->model && $useModelAttr) {
+                if (!empty($this->options['json'])) {
+                    $this->jsonModelResult($array);
+                }
+                return $this->model->newInstance($array)->getAttr($field);
+            }
+            $this->result($array);
+            return $array[$field];
+        }, $result);
+    }
 
-        if (count($result) != count($result, 1)) {
-            $this->resultSet($result, false);
-        }
-
-        return $result;
+    /**
+     * 得到某个列的数组 并且经过模型的获取器处理.
+     *
+     * @param string|array $field 字段名 多个字段用逗号分隔
+     * @param string       $key   索引
+     *
+     * @return array
+     */
+    public function columnWithAttr(string | array $field, string $key = '')
+    {
+        return $this->column($field, $key, true);
     }
 
     /**
@@ -1271,9 +1336,18 @@ abstract class BaseQuery
             $this->where($this->model->getWhere());
         }
 
-        if (empty($this->options['where'])) {
+        if (empty($this->options['where']) && empty($this->options['scope'])) {
             // 如果没有任何更新条件则不执行
             throw new Exception('miss update condition');
+        }
+
+        // 检查只读字段
+        if (!empty($this->options['readonly_fields'])) {
+            foreach ($this->options['readonly_fields'] as $field) {
+                if (array_key_exists($field, $this->options['data'])) {
+                    unset($this->options['data'][$field]);
+                }
+            }
         }
 
         return $this->connection->update($this);
@@ -1299,7 +1373,7 @@ abstract class BaseQuery
             $this->where($this->model->getWhere());
         }
 
-        if (true !== $data && empty($this->options['where'])) {
+        if (true !== $data && empty($this->options['where']) && empty($this->options['scope'])) {
             // 如果条件为空 不进行删除操作 除非设置 1=1
             throw new Exception('delete without condition');
         }

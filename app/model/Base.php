@@ -44,14 +44,15 @@ class Base extends Model
 
     /**
      * 添加单条数据
-     * @param  array      $data    添加的数据
-     * @param  string     $field   允许的字段
-     * @param  bool/int   $getid   是否返回ID
-     * @return int     添加数或ID
+     * @param  array          $data    添加的数据
+     * @param  array/string   $field   允许的字段
+     * @param  bool/int       $getid   是否返回ID
+     * @return int   添加数或ID
      */
-    public static function inadd(array $data = [], array $field = [], bool|int $getid = false)
+    public static function inadd(array $data = [], array|string $field = [], bool|int $getid = false)
     {
-        if($field && is_array($field)){
+        if($field){
+            $field = is_array($field) ? $field : explode(',', (string)$field); 
             foreach($data as $k=>$v){
                 if(!in_array($k,$field)) unset($data[$k]);
             }

@@ -351,7 +351,7 @@ function vconfig($name='',$default=''){
                 $_VCF[$dt[0]] = $rs;
             }
         }
-        return is_null($rs) ? $default : $rs;
+        return $rs || $rs == '0' || $rs === 0 ? $rs : $default;
     }else{
         return $_VCF;
     }

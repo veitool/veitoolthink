@@ -552,7 +552,7 @@ class Service
                 try{
                     $data = include_once $configFile;
                     if(is_array($data) && $data){
-                        Db::name('setting')->insertAll($data);
+                        Db::name('system_setting')->insertAll($data);
                         Cache::delete('VSETTING');
                     }
                 }catch(\PDOException $e){

@@ -18,7 +18,7 @@ class SendSms
 {
     /**
      * 短信发送时间缓存
-     * @var strimg 
+     * @var string
      */
     private $cache_key = '';
 

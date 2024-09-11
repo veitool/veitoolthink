@@ -62,7 +62,7 @@ class SystemRoles extends Base
             $ro = is_array($role) ? $role : self::where(['state'=>1,'roleid'=>$roleid])->field('roleid,role_name,role_menuid')->findOrEmpty()->toArray();
             if(!empty($ro) && $ro['role_menuid']){
                 //获取后台菜单缓存
-                $ms = Menus::cache();
+                $ms = SystemMenus::cache();
                 foreach ($ms as $k=>$v){
                     if(strpos(",$ro[role_menuid],",",$k,") !== false){
                         $str .= $v['role_url'] ? ','.$v['role_url'] : '';

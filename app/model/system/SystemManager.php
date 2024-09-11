@@ -56,7 +56,7 @@ class SystemManager extends Base
         }
         if($roleid) $where[] = \think\facade\Db::raw("FIND_IN_SET($roleid,roleids)");
         if($areaid) $where[] = [\think\facade\Db::raw("CONCAT(areaid,',')"), 'LIKE', $areaid.',%'];
-        if(is_numeric($groupid)) $where[] = ['groupid','IN', Organ::getChild($groupid)];
+        if(is_numeric($groupid)) $where[] = ['groupid','IN', SystemOrgan::getChild($groupid)];
         if(is_numeric($state))   $where[] = ['state','=',$state];
         return $this->where($where)->order($order)->withoutField($fields)->paginate($limit);
     }

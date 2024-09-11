@@ -17,6 +17,7 @@ use BackedEnum;
 use Closure;
 use think\db\BaseQuery as Query;
 use think\db\exception\DbException as Exception;
+use UnitEnum;
 
 /**
  * Db Base Builder.
@@ -535,6 +536,8 @@ abstract class BaseBuilder
             $value = $this->parseRaw($query, $value);
         } elseif ($value instanceof BackedEnum) {
             $value = $value->value;
+        } elseif ($value instanceof UnitEnum) {
+            $value = $value->name;
         }
 
         if ('=' == $exp && is_null($value)) {

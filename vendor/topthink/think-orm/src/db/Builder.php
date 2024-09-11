@@ -18,6 +18,7 @@ use Closure;
 use Stringable;
 use think\db\BaseQuery as Query;
 use think\db\exception\DbException as Exception;
+use UnitEnum;
 
 /**
  * Db Builder.
@@ -62,6 +63,8 @@ class Builder extends BaseBuilder
             $item = $this->parseKey($query, $key, true);
             if ($val instanceof BackedEnum) {
                 $val = $val->value;
+            } elseif ($val instanceof UnitEnum) {
+                $val = $val->name;
             } elseif ($val instanceof Raw) {
                 $result[$item] = $this->parseRaw($query, $val);
                 continue;
@@ -269,6 +272,8 @@ class Builder extends BaseBuilder
             $value = $value->__toString();
         } elseif ($value instanceof BackedEnum) {
             $value = $value->value;
+        } elseif ($value instanceof UnitEnum) {
+            $value = $value->name;
         }
 
         if (is_scalar($value) && !in_array($exp, ['EXP', 'NOT NULL', 'NULL', 'IN', 'NOT IN', 'BETWEEN', 'NOT BETWEEN']) && !str_contains($exp, 'TIME')) {

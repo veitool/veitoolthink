@@ -41,7 +41,7 @@ class AppInit
             $module .= '/';
         }/**/
         /* 插件应用名 用于 AdminBase.php 中兼容插件权限 */
-        config([$module], 'ADDON_APP');
+        $request->ADDON_APP = $module;
 
         return $next($request);
     }

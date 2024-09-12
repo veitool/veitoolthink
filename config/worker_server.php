@@ -1,5 +1,5 @@
 <?php
-use app\model\system\Manager;
+use app\model\system\SystemManager as Manager;
 
 return [
     // 扩展自身需要的配置

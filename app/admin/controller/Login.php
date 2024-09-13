@@ -87,7 +87,6 @@ class Login extends BaseController
         $rs = Manager::get(compact('username'));
         if(empty($rs)){
             LoginLog::add($username, $password, '', '账号错误');
-            captcha('admin'); //重建验证码
             Lock::add();
             return $this->returnMsg('帐号或密码错误！');
         }
@@ -105,7 +104,6 @@ class Login extends BaseController
             return $this->returnMsg('登录成功！',1,['url'=>($this->appMap ?: '/')]);
         }
         LoginLog::add($username, $password, $rs['passsalt'], '密码错误');
-        captcha('admin'); //重建验证码
         Lock::add();
         return $this->returnMsg('帐号或密码错误！');
     }

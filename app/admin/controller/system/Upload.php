@@ -141,7 +141,7 @@ class Upload extends AdminBase
         $data['fileid']   = UploadFile::insertGetId($data);
         //压缩容量
         if($data['filesize']>300 && $engine == 'local'){
-            $pic = app()->getRootPath().'public'.$data['fileurl'];
+            $pic = ROOT_PATH . 'public' . $data['fileurl'];
             if($data['fileext']=='jpg'){
                 $pics = Imagecreatefromjpeg($pic);
                 Imagejpeg($pics,$pic,70);

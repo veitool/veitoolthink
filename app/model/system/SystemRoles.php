@@ -31,7 +31,7 @@ class SystemRoles extends Base
      */
     public function listQuery()
     {
-        return $this->field('roleid,role_name,role_menuid,listorder,state,addtime')->order('listorder', 'asc')->paginate(input('limit/d'));
+        return $this->field('roleid,role_name,role_menuid,role_ext,listorder,state,addtime')->order('listorder', 'asc')->paginate(input('limit/d'));
     }
 
     /**
@@ -47,7 +47,7 @@ class SystemRoles extends Base
      * 缓存角色权限
      * @param    int/array   $role     角色ID 或者 array('roleid'=>角色ID,'role_name'=>角色名,'role_menuid'=>拥有的菜单ID串)
      * @param    int         $reset    是否重置 默认 否
-     * @return   array ['roleid'=>角色ID,'role_name'=>角色名,'role_menuid'=>拥有的菜单ID串'actions'=>权限记录集]
+     * @return   array ['roleid'=>角色ID,'role_name'=>角色名,'role_menuid'=>拥有的菜单ID串,'role_ext'=>控制器内扩展权限控制,'actions'=>权限记录集]
      */
     public static function cache(int|array $role, int $reset = 0)
     {
@@ -59,7 +59,7 @@ class SystemRoles extends Base
             $rs  = [];
             $str = '';
             //获取角色
-            $ro = is_array($role) ? $role : self::where(['state'=>1,'roleid'=>$roleid])->field('roleid,role_name,role_menuid')->findOrEmpty()->toArray();
+            $ro = is_array($role) ? $role : self::where(['state'=>1,'roleid'=>$roleid])->field('roleid,role_name,role_menuid,role_ext')->findOrEmpty()->toArray();
             if(!empty($ro) && $ro['role_menuid']){
                 //获取后台菜单缓存
                 $ms = SystemMenus::cache();
@@ -70,6 +70,16 @@ class SystemRoles extends Base
                 }
             }
             $rs['actions'] = explode(',', trim($str,','));
+            if($ro['role_ext']){
+                $arr = explode("\n", $ro['role_ext']);
+                $ro['role_ext'] = [];
+                foreach($arr as $v){
+                    $ks = explode('=', $v);
+                    $ro['role_ext'][$ks[0]] = $ks[1] ?? 0;
+                }
+            }else{
+                $ro['role_ext'] = [];
+            }
             $rs = array_merge($ro, $rs);
             cache($key,$rs,31536000);
         }

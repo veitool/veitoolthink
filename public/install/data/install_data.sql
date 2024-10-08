@@ -306,6 +306,7 @@ CREATE TABLE `vt_system_roles` (
   `roleid` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '角色id',
   `role_name` varchar(50) NOT NULL DEFAULT '' COMMENT '角色名称',
   `role_menuid` text NOT NULL COMMENT '权限菜单项ID串',
+  `role_ext` text NOT NULL COMMENT '控制器内扩展权限控制',
   `listorder` int(10) unsigned NOT NULL DEFAULT '10' COMMENT '排序',
   `state` tinyint(2) unsigned NOT NULL DEFAULT '1' COMMENT '状态：0禁用',
   `addtime` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
@@ -315,8 +316,8 @@ CREATE TABLE `vt_system_roles` (
 -- ----------------------------
 -- Records of vt_system_roles
 -- ----------------------------
-INSERT INTO `vt_system_roles` VALUES ('1', '超级管理员', '', '1', '1', '1552297670');
-INSERT INTO `vt_system_roles` VALUES ('2', '系统管理员', '', '2', '1', '1552297670');
+INSERT INTO `vt_system_roles` VALUES ('1', '超级管理员', '', '', '1', '1', '1552297670');
+INSERT INTO `vt_system_roles` VALUES ('2', '系统管理员', '', '', '2', '1', '1552297670');
 
 -- ----------------------------
 -- Table structure for vt_system_setting

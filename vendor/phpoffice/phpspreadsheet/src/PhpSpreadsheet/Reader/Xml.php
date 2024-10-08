@@ -107,20 +107,6 @@ class Xml extends BaseReader
         return $valid;
     }
 
-    /**
-     * Check if the file is a valid SimpleXML.
-     *
-     * @return false|SimpleXMLElement
-     *
-     * @deprecated 2.0.1 Should never have had public visibility
-     *
-     * @codeCoverageIgnore
-     */
-    public function trySimpleXMLLoadString(string $filename, string $fileOrString = 'file'): SimpleXMLElement|bool
-    {
-        return $this->trySimpleXMLLoadStringPrivate($filename, $fileOrString);
-    }
-
     /** @return false|SimpleXMLElement */
     private function trySimpleXMLLoadStringPrivate(string $filename, string $fileOrString = 'file'): SimpleXMLElement|bool
     {
@@ -403,11 +389,16 @@ class Xml extends BaseReader
 
                     $columnID = 'A';
                     foreach ($rowData->Cell as $cell) {
+                        $arrayRef = '';
                         $cell_ss = self::getAttributes($cell, self::NAMESPACES_SS);
                         if (isset($cell_ss['Index'])) {
                             $columnID = Coordinate::stringFromColumnIndex((int) $cell_ss['Index']);
                         }
                         $cellRange = $columnID . $rowID;
+                        if (isset($cell_ss['ArrayRange'])) {
+                            $arrayRange = (string) $cell_ss['ArrayRange'];
+                            $arrayRef = AddressHelper::convertFormulaToA1($arrayRange, $rowID, Coordinate::columnIndexFromString($columnID));
+                        }
 
                         if ($this->getReadFilter() !== null) {
                             if (!$this->getReadFilter()->readCell($columnID, $rowID, $worksheetName)) {
@@ -440,6 +431,9 @@ class Xml extends BaseReader
                         if (isset($cell_ss['Formula'])) {
                             $cellDataFormula = $cell_ss['Formula'];
                             $hasCalculatedValue = true;
+                            if ($arrayRef !== '') {
+                                $spreadsheet->getActiveSheet()->getCell($columnID . $rowID)->setFormulaAttributes(['t' => 'array', 'ref' => $arrayRef]);
+                            }
                         }
                         if (isset($cell->Data)) {
                             $cellData = $cell->Data;

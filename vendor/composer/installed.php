@@ -191,8 +191,8 @@
             'dev_requirement' => false,
         ),
         'phpoffice/phpspreadsheet' => array(
-            'pretty_version' => '2.2.1',
-            'version' => '2.2.1.0',
+            'pretty_version' => '3.3.0',
+            'version' => '3.3.0.0',
             'reference' => 'a3c5c9e7ce3a2a8577bfa9e69960fbccbd2d4a9e',
             'type' => 'library',
             'install_path' => __DIR__ . '/../phpoffice/phpspreadsheet',
@@ -500,8 +500,8 @@
             'dev_requirement' => false,
         ),
         'topthink/think-orm' => array(
-            'pretty_version' => 'v3.0.18',
-            'version' => '3.0.18.0',
+            'pretty_version' => 'v3.0.27',
+            'version' => '3.0.27.0',
             'reference' => '16401dd97d593867cf8c78cb8804458b03fb5241',
             'type' => 'library',
             'install_path' => __DIR__ . '/../topthink/think-orm',

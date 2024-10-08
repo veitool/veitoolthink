@@ -83,7 +83,7 @@ layui.use(['zTree','buildItems'], function(){
             type: 1,
             bid: 'roles_items',
             btn: ['保存', '取消'],
-            area: ['660px', '90%'],
+            area: ['1000px', '90%'],
             title: Dt ? '编辑角色' : '添加角色',
             success: function(l,index){
                 var height = l.height() - 290;
@@ -93,7 +93,8 @@ layui.use(['zTree','buildItems'], function(){
                     data: [
                         {name:"role_name",title:"角色名称",type:"text",value:'',verify:'required',placeholder:"请输入角色名称",must:true},
                         {name:"listorder",title:"排序编号",type:"html",html:'<div class="layui-input-inline"><input type="number" name="listorder" value="10" lay-verify="required" placeholder="请输入排序数字" autocomplete="off" class="layui-input"></div><div class="layui-input-block"><input type="checkbox" name="state" lay-verify="required" lay-skin="switch" lay-text="启用|禁用" value="1" checked/></div>',must:true},
-                        {name:"parent_id",title:"权限列表",type:"html",html:tool+'<div style="padding-top:10px;height:'+ height +'px;overflow:auto;"><ul id="rolesTree" class="ztree"></ul></div>'}
+                        {name:"parent_id",title:"权限列表",type:"html",html:tool+'<div style="padding-top:10px;height:'+ height +'px;overflow:auto;"><ul id="rolesTree" class="ztree"></ul></div>',itemCol:'layui-col-md7'},
+                        {name:"role_ext",title:"权限扩展",type:"textarea",id:"role_ext",style:"height:"+(height + 20)+"px;",tips:"用于控制器内的权限再控制：路由=标识",itemCol:'layui-col-md5'}
                     ]
                 });
                 form.val('roles_items_form', Dt);
@@ -102,7 +103,15 @@ layui.use(['zTree','buildItems'], function(){
                 admin.req(app_root+"index?do=mjson",{roleid:roleid},function(res){
                     layer.close(loadIndex);
                     if(res.code === 0){
-                        var treeObj = $.fn.zTree.init($('#rolesTree'),{check:{enable:true},data:{simpleData:{enable:true}}},res.data);
+                        var treeObj = $.fn.zTree.init($('#rolesTree'),{check:{enable:true},data:{simpleData:{enable:true}},callback:{beforeClick:beforeClick}},res.data);
+                        function beforeClick(treeId, treeNode){
+                            let arr = treeNode.name.split(" ");
+                            if(arr[1]){
+                                let old = $('#role_ext').val(); old = old ? old + '\n' : '';
+                                let val = old + arr[1] + '=1';
+                                $('#role_ext').val(val);
+                            }
+                        }
                         $('#zTreeAll').on('click',function(){
                             var html = $(this).html(), flag = false, tip = '全选';
                             if(html == '全选'){flag = true; tip = '清空';}

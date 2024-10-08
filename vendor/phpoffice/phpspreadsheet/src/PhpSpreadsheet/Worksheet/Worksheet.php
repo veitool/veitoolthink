@@ -683,6 +683,8 @@ class Worksheet implements IComparable
      */
     public function calculateColumnWidths(): static
     {
+        $activeSheet = $this->getParent()?->getActiveSheetIndex();
+        $selectedCells = $this->selectedCells;
         // initialize $autoSizes array
         $autoSizes = [];
         foreach ($this->getColumnDimensions() as $colDimension) {
@@ -780,6 +782,10 @@ class Worksheet implements IComparable
             }
             $this->activePane = $holdActivePane;
         }
+        if ($activeSheet !== null && $activeSheet >= 0) {
+            $this->getParent()?->setActiveSheetIndex($activeSheet);
+        }
+        $this->setSelectedCells($selectedCells);
 
         return $this;
     }
@@ -2848,12 +2854,13 @@ class Worksheet implements IComparable
         bool $calculateFormulas = true,
         bool $formatData = true,
         bool $returnCellRef = false,
-        bool $ignoreHidden = false
+        bool $ignoreHidden = false,
+        bool $reduceArrays = false
     ): array {
         $returnValue = [];
 
         // Loop through rows
-        foreach ($this->rangeToArrayYieldRows($range, $nullValue, $calculateFormulas, $formatData, $returnCellRef, $ignoreHidden) as $rowRef => $rowArray) {
+        foreach ($this->rangeToArrayYieldRows($range, $nullValue, $calculateFormulas, $formatData, $returnCellRef, $ignoreHidden, $reduceArrays) as $rowRef => $rowArray) {
             $returnValue[$rowRef] = $rowArray;
         }
 
@@ -2880,7 +2887,8 @@ class Worksheet implements IComparable
         bool $calculateFormulas = true,
         bool $formatData = true,
         bool $returnCellRef = false,
-        bool $ignoreHidden = false
+        bool $ignoreHidden = false,
+        bool $reduceArrays = false
     ) {
         $range = Validations::validateCellOrCellRange($range);
 
@@ -2926,6 +2934,11 @@ class Worksheet implements IComparable
                         $cell = $this->cellCollection->get("{$col}{$thisRow}");
                         if ($cell !== null) {
                             $value = $this->cellToArray($cell, $calculateFormulas, $formatData, $nullValue);
+                            if ($reduceArrays) {
+                                while (is_array($value)) {
+                                    $value = array_shift($value);
+                                }
+                            }
                             if ($value !== $nullValue) {
                                 $returnValue[$columnRef] = $value;
                             }
@@ -3026,7 +3039,8 @@ class Worksheet implements IComparable
         bool $calculateFormulas = true,
         bool $formatData = true,
         bool $returnCellRef = false,
-        bool $ignoreHidden = false
+        bool $ignoreHidden = false,
+        bool $reduceArrays = false
     ): array {
         $retVal = [];
         $namedRange = $this->validateNamedRange($definedName);
@@ -3035,7 +3049,7 @@ class Worksheet implements IComparable
             $cellRange = str_replace('$', '', $cellRange);
             $workSheet = $namedRange->getWorksheet();
             if ($workSheet !== null) {
-                $retVal = $workSheet->rangeToArray($cellRange, $nullValue, $calculateFormulas, $formatData, $returnCellRef, $ignoreHidden);
+                $retVal = $workSheet->rangeToArray($cellRange, $nullValue, $calculateFormulas, $formatData, $returnCellRef, $ignoreHidden, $reduceArrays);
             }
         }
 
@@ -3058,17 +3072,19 @@ class Worksheet implements IComparable
         bool $calculateFormulas = true,
         bool $formatData = true,
         bool $returnCellRef = false,
-        bool $ignoreHidden = false
+        bool $ignoreHidden = false,
+        bool $reduceArrays = false
     ): array {
         // Garbage collect...
         $this->garbageCollect();
+        $this->calculateArrays($calculateFormulas);
 
         //    Identify the range that we need to extract from the worksheet
         $maxCol = $this->getHighestColumn();
         $maxRow = $this->getHighestRow();
 
         // Return
-        return $this->rangeToArray("A1:{$maxCol}{$maxRow}", $nullValue, $calculateFormulas, $formatData, $returnCellRef, $ignoreHidden);
+        return $this->rangeToArray("A1:{$maxCol}{$maxRow}", $nullValue, $calculateFormulas, $formatData, $returnCellRef, $ignoreHidden, $reduceArrays);
     }
 
     /**
@@ -3674,6 +3690,38 @@ class Worksheet implements IComparable
         }
     }
 
+    public function calculateArrays(bool $preCalculateFormulas = true): void
+    {
+        if ($preCalculateFormulas && Calculation::getInstance($this->parent)->getInstanceArrayReturnType() === Calculation::RETURN_ARRAY_AS_ARRAY) {
+            $keys = $this->cellCollection->getCoordinates();
+            foreach ($keys as $key) {
+                if ($this->getCell($key)->getDataType() === DataType::TYPE_FORMULA) {
+                    $this->getCell($key)->getCalculatedValue();
+                }
+            }
+        }
+    }
+
+    public function isCellInSpillRange(string $coordinate): bool
+    {
+        if (Calculation::getInstance($this->parent)->getInstanceArrayReturnType() !== Calculation::RETURN_ARRAY_AS_ARRAY) {
+            return false;
+        }
+        $this->calculateArrays();
+        $keys = $this->cellCollection->getCoordinates();
+        foreach ($keys as $key) {
+            $attributes = $this->getCell($key)->getFormulaAttributes();
+            if (isset($attributes['ref'])) {
+                if (Coordinate::coordinateIsInsideRange($attributes['ref'], $coordinate)) {
+                    // false for first cell in range, true otherwise
+                    return $coordinate !== $key;
+                }
+            }
+        }
+
+        return false;
+    }
+
     public function applyStylesFromArray(string $coordinate, array $styleArray): bool
     {
         $spreadsheet = $this->parent;
@@ -3683,7 +3731,7 @@ class Worksheet implements IComparable
         $activeSheetIndex = $spreadsheet->getActiveSheetIndex();
         $originalSelected = $this->selectedCells;
         $this->getStyle($coordinate)->applyFromArray($styleArray);
-        $this->selectedCells = $originalSelected;
+        $this->setSelectedCells($originalSelected);
         if ($activeSheetIndex >= 0) {
             $spreadsheet->setActiveSheetIndex($activeSheetIndex);
         }

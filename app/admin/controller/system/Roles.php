@@ -52,11 +52,11 @@ class Roles extends AdminBase
      */
     public function add()
     {
-        $d = $this->only(['@token'=>'','role_name/*/{2,30}/角色名称','listorder/d','state/d','role_menuid']);
+        $d = $this->only(['@token'=>'','role_name/*/{2,30}/角色名称','listorder/d','state/d','role_menuid','role_ext']);
         $d['role_menuid'] = is_array($d['role_menuid']) ? implode(',', array_map('intval', $d['role_menuid'])) : '';
         $d['addtime'] = time();
         if($rsid = R::insertGetId($d)){
-            R::cache(['roleid'=>$rsid,'role_name'=>$d['role_name'],'role_menuid'=>$d['role_menuid']],1);
+            R::cache(['roleid'=>$rsid,'role_name'=>$d['role_name'],'role_menuid'=>$d['role_menuid'],'role_ext'=>$d['role_ext']],1);
             return $this->returnMsg("添加成功", 1);
         }else{
             return $this->returnMsg('添加失败');
@@ -70,7 +70,7 @@ class Roles extends AdminBase
      */
     public function edit(string $do = '')
     {
-        $d = $this->only($do ? ['@token'=>'','roleid/d/参数错误','av','af'] : ['@token'=>'','roleid/d/参数错误','role_name/*/{2,30}/角色名称','listorder/d','state/d','role_menuid']);
+        $d = $this->only($do ? ['@token'=>'','roleid/d/参数错误','av','af'] : ['@token'=>'','roleid/d/参数错误','role_name/*/{2,30}/角色名称','listorder/d','state/d','role_menuid','role_ext']);
         $roleid = $d['roleid'];
         $Myobj = R::get("roleid = $roleid");
         if(!$Myobj) return $this->returnMsg("数据不存在");
@@ -92,7 +92,7 @@ class Roles extends AdminBase
         }else{
             $d['role_menuid'] = is_array($d['role_menuid']) ? implode(',', array_map('intval', $d['role_menuid'])) : '';
             if($Myobj->save($d)){
-                R::cache(['roleid'=>$roleid,'role_name'=>$d['role_name'],'role_menuid'=>$d['role_menuid']],1);
+                R::cache(['roleid'=>$roleid,'role_name'=>$d['role_name'],'role_menuid'=>$d['role_menuid'],'role_ext'=>$d['role_ext']],1);
                 return $this->returnMsg("编辑成功", 1);
             }else{
                 return $this->returnMsg("编辑失败");

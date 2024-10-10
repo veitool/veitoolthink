@@ -132,4 +132,25 @@ abstract class AdminBase extends BaseController
         }
     }
 
+    /**
+     * 获取权限扩展标识【不存在默认返回为：0】用于控制器内调用
+     * 优先级：addon/* > addon/controller/* > addon/controller/action
+     * @access  protected
+     * @return  string|int
+     */
+    protected function getRoleExt()
+    {
+        if($this->manUser['userid'] == 1) return 0;
+        $d = explode('/', $this->routeUri);
+        if(isset($this->manUser['role_ext'][$d[0].'/*'])){
+            return $this->manUser['role_ext'][$d[0].'/*'];
+        }elseif(isset($d[1]) && isset($this->manUser['role_ext'][$d[0].'/'.$d[1].'/*'])){
+            return $this->manUser['role_ext'][$d[0].'/'.$d[1].'/*'];
+        }elseif(isset($d[1]) && isset($d[2]) && isset($this->manUser['role_ext'][$d[0].'/'.$d[1].'/'.$d[2].'/*'])){
+            return $this->manUser['role_ext'][$d[0].'/'.$d[1].'/'.$d[2].'/*'];
+        }else{
+            return $this->manUser['role_ext'][$this->routeUri] ?? 0;
+        }
+    }
+
 }

@@ -207,8 +207,9 @@ layui.use(['vinfo', 'buildItems'], function(){
             {field:"mobile",width:110,edit:'text',align:'center',title:"手机"},
             {field:"edit",width:68,align:'center',title:"操作"},
             {field:'state',width:80,align:'center',templet:function(d){return '<input type="checkbox" name="state" lay-skin="switch" lay-text="正常|禁用" lay-filter="manager-chang" value="'+d.state+'" data-json="'+encodeURIComponent(JSON.stringify(d))+'"'+(d.state==1 ? ' checked' : '')+'>';},unresize:true,title:'状态'},
-            {fixed:'right',width:130,align:'center',toolbar:'<div><a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a><a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="reset">重置</a><a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a></div>',title:'操作'}
-        ]]
+            {fixed:'right',width:130,align:'center',toolbar:'<div><a class="layui-btn layui-btn-xs" v-show="@system.manager/edit" lay-event="edit">编辑</a><a class="layui-btn layui-btn-xs layui-btn-warm" v-show="@system.manager/resetpwd" lay-event="reset">重置</a><a class="layui-btn layui-btn-xs layui-btn-danger" v-show="@system.manager/del" lay-event="del">删除</a></div>',title:'操作'}
+        ]],
+        done: function(){ admin.vShow($('[lay-table-id="manager"]')); }
     });
     /*顶部添加按钮*/
     $('#manager-add').on('click',function(){managerOpen();});/**/

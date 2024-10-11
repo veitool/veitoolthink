@@ -90,7 +90,7 @@ layui.use(['vinfo'],function(){
     var map_root = layui.cache.maps;
     var app_root = map_root + 'system.log/';
     var table=layui.table,admin=layui.admin;
-    var limit = {$limit}, PT = <?=$PT?>;
+    var limit = {$limit}, PT = {$PT|raw};
     /*位置选择*/
     admin.util.buildOption('#search_log_select',PT,'位置');
     /*初始选中选卡*/
@@ -103,6 +103,7 @@ layui.use(['vinfo'],function(){
     layui.element.on('tab(log_top_tab)', function(){
         mtab = this.getAttribute("lay-id");
         changBox(mtab);
+        table.resize(mtab+'log');
     });
     /*面板切换*/
     function changBox(tab){

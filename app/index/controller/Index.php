@@ -21,7 +21,7 @@ class Index extends \app\BaseController
      * 首页
      */ 
     public function index(){
-        $re = Response::create(app()->getRootPath().'app/v_msg.tpl','view')->assign(['msg'=>'欢迎使用 Veitool 后台管理开发框架！这是前台首页展示内容。','site'=>vconfig('site_title')])->header();
+        $re = Response::create(app()->getRootPath().'app/v_msg.tpl','view')->assign(['msg'=>'欢迎使用 Veitool 后台管理开发框架！这是前台首页展示内容。','site'=>vconfig('site_title','VEITOOL快捷开发框架')])->header();
         throw new HttpResponseException($re);
     }
 

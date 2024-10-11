@@ -27,7 +27,7 @@ return [
     // 禁止URL访问的应用列表（自动多应用模式有效）
     'deny_app_list'    => ['model','event'],
     // 异常页面的模板文件
-    'exception_tmpl'   => app()->getRootPath().'app/v_err.tpl',
+    'exception_tmpl'   => ROOT_PATH .(env('app_debug', true) ? 'app/v_err.tpl' : 'app/v_msg.tpl'),
     // 错误显示信息,非调试模式有效
     'error_message'    => '页面错误！请稍后再试～',
     // 显示错误信息

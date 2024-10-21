@@ -125,7 +125,7 @@ class Log extends AdminBase
     public function wdel()
     {
         $pre = config('database.connections.'.config('database.default').'.prefix');
-        \think\facade\Db::query("truncate {$pre}web_log");
+        \think\facade\Db::query("truncate {$pre}system_web_log");
         return $this->returnMsg("清理访问日志成功！", 1);
     }
 

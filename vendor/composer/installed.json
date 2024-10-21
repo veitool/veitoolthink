@@ -3501,8 +3501,8 @@
         },
         {
             "name": "topthink/think-orm",
-            "version": "v3.0.18",
-            "version_normalized": "3.0.18.0",
+            "version": "v3.0.28",
+            "version_normalized": "3.0.28.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/top-think/think-orm.git",
@@ -3556,7 +3556,7 @@
             ],
             "support": {
                 "issues": "https://github.com/top-think/think-orm/issues",
-                "source": "https://github.com/top-think/think-orm/tree/v3.0.18"
+                "source": "https://github.com/top-think/think-orm/tree/v3.0.28"
             },
             "install-path": "../topthink/think-orm"
         },

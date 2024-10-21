@@ -625,7 +625,7 @@ class Service
      * 获取插件配置文件
      * @param   string  $name  插件名称
      * @param   bool    $flag  返回类型 默认返回布尔值 1返回路径
-     * @return  string/bool
+     * @return  string|bool
      */
     protected static function getConfigFile(string $name, bool $flag = false)
     {

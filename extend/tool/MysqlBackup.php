@@ -454,7 +454,7 @@ class MysqlBackup
     /**
      * 删除库数据备份系列
      * @param   array   $files   要删除的文件夹名
-     * @return  string/bool
+     * @return  string|bool
      */
     public function delBackFile(array $files = [])
     {
@@ -479,7 +479,7 @@ class MysqlBackup
 
     /**
      * 优化表
-     * @param   string/array  $tables  数据表名
+     * @param   string|array  $tables  数据表名
      * @return  mixed
      */
     public function optimize(string|array $tables = null)
@@ -502,8 +502,8 @@ class MysqlBackup
 
     /**
      * 修复表
-     * @param    string/array   $tables   数据表名
-     * @return   array/json
+     * @param    string|array   $tables   数据表名
+     * @return   array|json
      */
     public function repair(string|array $tables = null)
     {

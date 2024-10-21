@@ -76,7 +76,7 @@ class Menus
     /**
      * 菜单导出
      * @param  int            $menuid   菜单ID
-     * @param  string/array   $where    查询条件
+     * @param  string|array   $where    查询条件
      * @return array
      */
     public static function menuOut(int $menuid = 0, string|array $where = '')

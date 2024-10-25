@@ -385,6 +385,8 @@ SELECT = 0
 default_lang = zh-cn
 EOT;
 }
+
+// 引入公用函数库
 include (ROOT_DIR . '/app/common.php');
 ?>
 <!DOCTYPE html>

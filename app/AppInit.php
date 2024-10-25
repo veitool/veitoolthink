@@ -23,7 +23,7 @@ class AppInit
     {
         $App = app();
         /* 路由处理 旧模式不兼容nginx：$url = request()->pathinfo(); */
-        $url = str_replace(".".config('route.url_html_suffix'), '', ltrim($App->request->url(), '/'));
+        $url = VT_DIR ? str_replace([".".config('route.url_html_suffix'),VT_DIR.'/'], '', $App->request->url()) : str_replace(".".config('route.url_html_suffix'), '', ltrim($App->request->url(), '/'));
         $url = strpos($url, '?') ? strstr($url, '?', true) : $url;
         $arr = explode('/', $url);
         $addon = $arr[0];

@@ -385,15 +385,16 @@ SELECT = 0
 default_lang = zh-cn
 EOT;
 }
+include (ROOT_DIR . '/app/common.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <title>Veitool快捷开发框架系统 安装向导</title>
-<script type="text/javascript" src="/static/layui/layui.js"></script>
+<script type="text/javascript" src="<?=VT_DIR?>/static/layui/layui.js"></script>
 <script type="text/javascript">var $=layui.$,jQuery=layui.jquery;</script>
-<link href="/static/layui/css/layui.css" type="text/css" rel="stylesheet">
+<link href="<?=VT_DIR?>/static/layui/css/layui.css" type="text/css" rel="stylesheet">
 <link href="tpl/style/install.css" type="text/css" rel="stylesheet"/>
 </head>
 <body>

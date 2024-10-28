@@ -76,12 +76,12 @@ layui.use(['vinfo', 'buildItems'], function(){
     var map_root = layui.cache.maps;
     var app_root = map_root + 'system.manager/';
     var layer = layui.layer,table=layui.table,form=layui.form,admin=layui.admin;
-    var Roles = <?=$roles?>;
+    var Roles = {$roles|raw};
     /*顶部类别构建*/
     admin.util.buildOption('#search_roles_select',Roles,'选择角色');
     /*==============左树结构===============*/
-    var organObj,organData,Organ = {},organArr = <?=$organ?>; /*左树 选中数据 和 总树数据*/
-    for(const v of organArr){Organ[v.id] = v.title}
+    var organObj, organData, Organ = {}, organArr = {$organ|raw}; /*左树 选中数据 和 总树数据*/
+    for(let v of organArr){Organ[v.id] = v.title}
     function renderTree(data,load){
         if(!load) organObj = data[0];
         if(data){
@@ -152,7 +152,7 @@ layui.use(['vinfo', 'buildItems'], function(){
                 /*渲染下拉树 https://maplemei.gitee.io/xm-select/#/component/options*/
                 var data = JSON.parse(JSON.stringify(organData));
                 if(Dt) Exitem(data,Dt.id,true);
-                admin.vDict(lay,{PARENTID:data});/**/
+                admin.vDict(lay,{"PARENTID":data});/**/
                 form.on('submit(organ_items)',function(data){
                     var btn = $(this);
                     if (btn.attr('stop')){return false}else{btn.attr('stop',1)}
@@ -338,7 +338,7 @@ layui.use(['vinfo', 'buildItems'], function(){
                     }
                 });
                 /* 手动渲染字典:组织机构、所属角色 渲染下拉树 https://maplemei.gitee.io/xm-select/#/component/options */
-                admin.vDict(lay,{GROUPID:JSON.parse(JSON.stringify(organData)), ROLEIDS:Roles});/**/
+                admin.vDict(lay,{"GROUPID":JSON.parse(JSON.stringify(organData)), "ROLEIDS":Roles});/**/
                 form.on('submit(manager_items)',function(data){
                     var btn = $(this);
                     if (btn.attr('stop')){return false}else{btn.attr('stop',1)}

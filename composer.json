@@ -34,9 +34,9 @@
         "topthink/think-queue": "^3.0",
         "aliyuncs/oss-sdk-php": "^2.7",
         "qcloud/cos-sdk-v5": "^2.6",
-        "qiniu/php-sdk": "^7.12",
-        "phpoffice/phpspreadsheet": "^2.2",
-        "phpoffice/phpword": "^1.2",
+        "qiniu/php-sdk": "^7.14",
+        "phpoffice/phpspreadsheet": "^3.3",
+        "phpoffice/phpword": "^1.3",
         "nelexa/zip": "^4.0",
         "veitool/admin": "^3.0"
     },

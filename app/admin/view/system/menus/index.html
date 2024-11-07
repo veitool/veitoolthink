@@ -245,7 +245,7 @@ layui.use(['trTable','iconPicker','buildItems'],function(){
                     data: [
                         {name:"menuid",type:"hidden"},
                         {name:"catid",title:"配置分组",type:"radio",options:cates,value:catid,must:true},
-                        {name:"parent_id",title:"上级菜单",type:"html",html:'<div id="mparent-select" v-dict="MPARENTID" options="{name:\'parent_id\',prop:{name:\'menu_name\',value:\'menuid\'},initValue:['+(Dt ? Dt.parent_id : 0)+']}" class="v-xmselect-tree"></div>',must:true},
+                        {name:"parent_id",title:"上级菜单",type:"html",html:'<div v-dict="MPARENTID" options="{name:\'parent_id\',prop:{name:\'menu_name\',value:\'menuid\'},initValue:['+(Dt ? Dt.parent_id : 0)+']}" class="v-xmselect-tree"></div>',must:true},
                         {name:"menu_name",title:"菜单名称",type:"html",html:'<div class="layui-input-inline" style="width:82px;float:left;"><input type="text" name="icon" value="" id="menusIconPicker" lay-filter="menusIconPicker" autocomplete="off" class="layui-input"></div><div class="layui-input-block" style="margin-left:105px;margin-right:0;"><input type="text" name="menu_name" value="" lay-verify="required" lay-reqtext="请输入菜单名称" placeholder="请输入菜单名称" autocomplete="off" class="layui-input"></div>',must:true},
                         {name:"role_name",title:"权限名称",type:"text",value:'',verify:'required',placeholder:"请输入权限名称",must:true},
                         {name:"menu_url",title:"菜单标识",type:"text",value:'',placeholder:"请输入菜单标识"},
@@ -267,7 +267,7 @@ layui.use(['trTable','iconPicker','buildItems'],function(){
                 /* 手动渲染字典:上级菜单 渲染下拉树 https://maplemei.gitee.io/xm-select/#/component/options */
                 var data = JSON.parse(JSON.stringify(menusTb.options.data));
                 if(Dt) Exitem(data,Dt.menuid,true);
-                admin.vDict(lay,{MPARENTID:data});/**/
+                admin.vDict(lay,{"MPARENTID":data});/**/
                 form.on('submit(menus_items)',function(data){
                     var btn = $(this);
                     if (btn.attr('stop')){return false}else{btn.attr('stop',1)}

@@ -82,7 +82,7 @@ class File extends Response
                     break;
             }
         }
-        
+
         if ($mimeType) {
             $this->header['Content-Type'] = $mimeType;
         }

@@ -53,10 +53,6 @@ class ComposerStaticInit020915b87d4ab8ac8119337ca936e79b
         array (
             'Workerman\\' => 10,
         ),
-        'T' => 
-        array (
-            'Tests\\PhpOffice\\Math\\' => 21,
-        ),
         'S' => 
         array (
             'Symfony\\Polyfill\\Php80\\' => 23,
@@ -175,10 +171,6 @@ class ComposerStaticInit020915b87d4ab8ac8119337ca936e79b
         'Workerman\\' => 
         array (
             0 => __DIR__ . '/..' . '/workerman/workerman',
-        ),
-        'Tests\\PhpOffice\\Math\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/phpoffice/math/tests/Math',
         ),
         'Symfony\\Polyfill\\Php80\\' => 
         array (
@@ -352,6 +344,7 @@ class ComposerStaticInit020915b87d4ab8ac8119337ca936e79b
         'Nette\\OutOfRangeException' => __DIR__ . '/..' . '/nette/utils/src/exceptions.php',
         'Nette\\PhpGenerator\\Attribute' => __DIR__ . '/..' . '/nette/php-generator/src/PhpGenerator/Attribute.php',
         'Nette\\PhpGenerator\\ClassLike' => __DIR__ . '/..' . '/nette/php-generator/src/PhpGenerator/ClassLike.php',
+        'Nette\\PhpGenerator\\ClassManipulator' => __DIR__ . '/..' . '/nette/php-generator/src/PhpGenerator/ClassManipulator.php',
         'Nette\\PhpGenerator\\ClassType' => __DIR__ . '/..' . '/nette/php-generator/src/PhpGenerator/ClassType.php',
         'Nette\\PhpGenerator\\Closure' => __DIR__ . '/..' . '/nette/php-generator/src/PhpGenerator/Closure.php',
         'Nette\\PhpGenerator\\Constant' => __DIR__ . '/..' . '/nette/php-generator/src/PhpGenerator/Constant.php',

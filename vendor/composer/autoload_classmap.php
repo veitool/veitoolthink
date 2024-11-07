@@ -26,6 +26,7 @@ return array(
     'Nette\\OutOfRangeException' => $vendorDir . '/nette/utils/src/exceptions.php',
     'Nette\\PhpGenerator\\Attribute' => $vendorDir . '/nette/php-generator/src/PhpGenerator/Attribute.php',
     'Nette\\PhpGenerator\\ClassLike' => $vendorDir . '/nette/php-generator/src/PhpGenerator/ClassLike.php',
+    'Nette\\PhpGenerator\\ClassManipulator' => $vendorDir . '/nette/php-generator/src/PhpGenerator/ClassManipulator.php',
     'Nette\\PhpGenerator\\ClassType' => $vendorDir . '/nette/php-generator/src/PhpGenerator/ClassType.php',
     'Nette\\PhpGenerator\\Closure' => $vendorDir . '/nette/php-generator/src/PhpGenerator/Closure.php',
     'Nette\\PhpGenerator\\Constant' => $vendorDir . '/nette/php-generator/src/PhpGenerator/Constant.php',

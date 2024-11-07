@@ -377,9 +377,9 @@
             'dev_requirement' => false,
         ),
         'symfony/process' => array(
-            'pretty_version' => 'v6.4.13',
-            'version' => '6.4.13.0',
-            'reference' => '1f9f59b46880201629df3bd950fc5ae8c55b960f',
+            'pretty_version' => 'v6.4.14',
+            'version' => '6.4.14.0',
+            'reference' => '25214adbb0996d18112548de20c281be9f27279f',
             'type' => 'library',
             'install_path' => __DIR__ . '/../symfony/process',
             'aliases' => array(),

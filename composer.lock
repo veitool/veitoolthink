@@ -1533,16 +1533,16 @@
         },
         {
             "name": "phpoffice/phpspreadsheet",
-            "version": "3.3.0",
+            "version": "3.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPOffice/PhpSpreadsheet.git",
-                "reference": "87ddd21eb0b6b7ad20a11d314348ef307475f547"
+                "reference": "eec07c20b51cc785295a6feef81ada7feda755e7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/87ddd21eb0b6b7ad20a11d314348ef307475f547",
-                "reference": "87ddd21eb0b6b7ad20a11d314348ef307475f547",
+                "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/eec07c20b51cc785295a6feef81ada7feda755e7",
+                "reference": "eec07c20b51cc785295a6feef81ada7feda755e7",
                 "shasum": ""
             },
             "require": {
@@ -1631,9 +1631,9 @@
             ],
             "support": {
                 "issues": "https://github.com/PHPOffice/PhpSpreadsheet/issues",
-                "source": "https://github.com/PHPOffice/PhpSpreadsheet/tree/3.3.0"
+                "source": "https://github.com/PHPOffice/PhpSpreadsheet/tree/3.4.0"
             },
-            "time": "2024-09-29T07:04:07+00:00"
+            "time": "2024-11-10T10:10:41+00:00"
         },
         {
             "name": "phpoffice/phpword",
@@ -3269,16 +3269,16 @@
         },
         {
             "name": "topthink/think-orm",
-            "version": "v3.0.29",
+            "version": "v3.0.30",
             "source": {
                 "type": "git",
                 "url": "https://github.com/top-think/think-orm.git",
-                "reference": "db96895739cc0322ffd92de309ebdbb33d46cd2d"
+                "reference": "6d8bcc86c3f9aba5a92010c17b68aeb8ad05ad3a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/top-think/think-orm/zipball/db96895739cc0322ffd92de309ebdbb33d46cd2d",
-                "reference": "db96895739cc0322ffd92de309ebdbb33d46cd2d",
+                "url": "https://api.github.com/repos/top-think/think-orm/zipball/6d8bcc86c3f9aba5a92010c17b68aeb8ad05ad3a",
+                "reference": "6d8bcc86c3f9aba5a92010c17b68aeb8ad05ad3a",
                 "shasum": ""
             },
             "require": {
@@ -3321,9 +3321,9 @@
             ],
             "support": {
                 "issues": "https://github.com/top-think/think-orm/issues",
-                "source": "https://github.com/top-think/think-orm/tree/v3.0.29"
+                "source": "https://github.com/top-think/think-orm/tree/v3.0.30"
             },
-            "time": "2024-10-30T10:04:08+00:00"
+            "time": "2024-11-07T09:12:00+00:00"
         },
         {
             "name": "topthink/think-queue",

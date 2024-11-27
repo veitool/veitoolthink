@@ -37,7 +37,7 @@ class AppInit
             $App->setNamespace("addons\\" . $module);
             $App->setAppPath($App->getRootPath() . 'addons' . VT_DS . $module . VT_DS);
             is_file($file = ADDON_PATH . $addon . VT_DS . 'data' . VT_DS . 'route.php') && require_once($file);
-            Route::rule($url, $module . '/' . $contr . '/' . $method);
+            Route::rule($url, $contr . '/' . $method);
             $module .= '/';
         }/**/
         /* 插件应用名 用于 AdminBase.php 中兼容插件权限 */

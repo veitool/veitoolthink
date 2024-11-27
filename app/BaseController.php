@@ -250,9 +250,11 @@ abstract class BaseController
     protected final function only($name = [], $type = 'post', $filter = 'strip_sql', $bin = true)
     {
         if(isset($name['@token'])){
-            $arr = array_merge([$this->tokenName,[]],(array)$name['@token']);
-            $this->request->checkToken($arr[0],$arr[1]) === false && $this->exitMsg("Token错误");
-            $this->token = token($this->tokenName);
+            if(!env('APP_DEBUG')){
+                $arr = array_merge([$this->tokenName,[]],(array)$name['@token']);
+                $this->request->checkToken($arr[0],$arr[1]) === false && $this->exitMsg("Token错误");
+                $this->token = token($this->tokenName);
+            }
             unset($name['@token']);
             if(!$name) return [];
         }

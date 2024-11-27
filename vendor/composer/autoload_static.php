@@ -78,6 +78,7 @@ class ComposerStaticInit020915b87d4ab8ac8119337ca936e79b
             'Psr\\Http\\Client\\' => 16,
             'Psr\\Container\\' => 14,
             'Psr\\Clock\\' => 10,
+            'Psr\\Cache\\' => 10,
             'PhpZip\\' => 7,
             'PhpOffice\\PhpWord\\' => 18,
             'PhpOffice\\PhpSpreadsheet\\' => 25,
@@ -95,6 +96,7 @@ class ComposerStaticInit020915b87d4ab8ac8119337ca936e79b
         'L' => 
         array (
             'League\\MimeTypeDetection\\' => 25,
+            'League\\Flysystem\\Cached\\' => 24,
             'League\\Flysystem\\' => 17,
         ),
         'G' => 
@@ -148,13 +150,13 @@ class ComposerStaticInit020915b87d4ab8ac8119337ca936e79b
         array (
             0 => __DIR__ . '/..' . '/topthink/framework/src/think',
             1 => __DIR__ . '/..' . '/topthink/think-container/src',
-            2 => __DIR__ . '/..' . '/topthink/think-filesystem/src',
-            3 => __DIR__ . '/..' . '/topthink/think-helper/src',
-            4 => __DIR__ . '/..' . '/topthink/think-image/src',
-            5 => __DIR__ . '/..' . '/topthink/think-log/src',
-            6 => __DIR__ . '/..' . '/topthink/think-orm/src',
-            7 => __DIR__ . '/..' . '/topthink/think-queue/src',
-            8 => __DIR__ . '/..' . '/topthink/think-template/src',
+            2 => __DIR__ . '/..' . '/topthink/think-image/src',
+            3 => __DIR__ . '/..' . '/topthink/think-orm/src',
+            4 => __DIR__ . '/..' . '/topthink/think-helper/src',
+            5 => __DIR__ . '/..' . '/topthink/think-filesystem/src',
+            6 => __DIR__ . '/..' . '/topthink/think-log/src',
+            7 => __DIR__ . '/..' . '/topthink/think-template/src',
+            8 => __DIR__ . '/..' . '/topthink/think-queue/src',
         ),
         'app\\' => 
         array (
@@ -222,7 +224,7 @@ class ComposerStaticInit020915b87d4ab8ac8119337ca936e79b
         ),
         'Psr\\Log\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/log/src',
+            0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
         ),
         'Psr\\Http\\Message\\' => 
         array (
@@ -240,6 +242,10 @@ class ComposerStaticInit020915b87d4ab8ac8119337ca936e79b
         'Psr\\Clock\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/clock/src',
+        ),
+        'Psr\\Cache\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/cache/src',
         ),
         'PhpZip\\' => 
         array (
@@ -272,6 +278,10 @@ class ComposerStaticInit020915b87d4ab8ac8119337ca936e79b
         'League\\MimeTypeDetection\\' => 
         array (
             0 => __DIR__ . '/..' . '/league/mime-type-detection/src',
+        ),
+        'League\\Flysystem\\Cached\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/league/flysystem-cached-adapter/src',
         ),
         'League\\Flysystem\\' => 
         array (

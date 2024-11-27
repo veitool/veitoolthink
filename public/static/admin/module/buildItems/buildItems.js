@@ -28,7 +28,7 @@ layui.define(['tagsInput','fileLibrary','cascader'], function(e){
     c.checkbox_html = '{{# layui.each(d.options, function(key, txt){ }}<input type="checkbox" name="{{ d.name }}[]" lay-filter="{{ d.name }}" lay-skin="{{ d.skin }}" value="{{ key }}" title="{{ txt }}" {{ (d.value).split(",").indexOf(String(key))>-1 ? "checked" : "" }}/>{{# }); }}';
     c.password_html = '<input type="password" name="{{ d.name }}" value="{{ d.value }}" ' + c.item_style + c.vers_html + 'autocomplete="off" ' + c.plac_html + c.affix_html;
     c.textarea_html = '<textarea name="{{ d.name }}" ' + c.item_style;
-    c.select_html = '<select name="{{ d.name }}" lay-filter="{{ d.name }}" ' + c.item_style + c.vers_html + '{{# if(d.search){ }}lay-search{{# } }}>{{# layui.each(d.options, function(key, txt){ }}<option value="{{ key }}" {{ d.value == key ? "selected" : "" }}>{{ txt }}</option>{{# }); }}</select>';
+    c.select_html = '<select name="{{ d.name }}" lay-filter="{{ d.name }}" ' + c.item_style + c.vers_html + '{{# if(d.search){ }}lay-search{{# } }}>{{# if(d.optiontip || d.reqtext){ }}<option value="">{{ d.optiontip || d.reqtext }}</option>{{# } }}{{# layui.each(d.options, function(key, txt){ }}<option value="{{ key }}" {{ d.value == key ? "selected" : "" }}>{{ txt }}</option>{{# }); }}</select>';
     //隐藏域
     c.hidden = '<input type="hidden" name="{{ d.name }}" value="{{ d.value || \'\' }}"/>';
     //静态代码

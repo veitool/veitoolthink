@@ -4050,7 +4050,7 @@ class Descriptions {
     public static function DetectImage() {
         return array(
             'httpMethod' => 'GET',
-            'uri' => '/{Bucket}{/Key*}',
+            'uri' => '/{Bucket}{/Key*}?ci-process=sensitive-content-recognition',
             'class' => 'Qcloud\\Cos\\Command',
             'responseClass' => 'DetectImageOutput',
             'responseType' => 'model',
@@ -4069,10 +4069,67 @@ class Descriptions {
                         'Qcloud\\Cos\\Client::explodeKey'
                     )
                 ),
-                'ci-process' => array(
+                'DetectType' => array(
+                    'type' => 'string',
+                    'location' => 'query',
+                    'sentAs' => 'detect-type'
+                ),
+                'DetectUrl' => array(
+                    'type' => 'string',
+                    'location' => 'query',
+                    'sentAs' => 'detect-url'
+                ),
+                'Interval' => array(
+                    'type' => 'integer',
+                    'location' => 'query',
+                    'sentAs' => 'interval'
+                ),
+                'MaxFrames' => array(
+                    'type' => 'integer',
+                    'location' => 'query',
+                    'sentAs' => 'max-frames'
+                ),
+                'BizType' => array(
+                    'type' => 'string',
+                    'location' => 'query',
+                    'sentAs' => 'biz-type'
+                ),
+                'LargeImageDetect' => array(
+                    'type' => 'integer',
+                    'location' => 'query',
+                    'sentAs' => 'large-image-detect'
+                ),
+                'DataId' => array(
+                    'type' => 'string',
+                    'location' => 'query',
+                    'sentAs' => 'dataid'
+                ),
+                'Async' => array(
+                    'type' => 'integer',
+                    'location' => 'query',
+                    'sentAs' => 'async'
+                ),
+                'Callback' => array(
+                    'type' => 'string',
+                    'location' => 'query',
+                    'sentAs' => 'callback'
+                ),
+            ),
+        );
+    }
+
+    public static function DetectImageUrl() {
+        return array(
+            'httpMethod' => 'GET',
+            'uri' => '/{Bucket}?ci-process=sensitive-content-recognition',
+            'class' => 'Qcloud\\Cos\\Command',
+            'responseClass' => 'DetectImageOutput',
+            'responseType' => 'model',
+            'parameters' => array(
+                'Bucket' => array(
                     'required' => true,
                     'type' => 'string',
-                    'location' => 'query'
+                    'location' => 'uri',
                 ),
                 'DetectType' => array(
                     'type' => 'string',
@@ -12866,6 +12923,7 @@ class Descriptions {
                 'eyeEnlarging' => array( 'type' => 'integer', 'location' => 'query', ),
                 'gender' => array( 'type' => 'integer', 'location' => 'query', ),
                 'age' => array( 'type' => 'integer', 'location' => 'query', ),
+                'detectUrl' => array('type' => 'string', 'location' => 'query', 'sentAs' => 'detect-url'),
             ),
         );
     }
@@ -13847,6 +13905,8 @@ class Descriptions {
                             'properties' => array(
                                 'Prefix' => array( 'type' => 'string', 'location' => 'xml', ),
                                 'PrefixReplaced' => array( 'type' => 'string', 'location' => 'xml', ),
+                                'UnCompressKey' => array( 'type' => 'string', 'location' => 'xml', ),
+                                'ListingFile' => array( 'type' => 'boolean', 'location' => 'xml', 'format' => 'boolean-string',),
                             ),
                         ),
                         'Output' => array(
@@ -14003,6 +14063,7 @@ class Descriptions {
                         'JobId' => array( 'type' => 'string', 'location' => 'xml', ),
                         'Tag' => array( 'type' => 'string', 'location' => 'xml', ),
                         'State' => array( 'type' => 'string', 'location' => 'xml', ),
+                        'Progress' => array( 'type' => 'integer', 'location' => 'xml', ),
                         'CreationTime' => array( 'type' => 'string', 'location' => 'xml', ),
                         'StartTime' => array( 'type' => 'string', 'location' => 'xml', ),
                         'EndTime' => array( 'type' => 'string', 'location' => 'xml', ),
@@ -14027,6 +14088,7 @@ class Descriptions {
                                     'properties' => array(
                                         'Region' => array( 'type' => 'string', 'location' => 'xml', ),
                                         'Bucket' => array( 'type' => 'string', 'location' => 'xml', ),
+                                        'Object' => array( 'type' => 'string', 'location' => 'xml', ),
                                     ),
                                 ),
                                 'FileUncompressConfig' => array(
@@ -14035,6 +14097,8 @@ class Descriptions {
                                     'properties' => array(
                                         'Prefix' => array( 'type' => 'string', 'location' => 'xml', ),
                                         'PrefixReplaced' => array( 'type' => 'string', 'location' => 'xml', ),
+                                        'UnCompressKey' => array( 'type' => 'string', 'location' => 'xml', ),
+                                        'ListingFile' => array( 'type' => 'boolean', 'location' => 'xml', ),
                                     ),
                                 ),
                                 'FileUncompressResult' => array(
@@ -14044,6 +14108,26 @@ class Descriptions {
                                         'Region' => array( 'type' => 'string', 'location' => 'xml', ),
                                         'Bucket' => array( 'type' => 'string', 'location' => 'xml', ),
                                         'FileCount' => array( 'type' => 'string', 'location' => 'xml', ),
+                                        'FileList' => array(
+                                            'type' => 'object',
+                                            'location' => 'xml',
+                                            'properties' => array(
+                                                'IsTruncated' => array( 'type' => 'boolean', 'location' => 'xml', ),
+                                                'Contents' => array(
+                                                    'type' => 'array',
+                                                    'location' => 'xml',
+                                                    'items' => array(
+                                                        'type' => 'object',
+                                                        'location' => 'xml',
+                                                        'properties' => array(
+                                                            'Key' => array( 'type' => 'string', 'location' => 'xml', ),
+                                                            'LastModified' => array( 'type' => 'string', 'location' => 'xml', ),
+                                                            'FileSize' => array( 'type' => 'integer', 'location' => 'xml', ),
+                                                        ),
+                                                    ),
+                                                ),
+                                            ),
+                                        ),
                                     ),
                                 ),
                             ),

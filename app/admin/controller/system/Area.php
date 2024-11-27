@@ -19,10 +19,10 @@ class Area extends AdminBase
 {
     /**
      * 地区列表
-     * @param  string/int  $pid  上级ID
+     * @param  string  $pid  上级ID
      * @return mixed
      */
-    public function index(string|int $pid = null)
+    public function index(?string $pid = null)
     {
         $rs = A::all("parentid=".(int)$pid, '*', ['listorder'=>'asc']);
         if(is_null($pid)){

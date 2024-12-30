@@ -310,7 +310,7 @@ layui.use(['vinfo', 'buildItems'], function(){
                     data: [
                         {name:"userid",type:"hidden"},
                         {name:"groupid",title:"所属机构",type:"html",html:'<div v-dict="GROUPID" options="{name:\'groupid\',prop:{name:\'title\',value:\'id\'},layVerify:\'required\',layVerType:\'tips\',layReqText:\'请选择所属机构\',initValue:['+(Dt ? Dt.groupid : 0)+']}" class="v-xmselect-tree"></div>',must:true},
-                        {name:"roleids",title:"所属角色",type:"html",html:'<div v-dict="ROLEIDS" options="{name:\'roleids\',prop:{name:\'value\',value:\'name\'},layVerify:\'required\',layVerType:\'tips\',layReqText:\'请选择所属角色\',radio:false,clickClose:false,model:{},initValue:['+(Dt ? Dt.roleids : 0)+']}" class="xm-select-demo-alert"></div>',must:true},
+                        {name:"roleids",title:"所属角色",type:"html",html:'<div v-dict="ROLEIDS" options="{name:\'roleids\',layVerify:\'required\',layVerType:\'tips\',layReqText:\'请选择所属角色\',radio:false,clickClose:false,model:{},initValue:['+(Dt ? Dt.roleids : 0)+']}" class="xm-select-demo-alert"></div>',must:true},
                         {name:"username",title:"管理帐号",type:"text",value:'',verify:'user',vertype:'tips',placeholder:"请输入4-30位管理帐号",must:true},
                         {name:"password",title:"登录密码",type:Dt ? 'hidden' : "password",id:'m_pwd',value:'',verify:Dt ? '' : 'pass',vertype:'tips',placeholder:"请输入6-16位登录密码",must:true},
                         {name:"repassword",title:"确认密码",type:Dt ? 'hidden' : "password",id:'m_rpwd',value:'',verify:Dt ? '' : 'rpass',vertype:'tips',placeholder:"请再次输入登录密码",must:true},

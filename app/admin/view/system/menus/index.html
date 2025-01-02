@@ -100,8 +100,8 @@ layui.use(['trTable','iconPicker','buildItems'],function(){
             area: ['68%','75%'],
             title: '【菜单类别管理】',
             url: app_root + "category",
-            success: function(){
-                admin.vShow(); /*移除未有的权限按钮*/
+            success: function(lay){
+                admin.vShow($(lay)); /*移除未有的权限按钮*/
             }
         });
     });/**/

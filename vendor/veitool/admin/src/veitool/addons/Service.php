@@ -777,7 +777,7 @@ class Service
 
     /**
      * 重建事件缓存
-     * @return array
+     * @return mixed
      */
     public static function setAddonEvent()
     {

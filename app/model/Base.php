@@ -29,7 +29,7 @@ class Base extends Model
     {
         return self::where($where)->field($field)->order($order)->find();
     }
-    
+
     /**
      * 获取多条数据
      * @param  string|array  $where   查询条件

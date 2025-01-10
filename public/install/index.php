@@ -3,7 +3,7 @@
  * ===========================================================================
  * Veitool 快捷开发框架系统
  * Author: Niaho 26843818@qq.com
- * Copyright (c)2019-2024 www.veitool.com All rights reserved.
+ * Copyright (c)2019-2025 www.veitool.com All rights reserved.
  * Licensed: 这不是一个自由软件，不允许对程序代码以任何形式任何目的的再发行
  * ---------------------------------------------------------------------------
  */
@@ -26,7 +26,7 @@ if(is_file(INSTALL_PATH . '/install.lock')){
 }
 
 // 版权信息设置
-$copyright = '© 2024 veitool.com 版权所有';
+$copyright = '© 2025 veitool.com 版权所有';
 
 // 获取当前步骤
 $s = isset($_GET['s']) && in_array($_GET['s'], [1,2,3,4,5,6]) ? $_GET['s'] : 1 ;

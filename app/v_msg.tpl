@@ -5,7 +5,7 @@
 <title>系统提示_<?php echo $site ?? vconfig('site_title','VEITOOL快捷开发框架');?></title>
 <meta name="renderer" content="webkit">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<?php if(isset($url) && $url){?><meta http-equiv="refresh" content="3;url='<?=$url?>'"><?php }?>
+<?php if(isset($url) && $url){?><meta http-equiv="refresh" content="<?=$ttl ?? 3?>;url='<?=$url?>'"><?php }?>
 <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=0">
 <style>
 #main{margin:50px auto 20px auto;width:600px;border:1px solid #f6f6f6;background:#fafafa;margin:100px auto;padding:10px;}

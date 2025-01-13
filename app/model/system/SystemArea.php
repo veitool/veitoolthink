@@ -23,12 +23,6 @@ class SystemArea extends Base
     protected $pk = 'areaid';
 
     /**
-     * 地区数组：地区ID => 地区名
-     * @var string 
-     */
-    protected static $area = [];
-
-    /**
      * 获取地区名称串
      * @param  string   $aid   地区ID串
      * @param  string   $fg    分隔符
@@ -36,17 +30,13 @@ class SystemArea extends Base
      */
     public static function getAreaStr(string $aid = '', string $fg = '-')
     {
-        if(empty(self::$area)){
-            $rs = self::cache();
-            foreach ($rs as $v){
-                self::$area[$v['areaid']] = $v['areaname'];
-            }
-        }
         $str = '';
-        $arr = explode(',', $aid);
-        foreach ($arr as $v){
-            if(isset(self::$area[$v])){
-                $str .= $str ? $fg.self::$area[$v] : self::$area[$v];
+        if($rs = cache('VAREAS_N')){
+            $arr = explode(',', $aid);
+            foreach ($arr as $v){
+                if(isset($rs[$v])){
+                    $str .= $str ? $fg.$rs[$v] : $rs[$v];
+                }
             }
         }
         return $str;
@@ -91,6 +81,11 @@ class SystemArea extends Base
             $rs = self::order('listorder','asc')->column('areaid,areaname,parentid,arrparentid,childs,listorder','areaid');
             if(!$rs) return $rs;
             cache($key,$rs,31536000);
+            $data = [];
+            foreach ($rs as $v){
+                $data[$v['areaid']] = $v['areaname'];
+            }
+            cache($key.'_N',$data,31536000);
             //生成JS文件
             $myfile = @fopen(VT_PUBLIC."static/script/cityData.js", "w");
             if($myfile){

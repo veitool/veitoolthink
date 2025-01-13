@@ -231,7 +231,7 @@ function vhtmlspecialchars($s){
  * @param    float   $v   数值
  * @param    int     $p   小数点后位数
  * @param    bool    $s   是否格式化为字符串
- * @return   float/string
+ * @return   float|string
  */
 function dround($v, $p=2, $s=false){
     $v = round(floatval($v), $p);

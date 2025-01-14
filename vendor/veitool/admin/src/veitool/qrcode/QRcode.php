@@ -24,7 +24,7 @@ class QRcode
      * @var array 
      */
     protected $config = [
-        'cache_dir'  => 'file/card/qrcode',
+        'cache_dir'  => 'static/qrcode',
         'background' => ''
     ];
     

@@ -35,12 +35,13 @@ class QRcode
      * 构造方法
      */
     public function __construct(){
+        /* * /
         $qr = Config::get('qrcode.');
         $this->config = array_merge($this->config,($qr ?: []));
         $this->cache_dir = $this->config['cache_dir'];
         if(!file_exists($this->cache_dir)){
             mkdir($this->cache_dir,0775,true);
-        }
+        }/**/
         require("phpqrcode/qrlib.php");
     }
 

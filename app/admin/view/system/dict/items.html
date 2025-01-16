@@ -114,7 +114,9 @@ layui.use(['buildItems'],function(){
     /*快编监听*/
     treeTable.on('edit(dictItems)',function(obj){
         admin.req(app_root+"iedit?do=up",{id:obj.data.id,av:obj.value,af:obj.field},function(res){
-            layer.msg(res.msg,{shade:[0.4,'#000'],time:1000});
+            layer.msg(res.msg,{shade:[0.4,'#000'],time:1500},function(){
+                if(res.code == 1 && obj.field == 'listorder') treeTable.reload('dictItems');
+            });
         },'post',{headersToken:true});
     });/**/
     /*顶部添加按钮*/

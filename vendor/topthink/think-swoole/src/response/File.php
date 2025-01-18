@@ -70,19 +70,6 @@ class File extends Response
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
 
         $mimeType = finfo_file($finfo, $this->file->getPathname());
-
-        if (in_array($mimeType,['text/plain','text/x-asm'])) {
-            $extension = pathinfo($this->file->getPathname(), PATHINFO_EXTENSION);
-            switch ($extension) {
-                case 'css':
-                    $mimeType = 'text/css';
-                    break;
-                case 'js':
-                    $mimeType = 'application/javascript';
-                    break;
-            }
-        }
-
         if ($mimeType) {
             $this->header['Content-Type'] = $mimeType;
         }

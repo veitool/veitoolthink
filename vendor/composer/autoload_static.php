@@ -4,23 +4,25 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit020915b87d4ab8ac8119337ca936e79b
+class ComposerStaticInit118552ef2b3077b276422e248ece3c62
 {
     public static $files = array (
         '9b552a3cc426e3287cc811caefa3cf53' => __DIR__ . '/..' . '/topthink/think-helper/src/helper.php',
-        '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
         '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
-        'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
+        '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
         '35fab96057f1bf5e7aba31a8a6d5fdde' => __DIR__ . '/..' . '/topthink/think-orm/stubs/load_stubs.php',
-        '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
+        '15ec93fa4ce4b2d53816a1a5f2c514e2' => __DIR__ . '/..' . '/topthink/think-validate/src/helper.php',
+        'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
+        '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
         'a1105708a18b76903365ca1c4aa61b02' => __DIR__ . '/..' . '/symfony/translation/Resources/functions.php',
         '9a31621970d4295d5f00acf4e277e6f9' => __DIR__ . '/..' . '/stechstudio/backoff/src/helpers.php',
+        '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
         'cd5441689b14144e5573bf989ee47b34' => __DIR__ . '/..' . '/qcloud/cos-sdk-v5/src/Common.php',
         '841780ea2e1d6545ea3a253239d59c05' => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu/functions.php',
         '5dd19d8a547b7318af0c3a93c8bd6565' => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu/Http/Middleware/Middleware.php',
-        '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
         '1cfd2761b63b0a29ed23657ea394cb2d' => __DIR__ . '/..' . '/topthink/think-captcha/src/helper.php',
+        'd79a0e13e295db93891a9377e0888496' => __DIR__ . '/..' . '/topthink/think-dumper/src/helper.php',
         'cc56288302d9df745d97c934d6a6e5f0' => __DIR__ . '/..' . '/topthink/think-queue/src/common.php',
         'af46dcea2921209ac30627b964175f13' => __DIR__ . '/..' . '/topthink/think-swoole/src/helpers.php',
     );
@@ -36,6 +38,7 @@ class ComposerStaticInit020915b87d4ab8ac8119337ca936e79b
             'think\\view\\driver\\' => 18,
             'think\\trace\\' => 12,
             'think\\swoole\\' => 13,
+            'think\\dumper\\' => 13,
             'think\\captcha\\' => 14,
             'think\\app\\' => 10,
             'think\\' => 6,
@@ -138,6 +141,10 @@ class ComposerStaticInit020915b87d4ab8ac8119337ca936e79b
         array (
             0 => __DIR__ . '/..' . '/topthink/think-swoole/src',
         ),
+        'think\\dumper\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/topthink/think-dumper/src',
+        ),
         'think\\captcha\\' => 
         array (
             0 => __DIR__ . '/..' . '/topthink/think-captcha/src',
@@ -157,6 +164,7 @@ class ComposerStaticInit020915b87d4ab8ac8119337ca936e79b
             6 => __DIR__ . '/..' . '/topthink/think-orm/src',
             7 => __DIR__ . '/..' . '/topthink/think-queue/src',
             8 => __DIR__ . '/..' . '/topthink/think-template/src',
+            9 => __DIR__ . '/..' . '/topthink/think-validate/src',
         ),
         'app\\' => 
         array (
@@ -224,7 +232,7 @@ class ComposerStaticInit020915b87d4ab8ac8119337ca936e79b
         ),
         'Psr\\Log\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
+            0 => __DIR__ . '/..' . '/psr/log/src',
         ),
         'Psr\\Http\\Message\\' => 
         array (
@@ -435,10 +443,10 @@ class ComposerStaticInit020915b87d4ab8ac8119337ca936e79b
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit020915b87d4ab8ac8119337ca936e79b::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit020915b87d4ab8ac8119337ca936e79b::$prefixDirsPsr4;
-            $loader->fallbackDirsPsr0 = ComposerStaticInit020915b87d4ab8ac8119337ca936e79b::$fallbackDirsPsr0;
-            $loader->classMap = ComposerStaticInit020915b87d4ab8ac8119337ca936e79b::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit118552ef2b3077b276422e248ece3c62::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit118552ef2b3077b276422e248ece3c62::$prefixDirsPsr4;
+            $loader->fallbackDirsPsr0 = ComposerStaticInit118552ef2b3077b276422e248ece3c62::$fallbackDirsPsr0;
+            $loader->classMap = ComposerStaticInit118552ef2b3077b276422e248ece3c62::$classMap;
 
         }, null, ClassLoader::class);
     }

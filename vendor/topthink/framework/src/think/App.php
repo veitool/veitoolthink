@@ -2,7 +2,7 @@
 // +----------------------------------------------------------------------
 // | ThinkPHP [ WE CAN DO IT JUST THINK ]
 // +----------------------------------------------------------------------
-// | Copyright (c) 2006~2023 http://thinkphp.cn All rights reserved.
+// | Copyright (c) 2006~2025 http://thinkphp.cn All rights reserved.
 // +----------------------------------------------------------------------
 // | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
 // +----------------------------------------------------------------------
@@ -43,7 +43,7 @@ class App extends Container
      * 核心框架版本 
      * @deprecated 已经废弃 请改用version()方法
      */    
-    const VERSION = '8.1.1';
+    const VERSION = '8.1.2';
 
     /**
      * 应用调试模式

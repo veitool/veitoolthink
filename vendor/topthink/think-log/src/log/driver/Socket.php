@@ -28,8 +28,6 @@ class Socket
         'force_client_ids'    => [],
         // 限制允许读取日志的client_id
         'allow_client_ids'    => [],
-        // 调试开关
-        'debug'               => false,
     ];
 
     protected $css = [

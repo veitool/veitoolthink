@@ -95,21 +95,6 @@ class Think implements TemplateHandlerInterface
 
     protected function getTemplateFile(string $template): string
     {
-        /* */
-        if (empty($this->config['view_path'])) {
-            $view = $this->config['view_dir_name'];
-
-            if (is_dir($this->app->getAppPath() . $view)) {
-                $path = $this->app->getAppPath() . $view . DIRECTORY_SEPARATOR;
-            } else {
-                $appName = $this->app->http->getName();
-                $path    = $this->app->getRootPath() . $view . DIRECTORY_SEPARATOR . ($appName ? $appName . DIRECTORY_SEPARATOR : '');
-            }
-
-            $this->config['view_path'] = $path;
-            $this->template->view_path = $path;
-        }/**/
-
         if ('' == pathinfo($template, PATHINFO_EXTENSION)) {
             // 获取模板文件名
             $template = $this->parseTemplate($template);
@@ -193,10 +178,24 @@ class Think implements TemplateHandlerInterface
             $controller = $request->controller(false, true);
         }
 
-        if ($this->config['view_path']) {
-            $path = $this->config['view_path'];
+        if (isset($app)) {
+            if ($this->config['view_path']) {
+                $path = $this->config['view_path'];
+            } else {
+                $path = $this->getViewPath($app ?? $this->app->http->getName());
+                $this->template->view_path = $path;
+            }
         } else {
-            $path = $this->getViewPath($app ?? $this->app->http->getName());
+            $view = $this->config['view_dir_name'];
+
+            if (is_dir($this->app->getAppPath() . $view)) {
+                $path = $this->app->getAppPath() . $view . DIRECTORY_SEPARATOR;
+            } else {
+                $appName = $this->app->http->getName();
+                $path    = $this->app->getRootPath() . $view . DIRECTORY_SEPARATOR . ($appName ? $appName . DIRECTORY_SEPARATOR : '');
+            }
+
+            $this->config['view_path'] = $path;
             $this->template->view_path = $path;
         }
 

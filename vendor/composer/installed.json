@@ -121,31 +121,113 @@
             "install-path": "../carbonphp/carbon-doctrine-types"
         },
         {
-            "name": "guzzlehttp/command",
-            "version": "1.3.1",
-            "version_normalized": "1.3.1.0",
+            "name": "composer/pcre",
+            "version": "3.3.2",
+            "version_normalized": "3.3.2.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/guzzle/command.git",
-                "reference": "0eebc653784f4902b3272e826fe8e88743d14e77"
+                "url": "https://github.com/composer/pcre.git",
+                "reference": "b2bed4734f0cc156ee1fe9c0da2550420d99a21e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/command/zipball/0eebc653784f4902b3272e826fe8e88743d14e77",
-                "reference": "0eebc653784f4902b3272e826fe8e88743d14e77",
+                "url": "https://api.github.com/repos/composer/pcre/zipball/b2bed4734f0cc156ee1fe9c0da2550420d99a21e",
+                "reference": "b2bed4734f0cc156ee1fe9c0da2550420d99a21e",
                 "shasum": ""
             },
             "require": {
-                "guzzlehttp/guzzle": "^7.8",
-                "guzzlehttp/promises": "^1.5.3 || ^2.0.1",
-                "guzzlehttp/psr7": "^1.9.1 || ^2.5.1",
+                "php": "^7.4 || ^8.0"
+            },
+            "conflict": {
+                "phpstan/phpstan": "<1.11.10"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^1.12 || ^2",
+                "phpstan/phpstan-strict-rules": "^1 || ^2",
+                "phpunit/phpunit": "^8 || ^9"
+            },
+            "time": "2024-11-12T16:29:46+00:00",
+            "type": "library",
+            "extra": {
+                "phpstan": {
+                    "includes": [
+                        "extension.neon"
+                    ]
+                },
+                "branch-alias": {
+                    "dev-main": "3.x-dev"
+                }
+            },
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "Composer\\Pcre\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jordi Boggiano",
+                    "email": "j.boggiano@seld.be",
+                    "homepage": "http://seld.be"
+                }
+            ],
+            "description": "PCRE wrapping library that offers type-safe preg_* replacements.",
+            "keywords": [
+                "PCRE",
+                "preg",
+                "regex",
+                "regular expression"
+            ],
+            "support": {
+                "issues": "https://github.com/composer/pcre/issues",
+                "source": "https://github.com/composer/pcre/tree/3.3.2"
+            },
+            "funding": [
+                {
+                    "url": "https://packagist.com",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/composer",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/composer/composer",
+                    "type": "tidelift"
+                }
+            ],
+            "install-path": "./pcre"
+        },
+        {
+            "name": "guzzlehttp/command",
+            "version": "1.3.2",
+            "version_normalized": "1.3.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/guzzle/command.git",
+                "reference": "888e74fc1d82a499c1fd6726248ed0bc0886395e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/guzzle/command/zipball/888e74fc1d82a499c1fd6726248ed0bc0886395e",
+                "reference": "888e74fc1d82a499c1fd6726248ed0bc0886395e",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "^7.9.2",
+                "guzzlehttp/promises": "^1.5.3 || ^2.0.3",
+                "guzzlehttp/psr7": "^2.7.0",
                 "php": "^7.2.5 || ^8.0"
             },
             "require-dev": {
                 "bamarni/composer-bin-plugin": "^1.8.2",
                 "phpunit/phpunit": "^8.5.19 || ^9.5.8"
             },
-            "time": "2023-12-03T20:46:20+00:00",
+            "time": "2025-02-04T09:56:46+00:00",
             "type": "library",
             "extra": {
                 "bamarni-bin": {
@@ -188,7 +270,7 @@
             "description": "Provides the foundation for building command-based web service clients",
             "support": {
                 "issues": "https://github.com/guzzle/command/issues",
-                "source": "https://github.com/guzzle/command/tree/1.3.1"
+                "source": "https://github.com/guzzle/command/tree/1.3.2"
             },
             "funding": [
                 {
@@ -337,24 +419,24 @@
         },
         {
             "name": "guzzlehttp/guzzle-services",
-            "version": "1.4.1",
-            "version_normalized": "1.4.1.0",
+            "version": "1.4.2",
+            "version_normalized": "1.4.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle-services.git",
-                "reference": "bcab7c0d61672b606510a6fe5af3039d04968c0f"
+                "reference": "45bfeb80d5ed072bb39e9f6ed1ec5d650edae961"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle-services/zipball/bcab7c0d61672b606510a6fe5af3039d04968c0f",
-                "reference": "bcab7c0d61672b606510a6fe5af3039d04968c0f",
+                "url": "https://api.github.com/repos/guzzle/guzzle-services/zipball/45bfeb80d5ed072bb39e9f6ed1ec5d650edae961",
+                "reference": "45bfeb80d5ed072bb39e9f6ed1ec5d650edae961",
                 "shasum": ""
             },
             "require": {
-                "guzzlehttp/command": "^1.3.1",
-                "guzzlehttp/guzzle": "^7.8",
-                "guzzlehttp/psr7": "^1.9.1 || ^2.5.1",
-                "guzzlehttp/uri-template": "^1.0.1",
+                "guzzlehttp/command": "^1.3.2",
+                "guzzlehttp/guzzle": "^7.9.2",
+                "guzzlehttp/psr7": "^2.7.0",
+                "guzzlehttp/uri-template": "^1.0.4",
                 "php": "^7.2.5 || ^8.0"
             },
             "require-dev": {
@@ -364,7 +446,7 @@
             "suggest": {
                 "gimler/guzzle-description-loader": "^0.0.4"
             },
-            "time": "2023-12-03T20:48:14+00:00",
+            "time": "2025-02-04T09:59:21+00:00",
             "type": "library",
             "extra": {
                 "bamarni-bin": {
@@ -407,7 +489,7 @@
             "description": "Provides an implementation of the Guzzle Command library that uses Guzzle service descriptions to describe web services, serialize requests, and parse responses into easy to use model structures.",
             "support": {
                 "issues": "https://github.com/guzzle/guzzle-services/issues",
-                "source": "https://github.com/guzzle/guzzle-services/tree/1.4.1"
+                "source": "https://github.com/guzzle/guzzle-services/tree/1.4.2"
             },
             "funding": [
                 {
@@ -632,17 +714,17 @@
         },
         {
             "name": "guzzlehttp/uri-template",
-            "version": "v1.0.3",
-            "version_normalized": "1.0.3.0",
+            "version": "v1.0.4",
+            "version_normalized": "1.0.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/uri-template.git",
-                "reference": "ecea8feef63bd4fef1f037ecb288386999ecc11c"
+                "reference": "30e286560c137526eccd4ce21b2de477ab0676d2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/uri-template/zipball/ecea8feef63bd4fef1f037ecb288386999ecc11c",
-                "reference": "ecea8feef63bd4fef1f037ecb288386999ecc11c",
+                "url": "https://api.github.com/repos/guzzle/uri-template/zipball/30e286560c137526eccd4ce21b2de477ab0676d2",
+                "reference": "30e286560c137526eccd4ce21b2de477ab0676d2",
                 "shasum": ""
             },
             "require": {
@@ -654,7 +736,7 @@
                 "phpunit/phpunit": "^8.5.36 || ^9.6.15",
                 "uri-template/tests": "1.0.0"
             },
-            "time": "2023-12-03T19:50:20+00:00",
+            "time": "2025-02-03T10:55:03+00:00",
             "type": "library",
             "extra": {
                 "bamarni-bin": {
@@ -701,7 +783,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/uri-template/issues",
-                "source": "https://github.com/guzzle/uri-template/tree/v1.0.3"
+                "source": "https://github.com/guzzle/uri-template/tree/v1.0.4"
             },
             "funding": [
                 {
@@ -1266,45 +1348,44 @@
         },
         {
             "name": "nesbot/carbon",
-            "version": "2.72.6",
-            "version_normalized": "2.72.6.0",
+            "version": "3.8.4",
+            "version_normalized": "3.8.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/CarbonPHP/carbon.git",
-                "reference": "1e9d50601e7035a4c61441a208cb5bed73e108c5"
+                "reference": "129700ed449b1f02d70272d2ac802357c8c30c58"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/CarbonPHP/carbon/zipball/1e9d50601e7035a4c61441a208cb5bed73e108c5",
-                "reference": "1e9d50601e7035a4c61441a208cb5bed73e108c5",
+                "url": "https://api.github.com/repos/CarbonPHP/carbon/zipball/129700ed449b1f02d70272d2ac802357c8c30c58",
+                "reference": "129700ed449b1f02d70272d2ac802357c8c30c58",
                 "shasum": ""
             },
             "require": {
-                "carbonphp/carbon-doctrine-types": "*",
+                "carbonphp/carbon-doctrine-types": "<100.0",
                 "ext-json": "*",
-                "php": "^7.1.8 || ^8.0",
+                "php": "^8.1",
                 "psr/clock": "^1.0",
+                "symfony/clock": "^6.3 || ^7.0",
                 "symfony/polyfill-mbstring": "^1.0",
-                "symfony/polyfill-php80": "^1.16",
-                "symfony/translation": "^3.4 || ^4.0 || ^5.0 || ^6.0"
+                "symfony/translation": "^4.4.18 || ^5.2.1|| ^6.0 || ^7.0"
             },
             "provide": {
                 "psr/clock-implementation": "1.0"
             },
             "require-dev": {
-                "doctrine/dbal": "^2.0 || ^3.1.4 || ^4.0",
-                "doctrine/orm": "^2.7 || ^3.0",
-                "friendsofphp/php-cs-fixer": "^3.0",
-                "kylekatarnls/multi-tester": "^2.0",
-                "ondrejmirtes/better-reflection": "<6",
-                "phpmd/phpmd": "^2.9",
-                "phpstan/extension-installer": "^1.0",
-                "phpstan/phpstan": "^0.12.99 || ^1.7.14",
-                "phpunit/php-file-iterator": "^2.0.5 || ^3.0.6",
-                "phpunit/phpunit": "^7.5.20 || ^8.5.26 || ^9.5.20",
-                "squizlabs/php_codesniffer": "^3.4"
+                "doctrine/dbal": "^3.6.3 || ^4.0",
+                "doctrine/orm": "^2.15.2 || ^3.0",
+                "friendsofphp/php-cs-fixer": "^3.57.2",
+                "kylekatarnls/multi-tester": "^2.5.3",
+                "ondrejmirtes/better-reflection": "^6.25.0.4",
+                "phpmd/phpmd": "^2.15.0",
+                "phpstan/extension-installer": "^1.3.1",
+                "phpstan/phpstan": "^1.11.2",
+                "phpunit/phpunit": "^10.5.20",
+                "squizlabs/php_codesniffer": "^3.9.0"
             },
-            "time": "2024-12-27T09:28:11+00:00",
+            "time": "2024-12-27T09:25:35+00:00",
             "bin": [
                 "bin/carbon"
             ],
@@ -1649,20 +1730,21 @@
         },
         {
             "name": "phpoffice/phpspreadsheet",
-            "version": "3.8.0",
-            "version_normalized": "3.8.0.0",
+            "version": "3.9.0",
+            "version_normalized": "3.9.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPOffice/PhpSpreadsheet.git",
-                "reference": "949c799c3538f3158bcf6c5f4d8a403027be0fbd"
+                "reference": "414f8a2aa1d8b974b39f577c0677d5ebc96fab36"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/949c799c3538f3158bcf6c5f4d8a403027be0fbd",
-                "reference": "949c799c3538f3158bcf6c5f4d8a403027be0fbd",
+                "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/414f8a2aa1d8b974b39f577c0677d5ebc96fab36",
+                "reference": "414f8a2aa1d8b974b39f577c0677d5ebc96fab36",
                 "shasum": ""
             },
             "require": {
+                "composer/pcre": "^3.3",
                 "ext-ctype": "*",
                 "ext-dom": "*",
                 "ext-fileinfo": "*",
@@ -1704,7 +1786,7 @@
                 "mpdf/mpdf": "Option for rendering PDF with PDF Writer",
                 "tecnickcom/tcpdf": "Option for rendering PDF with PDF Writer"
             },
-            "time": "2025-01-12T03:48:58+00:00",
+            "time": "2025-01-26T05:10:24+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -1750,7 +1832,7 @@
             ],
             "support": {
                 "issues": "https://github.com/PHPOffice/PhpSpreadsheet/issues",
-                "source": "https://github.com/PHPOffice/PhpSpreadsheet/tree/3.8.0"
+                "source": "https://github.com/PHPOffice/PhpSpreadsheet/tree/3.9.0"
             },
             "install-path": "../phpoffice/phpspreadsheet"
         },
@@ -2303,17 +2385,17 @@
         },
         {
             "name": "qcloud/cos-sdk-v5",
-            "version": "v2.6.15",
-            "version_normalized": "2.6.15.0",
+            "version": "v2.6.16",
+            "version_normalized": "2.6.16.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tencentyun/cos-php-sdk-v5.git",
-                "reference": "17b973a388dc8848947054daace0fff8d2a4eee0"
+                "reference": "22366f4b4f7f277e67aa72eea8d1e02a5f9943e2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tencentyun/cos-php-sdk-v5/zipball/17b973a388dc8848947054daace0fff8d2a4eee0",
-                "reference": "17b973a388dc8848947054daace0fff8d2a4eee0",
+                "url": "https://api.github.com/repos/tencentyun/cos-php-sdk-v5/zipball/22366f4b4f7f277e67aa72eea8d1e02a5f9943e2",
+                "reference": "22366f4b4f7f277e67aa72eea8d1e02a5f9943e2",
                 "shasum": ""
             },
             "require": {
@@ -2327,7 +2409,7 @@
                 "guzzlehttp/psr7": "^1.3.1 || ^2.0",
                 "php": ">=5.6"
             },
-            "time": "2024-11-08T09:31:12+00:00",
+            "time": "2025-01-21T12:49:21+00:00",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -2369,7 +2451,7 @@
             ],
             "support": {
                 "issues": "https://github.com/tencentyun/cos-php-sdk-v5/issues",
-                "source": "https://github.com/tencentyun/cos-php-sdk-v5/tree/v2.6.15"
+                "source": "https://github.com/tencentyun/cos-php-sdk-v5/tree/v2.6.16"
             },
             "install-path": "../qcloud/cos-sdk-v5"
         },
@@ -2531,20 +2613,20 @@
         },
         {
             "name": "swoole/ide-helper",
-            "version": "4.8.13",
-            "version_normalized": "4.8.13.0",
+            "version": "5.1.6",
+            "version_normalized": "5.1.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/swoole/ide-helper.git",
-                "reference": "d100c446b2e3d56430cbcab5dc3fa20a9f35c4ef"
+                "reference": "c5149a01c00e4ed56fc7b3ffeb6823e69acb4a76"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swoole/ide-helper/zipball/d100c446b2e3d56430cbcab5dc3fa20a9f35c4ef",
-                "reference": "d100c446b2e3d56430cbcab5dc3fa20a9f35c4ef",
+                "url": "https://api.github.com/repos/swoole/ide-helper/zipball/c5149a01c00e4ed56fc7b3ffeb6823e69acb4a76",
+                "reference": "c5149a01c00e4ed56fc7b3ffeb6823e69acb4a76",
                 "shasum": ""
             },
-            "time": "2023-03-20T06:46:24+00:00",
+            "time": "2024-11-29T07:21:36+00:00",
             "type": "library",
             "installation-source": "dist",
             "notification-url": "https://packagist.org/downloads/",
@@ -2560,9 +2642,86 @@
             "description": "IDE help files for Swoole.",
             "support": {
                 "issues": "https://github.com/swoole/ide-helper/issues",
-                "source": "https://github.com/swoole/ide-helper/tree/4.8.13"
+                "source": "https://github.com/swoole/ide-helper/tree/5.1.6"
             },
             "install-path": "../swoole/ide-helper"
+        },
+        {
+            "name": "symfony/clock",
+            "version": "v6.4.13",
+            "version_normalized": "6.4.13.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/clock.git",
+                "reference": "b2bf55c4dd115003309eafa87ee7df9ed3dde81b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/clock/zipball/b2bf55c4dd115003309eafa87ee7df9ed3dde81b",
+                "reference": "b2bf55c4dd115003309eafa87ee7df9ed3dde81b",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.1",
+                "psr/clock": "^1.0",
+                "symfony/polyfill-php83": "^1.28"
+            },
+            "provide": {
+                "psr/clock-implementation": "1.0"
+            },
+            "time": "2024-09-25T14:18:03+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "files": [
+                    "Resources/now.php"
+                ],
+                "psr-4": {
+                    "Symfony\\Component\\Clock\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nicolas Grekas",
+                    "email": "p@tchwork.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Decouples applications from the system clock",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "clock",
+                "psr20",
+                "time"
+            ],
+            "support": {
+                "source": "https://github.com/symfony/clock/tree/v6.4.13"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "install-path": "../symfony/clock"
         },
         {
             "name": "symfony/deprecation-contracts",
@@ -2636,25 +2795,26 @@
         },
         {
             "name": "symfony/finder",
-            "version": "v5.4.45",
-            "version_normalized": "5.4.45.0",
+            "version": "v6.4.17",
+            "version_normalized": "6.4.17.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/finder.git",
-                "reference": "63741784cd7b9967975eec610b256eed3ede022b"
+                "reference": "1d0e8266248c5d9ab6a87e3789e6dc482af3c9c7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/finder/zipball/63741784cd7b9967975eec610b256eed3ede022b",
-                "reference": "63741784cd7b9967975eec610b256eed3ede022b",
+                "url": "https://api.github.com/repos/symfony/finder/zipball/1d0e8266248c5d9ab6a87e3789e6dc482af3c9c7",
+                "reference": "1d0e8266248c5d9ab6a87e3789e6dc482af3c9c7",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.2.5",
-                "symfony/deprecation-contracts": "^2.1|^3",
-                "symfony/polyfill-php80": "^1.16"
+                "php": ">=8.1"
             },
-            "time": "2024-09-28T13:32:08+00:00",
+            "require-dev": {
+                "symfony/filesystem": "^6.0|^7.0"
+            },
+            "time": "2024-12-29T13:51:37+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -2682,7 +2842,7 @@
             "description": "Finds files and directories via an intuitive fluent interface",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/finder/tree/v5.4.45"
+                "source": "https://github.com/symfony/finder/tree/v6.4.17"
             },
             "funding": [
                 {
@@ -2865,6 +3025,85 @@
                 }
             ],
             "install-path": "../symfony/polyfill-php80"
+        },
+        {
+            "name": "symfony/polyfill-php83",
+            "version": "v1.31.0",
+            "version_normalized": "1.31.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/polyfill-php83.git",
+                "reference": "2fb86d65e2d424369ad2905e83b236a8805ba491"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/polyfill-php83/zipball/2fb86d65e2d424369ad2905e83b236a8805ba491",
+                "reference": "2fb86d65e2d424369ad2905e83b236a8805ba491",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2"
+            },
+            "time": "2024-09-09T11:45:10+00:00",
+            "type": "library",
+            "extra": {
+                "thanks": {
+                    "url": "https://github.com/symfony/polyfill",
+                    "name": "symfony/polyfill"
+                }
+            },
+            "installation-source": "dist",
+            "autoload": {
+                "files": [
+                    "bootstrap.php"
+                ],
+                "psr-4": {
+                    "Symfony\\Polyfill\\Php83\\": ""
+                },
+                "classmap": [
+                    "Resources/stubs"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nicolas Grekas",
+                    "email": "p@tchwork.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony polyfill backporting some PHP 8.3+ features to lower PHP versions",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "compatibility",
+                "polyfill",
+                "portable",
+                "shim"
+            ],
+            "support": {
+                "source": "https://github.com/symfony/polyfill-php83/tree/v1.31.0"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "install-path": "../symfony/polyfill-php83"
         },
         {
             "name": "symfony/process",
@@ -3111,17 +3350,17 @@
         },
         {
             "name": "symfony/var-dumper",
-            "version": "v6.4.15",
-            "version_normalized": "6.4.15.0",
+            "version": "v6.4.18",
+            "version_normalized": "6.4.18.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/var-dumper.git",
-                "reference": "38254d5a5ac2e61f2b52f9caf54e7aa3c9d36b80"
+                "reference": "4ad10cf8b020e77ba665305bb7804389884b4837"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/38254d5a5ac2e61f2b52f9caf54e7aa3c9d36b80",
-                "reference": "38254d5a5ac2e61f2b52f9caf54e7aa3c9d36b80",
+                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/4ad10cf8b020e77ba665305bb7804389884b4837",
+                "reference": "4ad10cf8b020e77ba665305bb7804389884b4837",
                 "shasum": ""
             },
             "require": {
@@ -3141,7 +3380,7 @@
                 "symfony/uid": "^5.4|^6.0|^7.0",
                 "twig/twig": "^2.13|^3.0.4"
             },
-            "time": "2024-11-08T15:28:48+00:00",
+            "time": "2025-01-17T11:26:11+00:00",
             "bin": [
                 "Resources/bin/var-dump-server"
             ],
@@ -3179,7 +3418,7 @@
                 "dump"
             ],
             "support": {
-                "source": "https://github.com/symfony/var-dumper/tree/v6.4.15"
+                "source": "https://github.com/symfony/var-dumper/tree/v6.4.18"
             },
             "funding": [
                 {
@@ -3374,17 +3613,17 @@
         },
         {
             "name": "topthink/think-dumper",
-            "version": "v1.0.3",
-            "version_normalized": "1.0.3.0",
+            "version": "v1.0.4",
+            "version_normalized": "1.0.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/top-think/think-dumper.git",
-                "reference": "f0c7d1d0a76bfe6d279c902e75b01181ecb1c674"
+                "reference": "49e6975cec4ffe7997c05fc902f98f1ab1f54150"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/top-think/think-dumper/zipball/f0c7d1d0a76bfe6d279c902e75b01181ecb1c674",
-                "reference": "f0c7d1d0a76bfe6d279c902e75b01181ecb1c674",
+                "url": "https://api.github.com/repos/top-think/think-dumper/zipball/49e6975cec4ffe7997c05fc902f98f1ab1f54150",
+                "reference": "49e6975cec4ffe7997c05fc902f98f1ab1f54150",
                 "shasum": ""
             },
             "require": {
@@ -3395,7 +3634,7 @@
             "require-dev": {
                 "phpunit/phpunit": "^11.4"
             },
-            "time": "2025-01-09T07:32:12+00:00",
+            "time": "2025-01-17T09:41:46+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -3419,7 +3658,7 @@
             "description": "Dumper extend for thinkphp",
             "support": {
                 "issues": "https://github.com/top-think/think-dumper/issues",
-                "source": "https://github.com/top-think/think-dumper/tree/v1.0.3"
+                "source": "https://github.com/top-think/think-dumper/tree/v1.0.4"
             },
             "install-path": "../topthink/think-dumper"
         },
@@ -3727,22 +3966,22 @@
         },
         {
             "name": "topthink/think-queue",
-            "version": "v3.0.10",
-            "version_normalized": "3.0.10.0",
+            "version": "v3.0.11",
+            "version_normalized": "3.0.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/top-think/think-queue.git",
-                "reference": "9d35e9404e3656acb5f47e8c50b65497a6d99cfe"
+                "reference": "e2bd05a6c3aa737636fa89a7b2d040a3bd14da8c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/top-think/think-queue/zipball/9d35e9404e3656acb5f47e8c50b65497a6d99cfe",
-                "reference": "9d35e9404e3656acb5f47e8c50b65497a6d99cfe",
+                "url": "https://api.github.com/repos/top-think/think-queue/zipball/e2bd05a6c3aa737636fa89a7b2d040a3bd14da8c",
+                "reference": "e2bd05a6c3aa737636fa89a7b2d040a3bd14da8c",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
-                "nesbot/carbon": "^2.16",
+                "nesbot/carbon": ">=2.16",
                 "symfony/process": ">=4.2",
                 "topthink/framework": "^6.0 || ^8.0"
             },
@@ -3751,7 +3990,7 @@
                 "phpunit/phpunit": "^6.2",
                 "topthink/think-migration": "^3.0"
             },
-            "time": "2024-11-22T13:28:15+00:00",
+            "time": "2025-01-19T13:34:37+00:00",
             "type": "library",
             "extra": {
                 "think": {
@@ -3785,43 +4024,44 @@
             "description": "The ThinkPHP6 Queue Package",
             "support": {
                 "issues": "https://github.com/top-think/think-queue/issues",
-                "source": "https://github.com/top-think/think-queue/tree/v3.0.10"
+                "source": "https://github.com/top-think/think-queue/tree/v3.0.11"
             },
             "install-path": "../topthink/think-queue"
         },
         {
             "name": "topthink/think-swoole",
-            "version": "v4.0.13",
-            "version_normalized": "4.0.13.0",
+            "version": "v4.1.0",
+            "version_normalized": "4.1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/top-think/think-swoole.git",
-                "reference": "213f6ba9ca1df96b045e64bf4d7e3e5d0ed44fcc"
+                "reference": "535cfedd8b4d43dca92eb745d94012e5b1dc0e0b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/top-think/think-swoole/zipball/213f6ba9ca1df96b045e64bf4d7e3e5d0ed44fcc",
-                "reference": "213f6ba9ca1df96b045e64bf4d7e3e5d0ed44fcc",
+                "url": "https://api.github.com/repos/top-think/think-swoole/zipball/535cfedd8b4d43dca92eb745d94012e5b1dc0e0b",
+                "reference": "535cfedd8b4d43dca92eb745d94012e5b1dc0e0b",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
-                "ext-swoole": ">=4.6",
+                "ext-swoole": "^4.0|^5.0",
                 "nette/php-generator": "^4.0",
                 "open-smf/connection-pool": ">=1.0",
                 "php": "^8.0",
                 "stechstudio/backoff": "^1.2",
-                "swoole/ide-helper": "^4.3",
-                "symfony/finder": "^4.3.2|^5.1",
+                "swoole/ide-helper": "^5.0",
+                "symfony/finder": ">=4.3",
+                "symfony/process": ">=4.2",
                 "topthink/framework": "^6.0|^8.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^9.5",
-                "symfony/var-dumper": "^4.3|^5.1",
+                "pestphp/pest": "^3.7",
+                "phpstan/phpstan": "^2.0",
                 "topthink/think-queue": "^3.0",
                 "topthink/think-tracing": "^1.0"
             },
-            "time": "2024-11-25T07:03:40+00:00",
+            "time": "2025-01-02T12:59:24+00:00",
             "type": "library",
             "extra": {
                 "think": {
@@ -3855,7 +4095,7 @@
             "description": "Swoole extend for thinkphp",
             "support": {
                 "issues": "https://github.com/top-think/think-swoole/issues",
-                "source": "https://github.com/top-think/think-swoole/tree/v4.0.13"
+                "source": "https://github.com/top-think/think-swoole/tree/v4.1.0"
             },
             "install-path": "../topthink/think-swoole"
         },

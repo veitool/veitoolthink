@@ -11,7 +11,7 @@ class ServerDumper implements DataDumperInterface
 
     protected ?DataDumperInterface $wrappedDumper;
 
-    public function __construct(DataDumperInterface $wrappedDumper = null, array $contextProviders = [])
+    public function __construct(?DataDumperInterface $wrappedDumper = null, array $contextProviders = [])
     {
         $this->connection    = new Connection($contextProviders);
         $this->wrappedDumper = $wrappedDumper;

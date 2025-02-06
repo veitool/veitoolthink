@@ -126,7 +126,7 @@ trait InteractsWithHttp
                     $response = $this->handleRequest($http, $request);
                     $this->prepareResponse($response);
                 } catch (Throwable $e) {
-                    $handle = $this->app->make(Handle::class);
+                    $handle = $app->make(Handle::class);
                     $handle->report($e);
                     $response = $handle->render($request, $e);
                 }

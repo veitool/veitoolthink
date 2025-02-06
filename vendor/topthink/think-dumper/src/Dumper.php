@@ -61,7 +61,7 @@ class Dumper
             $dumper = new ContextualizedDumper($dumper, [new SourceContextProvider()]);
         }
 
-        return function ($var, string $label = null) use ($cloner, $dumper) {
+        return function ($var, ?string $label = null) use ($cloner, $dumper) {
             $var = $cloner->cloneVar($var);
 
             if (null !== $label) {

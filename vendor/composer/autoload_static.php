@@ -10,6 +10,7 @@ class ComposerStaticInit118552ef2b3077b276422e248ece3c62
         '9b552a3cc426e3287cc811caefa3cf53' => __DIR__ . '/..' . '/topthink/think-helper/src/helper.php',
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
         '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
+        '7448f3465e10b5f033e4babb31eb0b06' => __DIR__ . '/..' . '/topthink/think-orm/src/helper.php',
         '35fab96057f1bf5e7aba31a8a6d5fdde' => __DIR__ . '/..' . '/topthink/think-orm/stubs/load_stubs.php',
         '15ec93fa4ce4b2d53816a1a5f2c514e2' => __DIR__ . '/..' . '/topthink/think-validate/src/helper.php',
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
@@ -166,10 +167,10 @@ class ComposerStaticInit118552ef2b3077b276422e248ece3c62
             3 => __DIR__ . '/..' . '/topthink/think-helper/src',
             4 => __DIR__ . '/..' . '/topthink/think-image/src',
             5 => __DIR__ . '/..' . '/topthink/think-log/src',
-            6 => __DIR__ . '/..' . '/topthink/think-orm/src',
+            6 => __DIR__ . '/..' . '/topthink/think-queue/src',
             7 => __DIR__ . '/..' . '/topthink/think-template/src',
             8 => __DIR__ . '/..' . '/topthink/think-validate/src',
-            9 => __DIR__ . '/..' . '/topthink/think-queue/src',
+            9 => __DIR__ . '/..' . '/topthink/think-orm/src',
         ),
         'app\\' => 
         array (

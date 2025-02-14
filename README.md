@@ -30,6 +30,11 @@ veitoolphp@gmail.com
 #### 快捷构建
 内置常用基础应用模块，方便初步接触者参考快速入手，在线窗口化快速生成相关模块以及配置相关参数、亦可安装拖拽插件实现可视化布局。丰富的在线插件安装满足多方应用需求。组件化接口便于二次开发，迭代分享更快捷、丰富。
 
+#### 请作者喝咖啡☕️
+<img src="https://www.veitool.com/file/pay/wepay.jpg" width="200"/>
+<img src="https://www.veitool.com/file/pay/alipay.jpg" width="200"/>
+<p>如果您觉得 Veitool 框架对您有所帮助，欢迎捐赠。<b><a href="https://www.veitool.com/donate">【捐赠列表】</a></b></p>
+
 ## 版权信息
 Veitool 采用 [Apache2.0](https://opensource.org/license/apache-2-0/) 开源协议发布，并免费提供使用《[免责声明](https://gitee.com/veitool/veitool/blob/master/DISCLAIMER.md)》。
 

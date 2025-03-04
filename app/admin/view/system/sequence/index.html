@@ -1,0 +1,140 @@
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <table id="sequence"></table>
+        </div>
+    </div>
+</div>
+<!--表头工具-->
+<script type="text/html" id="sequence_toolbar">
+    <div class="layui-btn-group">
+        <a class="layui-btn" id="top-sequence-add"><i class="layui-icon layui-icon-add-circle"></i> 添加</a>
+        <a class="layui-btn layui-btn-disabled" id="top-sequence-del"><i class="layui-icon layui-icon-delete"></i> 删除</a>
+    </div>
+</script>
+<!--JS部分-->
+<script type="text/javascript">
+layui.use(['buildItems','vinfo'], function(){
+    var gid = 1;
+    var map_root = layui.cache.maps;
+    var app_root = map_root +'system.sequence/';
+    var layer = layui.layer, table = layui.table, form = layui.form, admin = layui.admin;
+    /*渲染数据*/
+    table.render({
+        elem: '#sequence',
+        size: 'md',
+        page: true,
+        limit:{$limit},
+        height: 'full-195',
+        toolbar: '#sequence_toolbar',
+        //defaultToolbar: ['filter','print'],
+        cellExpandedMode:'tips',
+        url: app_root+"index?do=json",
+        cols: [[
+            {type:'checkbox',fixed:'left'},
+            {field:'id',align:'center',width:80,sort:!0,title:'ID'},
+            {field:'name',align:'center',title:'单据名称',edit:'text'},
+            {field:'code',align:'center',title:'单据标识'},
+            {field:'prefix',align:'center',title:'单据前缀'},
+            {field:'day',align:'center',title:'当前日期',templet:function(d){return d.day ? layui.util.toDateString(d.day*1000,'yyyy-MM-dd') : '-'}},
+            {field:'seq',align:'center',title:'当前号'},
+            {field:'addtime',align:'center',title:'创建时间',templet:function(d){return d.addtime ? layui.util.toDateString(d.addtime*1000,'yyyy-MM-dd HH:mm:ss') : '-'}},
+            {field:'edit',align:'center',width:100,title:'创建人',toolbar:'<div><a style="cursor:pointer" title="查看详细" lay-event="infom">{{d.edit}}</a></div>'},
+            {fixed:'right',width:130,align:'center',toolbar:'<div><a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a><a class="layui-btn layui-btn-xs layui-bg-blue" lay-event="copy">复制</a><a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a></div>',title:'操作'}
+        ]]
+    });/**/
+    /*顶部添加按钮*/
+    $('#top-sequence-add').on('click',function(){open();});/**/
+    /*顶部删除按钮*/
+    $('#top-sequence-del').on('click', function(){
+        if($(this).hasClass('layui-btn-disabled')) return ;
+        var checkRows = table.checkStatus('sequence').data;
+        if(checkRows.length === 0){return layer.msg('请选择需删除的单据前缀');}
+        var ids = checkRows.map(function(d){return d.id;});
+        del(ids);
+    });/**/
+    /*快编监听*/
+    table.on('edit(sequence)',function(obj){
+        admin.req(app_root+"edit?do=up",{id:obj.data.id,av:obj.value,af:obj.field},function(res){
+            layer.msg(res.msg,{shade:[0.4,'#000'],time:1500},function(){
+                if(res.code == 1) { table.reloadData('sequence'); }
+            });
+        },'post',{headersToken:true});
+    });/**/
+    /*数据选择监听*/
+    table.on("checkbox(sequence)",function(obj){
+        var checkRows = table.checkStatus('sequence').data;
+        if(checkRows.length === 0){
+            $('#top-sequence-del').addClass('layui-btn-disabled');
+        }else{
+            $('#top-sequence-del').removeClass('layui-btn-disabled');
+        }
+    });/**/
+    /*工具条监听*/
+    table.on('tool(sequence)', function(obj){
+        var data = obj.data;
+        if(obj.event === 'edit'){
+            open(data);
+        }else if(obj.event === 'copy'){
+            data.id = '';
+            open(data);
+        }else if(obj.event === 'del'){
+            del(data.id);
+        }else if(obj.event === 'infom'){
+            layui.vinfo.open({type:'muser',title:'用户详细',url:map_root + 'system.manager/index?do=info&username=' + $(this).html()});
+        }
+    });/**/
+    /*删除*/
+    function del(ids){
+        layer.confirm('确定要删除所选单据前缀吗？', function(){
+            admin.req(app_root+"del",{id:ids},function(res){
+                layer.msg(res.msg,{shade:[0.4,'#000'],time:1500},function(){
+                    if(res.code==1) { table.reloadData('sequence',{page:{curr:1}}); }
+                });
+            },'post',{headersToken:true});
+        });
+    }/**/
+    /*弹出窗*/
+    function open(Dt){
+        admin.open({
+            type: 1,
+            bid: 'sequence_items',
+            btn: ['保存', '取消'],
+            area: ['500px','300px'],
+            title: '单据前缀' + (Dt && Dt.id ? ' - 编辑' : ' - 添加'),
+            //shadeClose: false,
+            success: function(lay,index){
+                layui.buildItems.build({
+                    gid: gid,
+                    bid: 'sequence_items',
+                    map: map_root + 'system.upload/',
+                    data: [
+                        {name:"id",type:"hidden"},
+                        {name:"name",type:"text",title:"单据名称",value:"",verify:"required",reqtext:"请输入单据名称",must:true,affix:"clear"},
+                        {name:"code",type:"text",title:"单据标识",value:"",verify:"required",reqtext:"请输入单据标识",must:true,affix:"clear"},
+                        {name:"prefix",type:"text",title:"单据前缀",value:"",verify:"required",reqtext:"请输入单据前缀",must:true,affix:"clear"}
+                    ]
+                });
+                form.val('sequence_items_form',Dt);
+                form.on('submit(sequence_items)',function(data){
+                    var btn = $(this), field = data.field;
+                    if (btn.attr('stop')) return false; btn.attr('stop',1);
+                    admin.req(app_root + (field.id ? 'edit' : 'add'),field,function(res){
+                        layer.msg(res.msg,{shade:[0.4,'#000'],time:1000},function(){
+                            if(res.code==1){
+                                layer.close(index);
+                                table.reloadData('sequence');
+                            }
+                            btn.removeAttr('stop');
+                        });
+                    },'post',{headersToken:true});
+                    return false;
+                });
+            },
+            end: function(){
+                $('#edui_fixedlayer').remove();
+            }
+        });
+    }/**/
+});
+</script>

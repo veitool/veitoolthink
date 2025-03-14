@@ -222,7 +222,7 @@ layui.use(function(){
             {fixed:'right',width:120,align:'center',toolbar:'#addon-tool-tpl',title:'操作'}
         ]],
         done: function(res){
-            if(typeof res.msg != 'undefined' && $("#addon_category li").size() == 2){
+            if(typeof res.msg != 'undefined' && $("#addon_category li").length == 2){
                 $.each(res.msg, function(k,v){
                     $('<li lay-id="' + v.catid + '">' + v.title + '</li>').insertBefore($("#addon_category li:last"));
                 });

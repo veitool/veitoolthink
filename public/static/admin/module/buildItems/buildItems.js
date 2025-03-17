@@ -117,6 +117,7 @@ layui.define(['tagsInput','fileLibrary','cascader'], function(e){
             b.init();
         },
         build: function(d){
+            c.relation = []; //关联项清空
             c.bid  = d.bid || ''; //绑定ID
             c.gid  = d.gid || -1;  //上传资源分组ID
             c.map  = d.map || 'admin/system.upload/'; //上传接口
@@ -165,7 +166,7 @@ layui.define(['tagsInput','fileLibrary','cascader'], function(e){
             form.render(null,c.bid+'_form');
             //显示选中的关联项
             $.each(c.relation,function(i,v){
-                var ra = $('input[name="'+v.name+'"]:checked').val();
+                let ra = $h.find('input[name="'+v.name+'"]:checked').val();
                 $("[id^='item-"+v.obj+"_"+ra+"']").show();
             });
             b.init();

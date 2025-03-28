@@ -71,7 +71,7 @@ class Menus extends AdminBase
         $d = $this->only(['@token'=>'','titles/h','pid/d','catid/d']);
         if(!$d['titles']) return $this->returnMsg("请输入菜单名称");
         $id = $d['pid'];
-        $rs = M::get(['menuid'=>$id]);
+        $rs = M::one(['menuid'=>$id]);
         if($id==0 || $rs){
             $data = [];
             $arr  = explode("\n", $d['titles']);
@@ -99,7 +99,7 @@ class Menus extends AdminBase
     {
         $d = $this->only($do ? ['@token'=>'','menuid/d/参数错误','av/u','af'] : ['@token'=>'','menuid/d/参数错误','catid/d','ocatid/d','menu_name/*/{2,20}/菜单名称','role_name/*/{2,20}/权限名称','link_url/u','menu_url/u','role_url/u','icon/u','parent_id/d','listorder/d','ismenu/d','state/d']);
         $menuid = $d['menuid'];
-        $Myobj = M::get("menuid = $menuid");
+        $Myobj = M::one("menuid = $menuid");
         if(!$Myobj) return $this->returnMsg("数据不存在");
         if($do=='up'){
             $value = $d['av'];
@@ -163,7 +163,7 @@ class Menus extends AdminBase
     {
         $menuid = $this->request->post('menuid/d',0);
         $data = T::menuOut($menuid,'type=1');
-        $rs = M::get("menuid = '$menuid'");
+        $rs = M::one("menuid = '$menuid'");
         if($rs){
             $rs = $rs->toArray();
             $rs['sublist'] = $data;
@@ -242,7 +242,7 @@ class Menus extends AdminBase
     public function catedit(string $do = '')
     {
         $d = $this->only($do ? ['@token'=>'','catid/d/参数错误','av','af'] : ['@token'=>'','catid/d/参数错误','title/*/{2,20}/类别名称','icon/u','listorder/d']);
-        $Myobj = C::get("catid = $d[catid]");
+        $Myobj = C::one("catid = $d[catid]");
         if(!$Myobj) return $this->returnMsg("数据不存在");
         if($do=='up'){
             $value = $d['av'];
@@ -276,7 +276,7 @@ class Menus extends AdminBase
         $catid = $this->only(['@token'=>'','catid'])['catid'];
         $catid = is_array($catid) ? implode(',',$catid) : $catid;
         if(!$catid) return $this->returnMsg('参数错误');
-        if(M::get("catid IN ($catid)")) return $this->returnMsg('所删类别下存在菜单');
+        if(M::one("catid IN ($catid)")) return $this->returnMsg('所删类别下存在菜单');
         if(C::del("catid IN ($catid)")){
             return $this->returnMsg('删除成功',1,C::catList('01'));
         }else{

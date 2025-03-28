@@ -52,7 +52,7 @@ class Area extends AdminBase
         $listorder = $d['listorder'];
         $arrparentid = 0;
         if($parentid>0){
-            $rs = A::get(['areaid'=>$parentid]);
+            $rs = A::one(['areaid'=>$parentid]);
             if(is_null($rs)) return $this->returnMsg("上级地区ID不存在");
             $arrparentid = $rs['arrparentid'] ? $rs['arrparentid'].','.$rs['areaid'] : $rs['areaid'];
         }
@@ -128,7 +128,7 @@ class Area extends AdminBase
     {
         $areaid = $this->only(['@token'=>'','areaid'])['areaid'];
         $areaid = is_array($areaid) ? implode(',',$areaid) : $areaid;
-        $rs = A::get("parentid IN ($areaid)");
+        $rs = A::one("parentid IN ($areaid)");
         if($rs) return $this->returnMsg("该地区存在子地区不能删除！");
         if(A::del("areaid IN ($areaid)")){
             A::cache(1);

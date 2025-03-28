@@ -32,7 +32,7 @@ class Roles extends AdminBase
             $data = [];
             $roleid = $this->request->get('roleid/d');
             if($roleid){
-                $rs = R::get(['roleid'=>$roleid]);
+                $rs = R::one(['roleid'=>$roleid]);
                 $ids = empty($rs) ? '' : $rs['role_menuid'];
             }
             $rs = SystemMenus::cache(); // 获取后台菜单缓存 构建zTree Json数据
@@ -72,7 +72,7 @@ class Roles extends AdminBase
     {
         $d = $this->only($do ? ['@token'=>'','roleid/d/参数错误','av','af'] : ['@token'=>'','roleid/d/参数错误','role_name/*/{2,30}/角色名称','listorder/d','state/d','role_menuid','role_ext']);
         $roleid = $d['roleid'];
-        $Myobj = R::get("roleid = $roleid");
+        $Myobj = R::one("roleid = $roleid");
         if(!$Myobj) return $this->returnMsg("数据不存在");
         if($do=='up'){
             $value = $d['av'];

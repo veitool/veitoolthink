@@ -39,10 +39,10 @@ class SystemSetting extends Base
 
     /**
      * 获取配置信息
-     * @param  string  $name  配置名
+     * @param  string|null  $name  配置名
      * @return array
      */
-    public static function getSetting(string $name = null)
+    public static function getSetting(string|null $name = null)
     {
         $configs = self::column('value,type,name,addon');
         $result = [];

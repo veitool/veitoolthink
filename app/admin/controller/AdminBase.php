@@ -84,7 +84,7 @@ abstract class AdminBase extends BaseController
      */
     private function loadMenusRoles()
     {
-        $us = Manager::get("username = '{$this->manUser['username']}' AND state > 0");
+        $us = Manager::one("username = '{$this->manUser['username']}' AND state > 0");
         if($us && $this->manUser['password'] == $us['password'] && $this->manUser['passsalt'] == $us['passsalt']){
             //禁止同帐号同时异地登录处理
             if(in_array(vconfig('ip_login',0),[2,3]) && $us['loginip'] != $this->request->ip()){

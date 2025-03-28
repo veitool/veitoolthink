@@ -36,7 +36,7 @@ class Dict extends AdminBase
                 $code = $this->request->post('code','','trim');
                 $where[]  = ['code','=',$code];
                 if($id) $where[] = ['id','<>',$id];
-                $rs  = DG::get($where);
+                $rs  = DG::one($where);
                 $msg = $rs ? ['code'=>1,'msg'=>'编码【'.$code.'】已经存在'] : ['code'=>0,'msg'=>'可用'];
                 return $this->returnMsg($msg);
             }
@@ -57,7 +57,7 @@ class Dict extends AdminBase
     {
         $d = $this->only(['@token'=>'','title/*/{2,100}/字典名称','code/*/{2,30}/字典编码/1,2,3/_','groupid/d','@sql/s','note/h']);
         if($d['groupid'] == 1) return $this->returnMsg("所属类型不能为顶级类型");
-        if(DG::get("code = '$d[code]'")) return $this->returnMsg("字典编码【{$d['code']}】已经存在");
+        if(DG::one("code = '$d[code]'")) return $this->returnMsg("字典编码【{$d['code']}】已经存在");
         $d["editor"]   = $this->manUser['username'];
         $d["addtime"]  = time();
         if(DG::insert($d)){
@@ -77,7 +77,7 @@ class Dict extends AdminBase
     {
         $d = $this->only($do ? ['@token'=>'','id/d/参数错误','av','af'] : ['@token'=>'','id/d/参数错误','title/*/{2,100}/字典名称','code/*/{2,30}/字典编码/1,2,3/_','groupid/d','@sql/s','note/h']);
         $id = $d['id'];
-        $Myobj = DG::get("id = $id AND groupid > 0");
+        $Myobj = DG::one("id = $id AND groupid > 0");
         if(!$Myobj) return $this->returnMsg("数据不存在");
         if($do=='up'){
             $value = $d['av'];
@@ -88,7 +88,7 @@ class Dict extends AdminBase
             }elseif($field=='code'){
                 if($value==''){
                     return $this->returnMsg("字典编码不能为空");
-                }elseif(DG::get("code = '$value' AND id <> $id")){
+                }elseif(DG::one("code = '$value' AND id <> $id")){
                     return $this->returnMsg("字典编码【{$value}】已经存在");
                 }
             }
@@ -96,7 +96,7 @@ class Dict extends AdminBase
             return $this->returnMsg($Myobj->save([$field=>$value]) ? "设置成功" : '设置失败', 1);
         }else{
             if($d['groupid'] == 1) return $this->returnMsg("所属类型不能为顶级类型");
-            if(DG::get("code = '$d[code]' AND id <> $id")) return $this->returnMsg("字典编码【{$d['code']}】已经存在");
+            if(DG::one("code = '$d[code]' AND id <> $id")) return $this->returnMsg("字典编码【{$d['code']}】已经存在");
             $d["editor"] = $this->manUser['username'];
             if($Myobj->save($d)){
                 D::cache(1);
@@ -132,7 +132,7 @@ class Dict extends AdminBase
     public function gadd()
     {
         $d = $this->only(['@token'=>'','title/*/{2,10}/类型名称','parentid/d','note/h']);
-        $rs = DG::get("id = $d[parentid]");
+        $rs = DG::one("id = $d[parentid]");
         $d['arrparentid'] = $rs ? (empty($rs['arrparentid']) ? $rs['id'] : $rs['arrparentid'].','.$rs['id']) : '';
         $d['addtime'] = time();
         $d["editor"]  = $this->manUser['username'];
@@ -154,13 +154,13 @@ class Dict extends AdminBase
         $arr = []; //改上级ID时所用到的所有子类新数据
         $parentid = $d['parentid'];
         if($id == $parentid) return $this->returnMsg("上级ID不能为本身ID");
-        $Myobj = DG::get("id = $id AND groupid = 0");
+        $Myobj = DG::one("id = $id AND groupid = 0");
         if(!$Myobj) return $this->returnMsg("数据不存在");
         if($Myobj['parentid'] != $parentid){
             //旧的所有上级ID串
             $old_arrparentid = $Myobj['arrparentid'] ? $Myobj['arrparentid'].','.$id : $id;
             //获取上级类数据
-            $rs = $parentid ? DG::get("id = $parentid") : ['arrparentid'=>'','id'=>''];
+            $rs = $parentid ? DG::one("id = $parentid") : ['arrparentid'=>'','id'=>''];
             if(!$rs) return $this->returnMsg("上级ID不存在");
             //构造数据
             $d['arrparentid'] = $rs['arrparentid'] ? $rs['arrparentid'].','.$rs['id'] : $rs['id'];
@@ -224,7 +224,7 @@ class Dict extends AdminBase
     public function iadd()
     {
         $d = $this->only(['@token'=>'','groupid/d','parentid/d','name/s/字典项名','value/s/字典项值','listorder/d','state/d']);
-        $rs = D::get("id = $d[parentid]");
+        $rs = D::one("id = $d[parentid]");
         $d['arrparentid'] = $rs ? (empty($rs['arrparentid']) ? $rs['id'] : $rs['arrparentid'].','.$rs['id']) : '';
         $d['addtime'] = time();
         $d["editor"]  = $this->manUser['username'];
@@ -245,7 +245,7 @@ class Dict extends AdminBase
         $d = $this->only(['@token'=>'','titles/s','pid/d','groupid/d']);
         if(!$d['titles']) return $this->returnMsg("请输入字典项名");
         $id = $d['pid'];
-        $rs = D::get("id = $id");
+        $rs = D::one("id = $id");
         if($id==0 || $rs){
             $data = [];
             $arr  = explode("\n", $d['titles']);
@@ -275,7 +275,7 @@ class Dict extends AdminBase
     {
         $d = $this->only($do ? ['@token'=>'','id/d/参数错误','av/u','af'] : ['@token'=>'','id/d/参数错误','groupid/d','parentid/d','name/s/请输入字典项名','value/s/请输入字典项值','listorder/d','state/d']);
         $id = $d['id'];
-        $Myobj = D::get("id = $id");
+        $Myobj = D::one("id = $id");
         if(!$Myobj) return $this->returnMsg("数据不存在");
         if($do=='up'){
             $value = $d['av'];
@@ -298,7 +298,7 @@ class Dict extends AdminBase
                 //旧的所有上级ID串
                 $old_arrparentid = $Myobj['arrparentid'] ? $Myobj['arrparentid'].','.$id : $id;
                 //获取上级类数据
-                $rs = $parentid ? D::get("id = $parentid") : ['arrparentid'=>'','id'=>''];
+                $rs = $parentid ? D::one("id = $parentid") : ['arrparentid'=>'','id'=>''];
                 if(!$rs) return $this->returnMsg("上级ID不存在");
                 //构造数据
                 $d['arrparentid'] = $rs['arrparentid'] ? $rs['arrparentid'].','.$rs['id'] : $rs['id'];

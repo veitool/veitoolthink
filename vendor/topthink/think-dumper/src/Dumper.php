@@ -9,35 +9,26 @@ use Symfony\Component\VarDumper\Dumper\CliDumper;
 use Symfony\Component\VarDumper\Dumper\ContextProvider\ContextProviderInterface;
 use Symfony\Component\VarDumper\Dumper\ContextualizedDumper;
 use Symfony\Component\VarDumper\Dumper\HtmlDumper;
+use think\App;
+use think\Env;
 use think\Request;
 
 class Dumper
 {
-    private static $handlers;
-
-    public static function dump($var, ?string $label = null)
+    public function __construct(protected App $app, protected Env $env)
     {
-        $token = env('DUMPER_TOKEN');
-
-        $format = self::isCli() ? 'cli' : 'html';
-
-        if (!empty($token)) {
-            $format = 'server';
-        }
-
-        return self::getHandler($format)($var, $label);
     }
 
-    private static function getHandler($format): callable
+    public function dump($var, ?string $label = null)
     {
-        if (empty(self::$handlers[$format])) {
-            self::$handlers[$format] = self::createHandler($format);
-        }
+        $format = $this->app->runningInConsole() ? 'cli' : 'html';
 
-        return self::$handlers[$format];
+        $handler = $this->createHandler($format);
+
+        return $handler($var, $label);
     }
 
-    private static function createHandler($format)
+    private function createHandler($format)
     {
         $cloner = new VarCloner();
         $cloner->addCasters(ReflectionCaster::UNSET_CLOSURE_FILE_INFO);
@@ -49,15 +40,13 @@ class Dumper
             case 'cli':
                 $dumper = new CliDumper();
                 break;
-            case 'server' :
-                $dumper = self::isCli() ? new CliDumper() : new HtmlDumper();
-                $dumper = new ServerDumper($dumper, self::getDefaultContextProviders());
-                break;
             default:
                 throw new Exception('Invalid dump format.');
         }
 
-        if (!$dumper instanceof ServerDumper) {
+        if ($this->env->has('DUMPER_TOKEN')) {
+            $dumper = new ServerDumper($dumper, $this->getDefaultContextProviders($format));
+        } else {
             $dumper = new ContextualizedDumper($dumper, [new SourceContextProvider()]);
         }
 
@@ -72,41 +61,43 @@ class Dumper
         };
     }
 
-    private static function getDefaultContextProviders(): array
+    private function getDefaultContextProviders($format): array
     {
         $contextProviders = [];
 
-        if (self::isCli()) {
-            $contextProviders['cli'] = new class implements ContextProviderInterface {
-                public function getContext(): ?array
-                {
-                    return [
-                        'command_line' => $commandLine = implode(' ', $_SERVER['argv'] ?? []),
-                        'identifier'   => hash('crc32b', $commandLine . $_SERVER['REQUEST_TIME_FLOAT']),
-                    ];
-                }
-            };
-        } else {
-            $contextProviders['request'] = new class implements ContextProviderInterface {
-                public function getContext(): ?array
-                {
-                    $request = app(Request::class);
-                    return [
-                        'uri'        => $request->url(),
-                        'method'     => $request->method(),
-                        'identifier' => spl_object_hash($request),
-                    ];
-                }
-            };
+        switch ($format) {
+            case 'html' :
+                $contextProviders['request'] = new class($this->app->request) implements ContextProviderInterface {
+                    public function __construct(protected Request $request)
+                    {
+                    }
+
+                    public function getContext(): ?array
+                    {
+                        $request = $this->request;
+                        return [
+                            'uri'        => $request->url(),
+                            'method'     => $request->method(),
+                            'identifier' => spl_object_hash($request),
+                        ];
+                    }
+                };
+                break;
+            case 'cli':
+                $contextProviders['cli'] = new class implements ContextProviderInterface {
+                    public function getContext(): ?array
+                    {
+                        return [
+                            'command_line' => $commandLine = implode(' ', $_SERVER['argv'] ?? []),
+                            'identifier'   => hash('crc32b', $commandLine . $_SERVER['REQUEST_TIME_FLOAT']),
+                        ];
+                    }
+                };
+                break;
         }
 
         $contextProviders['source'] = new SourceContextProvider();
 
         return $contextProviders;
-    }
-
-    private static function isCli()
-    {
-        return app()->runningInConsole();
     }
 }

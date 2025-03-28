@@ -64,7 +64,7 @@ class SystemCategory extends Base
         $d['type'] = $type;
         $d['listorder'] = intval($d['listorder']);
         $d['parentid']  = intval($d['parentid']);
-        $rs = self::get("catid = $d[parentid]");
+        $rs = self::one("catid = $d[parentid]");
         $d['arrparentid'] = $rs ? ($rs['arrparentid'] ? $rs['arrparentid'].','.$rs['catid'] : $rs['catid']) : '';//echo '<pre>';print_r($d);die;
         $rs = self::insert($d);
         if($rs){
@@ -86,7 +86,7 @@ class SystemCategory extends Base
         $d = request()->post(['catid','title','icon','parentid','listorder','av','af'],'','strip_sql');
         $catid = $d['catid'] = intval($d['catid']);
         if(!$catid) return ['msg'=>'参数错误'];
-        $Myobj = self::get("catid = $catid");
+        $Myobj = self::one("catid = $catid");
         if(!$Myobj) return ['msg'=>'数据不存在'];
         if($do=='up'){
             $value = $d['av'];
@@ -105,14 +105,14 @@ class SystemCategory extends Base
             $parentid = $d['parentid'] = intval($d['parentid']);
             if($catid==$parentid) return ['msg'=>'上级ID不能为本身ID'];
             //获取当前类数据
-            $rs = self::get("catid = $catid");
+            $rs = self::one("catid = $catid");
             if(!$rs) return ['msg'=>'参数错误2'];
             //上级类别有改动
             if($rs['parentid'] != $parentid){
                 //旧的所有上级ID串
                 $old_arrparentid = $rs['arrparentid'] ? $rs['arrparentid'].','.$catid : $catid;
                 //获取上级类数据
-                $rs = $parentid ? self::get("catid = $parentid") : ['arrparentid'=>'','catid'=>''];
+                $rs = $parentid ? self::one("catid = $parentid") : ['arrparentid'=>'','catid'=>''];
                 if(!$rs) return ['msg'=>'上级ID不存在'];
                 //构造数据
                 $d['arrparentid'] = $rs['arrparentid'] ? $rs['arrparentid'].','.$rs['catid'] : $rs['catid'];

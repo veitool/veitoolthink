@@ -84,7 +84,7 @@ class Login extends BaseController
         $username = $d['username'];
         $password = $d['password'];
         //查询用户数据
-        $rs = Manager::get(compact('username'));
+        $rs = Manager::one(compact('username'));
         if(empty($rs)){
             LoginLog::add($username, $password, '', '账号错误');
             Lock::add();

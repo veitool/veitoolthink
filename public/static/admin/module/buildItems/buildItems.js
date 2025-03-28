@@ -23,12 +23,12 @@ layui.define(['tagsInput','fileLibrary','cascader'], function(e){
     //表单元素
     c.text_html = '<input type="text" name="{{ d.name }}" lay-filter="{{ d.name }}" value="{{ d.value }}" ' + c.item_style + c.vers_html + '{{# if(d.maxlength){ }}maxlength="{{ d.maxlength }}"{{# } }} ' + c.plac_html + c.affix_html;
     c.number_html = '<input type="number" name="{{ d.name }}" lay-filter="{{ d.name }}" value="{{ d.value }}" ' + c.item_style + c.vers_html + c.plac_html + '{{# if(d.id){ }}id="{{ d.id }}"{{# } }} class="layui-input" lay-affix="number">';
-    c.switch_html = '{{# if(d.relation){layui.buildItems.rela(d.name,d.relation,"switch");} }}<input type="checkbox" name="{{ d.name }}" lay-skin="switch" lay-text="ON|OFF" lay-filter="{{ d.name }}" value="1" {{ d.value ==1 ? "checked" : "" }}/>';
-    c.radio_html = '{{# if(d.relation){layui.buildItems.rela(d.name,d.relation,"radio");} layui.each(d.options, function(key, txt){ }}<input type="radio" name="{{ d.name }}" lay-filter="{{ d.name }}" value="{{ key }}" title="{{ txt }}" {{ d.value == key ? "checked" : "" }} />{{# }); }}';
-    c.checkbox_html = '{{# layui.each(d.options, function(key, txt){ }}<input type="checkbox" name="{{ d.name }}[]" lay-filter="{{ d.name }}" lay-skin="{{ d.skin }}" value="{{ key }}" title="{{ txt }}" {{ (d.value).split(",").indexOf(String(key))>-1 ? "checked" : "" }}/>{{# }); }}';
+    c.switch_html = '{{# layui.buildItems.on(d.name,d.relation || "","switch"); }}<input type="checkbox" name="{{ d.name }}" lay-skin="switch" lay-text="ON|OFF" lay-filter="{{ d.name }}" value="1" {{ d.value ==1 ? "checked" : "" }}/>';
+    c.radio_html = '{{# layui.buildItems.on(d.name,d.relation || "","radio"); layui.each(d.options, function(key, txt){ }}<input type="radio" name="{{ d.name }}" lay-filter="{{ d.name }}" value="{{ key }}" title="{{ txt }}" {{ d.value == key ? "checked" : "" }} />{{# }); }}';
+    c.checkbox_html = '{{# layui.buildItems.on(d.name,"","checkbox"); layui.each(d.options, function(key, txt){ }}<input type="checkbox" name="{{ d.name }}[]" lay-filter="{{ d.name }}" lay-skin="{{ d.skin }}" value="{{ key }}" title="{{ txt }}" {{ (d.value).split(",").indexOf(String(key))>-1 ? "checked" : "" }}/>{{# }); }}';
     c.password_html = '<input type="password" name="{{ d.name }}" value="{{ d.value }}" ' + c.item_style + c.vers_html + 'autocomplete="off" ' + c.plac_html + c.affix_html;
     c.textarea_html = '<textarea name="{{ d.name }}" ' + c.item_style;
-    c.select_html = '<select name="{{ d.name }}" lay-filter="{{ d.name }}" ' + c.item_style + c.vers_html + '{{# if(d.search){ }}lay-search{{# } }}>{{# if(d.optiontip || d.reqtext){ }}<option value="">{{ d.optiontip || d.reqtext }}</option>{{# } }}{{# layui.each(d.options, function(key, txt){ }}<option value="{{ key }}" {{ d.value == key ? "selected" : "" }}>{{ txt }}</option>{{# }); }}</select>';
+    c.select_html = '<select name="{{ d.name }}" lay-filter="{{ d.name }}" ' + c.item_style + c.vers_html + '{{# layui.buildItems.on(d.name,"","select"); if(d.search){ }}lay-search{{# } }}>{{# if(d.optiontip || d.reqtext){ }}<option value="">{{ d.optiontip || d.reqtext }}</option>{{# } }}{{# layui.each(d.options, function(key, txt){ }}<option value="{{ key }}" {{ d.value == key ? "selected" : "" }}>{{ txt }}</option>{{# }); }}</select>';
     //隐藏域
     c.hidden = '<input type="hidden" name="{{ d.name }}" value="{{ d.value || \'\' }}"/>';
     //静态代码
@@ -94,25 +94,24 @@ layui.define(['tagsInput','fileLibrary','cascader'], function(e){
     //关联项
     c.relation = [];
     var b = {
-        rela: function(o,m,t){
-            //记录关联项，用于渲染完成后显示选中的关联项
-            c.relation.push({name:o,obj:m});
-            //监听关联项
-            if(t=='switch'){ //switch开关
-                form.on('switch('+ o +')',function(data){
+        on: function(o,m,t){
+            // 记录关联项，用于渲染完成后显示选中的关联项
+            if(m && (t=='switch' || t=='radio')) c.relation.push({name:o,obj:m});
+            // 监听变化并回调
+            form.on(t +'('+ o +')',function(data){
+                if(t=='switch' && m){
                     var obj = $("[id^='item-"+ m + '_' + data.value +"']");
                     data.elem.checked ? obj.show() : obj.hide();
-                });
-            }else{
-                form.on('radio('+ o +')',function(data){
+                }else if(t=='radio' && m){
                     $("[id^='item-"+ m +"_']").hide();
                     $("[id^='item-"+ m + '_' + data.value +"']").show();
-                });
-            }
+                }
+                typeof c.success === 'function' && c.success(data, o);
+            });
         },
         render: function(d){
             $h = $("#"+ d.bid); //绑定ID
-            c.gid = d.gid || -1;  //上传资源分组ID
+            c.gid = d.gid || -1; //上传资源分组ID
             c.map = d.map || 'admin/system.upload/'; //上传接口
             b.init();
         },
@@ -124,6 +123,8 @@ layui.define(['tagsInput','fileLibrary','cascader'], function(e){
             c.url  = d.url || ''; //构建项json数据接口
             c.data = d.data || []; //构建项json数据
             c.space = d.space ? ' '+d.space : ''; //栅格间隙 layui-col-space[n]
+            c.style = d.style ? '<style>'+ d.style + '</style>' : ''; //追加自定义样式
+            c.success = d.success || '';
             if(c.data.length > 0 || c.data.constructor === Object){
                 b.sett(c.data);
             }else{
@@ -162,7 +163,7 @@ layui.define(['tagsInput','fileLibrary','cascader'], function(e){
                 }
             }
             html += tab_t ? '<div class="layui-tab layui-tab-brief"><ul class="layui-tab-title">'+tab_t+'</ul><div class="layui-tab-content">'+tab_c+'</div></div>' : !$h.addClass(c.space) || '';
-            $h.html(html);
+            $h.html(c.style + html);
             form.render(null,c.bid+'_form');
             //显示选中的关联项
             $.each(c.relation,function(i,v){
@@ -170,6 +171,11 @@ layui.define(['tagsInput','fileLibrary','cascader'], function(e){
                 $("[id^='item-"+v.obj+"_"+ra+"']").show();
             });
             b.init();
+             //回调并监听输入框变化
+            if(typeof c.success === 'function'){
+                c.success(null, '_init_');
+                $h.find('input, textarea').on('input', function() { c.success({value: this.value}, this.name); });
+            }
         },
         init: function(){
             //渲染时间

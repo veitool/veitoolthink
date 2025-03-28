@@ -98,9 +98,12 @@ class Think implements TemplateHandlerInterface
         if ('' == pathinfo($template, PATHINFO_EXTENSION)) {
             // 获取模板文件名
             $template = $this->parseTemplate($template);
-        } elseif (!is_file($template)) {
-            $path     = $this->config['view_path'] ?: $this->getViewPath($this->app->http->getName());
-            $template = $path . $template;
+        } else{
+            $path = $this->config['view_path'] ?: $this->getViewPath($this->app->http->getName());
+            if (!is_file($template)) {
+                $template = $path . $template;
+            }
+            $this->template->view_path = $path;
         }
 
         return $template;
@@ -176,6 +179,13 @@ class Think implements TemplateHandlerInterface
         } elseif (method_exists($request, 'layer') && $request->layer()) {
             $app        = $request->layer();
             $controller = $request->controller(false, true);
+        }
+
+        if ($this->config['view_path']) {
+            $path = $this->config['view_path'];
+        } else {
+            $path = $this->getViewPath($app ?? $this->app->http->getName());
+            $this->template->view_path = $path;
         }
 
         if (isset($app)) {

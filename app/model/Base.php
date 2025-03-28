@@ -25,7 +25,7 @@ class Base extends Model
      * @param  string|array  $order   排序
      * @return obj|null
      */
-    public static function get(string|array $where = '', string $field = '*', string|array $order = [])
+    public static function one(string|array $where = '', string $field = '*', string|array $order = [])
     {
         return self::where($where)->field($field)->order($order)->find();
     }

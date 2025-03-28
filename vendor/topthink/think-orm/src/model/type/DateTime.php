@@ -10,19 +10,31 @@ use think\model\contract\Typeable;
 class DateTime implements Typeable
 {
     protected $data;
+    protected $value;
 
     public static function from(mixed $value, Modelable $model)
     {
         $static = new static();
-        $static->data($value, 'Y-m-d H:i:s');
+        $static->data($value, $model->getDateFormat());
         return $static;
     }
 
     public function data($time, $format)
     {
+        $this->value = is_numeric($time) ? (int) $time : strtotime($time);
+        if ($format) {
+            $date        = new \DateTime;
+            $this->data  = $date->setTimestamp($this->value)->format($format);
+        } else {
+            // 不做格式化输出转换
+            $this->data  = $time;
+        }
+    }
+
+    public function format(string $format)
+    {
         $date = new \DateTime;
-        $date->setTimestamp(is_numeric($time) ? (int) $time : strtotime($time));
-        $this->data = $date->format($format);
+        return $date->setTimestamp($this->value)->format($format);
     }
 
     public function value()

@@ -66,7 +66,7 @@ class Filemanage extends AdminBase
     {
         $d = $this->only(['@token'=>'','fileid/d/参数错误','av','af']);
         $fileid = $d['fileid'];
-        $Myobj = UploadFile::get("fileid = $fileid");
+        $Myobj = UploadFile::one("fileid = $fileid");
         if(!$Myobj) return $this->returnMsg("数据不存在");
         $value = $d['av'];
         $field = $d['af'];

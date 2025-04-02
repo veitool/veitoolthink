@@ -250,7 +250,7 @@ class BelongsToMany extends Relation
      * @param Query|null     $query Query对象
      * @return Query
      */
-    public function hasWhere($where = [], $fields = null, string $joinType = '', ?Query $query = null): Query
+    public function hasWhere($where = [], $fields = null, string $joinType = '', ?Query $query = null, string $logic = ''): Query
     {
         $table    = $this->query->getTable();
         $pivot    = $this->pivot->getTable();
@@ -266,7 +266,7 @@ class BelongsToMany extends Relation
             ->group($alias . '.' . $this->parent->getPk())
             ->field($fields);
 
-        return $this->getRelationSoftDelete($query, $relation, $where);            
+        return $this->getRelationSoftDelete($query, $relation, $where, $logic);            
     }
 
     /**

@@ -582,6 +582,21 @@ trait ModelRelationQuery
     }
 
     /**
+     * 根据关联条件查询当前模型.
+     *
+     * @param string $relation 关联方法名
+     * @param mixed  $where    查询条件（数组或者闭包）
+     * @param mixed  $fields   字段
+     * @param string $joinType JOIN类型
+     *
+     * @return $this
+     */
+    public function hasWhereOr(string $relation, $where = [], string $fields = '*', string $joinType = '')
+    {
+        return $this->model->hasWhereOr($relation, $where, $fields, $joinType, $this);
+    }
+
+    /**
      * 查询数据转换为模型数据集对象
      *
      * @param array $resultSet 数据集

@@ -57,11 +57,11 @@ class SystemOnline extends Base
         $page = $d['page'] ?? 1;
         if($page==1){
             //5分钟未活动的删除
-            $this->where('etime', '<', time() - 300)->delete();
-            $msg = $this->where($where)->count();
+            \think\facade\Db::name('system_online')->where('etime', '<', time() - 300)->delete();
+            //$this->where('etime', '<', time() - 3000)->delete();
         }
         $rs = $this->where($where)->order($order)->field($fields)->paginate($limit)->toArray();
-        $rs['msg'] = $msg;
+        $rs['msg'] = $rs['total'];
         return $rs;
     }
     

@@ -74,6 +74,7 @@ return array(
     'Nette\\PhpGenerator\\Traits\\VisibilityAware' => $vendorDir . '/nette/php-generator/src/PhpGenerator/Traits/VisibilityAware.php',
     'Nette\\PhpGenerator\\Type' => $vendorDir . '/nette/php-generator/src/PhpGenerator/Type.php',
     'Nette\\PhpGenerator\\Visibility' => $vendorDir . '/nette/php-generator/src/PhpGenerator/Visibility.php',
+    'Nette\\ShouldNotHappenException' => $vendorDir . '/nette/utils/src/exceptions.php',
     'Nette\\SmartObject' => $vendorDir . '/nette/utils/src/SmartObject.php',
     'Nette\\StaticClass' => $vendorDir . '/nette/utils/src/StaticClass.php',
     'Nette\\UnexpectedValueException' => $vendorDir . '/nette/utils/src/exceptions.php',

@@ -293,7 +293,25 @@ trait RelationShip
             ->$relation()
             ->hasWhere($where, $fields, $joinType, $query);
     }
-        
+
+    /**
+     * 根据关联条件查询当前模型.
+     *
+     * @param string $relation 关联方法名
+     * @param mixed  $where    查询条件（数组或者闭包）
+     * @param mixed  $fields   字段
+     * @param string $joinType JOIN类型
+     * @param Query  $query    Query对象
+     *
+     * @return Query
+     */
+    public static function hasWhereOr(string $relation, $where = [], string $fields = '*', string $joinType = '', ?Query $query = null): Query
+    {
+        return (new static())
+            ->$relation()
+            ->hasWhereOr($where, $fields, $joinType, $query);
+    }
+
     /**
      * 查询当前模型的关联数据.
      *

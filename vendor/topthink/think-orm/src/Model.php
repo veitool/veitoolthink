@@ -271,7 +271,8 @@ abstract class Model implements JsonSerializable, ArrayAccess, Arrayable, Jsonab
      */
     protected function parseValidate(): string
     {
-        $validate = str_contains(static::class, '\\model\\') ? str_replace('\\model\\', '\\validate\\', static::class) : '';
+        $auto     = $this->getOption('autoValidate', false);
+        $validate = $auto && str_contains(static::class, '\\model\\') ? str_replace('\\model\\', '\\validate\\', static::class) : '';
         return $validate && class_exists($validate) ? $validate : '';
     }
 
@@ -634,13 +635,13 @@ abstract class Model implements JsonSerializable, ArrayAccess, Arrayable, Jsonab
     /**
      * 字段值增长
      *
-     * @param string $field 字段名
-     * @param float  $step  增长值
-     * @param int    $lazyTime 延迟时间（秒）
+     * @param string    $field    字段名
+     * @param float|int $step     增长值
+     * @param int       $lazyTime 延迟时间（秒）
      *
      * @return $this
      */
-    public function inc(string $field, float $step = 1, int $lazyTime = 0)
+    public function inc(string $field, float|int $step = 1, int $lazyTime = 0)
     {
         return $this->set($field, new Express('+', $step, $lazyTime));
     }
@@ -648,13 +649,13 @@ abstract class Model implements JsonSerializable, ArrayAccess, Arrayable, Jsonab
     /**
      * 字段值减少.
      *
-     * @param string $field 字段名
-     * @param float  $step  增长值
-     * @param int    $lazyTime 延迟时间（秒）
+     * @param string    $field    字段名
+     * @param float|int $step     增长值
+     * @param int       $lazyTime 延迟时间（秒）
      *
      * @return $this
      */
-    public function dec(string $field, float $step = 1, int $lazyTime = 0)
+    public function dec(string $field, float|int $step = 1, int $lazyTime = 0)
     {
         return $this->set($field, new Express('-', $step, $lazyTime));
     }

@@ -117,10 +117,10 @@ trait AutoWriteData
 
     public function getDateFormat()
     {
-        return $this->getOption('dateFormat', 'Y-m-d H:i:s');
+        return $this->getOption('dateFormat');
     }
 
-    public function setDateFormat(string $format)
+    public function setDateFormat(string|bool $format)
     {
         $this->setOption('dateFormat', $format);
     }

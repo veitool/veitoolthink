@@ -172,7 +172,7 @@ class BelongsTo extends OneToOne
      *
      * @return Query
      */
-    public function hasWhere($where = [], $fields = null, string $joinType = '', ?Query $query = null): Query
+    public function hasWhere($where = [], $fields = null, string $joinType = '', ?Query $query = null, string $logic = ''): Query
     {
         $model    = Str::snake(class_basename($this->parent));
         $relation = Str::snake(class_basename($this->model));
@@ -186,7 +186,7 @@ class BelongsTo extends OneToOne
             ->field($fields)
             ->join([$table => $relation], $alias . '.' . $this->foreignKey . '=' . $relation . '.' . $this->localKey, $joinType);
 
-        return $this->getRelationSoftDelete($query, $relation, $where);
+        return $this->getRelationSoftDelete($query, $relation, $where, $logic);
     }
 
     /**

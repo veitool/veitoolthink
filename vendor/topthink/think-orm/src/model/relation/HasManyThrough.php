@@ -128,7 +128,7 @@ class HasManyThrough extends Relation
      * @param Query  $query    Query对象
      * @return Query
      */
-    public function hasWhere($where = [], $fields = null, $joinType = '', ?Query $query = null): Query
+    public function hasWhere($where = [], $fields = null, $joinType = '', ?Query $query = null, string $logic = ''): Query
     {
         $model          = Str::snake(class_basename($this->parent));
         $relation       = Str::snake(class_basename($this->model));
@@ -143,7 +143,7 @@ class HasManyThrough extends Relation
             ->join([$relationTable => $relation], $relation . '.' . $this->throughKey . '=' . $table . '.' . $this->throughPk, $joinType)
             ->whereColumn($table . '.' . $this->throughPk, $alias . '.' . $this->localKey);
 
-        $this->getRelationSoftDelete($subQuery, $relation, $where);
+        $this->getRelationSoftDelete($subQuery, $relation, $where, $logic);
         return $query->alias($alias)->whereExists($subQuery->buildSql());
     }
 

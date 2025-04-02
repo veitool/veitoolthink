@@ -134,7 +134,7 @@ class MorphTo extends Relation
      *
      * @return Query
      */
-    public function hasWhere($where = [], $fields = null, string $joinType = '', ?Query $query = null)
+    public function hasWhere($where = [], $fields = null, string $joinType = '', ?Query $query = null, string $logic = '')
     {
         $model = Str::snake(class_basename($this->parent));
         $types = $this->parent->distinct()->column($this->morphType);
@@ -142,20 +142,21 @@ class MorphTo extends Relation
         $alias = $query->getAlias() ?: $model;
 
         return $query->alias($alias)
-            ->where(function (Query $query) use ($types, $where, $alias) {
+            ->where(function (Query $query) use ($types, $where, $alias, $logic) {
                 foreach ($types as $type) {
                     if ($type) {
-                        $query->whereExists(function (Query $query) use ($type, $where, $alias) {
+                        $query->whereExists(function (Query $query) use ($type, $where, $alias, $logic) {
                             $class = $this->parseModel($type);
                             /** @var Model $model */
                             $model = new $class();
 
                             $table = $model->getTable();
+                            $logic = 'OR' == $logic ? 'whereOr' : 'where';
                             $query
                                 ->table($table)
                                 ->where($alias . '.' . $this->morphType, $type)
                                 ->whereColumn($alias . '.' . $this->morphKey, $table . '.' . $model->getPk())
-                                ->where($where);
+                                ->$logic($where);
                         }, 'OR');
                     }
                 }

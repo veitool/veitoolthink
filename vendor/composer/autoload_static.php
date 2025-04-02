@@ -167,10 +167,10 @@ class ComposerStaticInit118552ef2b3077b276422e248ece3c62
             3 => __DIR__ . '/..' . '/topthink/think-helper/src',
             4 => __DIR__ . '/..' . '/topthink/think-image/src',
             5 => __DIR__ . '/..' . '/topthink/think-log/src',
-            6 => __DIR__ . '/..' . '/topthink/think-template/src',
-            7 => __DIR__ . '/..' . '/topthink/think-validate/src',
-            8 => __DIR__ . '/..' . '/topthink/think-orm/src',
-            9 => __DIR__ . '/..' . '/topthink/think-queue/src',
+            6 => __DIR__ . '/..' . '/topthink/think-queue/src',
+            7 => __DIR__ . '/..' . '/topthink/think-template/src',
+            8 => __DIR__ . '/..' . '/topthink/think-validate/src',
+            9 => __DIR__ . '/..' . '/topthink/think-orm/src',
         ),
         'app\\' => 
         array (
@@ -428,6 +428,7 @@ class ComposerStaticInit118552ef2b3077b276422e248ece3c62
         'Nette\\PhpGenerator\\Traits\\VisibilityAware' => __DIR__ . '/..' . '/nette/php-generator/src/PhpGenerator/Traits/VisibilityAware.php',
         'Nette\\PhpGenerator\\Type' => __DIR__ . '/..' . '/nette/php-generator/src/PhpGenerator/Type.php',
         'Nette\\PhpGenerator\\Visibility' => __DIR__ . '/..' . '/nette/php-generator/src/PhpGenerator/Visibility.php',
+        'Nette\\ShouldNotHappenException' => __DIR__ . '/..' . '/nette/utils/src/exceptions.php',
         'Nette\\SmartObject' => __DIR__ . '/..' . '/nette/utils/src/SmartObject.php',
         'Nette\\StaticClass' => __DIR__ . '/..' . '/nette/utils/src/StaticClass.php',
         'Nette\\UnexpectedValueException' => __DIR__ . '/..' . '/nette/utils/src/exceptions.php',

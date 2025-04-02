@@ -13,6 +13,7 @@ declare (strict_types = 1);
 
 namespace think\model\concern;
 
+use Closure;
 use think\helper\Str;
 use think\model\Collection;
 use think\model\contract\Modelable;
@@ -78,6 +79,22 @@ trait Conversion
     {
         $this->setOption('mapping', $map);
 
+        return $this;
+    }
+
+    /**
+     * 设置输出场景.
+     *
+     * @param string $scene
+     *
+     * @return $this
+     */
+    public function scene(string $scene)
+    {
+        $method = 'scene' . Str::studly($scene);
+        if (method_exists($this, $method)) {
+            call_user_func([$this, $method]);
+        }
         return $this;
     }
 

@@ -208,16 +208,20 @@ trait Attribute
             return $value;
         }
 
+        $param = null;
         if (is_array($type)) {
             [$type, $param] = $type;
         } elseif (str_contains($type, ':')) {
             [$type, $param] = explode(':', $type, 2);
         }
 
-        $typeTransform = static function (string $type, $value, $model) {
+        $typeTransform = static function (string $type, $value, $model, $param) {
             if (class_exists($type) && !($value instanceof $type)) {
                 if (is_subclass_of($type, Typeable::class)) {
                     $value = $type::from($value, $model);
+                    if ($param && DateTime::class == $type) {
+                        $value = $value->format($param);
+                    }
                 } elseif (is_subclass_of($type, FieldTypeTransform::class)) {
                     $value = $type::get($value, $model);
                 } elseif (is_subclass_of($type, BackedEnum::class)) {
@@ -243,11 +247,11 @@ trait Attribute
             'bool','boolean' => (bool) $value,
             'array'          => empty($value) ? [] : (is_array($value) ? $value : json_decode($value, true)),
             'object'         => empty($value) ? new \stdClass() : (is_string($value) ? json_decode($value) : json_decode(json_encode($value, JSON_FORCE_OBJECT))),
-            'json'           => $typeTransform(Json::class, $value, $this),
-            'date'           => $typeTransform(Date::class, $value, $this),
-            'datetime'       => $typeTransform(DateTime::class, $value, $this),
-            'timestamp'      => $typeTransform(DateTime::class, $value, $this),
-            default          => $typeTransform($type, $value, $this),
+            'json'           => $typeTransform(Json::class, $value, $this, $param),
+            'date'           => $typeTransform(Date::class, $value, $this, $param),
+            'datetime'       => $typeTransform(DateTime::class, $value, $this, $param),
+            'timestamp'      => $typeTransform(DateTime::class, $value, $this, $param),
+            default          => $typeTransform($type, $value, $this, $param),
         };
     }
 

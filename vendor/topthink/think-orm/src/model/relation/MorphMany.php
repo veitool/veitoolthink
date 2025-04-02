@@ -122,7 +122,7 @@ class MorphMany extends Relation
      *
      * @return Query
      */
-    public function hasWhere($where = [], $fields = null, string $joinType = '', ?Query $query = null)
+    public function hasWhere($where = [], $fields = null, string $joinType = '', ?Query $query = null, string $logic = '')
     {
         $table    = $this->query->getTable();
         $query    = $query ?: $this->parent->getQuery();
@@ -137,7 +137,7 @@ class MorphMany extends Relation
             ->group($relation . '.' . $this->morphKey)
             ->field($fields);
 
-        return $this->getRelationSoftDelete($query, $relation, $where);
+        return $this->getRelationSoftDelete($query, $relation, $where, $logic);
     }
 
     /**

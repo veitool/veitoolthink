@@ -54,7 +54,7 @@ class Manager extends AdminBase
                 if($rs){
                     $rs->password = $rs->passsalt = $rs->token = '';
                     $rs->areaname = Area::getAreaStr($rs->areaid, ' - ');
-                    $rs->role_name = Roles::cache($rs->roleid)['role_name'];
+                    $rs->role_name = Roles::cache($rs->roleid)['role_name'] ?? '无效角色';
                     return $this->returnMsg($rs,1);
                 }else{
                     return $this->returnMsg('用户不存在');

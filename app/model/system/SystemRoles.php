@@ -68,6 +68,9 @@ class SystemRoles extends Base
                         $str .= $v['role_url'] ? ','.$v['role_url'] : '';
                     }
                 }
+            }elseif(empty($ro)){
+                cache($key, null);
+                return [];
             }
             $rs['actions'] = explode(',', trim($str,','));
             if($ro['role_ext']){

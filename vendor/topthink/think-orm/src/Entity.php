@@ -14,6 +14,7 @@ declare (strict_types = 1);
 namespace think;
 
 use ArrayAccess;
+use InvalidArgumentException;
 use JsonSerializable;
 use ReflectionClass;
 use think\contract\Arrayable;
@@ -23,6 +24,7 @@ use WeakMap;
 
 /**
  * Class Entity.
+ * @mixin Model
  */
 abstract class Entity implements JsonSerializable, ArrayAccess, Arrayable, Jsonable, Modelable
 {
@@ -43,10 +45,9 @@ abstract class Entity implements JsonSerializable, ArrayAccess, Arrayable, Jsona
         $options = $this->getOptions();
 
         if (is_null($model)) {
-            $class = !empty($options['model_class']) ? $options['model_class'] : str_replace('\\entity\\', '\\model\\', static::class);
+            $class = !empty($options['modelClass']) ? $options['modelClass'] : str_replace('\\entity\\', '\\model\\', static::class);
             $model = new $class();
             $model->entity($this);
-            unset($options['model_class']);
         }
 
         self::$weakMap[$this] = [
@@ -54,7 +55,7 @@ abstract class Entity implements JsonSerializable, ArrayAccess, Arrayable, Jsona
         ];
 
         // 初始化模型
-        $model->setOptions($options);
+        $this->setOptions($options);
         $this->init($options);
     }
 
@@ -66,6 +67,56 @@ abstract class Entity implements JsonSerializable, ArrayAccess, Arrayable, Jsona
     protected function getOptions(): array
     {
         return [];
+    }
+
+    /**
+     * 批量设置模型参数
+     * @param array  $options  值
+     * @return void
+     */
+    public function setOptions(array $options): void
+    {
+        foreach ($options as $name => $value) {
+            $this->setOption($name, $value);
+        }
+    }
+
+    /**
+     * 设置模型参数
+     *
+     * @param string $name  参数名
+     * @param mixed  $value  值
+     *
+     * @return $this
+     */
+    public function setOption(string $name, $value)
+    {
+        self::$weakMap[$this][$name] = $value;
+        return $this;
+    }
+
+    /**
+     * 获取模型参数
+     *
+     * @param string $name  参数名
+     * @param mixed  $default  默认值
+     *
+     * @return mixed
+     */
+    public function getOption(string $name, $default = null)
+    {
+        return self::$weakMap[$this][$name] ?? $default;
+    }
+
+    /**
+     * 创建新的实例.
+     *
+     * @param Model $model 模型连接对象
+     * @param bool  $with  是否存在with关联查询
+     */
+    public function newInstance(?Model $model, bool $with = false)
+    {
+        return new static($model, $with);
     }
 
     /**
@@ -83,6 +134,60 @@ abstract class Entity implements JsonSerializable, ArrayAccess, Arrayable, Jsona
     public function model()
     {
         return self::$weakMap[$this]['model'];
+    }
+
+    /**
+     *  设置模型.
+     *
+     * @param Model $model 模型对象
+     * @return void
+     */
+    public function setModel(Model $model)
+    {
+        self::$weakMap[$this]['model'] = $model;
+    }
+
+    /**
+     * 获取克隆的模型实例.
+     *
+     * @return static
+     */
+    public function clone()
+    {
+        $model = new static();
+        self::$weakMap[$model] = self::$weakMap[$this];
+        return $model;
+    }
+
+    /**
+     * 克隆模型实例
+     * 
+     * @return void
+     */
+    public function __clone()
+    {
+        throw new InvalidArgumentException('use $modelObj->clone() replace clone $modelObj');
+    }
+
+    /**
+     * 序列化模型对象
+     * 
+     * @return array
+     */
+    public function __serialize(): array
+    {
+        return array_diff_key(self::$weakMap[$this]);
+    }
+
+    /**
+     * 反序列化模型对象
+     * 
+     * @param array $data 
+     * @return void
+     */
+    public function __unserialize(array $data) 
+    {
+        self::$weakMap[$this] = $data;
     }
 
     /**
@@ -166,7 +271,7 @@ abstract class Entity implements JsonSerializable, ArrayAccess, Arrayable, Jsona
      * @param int $options json参数
      * @return string
      */
-    public function tojson(int $options = JSON_UNESCAPED_UNICODE): string
+    public function toJson(int $options = JSON_UNESCAPED_UNICODE): string
     {
         return $this->model()->toJson($options);
     }
@@ -195,12 +300,12 @@ abstract class Entity implements JsonSerializable, ArrayAccess, Arrayable, Jsona
     public static function __callStatic($method, $args)
     {
         $entity = new static();
-        if (in_array($method, ['destroy', 'create', 'update'])) {
+        if (in_array($method, ['destroy', 'create', 'update', 'saveAll'])) {
             // 调用model的静态方法
             $db = $entity->model();
         } else {
             // 调用Query类查询方法
-            $db = $entity->model()->getQuery();
+            $db = $entity->model()->db();
         }
 
         return call_user_func_array([$db, $method], $args);

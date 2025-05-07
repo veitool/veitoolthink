@@ -162,14 +162,14 @@ class ComposerStaticInit118552ef2b3077b276422e248ece3c62
         'think\\' => 
         array (
             0 => __DIR__ . '/..' . '/topthink/framework/src/think',
-            1 => __DIR__ . '/..' . '/topthink/think-container/src',
-            2 => __DIR__ . '/..' . '/topthink/think-filesystem/src',
-            3 => __DIR__ . '/..' . '/topthink/think-helper/src',
-            4 => __DIR__ . '/..' . '/topthink/think-image/src',
-            5 => __DIR__ . '/..' . '/topthink/think-log/src',
-            6 => __DIR__ . '/..' . '/topthink/think-queue/src',
-            7 => __DIR__ . '/..' . '/topthink/think-template/src',
-            8 => __DIR__ . '/..' . '/topthink/think-validate/src',
+            1 => __DIR__ . '/..' . '/topthink/think-filesystem/src',
+            2 => __DIR__ . '/..' . '/topthink/think-image/src',
+            3 => __DIR__ . '/..' . '/topthink/think-log/src',
+            4 => __DIR__ . '/..' . '/topthink/think-queue/src',
+            5 => __DIR__ . '/..' . '/topthink/think-template/src',
+            6 => __DIR__ . '/..' . '/topthink/think-validate/src',
+            7 => __DIR__ . '/..' . '/topthink/think-helper/src',
+            8 => __DIR__ . '/..' . '/topthink/think-container/src',
             9 => __DIR__ . '/..' . '/topthink/think-orm/src',
         ),
         'app\\' => 

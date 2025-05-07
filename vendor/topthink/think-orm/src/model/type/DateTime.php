@@ -4,13 +4,14 @@ declare (strict_types = 1);
 
 namespace think\model\type;
 
+use Stringable;
 use think\model\contract\Modelable;
 use think\model\contract\Typeable;
 
 class DateTime implements Typeable
 {
     protected $data;
-    protected $value;
+    protected $format;
 
     public static function from(mixed $value, Modelable $model)
     {
@@ -21,25 +22,42 @@ class DateTime implements Typeable
 
     public function data($time, $format)
     {
-        $this->value = is_numeric($time) ? (int) $time : strtotime($time);
         if ($format) {
-            $date        = new \DateTime;
-            $this->data  = $date->setTimestamp($this->value)->format($format);
-        } else {
-            // 不做格式化输出转换
-            $this->data  = $time;
-        }
+            if (class_exists($format)) {
+                $time = $time instanceof $format ? $time : new $format($time);
+                $this->format = 'Y-m-d H:i:s.u';
+            } else {
+                if (is_object($time)) {
+                } elseif (is_numeric($time)) {
+                    $time  = (new \DateTime())->setTimestamp((int) $time);
+                } elseif (strpos('.', $time)) {
+                    $time  = \DateTime::createFromFormat('Y-m-d H:i:s.u', $time);
+                } else {
+                    $time  = (new \DateTime($time));
+                }
+                $this->format = $format;
+            }
+        } 
+        $this->data  = $time;
     }
 
-    public function format(string $format)
+    public function setFormat(string $format)
     {
-        $date = new \DateTime;
-        return $date->setTimestamp($this->value)->format($format);
+        $this->format = $format;
+    }
+
+    public function format(string $format = '')
+    {
+        if ($this->data instanceof Stringable) {
+            return $this->data->__toString();
+        }
+
+        return $this->data->format($format ?: $this->format);
     }
 
     public function value()
     {
-        return $this->data;
+        return $this->format();
     }
 
     /**
@@ -47,6 +65,6 @@ class DateTime implements Typeable
      */
     public function __toString()
     {
-        return $this->data;
+        return $this->value();
     }
 }

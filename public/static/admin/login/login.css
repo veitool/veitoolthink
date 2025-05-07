@@ -24,7 +24,7 @@ input[type=text]:focus::-webkit-input-placeholder,input[type=password]:focus::-w
 .login-item{position:relative;z-index:2;margin-bottom:15px}
 .login-item:after,.login-item:before{content:".";display:block;height:0;clear:both;visibility:hidden}
 .login-item input{width:178px}
-.login-item .layui-icon{position:absolute;top:12px;left:18px;width:14px;height:13px;z-index:9;color:#ccc;}
+.login-item .layui-icon{position:absolute;top:8px;left:18px;width:14px;height:13px;z-index:9;color:#ccc;}
 .login-item.focus .layui-icon{color:#666;}
 .sub{padding-top:10px}
 .sub .captcha{width:115px;overflow:hidden;margin:0px 0 -10px 0px;float:left}

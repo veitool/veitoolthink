@@ -67,9 +67,9 @@ trait WhereQuery
      */
     protected function parseQueryWhere(BaseQuery $query): void
     {
-        $this->options['where'] = $query->getOptions('where') ?? [];
+        $this->options['where'] = $query->getOption('where', []);
 
-        $via = $query->getOptions('via');
+        $via = $query->getOption('via');
         if ($via) {
             foreach ($this->options['where'] as $logic => &$where) {
                 foreach ($where as $key => &$val) {
@@ -304,15 +304,13 @@ trait WhereQuery
      */
     public function whereJsonContains(string $field, $condition, string $logic = 'AND')
     {
-        if (str_contains($field, '->')) {
-            [$field1, $field2] = explode('->', $field);
-            $field             = 'json_extract(' . $field1 . ',\'$.' . $field2 . '\')';
-        }
+        $value = is_null($condition) ? 'NULL' : '\'' . json_encode($condition) . '\'';
 
-        $value       = is_string($condition) ? '"' . $condition . '"' : $condition;
-        $name        = $this->bindValue($value);
-        $bind[$name] = $value;
-        return $this->whereRaw('json_contains(' . $field . ',:' . $name . ')', $bind, $logic);
+        if (str_contains($field, '->')) {
+            [$field, $path] = explode('->', $field, 2);
+            return $this->whereRaw('json_contains(' . $field . ', ' . $value . ', \'$.'. str_replace('->', '.', $path) . '\')', [], $logic);
+        }
+        return $this->whereRaw('json_contains(' . $field . ', ' . $value . ')', [], $logic);
     }
 
     public function whereOrJsonContains(string $field, $condition)
@@ -627,7 +625,7 @@ trait WhereQuery
      *
      * @return $this
      */
-    public function when($condition, Closure | array $query, Closure | array | null $otherwise = null): self
+    public function when($condition, Closure | array $query, Closure | array | null $otherwise = null)
     {
         // 处理条件为 Closure 的情况
         if ($condition instanceof Closure) {

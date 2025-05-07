@@ -74,7 +74,6 @@ class Manager extends AdminBase
             'organ' => json_encode($organ),
             'roles' => json_encode(Roles::where("state > 0")->order('listorder','asc')->column('role_name','roleid')) //角色ID=>角色名
         ]);
-        $this->assign('limit', 10);
         return $this->fetch();
     }
 

@@ -31,6 +31,8 @@ layui.define(['tagsInput','fileLibrary','cascader'], function(e){
     c.select_html = '<select name="{{ d.name }}" lay-filter="{{ d.name }}" ' + c.item_style + c.vers_html + '{{# layui.buildItems.on(d.name,"","select"); if(d.search){ }}lay-search{{# } }}>{{# if(d.optiontip || d.reqtext){ }}<option value="">{{ d.optiontip || d.reqtext }}</option>{{# } }}{{# layui.each(d.options, function(key, txt){ }}<option value="{{ key }}" {{ d.value == key ? "selected" : "" }}>{{ txt }}</option>{{# }); }}</select>';
     //隐藏域
     c.hidden = '<input type="hidden" name="{{ d.name }}" value="{{ d.value || \'\' }}"/>';
+    //clear
+    c.clear = '<div style="clear:both"></div>';
     //静态代码
     c.html = c.item_html + c.block_html + '>' + '{{- d.html }}' + c.tips_html + '</div></div>';
     //单行文本、数组

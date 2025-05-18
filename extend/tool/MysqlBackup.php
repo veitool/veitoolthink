@@ -64,7 +64,7 @@ class MysqlBackup
      * @param  int      $type    有传入表名时获取的类型
      * @return array
      */
-    public function dataList(string $table = null, int $type = 1)
+    public function dataList(?string $table = null, int $type = 1)
     {
         $db = self::connect();
         if(is_null($table)){
@@ -482,7 +482,7 @@ class MysqlBackup
      * @param   string|array  $tables  数据表名
      * @return  mixed
      */
-    public function optimize(string|array $tables = null)
+    public function optimize(string|array $tables = '')
     {
         if($tables){
             $db = self::connect();
@@ -505,7 +505,7 @@ class MysqlBackup
      * @param    string|array   $tables   数据表名
      * @return   array|json
      */
-    public function repair(string|array $tables = null)
+    public function repair(string|array $tables = '')
     {
         if($tables){
             $db = self::connect();
@@ -553,7 +553,7 @@ class MysqlBackup
      * @param   string   $path   文件夹路径
      * @return  bool
      */
-    protected function checkPath(string $path = null)
+    protected function checkPath(string $path = '')
     {
         if(is_dir($path)){
             return true;

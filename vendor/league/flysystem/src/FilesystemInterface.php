@@ -271,7 +271,7 @@ interface FilesystemInterface
      *
      * @return Handler Either a file or directory handler.
      */
-    public function get($path, Handler $handler = null);
+    public function get($path, ?Handler $handler = null);
 
     /**
      * Register a plugin.

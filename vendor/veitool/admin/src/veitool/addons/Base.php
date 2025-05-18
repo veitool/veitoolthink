@@ -29,7 +29,7 @@ abstract class Base
      * @param  string  $name  插件名
      * @access public
      */
-    public function __construct(string $name = null)
+    public function __construct(?string $name = null)
     {
         $name = is_null($name) ? $this->getName() : $name;
         //设置插件标识

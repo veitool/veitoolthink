@@ -20,12 +20,12 @@ class AddonException extends Exception
 
     /**
      * 构造函数
-     * @param  string  $message  提示
-     * @param  int     $code     编码
-     * @param  string  $data     数据
+     * @param  string        $message  提示
+     * @param  int           $code     编码
+     * @param  string|array  $data     数据
      * @return
      */
-    public function __construct($message, $code = 0, $data = '')
+    public function __construct(string $message, int $code = 0, string|array $data = '')
     {
         $this->message  = $message;
         $this->code     = $code;

@@ -113,11 +113,13 @@ layui.use(['vinfo'],function(){
         if(tab == 'login' && do_login){
             do_login = false;
             table.render({
+                size: 'sm',
                 elem: '#loginlog',
                 page: true,
                 limit:limit,
                 cellExpandedMode:'tips',
                 url: app_root+"login",
+                height: 'full-303',
                 cols: [[
                     {field:"logid",fixed:"left",width:80,align:'center',title:"ID",sort:!0},
                     {field:"username",width:120,title:"帐号",align:'center',toolbar:'<div><a style="cursor:pointer;" lay-event="userinfo">{{d.username}}</a></div>'},
@@ -173,11 +175,13 @@ layui.use(['vinfo'],function(){
         if(tab == 'manager' && do_manager){
             do_manager = false;
             table.render({
+                size: 'sm',
                 elem: '#managerlog',
                 page: true,
                 limit: limit,
                 cellExpandedMode:'tips',
                 url: app_root + "manager",
+                height: 'full-303',
                 cols: [[
                     {field:"logid",fixed:"left",width:80,align:'center',title:"ID",sort:!0},
                     {field:"url",edit:'text',title:"路径"},
@@ -208,11 +212,13 @@ layui.use(['vinfo'],function(){
         if(tab == 'web' && do_web){
             do_web = false;
             table.render({
+                size: 'sm',
                 elem: '#weblog',
                 page: true,
                 limit: limit,
                 cellExpandedMode:'tips',
                 url: app_root + "web",
+                height: 'full-303',
                 cols: [[
                     {field:"logid",fixed:"left",width:80,align:'center',title:"ID",sort:!0},
                     {field:"url",edit:'text',title:"路径"},

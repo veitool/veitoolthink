@@ -26,7 +26,7 @@ class Log extends AdminBase
     public function index()
     {
         $this->assign([
-            'limit' => 10,
+            'limit' => 20,
             'PT' => json_encode(['后台','会员','门店','终端'])
         ]);
         return $this->fetch();

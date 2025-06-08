@@ -13,7 +13,7 @@ CREATE TABLE `vt_system_area` (
   `childs` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '直接子级数',
   `listorder` smallint(4) unsigned NOT NULL DEFAULT '0' COMMENT '排序ID',
   PRIMARY KEY (`areaid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='地区数据';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='地区数据';
 
 -- ----------------------------
 -- Table structure for vt_system_category
@@ -32,7 +32,7 @@ CREATE TABLE `vt_system_category` (
   PRIMARY KEY (`catid`),
   KEY `type` (`type`) USING BTREE,
   KEY `sign` (`sign`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='公用类别';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='公用类别';
 
 -- ----------------------------
 -- Records of vt_system_category
@@ -56,7 +56,7 @@ CREATE TABLE `vt_system_login_log` (
   `agent` varchar(255) NOT NULL DEFAULT '' COMMENT '登录端设备信息',
   PRIMARY KEY (`logid`),
   KEY `username` (`username`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='登录日志';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='登录日志';
 
 -- ----------------------------
 -- Table structure for vt_system_manager
@@ -87,7 +87,7 @@ CREATE TABLE `vt_system_manager` (
   `state` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '用户状态',
   PRIMARY KEY (`userid`),
   UNIQUE KEY `username` (`username`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='管理用户';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='管理用户';
 
 -- ----------------------------
 -- Records of vt_system_manager
@@ -106,7 +106,7 @@ CREATE TABLE `vt_system_manager_log` (
   `logtime` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '时间',
   PRIMARY KEY (`logid`),
   KEY `username` (`username`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='管理日志';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='管理日志';
 
 -- ----------------------------
 -- Table structure for vt_system_menus
@@ -129,7 +129,7 @@ CREATE TABLE `vt_system_menus` (
   `type` tinyint(2) unsigned NOT NULL DEFAULT '1' COMMENT '1:后台菜单2:会员菜单',
   `addtime` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
   PRIMARY KEY (`menuid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='菜单权限';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='菜单权限';
 
 -- ----------------------------
 -- Records of vt_system_menus
@@ -276,7 +276,7 @@ CREATE TABLE `vt_system_online` (
   `type` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '0:后台1:会员',
   `etime` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '最后时间',
   UNIQUE KEY `uid` (`uid`,`userid`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='在线用户';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='在线用户';
 
 -- ----------------------------
 -- Table structure for vt_system_organ
@@ -291,7 +291,7 @@ CREATE TABLE `vt_system_organ` (
   `listorder` smallint(4) unsigned NOT NULL DEFAULT '0' COMMENT '排序',
   `note` varchar(255) NOT NULL DEFAULT '' COMMENT '备注',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='组织机构';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='组织机构';
 
 -- ----------------------------
 -- Records of vt_system_organ
@@ -316,7 +316,7 @@ CREATE TABLE `vt_system_roles` (
   `state` tinyint(2) unsigned NOT NULL DEFAULT '1' COMMENT '状态：0禁用',
   `addtime` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
   PRIMARY KEY (`roleid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='管理角色';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='管理角色';
 
 -- ----------------------------
 -- Records of vt_system_roles
@@ -340,7 +340,7 @@ CREATE TABLE `vt_system_sequence` (
   PRIMARY KEY (`id`),
   KEY `code` (`code`) USING BTREE,
   KEY `day` (`day`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='单据编序';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='单据编序';
 
 -- ----------------------------
 -- Table structure for vt_system_setting
@@ -365,7 +365,7 @@ CREATE TABLE `vt_system_setting` (
   PRIMARY KEY (`id`),
   KEY `addon` (`addon`) USING BTREE,
   KEY `group` (`group`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统配置';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='系统配置';
 
 -- ----------------------------
 -- Records of vt_system_setting
@@ -423,7 +423,7 @@ CREATE TABLE `vt_system_sms` (
   `sendtime` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '发送时间',
   `code` varchar(200) NOT NULL DEFAULT '' COMMENT '错误提示',
   PRIMARY KEY (`itemid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='短信记录';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='短信记录';
 
 -- ----------------------------
 -- Table structure for vt_system_upload_file
@@ -447,7 +447,7 @@ CREATE TABLE `vt_system_upload_file` (
   KEY `isdel` (`isdel`) USING BTREE,
   KEY `username` (`username`) USING BTREE,
   KEY `admin` (`admin`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='上传文件';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='上传文件';
 
 -- ----------------------------
 -- Table structure for vt_system_upload_group
@@ -462,7 +462,7 @@ CREATE TABLE `vt_system_upload_group` (
   `addtime` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
   `edittime` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
   PRIMARY KEY (`groupid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='上传分组';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='上传分组';
 
 -- ----------------------------
 -- Records of vt_system_upload_group
@@ -481,7 +481,7 @@ CREATE TABLE `vt_system_web_log` (
   `logtime` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '访问时间',
   `agent` varchar(255) NOT NULL DEFAULT '' COMMENT '设备信息',
   PRIMARY KEY (`logid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='访问日志';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='访问日志';
 
 -- ----------------------------
 -- Table structure for vt_system_dict
@@ -502,7 +502,7 @@ CREATE TABLE `vt_system_dict` (
   KEY `parentid` (`parentid`) USING BTREE,
   KEY `groupid` (`groupid`) USING BTREE,
   KEY `state` (`state`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='字典项目';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='字典项目';
 
 -- ----------------------------
 -- Records of vt_system_dict
@@ -533,7 +533,7 @@ CREATE TABLE `vt_system_dict_group` (
   `note` varchar(200) NOT NULL DEFAULT '' COMMENT '备注',
   PRIMARY KEY (`id`),
   KEY `code` (`code`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='字典分组';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='字典分组';
 
 -- ----------------------------
 -- Records of vt_system_dict_group

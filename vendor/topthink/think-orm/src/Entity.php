@@ -112,11 +112,11 @@ abstract class Entity implements JsonSerializable, ArrayAccess, Arrayable, Jsona
      * 创建新的实例.
      *
      * @param Model $model 模型连接对象
-     * @param bool  $with  是否存在with关联查询
      */
-    public function newInstance(?Model $model, bool $with = false)
+    public function newInstance(?Model $model)
     {
-        return new static($model, $with);
+        $entity = new static();
+        return $entity->setModel($model);
     }
 
     /**
@@ -140,11 +140,12 @@ abstract class Entity implements JsonSerializable, ArrayAccess, Arrayable, Jsona
      *  设置模型.
      *
      * @param Model $model 模型对象
-     * @return void
+     * @return $this
      */
     public function setModel(Model $model)
     {
         self::$weakMap[$this]['model'] = $model;
+        return $this;
     }
 
     /**

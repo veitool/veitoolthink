@@ -112,7 +112,7 @@ class Addon extends AdminBase
             $tables = config('veitool.ddata',1) && env('app_debug') && $this->manUser['userid']==1 ? Service::getAddonTables($d['name']) : [];
             Service::uninstall($d['name'], config('veitool.force',1));
             if($tables){
-                $prefix = config('database.connections.'.config('database.default').'.prefix');
+                $prefix = env('database.prefix', 'vt_');
                 foreach($tables as $index => $table){
                     if(!preg_match("/^{$prefix}{$d['name']}/", $table)) continue;
                     Db::execute("DROP TABLE IF EXISTS `{$table}`");

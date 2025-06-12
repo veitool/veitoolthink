@@ -24,7 +24,7 @@ class Area extends AdminBase
      */
     public function index(?string $pid = null)
     {
-        $rs = A::all("parentid=".(int)$pid, '*', ['listorder'=>'asc']);
+        $rs = A::all("parentid=".(int)$pid, 'areaid,areaname,parentid,arrparentid,childs,listorder', ['listorder'=>'asc']);
         if(is_null($pid)){
             $this->assign('list', json_encode($rs));
             return $this->fetch();
@@ -47,13 +47,12 @@ class Area extends AdminBase
      */
     public function add()
     {
-        $d = $this->only(['@token'=>'','parentid/d','listorder/d','areaname/*/{2,30}/地区名称']);
+        $d = $this->only(['@token'=>'','parentid/d','listorder/d','areaname/*/{2,100}/地区名称']);
         $parentid  = $d['parentid'];
         $listorder = $d['listorder'];
         $arrparentid = 0;
-        if($parentid>0){
-            $rs = A::one(['areaid'=>$parentid]);
-            if(is_null($rs)) return $this->returnMsg("上级地区ID不存在");
+        if($parentid > 0){
+            if(is_null($rs = A::one(['areaid'=>$parentid]))) return $this->returnMsg("上级地区ID不存在");
             $arrparentid = $rs['arrparentid'] ? $rs['arrparentid'].','.$rs['areaid'] : $rs['areaid'];
         }
         $data = [];
@@ -61,15 +60,12 @@ class Area extends AdminBase
         foreach($area as $v){
             $v = strip_html($v);
             if(!$v) continue;
-            $data[] = ['areaname'=>$v,'parentid'=>$parentid,'listorder'=>$listorder,'arrparentid'=>$arrparentid];
+            $data[] = ['areaname'=>$v,'parentid'=>$parentid,'listorder'=>$listorder,'arrparentid'=>$arrparentid,'creator'=>$this->manUser['username']];
             $listorder ++;
         }
-        if(A::insertAll($data)){
-            A::cache(1);
-            return $this->returnMsg("添加地区成功", 1);
-        }else{
-            return $this->returnMsg('添加地区失败');
-        }
+        A::saveAll($data);
+        A::cache(1);
+        return $this->returnMsg("添加地区成功", 1);
     }
 
     /**
@@ -79,6 +75,8 @@ class Area extends AdminBase
     public function edit()
     {
         $d = $this->only(['@token'=>'','areaid/d/参数错误','av','af']);
+        $Myobj = A::one(['areaid'=>$d['areaid']]);
+        if(!$Myobj) return $this->returnMsg("数据不存在");
         $value = $d['av'];
         $field = $d['af'];
         if(!in_array($field,['areaname','listorder'])) return $this->returnMsg("参数错误2");
@@ -87,11 +85,11 @@ class Area extends AdminBase
         }else{
             $value = intval($value);
         }
-        if(A::update([$field=>$value,'areaid'=>$d['areaid']])){
+        if($Myobj->save([$field=>$value,'editor'=>$this->manUser['username']])){
             A::cache(1);
-            return $this->returnMsg("设置成功", 1);
+            return $this->returnMsg("更新成功", 1);
         }else{
-            return $this->returnMsg("设置失败");
+            return $this->returnMsg("无数据更新");
         }
     }
 
@@ -106,9 +104,10 @@ class Area extends AdminBase
         }else{
             @set_time_limit(0);
             $file = VT_PUBLIC . 'install/data/area_data.sql';
-            $prefix = config('database.connections.'.config('database.default').'.prefix');
+            $prefix = env('database.prefix', 'vt_');
             if(is_file($file)){
-                $sql = explode("\n", trim(str_replace(["\r\n", "\r", "vt_"], ["\n", "\n", $prefix], file_get_contents($file))));
+                $sql = trim(file_get_contents($file));
+                $sql = explode("\n", $prefix == 'vt_' ? $sql : str_replace(["\r\n", "\r", "vt_"], ["\n", "\n", $prefix], $sql));
                 foreach($sql as $v){
                     \think\facade\Db::execute($v);
                 }
@@ -127,10 +126,9 @@ class Area extends AdminBase
     public function del()
     {
         $areaid = $this->only(['@token'=>'','areaid'])['areaid'];
-        $areaid = is_array($areaid) ? implode(',',$areaid) : $areaid;
-        $rs = A::one("parentid IN ($areaid)");
-        if($rs) return $this->returnMsg("该地区存在子地区不能删除！");
-        if(A::del("areaid IN ($areaid)")){
+        $areaid = is_array($areaid) ? $areaid : [$areaid];
+        if($areaid && A::whereIn('parentid', $areaid)->find()) return $this->returnMsg("该地区不存在或有子地区不能删除！");
+        if(A::destroy($areaid)){
             A::cache(1);
             return $this->returnMsg("删除成功", 1);
         }else{

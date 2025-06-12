@@ -87,14 +87,10 @@ class Manager extends AdminBase
         if(M::one("username = '$d[username]'")) return $this->returnMsg("该用户帐号已经存在");
         $d["passsalt"] = random(8);
         $d["password"] = set_password($d["password"],$d["passsalt"]);
-        $d["edit"]     = $this->manUser['username'];
-        $d["addtime"]  = time();
         $d["roleid"]   = explode(",",$d['roleids'])[0];
-        if(M::insert($d)){
-            return $this->returnMsg("添加用户成功", 1);
-        }else{
-            return $this->returnMsg('添加用户失败');
-        }
+        $d["creator"]  = $this->manUser['username'];
+        M::create($d);
+        return $this->returnMsg("添加用户成功", 1);
     }
 
     /**
@@ -128,12 +124,12 @@ class Manager extends AdminBase
             }elseif($field=='state'){
                 $value = $userid==1 ? 1 : intval($value);
             }
-            return $this->returnMsg($Myobj->save([$field=>$value]) ? "设置成功" : '设置失败', 1);
+            return $this->returnMsg($Myobj->save([$field=>$value,'editor'=>$this->manUser['username']]) ? "设置成功" : '设置失败', 1);
         }else{
             if($userid == 1 && $userid != $this->manUser['userid']) return $this->returnMsg("您的身份不能修改超级用户的信息");
             if(M::one("username='$d[username]' AND userid<>$userid")) return $this->returnMsg("帐号【".$d['username']."】已经存在");
-            $d["edittime"] = time();
             if(isset($d['roleids']) && $d['roleids']) $d["roleid"] = explode(",",$d['roleids'])[0];
+            $d["editor"]  = $this->manUser['username'];
             if($Myobj->save($d)){
                 return $this->returnMsg("编辑用户成功", 1);
             }else{
@@ -151,7 +147,6 @@ class Manager extends AdminBase
         $d = $this->only(['@token'=>'','nickname/*/n/昵称','truename/*/n','email/?/e','mobile/?/m','areaid/?/i/地区','address/?/{2,100}/详细地址','gender/d']);
         $d["userid"] = $this->manUser['userid'];
         $d['gender'] = in_array($d['gender'],[1,2]) ? $d['gender'] : 1;
-        $d["edittime"] = time();
         if(M::update($d)){
             return $this->returnMsg("修改成功", 1);
         }else{
@@ -166,12 +161,11 @@ class Manager extends AdminBase
     public function del()
     {
         $userid = $this->only(['@token'=>'','userid'])['userid'];
-        $userid = is_array($userid) ? implode(',',$userid) : $userid;
+        $userid = is_array($userid) ? $userid : [$userid];
         if(!$userid) return $this->returnMsg('参数错误');
-        $ids = explode(',', $userid);
-        if(in_array(1,$ids))return $this->returnMsg('不允许删除最高用户');
-        if(in_array($this->manUser['userid'],$ids))return $this->returnMsg('不允许删除当前用户');
-        if(M::del("userid IN($userid)")){
+        if(in_array(1, $userid))return $this->returnMsg('不允许删除最高用户');
+        if(in_array($this->manUser['userid'], $userid))return $this->returnMsg('不允许删除当前用户');
+        if(M::destroy($userid)){
             return $this->returnMsg("删除成功", 1);
         }else{
             return $this->returnMsg("删除失败");
@@ -207,6 +201,7 @@ class Manager extends AdminBase
         $d = $this->only(['@token'=>'','userid/d/参数错误','newPassword/*/p/新登录密码']);
         if($d["userid"]==1) return $this->returnMsg('超级管理员禁止重置密码');
         if($d["userid"] != $this->manUser['userid'] && $this->getRoleExt() == 1) return $this->returnMsg("您没有重置其他用户密码的权限"); //权限扩展处理
+        $d["editor"]   = $this->manUser['username'];
         $d["passsalt"] = random(8);
         $d["password"] = set_password($d["newPassword"],$d["passsalt"]);
         unset($d["newPassword"]);
@@ -226,11 +221,9 @@ class Manager extends AdminBase
         $d = $this->only(['@token'=>'','title/*/{2,10}/机构简称','titles/*/{2,50}/机构全称','parentid/d','listorder/d','note/h']);
         $rs = Organ::one("id = $d[parentid]");
         $d['arrparentid'] = $rs ? (empty($rs['arrparentid']) ? $rs['id'] : $rs['arrparentid'].','.$rs['id']) : '';
-        if(Organ::insert($d)){
-            return $this->returnMsg("添加机构成功", 1, Organ::order(['listorder'=>'asc'])->column('*'));
-        }else{
-            return $this->returnMsg("添加机构失败");
-        }
+        $d['creator'] = $this->manUser['username'];
+        Organ::create($d);
+        return $this->returnMsg("添加机构成功", 1, Organ::order(['listorder'=>'asc'])->column('*'));
     }
 
     /**
@@ -265,6 +258,7 @@ class Manager extends AdminBase
                 $arr[] = ['id'=>$v['id'],'arrparentid'=>$arrparentid];
             }
         }
+        $d['editor'] = $this->manUser['username'];
         if($Myobj->save($d)){
             if($arr) (new Organ)->saveAll($arr);
             return $this->returnMsg("编辑成功",1,Organ::order(['listorder'=>'asc'])->column('*'));
@@ -283,7 +277,9 @@ class Manager extends AdminBase
         if($id==1) return $this->returnMsg("顶级组织机构不可删除");
         $ids = Organ::getChild($id);
         if(M::one("groupid IN($ids)")) return $this->returnMsg("该组织机构下存在用户不可删除");
-        $rs = Organ::del("CONCAT(',',CONCAT(arrparentid,',')) LIKE '%,{$id},%' OR id = $id");
+        $rs = Organ::destroy(function($query)use($id){
+            $query->where("CONCAT(',',CONCAT(arrparentid,',')) LIKE '%,{$id},%' OR id IN($id)");
+        });
         if($rs){
             return $this->returnMsg("删除成功",1,Organ::order(['listorder'=>'asc'])->column('*'));
         }else{

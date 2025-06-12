@@ -17,6 +17,11 @@ use app\model\Base;
 class SystemSetting extends Base
 {
     /**
+     * 启用软删除操作
+     */
+    use \think\model\concern\SoftDelete; /**/
+
+    /**
      * 列表(分页)
      * @param  string/array  $where  查询条件
      * @return obj

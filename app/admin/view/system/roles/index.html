@@ -26,7 +26,7 @@ layui.use(['zTree','buildItems'], function(){
             {type:'checkbox',fixed:'left'},
             {field:'roleid',width:60,unresize:true,align:'center',title:'ID'},
             {field:'role_name',edit:'text',minWidth:200,title:'角色名称'},
-            {field:'addtime',width:180,align:'center',title:'添加时间',templet:function(d){return layui.util.toDateString(d.addtime*1000)}},
+            {field:'add_time',width:180,align:'center',title:'添加时间',templet:function(d){return layui.util.toDateString(d.add_time*1000)}},
             {field:'listorder',edit:'text',width:80,align:'center',title:'排序'},
             {field:'state',width:100,align:'center',templet:function(d){return '<input type="checkbox" name="state" lay-skin="switch" lay-text="启用|禁用" lay-filter="roles-chang" value="'+d.state+'" data-json="'+encodeURIComponent(JSON.stringify(d))+'"'+(d.state==1 ? ' checked' : '')+'>';},unresize:true,title:'启用状态'},
             {fixed:'right',width:100,align:'center',toolbar:'<div><a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a><a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a></div>',title:'操作'}

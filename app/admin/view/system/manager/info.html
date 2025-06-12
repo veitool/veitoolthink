@@ -53,8 +53,8 @@
                     <div class="user-info-left">
                         <p><span>登录次数：</span>{$User.logins} 次</p>
                         <p><span style="letter-spacing:2px;">登录 IP：</span>{$User.loginip}</p>
-                        <p><span>添加时间：</span>{{ layui.util.toDateString({$User.addtime*1000}) }}</p>
-                        <p><span>最近修改：</span>{{ layui.util.toDateString({$User.edittime*1000}) }}</p>
+                        <p><span>添加时间：</span>{{ layui.util.toDateString({$User.add_time*1000}) }}</p>
+                        <p><span>最近修改：</span>{{ layui.util.toDateString({$User.upd_time*1000}) }}</p>
                         <p><span>最近登录：</span>{{ layui.util.toDateString({$User.logintime*1000}) }}</p>
                     </div>
                 </div>

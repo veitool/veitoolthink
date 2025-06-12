@@ -40,10 +40,11 @@ class Sms extends AdminBase
     {
         $d = $this->only(['@token'=>'','mobile/*/m','message/h']);
         $SMS  = new SendSms();
-        if(vconfig('sms_type')=='smsbao'){
-            return $this->returnMsg($SMS->smsbao_send($d['mobile'], $d['message']));
+        $method = vconfig('sms_type').'_send';
+        if(method_exists($SMS, $method)){
+            return $this->returnMsg($SMS->$method($d['mobile'], $d['message']));
         }else{
-            return $this->returnMsg($SMS->qiniu_send([$d['mobile']], $d['message']));
+            return $this->returnMsg('短信发送接口类型不存在');
         }
     }
 
@@ -53,13 +54,10 @@ class Sms extends AdminBase
      */
     public function del()
     {
-        $itemid = $this->only(['@token'=>'','itemid'])['itemid'];
-        $itemid = is_array($itemid) ? implode(',',$itemid) : $itemid;
-        if(S::del("itemid IN($itemid)")){
-            return $this->returnMsg("删除成功", 1);
-        }else{
-            return $this->returnMsg("删除失败");
-        }
+        $id = $this->only(['@token'=>'','id'])['id'];
+        $id = is_array($id) ? $id : [$id];
+        S::destroy($id);
+        return $this->returnMsg("删除成功", 1);
     }
 
 }

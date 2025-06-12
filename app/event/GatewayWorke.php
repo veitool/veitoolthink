@@ -85,7 +85,7 @@ class GatewayWorke
                     $fs = Db::name('chat_friend')->where("userid = $uid AND friendid = $toid")->find();
                     if(!is_null($fs)){
                         //插入聊天记录
-                        Db::name('chat_log')->insert(['fromid'=>$uid,'fromuser'=>$us['username'],'toid'=>$toid,'touser'=>$fs['frienduser'],'content'=>$res['data']['mine']['content'],'addtime'=>$TIME,'ip'=>$IP]);
+                        Db::name('chat_log')->insert(['fromid'=>$uid,'fromuser'=>$us['username'],'toid'=>$toid,'touser'=>$fs['frienduser'],'content'=>$res['data']['mine']['content'],'add_time'=>$TIME,'ip'=>$IP]);
                         $data = ['code'=>2,'msg'=>'发送成功','data'=>$res['data']];
                         Gateway::sendToUid($res['data']['to']['id'], json_encode($data));
                     }else{

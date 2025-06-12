@@ -62,7 +62,7 @@ class Menus
         foreach($newMenu as $k => $v){
             $data = array_intersect_key($v, $allow);
             $data = array_merge($allow, $data);
-            $data['addtime']   = $time;
+            $data['add_time']   = $time;
             $data['parent_id'] = $parentid;
             $data['role_name'] = $data['role_name'] ?: $data['menu_name'];
             $data['name'] = $name ?: $data['name'];
@@ -91,7 +91,7 @@ class Menus
                 if(!$v['link_url']) unset($v['link_url']);
                 if(!$v['menu_url']) unset($v['menu_url']);
                 if(!$v['sublist']) unset($v['sublist']);
-                unset($v['menuid'],$v['addtime'],$v['parent_id']);
+                unset($v['menuid'],$v['add_time'],$v['parent_id']);
                 $data[] = $v;
             }
         }
@@ -166,7 +166,7 @@ class Menus
             foreach($rs as $v){
                 if($v['parent_id']==$id){
                     $menuid = $v['menuid']; unset($v['menuid']);
-                    $v['addtime']   = $time;
+                    $v['add_time']   = $time;
                     $v['parent_id'] = $pd;
                     $data[$menuid]  = Db::name('system_menus')->insertGetId($v);
                 }

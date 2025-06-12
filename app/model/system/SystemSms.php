@@ -17,10 +17,15 @@ use app\model\Base;
 class SystemSms extends Base
 {
     /**
+     * 启用软删除操作
+     */
+    use \think\model\concern\SoftDelete; /**/
+
+    /**
      *定义主键
      * @var string 
      */
-    protected $pk = 'itemid';
+    protected $pk = 'id';
 
     /**
      * 短信记录（分页）
@@ -30,7 +35,7 @@ class SystemSms extends Base
      * @param  int            $limit    条数
      * @return obj
      */
-    public function listQuery(array $where = [], array|string $order = ['itemid'=>'desc'], string $fields = '*', int $limit = 0)
+    public function listQuery(array $where = [], array|string $order = ['id'=>'desc'], string $fields = '*', int $limit = 0)
     {
         $d = request()->get('','','strip_sql');
         $kw = $d['kw'] ?? '';
@@ -47,8 +52,8 @@ class SystemSms extends Base
         }
         if(strpos($sotime,' - ')!==false){
             $t = explode(' - ',$sotime);
-            $where[] = ['sendtime','>=',strtotime($t[0]." 00:00:00")];
-            $where[] = ['sendtime','<=',strtotime($t[1]." 23:59:59")];
+            $where[] = ['add_time','>=',strtotime($t[0]." 00:00:00")];
+            $where[] = ['add_time','<=',strtotime($t[1]." 23:59:59")];
         }
         return $this->where($where)->order($order)->field($fields)->paginate($limit);
     }

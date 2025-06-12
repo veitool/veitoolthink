@@ -55,7 +55,7 @@ layui.use(['buildItems'],function(){
             {field:"relation",edit:'text',title:"关联"},
             {field:"addon",edit:'text',title:"插件"},
             {field:"typename",align:'center',width:120,title:"类型",sort:!0},
-            {field:"addtime",align:'center',title:"添加时间",width:160,sort:!0,templet:function(d){return layui.util.toDateString(d.addtime*1000)}},
+            {field:"add_time",align:'center',title:"添加时间",width:160,sort:!0,templet:function(d){return layui.util.toDateString(d.add_time*1000)}},
             {field:'listorder',edit:'text',width:60,align:'center',title:'排序'},
             {field:'private',width:80,align:'center',templet:function(d){return '<input type="checkbox" name="private" lay-skin="switch" lay-text="是|否" lay-filter="settings-chang" value="'+d.private+'" data-json="'+encodeURIComponent(JSON.stringify(d))+'"'+(d.private==1 ? ' checked' : '')+'>';},unresize:true,title:'文本隐私'},
             {field:'state',width:80,align:'center',templet:function(d){return '<input type="checkbox" name="state" lay-skin="switch" lay-text="启用|禁用" lay-filter="settings-chang" value="'+d.state+'" data-json="'+encodeURIComponent(JSON.stringify(d))+'"'+(d.state==1 ? ' checked' : '')+'>';},unresize:true,title:'启用状态'},

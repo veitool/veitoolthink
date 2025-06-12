@@ -38,8 +38,8 @@ layui.use(['buildItems','vinfo'], function(){
             {field:'prefix',align:'center',title:'单据前缀'},
             {field:'day',align:'center',title:'当前日期',templet:function(d){return d.day ? layui.util.toDateString(d.day*1000,'yyyy-MM-dd') : '-'}},
             {field:'seq',align:'center',title:'当前号'},
-            {field:'addtime',align:'center',title:'创建时间',templet:function(d){return d.addtime ? layui.util.toDateString(d.addtime*1000,'yyyy-MM-dd HH:mm:ss') : '-'}},
-            {field:'edit',align:'center',width:100,title:'创建人',toolbar:'<div><a style="cursor:pointer" title="查看详细" lay-event="infom">{{d.edit}}</a></div>'},
+            {field:'add_time',align:'center',title:'创建时间',templet:function(d){return d.add_time ? layui.util.toDateString(d.add_time*1000,'yyyy-MM-dd HH:mm:ss') : '-'}},
+            {field:'creator',align:'center',width:100,title:'创建人',toolbar:'<div><a style="cursor:pointer" title="查看详细" lay-event="infom">{{d.creator}}</a></div>'},
             {fixed:'right',width:130,align:'center',toolbar:'<div><a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a><a class="layui-btn layui-btn-xs layui-bg-blue" lay-event="copy">复制</a><a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a></div>',title:'操作'}
         ]]
     });/**/

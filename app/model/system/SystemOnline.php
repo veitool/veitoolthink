@@ -30,7 +30,7 @@ class SystemOnline extends Base
      * @param  int            $limit    条数
      * @return array
      */
-    public function listQuery(array $where = [], array|string $order = ['etime'=>'desc'], string $fields = '*', int $limit = 0)
+    public function listQuery(array $where = [], array|string $order = ['last_time'=>'desc'], string $fields = '*', int $limit = 0)
     {
         $d = request()->get('','','strip_sql');
         $kw = $d['kw'] ?? '';
@@ -48,8 +48,8 @@ class SystemOnline extends Base
         }
         if(strpos($sotime,' - ')!==false){
             $t = explode(' - ',$sotime);
-            $where[] = ['etime','>=',strtotime($t[0]." 00:00:00")];
-            $where[] = ['etime','<=',strtotime($t[1]." 23:59:59")];
+            $where[] = ['last_time','>=',strtotime($t[0]." 00:00:00")];
+            $where[] = ['last_time','<=',strtotime($t[1]." 23:59:59")];
         }
         if(is_numeric($type)) $where[] = ['type','=',$type];
         //统计以及清除处理
@@ -57,8 +57,8 @@ class SystemOnline extends Base
         $page = $d['page'] ?? 1;
         if($page==1){
             //5分钟未活动的删除
-            \think\facade\Db::name('system_online')->where('etime', '<', time() - 300)->delete();
-            //$this->where('etime', '<', time() - 3000)->delete();
+            \think\facade\Db::name('system_online')->where('last_time', '<', time() - 300)->delete();
+            //$this->where('last_time', '<', time() - 3000)->delete();
         }
         $rs = $this->where($where)->order($order)->field($fields)->paginate($limit)->toArray();
         $rs['msg'] = $rs['total'];
@@ -84,7 +84,7 @@ class SystemOnline extends Base
             session(VT_VISITOR,$Online);
         }
         // 模型中支持 replace 为 create 的第3个参数设为 true 或者 \think\facade\Db::name('online')->replace()->insert([数据集])
-        self::create(['uid'=>$Online['uid'],'userid'=>$Online['userid'],'username'=>$Online['username'],'url'=>$url,'etime'=>time(),'ip'=>request()->ip(),'type'=>$type],['uid','userid','username','url','etime','ip','type'],true);
+        self::create(['uid'=>$Online['uid'],'userid'=>$Online['userid'],'username'=>$Online['username'],'url'=>$url,'last_time'=>time(),'ip'=>request()->ip(),'type'=>$type],['uid','userid','username','url','last_time','ip','type'],true);
     }
 
 }

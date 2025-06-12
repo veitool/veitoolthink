@@ -17,6 +17,11 @@ use app\model\Base;
 class SystemOrgan extends Base
 {
     /**
+     * 启用软删除操作
+     */
+    use \think\model\concern\SoftDelete; /**/
+
+    /**
      * 获取所有子类ID串
      * @param  int   $id   ID
      * @return string

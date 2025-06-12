@@ -20,6 +20,11 @@ use app\model\Base;
 class SystemRoles extends Base
 {
     /**
+     * 启用软删除操作
+     */
+    use \think\model\concern\SoftDelete; /**/
+
+    /**
      *定义主键
      * @var string 
      */
@@ -31,7 +36,7 @@ class SystemRoles extends Base
      */
     public function listQuery()
     {
-        return $this->field('roleid,role_name,role_menuid,role_ext,listorder,state,addtime')->order('listorder', 'asc')->paginate(input('limit/d'));
+        return $this->field('roleid,role_name,role_menuid,role_ext,listorder,state,add_time')->order('listorder', 'asc')->paginate(input('limit/d'));
     }
 
     /**

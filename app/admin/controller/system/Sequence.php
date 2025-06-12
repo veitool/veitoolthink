@@ -40,14 +40,10 @@ class Sequence extends AdminBase
     public function add()
     {
         $d = $this->only(['@token'=>'','name/h','code/h','prefix/h']);
-        $d['addtime'] = time();
-        $d['day']  = strtotime(date('Y-m-d'));
-        $d['edit'] = $this->manUser['username'];
-        if(MD::inadd($d)){
-            return $this->returnMsg("添加成功", 1);
-        }else{
-            return $this->returnMsg('添加失败');
-        }
+        $d['day']     = strtotime(date('Y-m-d'));
+        $d['creator'] = $this->manUser['username'];
+        MD::create($d);
+        return $this->returnMsg("添加成功", 1);
     }
 
     /**
@@ -67,9 +63,9 @@ class Sequence extends AdminBase
             if($field == 'name'){
                 $value = $this->only(['av/h'])['av'];
             }
-            return $this->returnMsg($Myobj->save([$field=>$value]) ? "设置成功" : '设置失败', 1);
+            return $this->returnMsg($Myobj->save([$field=>$value,'editor'=>$this->manUser['username']]) ? "设置成功" : '设置失败', 1);
         }else{
-            $d['edit'] = $this->manUser['username'];
+            $d['editor'] = $this->manUser['username'];
             if($Myobj->save($d)){
                 return $this->returnMsg("编辑成功", 1);
             }else{
@@ -85,13 +81,10 @@ class Sequence extends AdminBase
     public function del()
     {
         $id = $this->only(['@token'=>'','id'])['id'];
-        $id = is_array($id) ? implode(',',$id) : $id;
+        $id = is_array($id) ? $id : [$id];
         if(!$id) return $this->returnMsg('参数错误');
-        if(MD::del("id IN($id)")){
-            return $this->returnMsg("删除成功", 1);
-        }else{
-            return $this->returnMsg("删除失败");
-        }
+        MD::destroy($id);
+        return $this->returnMsg("删除成功", 1);
     }
 
 }

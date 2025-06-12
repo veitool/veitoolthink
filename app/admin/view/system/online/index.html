@@ -55,7 +55,7 @@ layui.use(['vinfo'],function(){
             {field:"url",title:"路径"},
             {field:"type",width:80,align:'center',title:"类型",templet:function(d){return d.type==1 ? '会员': '后台'}},
             {field:"ip",width:150,align:'center',title:"IP",toolbar:'<div><a style="cursor:pointer;" lay-event="showip">{{d.ip}}</a></div>'},
-            {field:"etime",align:'center',width:150,title:"时间",sort:!0,templet:function(d){return layui.util.toDateString(d.etime*1000)}}
+            {field:"last_time",align:'center',width:150,title:"时间",sort:!0,templet:function(d){return layui.util.toDateString(d.last_time*1000)}}
         ]],
         done: function(res){
             if(res.msg){

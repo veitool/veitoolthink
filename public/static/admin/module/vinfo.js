@@ -17,7 +17,7 @@ layui.define(["admin","printer"], function(e){
         '<tr><th>详细地址</th><td colspan="3">{{ d.address ? d.address : \'-\' }}</td></tr>'+
         '<tr><th>微信</th><td>{{ d.wx ? d.wx : \'-\' }}</td><th>QQ</th><td>{{ d.qq ? d.qq : \'-\' }}</td></tr>'+
         '<tr><th>支付宝</th><td>{{ d.ali ? d.ali : \'-\' }}</td><th>邮箱</th><td>{{ d.email ? d.email : \'-\' }}</td></tr>'+
-        '<tr><th>添加时间</th><td>{{ layui.util.toDateString(d.addtime*1000) }}</td><th>最近编辑</th><td>{{ d.edittime ? layui.util.toDateString(d.edittime*1000) : \'-\' }}</td></tr>'+
+        '<tr><th>添加时间</th><td>{{ layui.util.toDateString(d.add_time*1000) }}</td><th>最近编辑</th><td>{{ d.upd_time ? layui.util.toDateString(d.upd_time*1000) : \'-\' }}</td></tr>'+
         '<tr><th>最近登录</th><td>{{ d.logintime ? layui.util.toDateString(d.logintime*1000) : \'-\' }}</td><th>登录 IP</th><td>{{ d.loginip }}</td></tr>'+
         '<tr><th>登录次数</th><td>{{ d.logins }} 次</td><th width="100">用户状态</th><td>{{# if (d.state==1){ }}正常{{# }else{ }}正常{{# } }}</td></tr>'+
         '</tbody></table>'+
@@ -35,7 +35,7 @@ layui.define(["admin","printer"], function(e){
         '<tr><th>邮箱地址</th><td colspan="3">{{ d.email ? d.email : \'-\' }}</td></tr>'+
         '<tr><th>所属地区</th><td colspan="3">{{ d.areaname }}</td></tr>'+
         '<tr><th>详细地址</th><td colspan="3">{{ d.address ? d.address : \'-\' }}</td></tr>'+
-        '<tr><th>注册时间</th><td>{{ layui.util.toDateString(d.regtime*1000) }}</td><th>最近编辑</th><td>{{ d.edittime ? layui.util.toDateString(d.edittime*1000) : \'-\' }}</td></tr>'+
+        '<tr><th>注册时间</th><td>{{ layui.util.toDateString(d.add_time*1000) }}</td><th>最近编辑</th><td>{{ d.upd_time ? layui.util.toDateString(d.upd_time*1000) : \'-\' }}</td></tr>'+
         '<tr><th>上次登录</th><td>{{ d.lasttime ? layui.util.toDateString(d.lasttime*1000) : \'-\' }}</td><th>上次 IP</th><td>{{ d.lastip ? d.lastip : \'-\' }}</td></tr>'+
         '<tr><th>最近登录</th><td>{{ d.logintime ? layui.util.toDateString(d.logintime*1000) : \'-\' }}</td><th>最近 IP</th><td>{{ d.loginip ? d.loginip : \'-\' }}</td></tr>'+
         '<tr><th>登录次数</th><td>{{ d.logins }} 次</td><th width="100">会员状态</th><td>{{# if (d.state==1){ }}正常{{# }else{ }}锁定{{# } }}</td></tr>'+

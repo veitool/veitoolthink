@@ -9,7 +9,7 @@
  */
 namespace tool;
 
-use think\facade\Db;
+use app\model\system\SystemSms as S;
 
 /**
  * 短信发送类
@@ -57,14 +57,14 @@ class SendSms
     /**
      * 七牛发送短信
      * @access  public
-     * @param   array       $mobile        手机号
+     * @param   string       $mobile       手机号
      * @param   string      $message       短信内容
-     * @param   int         $tpid          短信模板ID
-     * @param   string      $tips          提示
      * @param   int         $lent          间隔时间(秒)
+     * @param   string      $tips          提示
+     * @param   int         $tpid          短信模板ID
      * @return  array
      */
-    public function qiniu_send(array $mobile = [], string $message = '', int $tpid = 0, string $tips = '', int $lent = 0)
+    public function qiniu_send(string $mobile = '', string $message = '', int $lent = 0, string $tips = '', int $tpid = 0)
     {
         $time = time();
         //屏蔽频繁发送
@@ -75,7 +75,8 @@ class SendSms
         $this->config = array_merge($this->config, vconfig());
         if(!$this->config['sms_state']) return ['msg'=>'短信接口未开启','code'=>0];
         if(!$mobile) return ['msg'=>'手机号不能为空','code'=>0];
-        foreach($mobile as $v){
+        $mobiles = explode(',', $mobile);
+        foreach($mobiles as $v){
             if(!is_preg($v,'mobile')) return ['msg'=>'手机号不正确','code'=>0];
         }
         if(!$message) return ['msg'=>'短信内容不能为空','code'=>0];
@@ -84,8 +85,7 @@ class SendSms
         $client->queryTemplate();
         //发送信息模块
         $template_id = $tpid ? $tpid : $this->config['sms_temp'];
-        $mobiles     = $mobile;
-        $code        = array('code' => $message);
+        $code        = ['code' => $message];
         try{
             //发送短信
             list($ret,$err) = $client->sendMessage($template_id, $mobiles, $code);
@@ -102,8 +102,8 @@ class SendSms
             $this->clear_time_cache();
         }
         $word = function_exists('mb_strlen') ? mb_strlen($message,'utf8') : 0;
-        $data = ['mobile'=> implode(',',$mobile),'message'=>$tips.$message,'word'=>$word,'editor'=>'system','sendtime'=>$time,'code'=>$txt];
-        Db::name('system_sms')->data($data)->insert();
+        $data = ['mobile'=> $mobile,'message'=>$tips.$message,'word'=>$word,'creator'=>'system','code'=>$txt];
+        S::create($data);
         return ['msg'=>'发送'.$txt,'code'=>$code];
     }
 
@@ -112,11 +112,11 @@ class SendSms
      * @access  public
      * @param   string    $mobile     手机号
      * @param   string    $message    短信内容
-     * @param   int       $word       发送的字数
      * @param   int       $lent       间隔时间(秒)
+     * @param   string    $tips       提示
      * @return  array
      */
-    public function smsbao_send(string $mobile = '', string $message = '', int $word = 0, int $lent = 0)
+    public function smsbao_send(string $mobile = '', string $message = '', int $lent = 0, string $tips = '')
     {
         $time = time();
         //屏蔽频繁发送
@@ -127,14 +127,14 @@ class SendSms
         $this->config = array_merge($this->config, vconfig());
         if(!$this->config['sms_state']) return ['msg'=>'短信接口未开启','code'=>0];
         if(!$mobile) return ['msg'=>'手机号不能为空','code'=>0];
-        $m = explode(',', $mobile);
-        foreach($m as $v){
+        $mobiles = explode(',', $mobile);
+        foreach($mobiles as $v){
             if(!is_preg($v,'mobile')) return ['msg'=>'手机号不正确','code'=>0];
         }
         if(!$message) return ['msg'=>'短信内容不能为空','code'=>0];
         $message = vconfig('sms_pre','【微特】').$message;
         //短信内容处理
-        $word or $word = function_exists('mb_strlen') ? mb_strlen($message,'utf8') : 0;
+        $word = function_exists('mb_strlen') ? mb_strlen($message,'utf8') : 0;
         $sms_message = rawurlencode($message);
         $arr = ['{s_user}','{s_pass}','{s_mobile}','{s_message}'];
         $brr = [$this->config['sms_baouser'], md5($this->config['sms_baopass']),$mobile,$sms_message];
@@ -159,12 +159,12 @@ class SendSms
             '50' => '内容含有敏感词',
             '51' => '手机号码不正确'
         );
-        $txt = $keys[$key];
-        $data = ['mobile'=>$mobile,'message'=>$message,'word'=>$word,'editor'=>'system','sendtime'=>$time,'code'=>$txt];
-        Db::name('system_sms')->data($data)->insert();
+        $txt = $keys[$key] ?? '失败，请检查短信帐号或密码是否正确！';
+        $data = ['mobile'=>$mobile,'message'=>$tips.$message,'word'=>$word,'creator'=>'system','code'=>$txt];
+        S::create($data);
         //记入发送成功时间缓存，防止下次频繁发送
         cache($this->cache_key,['time'=>$time]);
-        return ['msg'=>$txt,'code'=>($key==0 ? 1 : 0)];
+        return ['msg'=>'发送'.$txt,'code'=>($key==0 ? 1 : 0)];
     }
 
 }

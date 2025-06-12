@@ -67,7 +67,7 @@ layui.use(function(){
             {field:"filesize",align:'center',width:80,title:"大小(Kb)"},
             {field:"filetype",align:'center',width:80,title:"类型"},
             {field:"isdel",align:'center',width:60,title:"软删",templet:function(d){return d.isdel==1 ? '<font color=red>已删</font>' : '-';}},
-            {field:"addtime",align:'center',width:150,title:"上传时间",sort:!0,templet:function(d){return layui.util.toDateString(d.addtime*1000)}},
+            {field:"add_time",align:'center',width:150,title:"上传时间",sort:!0,templet:function(d){return layui.util.toDateString(d.add_time*1000)}},
             {fixed:'right',width:100,align:'center',toolbar:'<div><a class="layui-btn layui-btn-xs" lay-event="reset">恢复</a><a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a></div>',title:'操作'}
         ]]
     });/**/

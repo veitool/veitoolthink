@@ -58,14 +58,10 @@ class Dict extends AdminBase
         $d = $this->only(['@token'=>'','title/*/{2,100}/字典名称','code/*/{2,30}/字典编码/1,2,3/_','groupid/d','@sql/s','note/h']);
         if($d['groupid'] == 1) return $this->returnMsg("所属类型不能为顶级类型");
         if(DG::one("code = '$d[code]'")) return $this->returnMsg("字典编码【{$d['code']}】已经存在");
-        $d["editor"]   = $this->manUser['username'];
-        $d["addtime"]  = time();
-        if(DG::insert($d)){
-            D::cache(1);
-            return $this->returnMsg("添加字典成功", 1);
-        }else{
-            return $this->returnMsg('添加字典失败');
-        }
+        $d["creator"] = $this->manUser['username'];
+        DG::create($d);
+        D::cache(1);
+        return $this->returnMsg("添加字典成功", 1);
     }
 
     /**
@@ -93,7 +89,7 @@ class Dict extends AdminBase
                 }
             }
             D::cache(1);
-            return $this->returnMsg($Myobj->save([$field=>$value]) ? "设置成功" : '设置失败', 1);
+            return $this->returnMsg($Myobj->save([$field=>$value,'editor'=>$this->manUser['username']]) ? "设置成功" : '设置失败', 1);
         }else{
             if($d['groupid'] == 1) return $this->returnMsg("所属类型不能为顶级类型");
             if(DG::one("code = '$d[code]' AND id <> $id")) return $this->returnMsg("字典编码【{$d['code']}】已经存在");
@@ -114,15 +110,14 @@ class Dict extends AdminBase
     public function del()
     {
         $id = $this->only(['@token'=>'','id'])['id'];
-        $id = is_array($id) ? implode(',',$id) : $id;
+        $id = is_array($id) ? $id : [$id];
         if(!$id) return $this->returnMsg('参数错误');
-        if(DG::del("id IN($id)")){
-            D::del("groupid IN($id)");
-            D::cache(1);
-            return $this->returnMsg("删除成功", 1);
-        }else{
-            return $this->returnMsg("删除失败");
-        }
+        DG::destroy($id);
+        D::destroy(function($query)use($id){
+            $query->whereIn('groupid',$id);
+        });
+        D::cache(1);
+        return $this->returnMsg("删除成功", 1);
     }
 
     /**
@@ -134,13 +129,9 @@ class Dict extends AdminBase
         $d = $this->only(['@token'=>'','title/*/{2,10}/类型名称','parentid/d','note/h']);
         $rs = DG::one("id = $d[parentid]");
         $d['arrparentid'] = $rs ? (empty($rs['arrparentid']) ? $rs['id'] : $rs['arrparentid'].','.$rs['id']) : '';
-        $d['addtime'] = time();
-        $d["editor"]  = $this->manUser['username'];
-        if(DG::insert($d)){
-            return $this->returnMsg("添加成功", 1, DG::where("groupid = 0")->order(['id'=>'asc'])->column('id,title,parentid'));
-        }else{
-            return $this->returnMsg("添加失败");
-        }
+        $d["creator"] = $this->manUser['username'];
+        DG::create($d);
+        return $this->returnMsg("添加成功", 1, DG::where("groupid = 0")->order(['id'=>'asc'])->column('id,title,parentid'));
     }
 
     /**
@@ -191,20 +182,24 @@ class Dict extends AdminBase
     public function gdel()
     {
         $id = $this->only(['@token'=>'','id/d/参数错误'])['id'];
-        if($id < 4) return $this->returnMsg("系统基础类型禁止删除");
+        if($id < 4) return $this->returnMsg("字典基础类型禁止删除");
         if(!$ids = DG::getChild($id)) return $this->returnMsg("数据不存在");
-        $rs = DG::del("CONCAT(',',CONCAT(arrparentid,',')) LIKE '%,{$id},%' OR groupid IN($ids) OR id = $id");
-        if($rs){
-            return $this->returnMsg("删除成功",1,DG::where("groupid = 0")->order(['id'=>'asc'])->column('id,title,parentid'));
-        }else{
-            return $this->returnMsg("删除失败");
-        }
+        // 删除所有字典项
+        D::destroy(function($query)use($ids){
+            $query->alias('a')->join('system_dict_group b', 'a.groupid = b.id')->where("b.groupid IN($ids)");
+        });
+        // 删除所有层级子类、所有子类下的字典 以及 本身
+        DG::destroy(function($query)use($id,$ids){
+            $query->where("CONCAT(',',CONCAT(arrparentid,',')) LIKE '%,{$id},%' OR groupid IN($ids) OR id = $id");
+        });
+        return $this->returnMsg("删除成功", 1, DG::where("groupid = 0")->order(['id'=>'asc'])->column('id,title,parentid'));
     }
 
     /**
      * 字典项列表管理
      * @param  string  $do        操作参数
      * @param  int     $groupid   所属字典ID
+     * @return mixed
      */
     function items(string $do = '', int $groupid = 0)
     {
@@ -226,14 +221,10 @@ class Dict extends AdminBase
         $d = $this->only(['@token'=>'','groupid/d','parentid/d','name/s/字典项名','value/s/字典项值','listorder/d','state/d']);
         $rs = D::one("id = $d[parentid]");
         $d['arrparentid'] = $rs ? (empty($rs['arrparentid']) ? $rs['id'] : $rs['arrparentid'].','.$rs['id']) : '';
-        $d['addtime'] = time();
-        $d["editor"]  = $this->manUser['username'];
-        if(D::insert($d)){
-            D::cache(1);
-            return $this->returnMsg("添加字典项成功", 1);
-        }else{
-            return $this->returnMsg('添加字典项失败');
-        }
+        $d["creator"] = $this->manUser['username'];
+        D::create($d);
+        D::cache(1);
+        return $this->returnMsg("添加字典项成功", 1);
     }
 
     /**
@@ -253,9 +244,9 @@ class Dict extends AdminBase
             foreach($arr as $v){
                 if(word_count($v) < 1) continue;
                 $vs = explode('|', $v);
-                $data[] = ['name'=>$vs[0],'value'=>$vs[1] ?? $vs[0],'groupid'=>$d['groupid'],'parentid'=>$id,'arrparentid'=>$arrparentid,'listorder'=>100,'addtime'=>time(),'editor'=>$this->manUser['username']];
+                $data[] = ['name'=>$vs[0],'value'=>$vs[1] ?? $vs[0],'groupid'=>$d['groupid'],'parentid'=>$id,'arrparentid'=>$arrparentid,'listorder'=>100,'creator'=>$this->manUser['username']];
             }
-            if(D::insertAll($data)){
+            if(D::saveAll($data)){
                 D::cache(1);
                 return $this->returnMsg("批量添加成功", 1);
             }else{
@@ -284,7 +275,7 @@ class Dict extends AdminBase
             if($field=='listorder' || $field=='state'){
                 $value = intval($value);
             }
-            if($Myobj->save([$field=>$value])){
+            if($Myobj->save([$field=>$value,'editor'=>$this->manUser['username']])){
                 D::cache(1);
                 return $this->returnMsg("设置成功", 1);
             }else{
@@ -331,17 +322,14 @@ class Dict extends AdminBase
     public function idel()
     {
         $id = $this->only(['@token'=>'','id'])['id'];
-        $id = is_array($id) ? implode(',',$id) : $id;
+        $id = is_array($id) ? $id : [$id];
         if(!$id) return $this->returnMsg('参数错误');
-        $rs = D::where("parentid IN($id)")->column("parentid");
-        $id = $rs ? implode(',',array_diff(explode(',',$id), $rs)) : $id;
+        $rs = D::whereIn('parentid', $id)->column("parentid");
+        $id = $rs ? array_values(array_diff($id, $rs)) : $id;
         if(!$id) return $this->returnMsg('删除结构错误');
-        if(D::del("id IN($id)")){
-            D::cache(1);
-            return $this->returnMsg("删除成功", 1);
-        }else{
-            return $this->returnMsg("删除失败");
-        }
+        D::destroy($id);
+        D::cache(1);
+        return $this->returnMsg("删除成功", 1);
     }
 
     /**

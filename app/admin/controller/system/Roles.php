@@ -54,13 +54,10 @@ class Roles extends AdminBase
     {
         $d = $this->only(['@token'=>'','role_name/*/{2,30}/角色名称','listorder/d','state/d','role_menuid','role_ext']);
         $d['role_menuid'] = is_array($d['role_menuid']) ? implode(',', array_map('intval', $d['role_menuid'])) : '';
-        $d['addtime'] = time();
-        if($rsid = R::insertGetId($d)){
-            R::cache(['roleid'=>$rsid,'role_name'=>$d['role_name'],'role_menuid'=>$d['role_menuid'],'role_ext'=>$d['role_ext']],1);
-            return $this->returnMsg("添加成功", 1);
-        }else{
-            return $this->returnMsg('添加失败');
-        }
+        $d['creator'] = $this->manUser['username'];
+        $obj = R::create($d);
+        R::cache(['roleid'=>$obj->roleid,'role_name'=>$d['role_name'],'role_menuid'=>$d['role_menuid'],'role_ext'=>$d['role_ext']],1);
+        return $this->returnMsg("添加成功", 1);
     }
 
     /**
@@ -83,7 +80,7 @@ class Roles extends AdminBase
             }else{
                 $value = intval($value);
             }
-            if($Myobj->save([$field=>$value])){
+            if($Myobj->save([$field=>$value,'editor'=>$this->manUser['username']])){
                 R::cache($roleid,1);
                 return $this->returnMsg("设置成功", 1);
             }else{
@@ -91,6 +88,7 @@ class Roles extends AdminBase
             }
         }else{
             $d['role_menuid'] = is_array($d['role_menuid']) ? implode(',', array_map('intval', $d['role_menuid'])) : '';
+            $d['editor'] = $this->manUser['username'];
             if($Myobj->save($d)){
                 R::cache(['roleid'=>$roleid,'role_name'=>$d['role_name'],'role_menuid'=>$d['role_menuid'],'role_ext'=>$d['role_ext']],1);
                 return $this->returnMsg("编辑成功", 1);
@@ -107,17 +105,13 @@ class Roles extends AdminBase
     public function del()
     {
         $roleid = $this->only(['@token'=>'','roleid'])['roleid'];
-        $roleid = is_array($roleid) ? implode(',',$roleid) : $roleid;
+        $roleid = is_array($roleid) ? $roleid : [$roleid];
         if(!$roleid) return $this->returnMsg('参数错误');
-        if(R::del("roleid IN($roleid)")){
-            $ids = explode(',',$roleid);
-            foreach($ids as $id){
-                cache('VMENUS_1_'.$id, null);
-            }
-            return $this->returnMsg("删除成功", 1);
-        }else{
-            return $this->returnMsg("删除失败");
+        R::destroy($roleid);
+        foreach($roleid as $id){
+            cache('VMENUS_1_'.$id, null);
         }
+        return $this->returnMsg("删除成功", 1);
     }
 
 }

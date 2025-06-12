@@ -14,9 +14,51 @@ use think\Model;
 
 /**
  * 模型公用类
+ * 
+ * 支持自动时间戳的方法有
+ * 1. (new P)->save($d) 返回 布尔值  (new P)->saveAll($d) 返回的是包含新增模型（带自增ID）的数据集对象
+ * 2. P::create($d, ['允许的字段1','允许的字段2'..]) 返回 当前模型的对象实例, 默认会过滤不是数据表的字段信息。
+ * 软删除 P::destroy(主键ID); 或  P::destroy([主键ID1,主键ID2,主键ID3..]) 或 $p = P::find(1); $p->delete();
+ * 真实删除: P::destroy(主键ID, true); 或  P::destroy([主键ID1,主键ID2,主键ID3..], true) 或 $p = P::find(1); $p->force()->delete();
+ * 闭包删除：P::destroy(function($query){$query->where('id','>',10);});
  */
 class Base extends Model
 {
+    /**
+     * 添加时间
+     * @var string
+     */
+    protected $createTime = 'add_time';
+
+    /**
+     * 更新时间
+     * @var string
+     */
+    protected $updateTime = 'upd_time';
+
+    /**
+     * 删除时间
+     * @var string
+     */
+    protected $deleteTime = 'del_time';
+
+    /**
+     * 隐藏字段
+     * @var array
+     */
+    protected $hidden = ['del_time'];
+
+    /**
+     * 只读字段
+     * @var attay
+     */
+    protected $readonly = ['add_time'];
+
+    /**
+     * 软删除字段的默认值
+     * @var mixed
+     */
+    protected $defaultSoftDelete = 0;
 
     /**
      * 获取单条数据
@@ -40,24 +82,6 @@ class Base extends Model
     public static function all(string|array $where = '', string $field = '*', string|array $order = [])
     {
         return self::where($where)->field($field)->order($order)->select();
-    }
-
-    /**
-     * 添加单条数据
-     * @param  array          $data    添加的数据
-     * @param  array|string   $field   允许的字段
-     * @param  bool|int       $getid   是否返回ID
-     * @return int   添加数或ID
-     */
-    public static function inadd(array $data = [], array|string $field = [], bool|int $getid = false)
-    {
-        if($field){
-            $field = is_array($field) ? $field : explode(',', (string)$field); 
-            foreach($data as $k=>$v){
-                if(!in_array($k,$field)) unset($data[$k]);
-            }
-        }
-        return $getid ? self::strict(false)->insertGetId($data) : self::strict(false)->insert($data);
     }
 
     /**

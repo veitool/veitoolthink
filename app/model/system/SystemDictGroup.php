@@ -17,13 +17,18 @@ use app\model\Base;
 class SystemDictGroup extends Base
 {
     /**
+     * 启用软删除操作
+     */
+    use \think\model\concern\SoftDelete; /**/
+
+    /**
      *定义主键
      * @var string 
      */
     protected $pk = 'id';
 
     /**
-     * 管理员列表（分页）
+     * 字典组列表（分页）
      * @param  array          $where    查询条件
      * @param  string         $fields   排除字段
      * @param  int            $limit    查询条数
@@ -49,8 +54,8 @@ class SystemDictGroup extends Base
         }
         if(strpos($sotime,' - ')!==false){
             $t = explode(' - ',$sotime);
-            $where[] = ['addtime','>=',strtotime($t[0]." 00:00:00")];
-            $where[] = ['addtime','<=',strtotime($t[1]." 23:59:59")];
+            $where[] = ['add_time','>=',strtotime($t[0]." 00:00:00")];
+            $where[] = ['add_time','<=',strtotime($t[1]." 23:59:59")];
         }
         if(is_numeric($groupid)) $where[] = ['groupid','IN', SystemDictGroup::getChild($groupid)];
         return $this->where($where)->order($order)->withoutField($fields)->paginate($limit);

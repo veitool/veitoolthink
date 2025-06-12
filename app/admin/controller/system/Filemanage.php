@@ -44,8 +44,8 @@ class Filemanage extends AdminBase
             }
             if(strpos($sotime,' - ')!==false){
                 $t = explode(' - ',$sotime);
-                $where[] = ['u.addtime','>=',strtotime($t[0]." 00:00:00")];
-                $where[] = ['u.addtime','<=',strtotime($t[1]." 23:59:59")];
+                $where[] = ['u.add_time','>=',strtotime($t[0]." 00:00:00")];
+                $where[] = ['u.add_time','<=',strtotime($t[1]." 23:59:59")];
             }
             if(is_numeric($groupid)) $where[] = ['u.groupid','=',$groupid];
             if(is_numeric($isdel))   $where[] = ['u.isdel','=',$isdel];
@@ -74,7 +74,7 @@ class Filemanage extends AdminBase
         if($field=='filename'){
             $this->only(['av/*/{2,100}/文件标题/0/.']);
         }
-        $rs = $Myobj->save([$field=>$value]);
+        $rs = $Myobj->save([$field=>$value,'editor'=>$this->manUser['username']]);
         return $this->returnMsg($rs ? "设置成功" : '设置失败', 1);
     }
 
@@ -85,11 +85,10 @@ class Filemanage extends AdminBase
     public function del()
     {
         $fileid = $this->only(['@token'=>'','fileid'])['fileid'];
-        $fileid = is_array($fileid) ? implode(',',$fileid) : $fileid;
+        $fileid = is_array($fileid) ? $fileid : [$fileid];
         if(!$fileid) return $this->returnMsg('参数错误');
-        $rs = UploadFile::where("fileid IN ($fileid)")->update(['isdel'=>1]);
-        if($rs){
-            return $this->returnMsg("删除成功1！", 1);
+        if(UploadFile::whereIn('fileid',$fileid)->update(['isdel' => 1])){
+            return $this->returnMsg("删除成功！", 1);
         }else{
             return $this->returnMsg("删除失败！");
         }
@@ -102,10 +101,9 @@ class Filemanage extends AdminBase
     public function reset()
     {
         $fileid = $this->only(['@token'=>'','fileid'])['fileid'];
-        $fileid = is_array($fileid) ? implode(',',$fileid) : intval($fileid);
+        $fileid = is_array($fileid) ? $fileid : [$fileid];
         if(!$fileid) return $this->returnMsg('参数错误');
-        $rs = UploadFile::where("fileid IN ($fileid)")->update(['isdel'=>0]);
-        if($rs){
+        if(UploadFile::whereIn('fileid',$fileid)->update(['isdel' => 0])){
             return $this->returnMsg("恢复成功！", 1);
         }else{
             return $this->returnMsg("恢复失败！");
@@ -119,26 +117,19 @@ class Filemanage extends AdminBase
     public function clear()
     {
         $this->only(['@token'=>'']);
-        $rs = (new UploadFile())->listQuery('isdel=1')->toArray();
-        if($rs['data']){
-            $fileid = [];
+        $rs = UploadFile::where('isdel', 1)->column('fileid,fileurl,storage');
+        if($rs){
+            $fbox = [];
             $path = ROOT_PATH . 'public';
-            foreach ($rs['data'] as $v){
-                if($v['storage']=='local'){
-                    $file = $path.$v['fileurl'];
-                    if(is_file($file)){
-                        if(@unlink($file)){
-                            $fileid[] = $v['fileid']; 
-                        }
-                    }else{
-                        $fileid[] = $v['fileid'];
-                    }
+            foreach($rs as $v){
+                if($v['storage']=='local' && is_file($file = $path.$v['fileurl'])){
+                    if(@unlink($file)) $fbox[] = $v['fileid']; 
                 }else{
-                    $fileid[] = $v['fileid'];
+                    $fbox[] = $v['fileid'];
                 }
             }
-            if($fileid){
-                UploadFile::del("fileid IN (". implode(',', $fileid) .")");
+            if($fbox){
+                UploadFile::whereIn("fileid", $fbox)->delete();
             }
             return $this->returnMsg("文件清理完毕！",1);
         }else{

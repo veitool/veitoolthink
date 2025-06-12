@@ -136,7 +136,7 @@ class Upload extends AdminBase
         $data['filetype'] = $action;
         $data['groupid']  = intval($groupid)>=0 ? intval($groupid) : 0;
         $data['fileext']  = $fileInfo['ext'];
-        $data['addtime']  = time();
+        $data["add_time"] = time();
         $data['username'] = $this->manUser['username'];
         $data['fileid']   = UploadFile::insertGetId($data);
         //压缩容量
@@ -240,7 +240,7 @@ class Upload extends AdminBase
                 $data['state'] = 'SUCCESS';
                 $data['total'] = $rs['total'];
                 foreach($rs['data'] as $v){
-                    $data['list'][] = ['url'=>$v['fileurl'],'mtime'=>$v['addtime']];
+                    $data['list'][] = ['url'=>$v['fileurl'],'mtime'=>$v['add_time']];
                 }
             }else{
                 $data['start'] = 0;
@@ -259,7 +259,7 @@ class Upload extends AdminBase
                 $data['state'] = 'SUCCESS';
                 $data['total'] = $rs['total'];
                 foreach($rs['data'] as $v){
-                    $data['list'][] = ['url'=>$v['fileurl'],'mtime'=>$v['addtime']];
+                    $data['list'][] = ['url'=>$v['fileurl'],'mtime'=>$v['add_time']];
                 }
             }else{
                 $data['start'] = 0;
@@ -292,7 +292,7 @@ class Upload extends AdminBase
             $data['filetype'] = $action;
             $data['groupid']  = intval($groupid)>=0 ? intval($groupid) : 0;
             $data['fileext']  = $fileInfo['ext'];
-            $data['addtime']  = time();
+            $data['add_time'] = time();
             $data['username'] = $this->manUser['username'];
             $data['fileid']   = UploadFile::insertGetId($data);
             //百度编辑器返回数据
@@ -317,7 +317,7 @@ class Upload extends AdminBase
         if($action=='move'){
             $d = $this->only(['groupid/d','fileids/a']);
             $fileids = implode(',', array_map('intval',$d['fileids']));
-            $rs = UploadFile::update(['groupid'=>$d['groupid']],[['fileid','in',$fileids]]);
+            $rs = UploadFile::update(['groupid'=>$d['groupid'],'editor'=>$this->manUser['username']],[['fileid','in',$fileids]]);
             if($rs){
                 return $this->returnMsg("移动成功", 1);
             }else{
@@ -326,7 +326,7 @@ class Upload extends AdminBase
         }elseif($action=='del'){
             $d = $this->only(['fileids/a']);
             $fileids = implode(',',array_map('intval',$d['fileids']));
-            $rs = UploadFile::update(['isdel'=>1],[['fileid','in',$fileids]]);
+            $rs = UploadFile::update(['isdel'=>1,'editor'=>$this->manUser['username']],[['fileid','in',$fileids]]);
             if($rs){
                 return $this->returnMsg("删除成功", 1);
             }else{
@@ -341,9 +341,7 @@ class Upload extends AdminBase
         if($groupid>-1) $where[] = ['groupid','=',$groupid];
         $data['file_list'] = $file->listQuery($where)->toArray();
         //获取文件分类
-        $where = [];
-        $where[] = ['grouptype','=',$type];
-        $where[] = ['isdel','=',0];
+        $where = [['grouptype','=',$type],['isdel','=',0]];
         $data['group_list'] = UploadGroup::where($where)->column('groupid,groupname');
         //返回json数据
         return $this->returnMsg($data,1);
@@ -357,33 +355,26 @@ class Upload extends AdminBase
     public function group(string $action = '')
     {
         if(!$action) return $this->returnMsg('参数错误');
-        $d = $this->only(['groupid/d','groupname/h','grouptype/h']);
+        $d = $this->only($action=='del' ? ['groupid/d'] : ['groupid/d','groupname/*/{1,20}/分组名称/0/','grouptype/h']);
         if($action=='add'){
-            if(!$d['groupname']) return $this->returnMsg("分组名称不能为空");
-            $d["addtime"] = time();
             $d["listorder"] = 10;
-            $id = UploadGroup::insertGetId($d);
-            if($id){
-                $d['msg'] = '添加成功';
-                $d['groupid'] = $id;
-                return $this->returnMsg($d, 1);
-            }else{
-                return $this->returnMsg("添加失败");
-            }
+            $d["creator"]   = $this->manUser['username'];
+            $U = UploadGroup::create($d);
+            $d['msg'] = '添加成功';
+            $d['groupid'] = $U->groupid;
+            return $this->returnMsg($d, 1);
         }elseif($action=='edit'){
-            if(!$d['groupname']) return $this->returnMsg("分组名称不能为空");
-            $d["edittime"] = time();
+            $Myobj = UploadGroup::one("groupid = $d[groupid]");
+            if(!$Myobj) return $this->returnMsg("数据不存在");
+            $d['editor'] = $this->manUser['username'];
             unset($d['grouptype']);
-            $rs = UploadGroup::update($d);
-            if($rs !== false){
+            if($Myobj->save($d)){
                 return $this->returnMsg("编辑成功", 1);
             }else{
                 return $this->returnMsg("编辑失败");
             }
         }elseif($action=='del'){
-            $groupid = $d['groupid'];
-            $rs = UploadGroup::del("groupid IN($groupid)");
-            if($rs){
+            if(UploadGroup::where('groupid', $d['groupid'])->update(['isdel' => 1,'editor'=>$this->manUser['username'],'upd_time'=>time()])){
                 return $this->returnMsg("删除成功", 1);
             }else{
                 return $this->returnMsg("删除失败");

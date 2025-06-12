@@ -210,7 +210,7 @@ layui.use(['vinfo', 'buildItems'], function(){
             {field:"code",edit:'text',title:"编码"},
             {field:"note",edit:'text',title:"备注"},
             {field:"groupid",width:100,align:'center',title:"类型",templet:function(d){return dictKey[d.groupid]}},
-            {field:"addtime",width:100,align:'center',title:"创建",sort:!0,templet:function(d){return layui.util.toDateString(d.addtime*1000,'yyyy-MM-dd')}},
+            {field:"add_time",width:100,align:'center',title:"创建",sort:!0,templet:function(d){return layui.util.toDateString(d.add_time*1000,'yyyy-MM-dd')}},
             {field:"editor",width:80,align:'center',title:"编辑"},
             {fixed:'right',width:170,align:'center',toolbar:'<div><a class="layui-btn layui-btn-xs layui-bg-blue" lay-event="list">字典项管理</a><a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a><a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a></div>',title:'操作'}
         ]]

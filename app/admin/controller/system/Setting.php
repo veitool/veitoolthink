@@ -75,6 +75,7 @@ class Setting extends AdminBase
         $where[] = ['group','=',strip_sql($group)];
         $rs = (new S())->listArray($where,'name,type,private');
         if($rs){
+            $time = time();
             unset($d['__g']);
             foreach ($rs as $v){
                 $name = $v['name'];
@@ -89,6 +90,8 @@ class Setting extends AdminBase
                     $data['value'] = $d[$name] ?? 0;
                     if($v['private'] && strpos($data['value'], '***') !== false) continue;
                 }
+                $data['upd_time'] = $time;
+                $data['editor'] = $this->manUser['username'];
                 S::where("name='$name'")->update($data);
             }
             S::cache(1);
@@ -151,13 +154,10 @@ class Setting extends AdminBase
     {
         $d = $this->only(['@token'=>'',$this->ptype,$this->pname,$this->ptitle,$this->pgroup,$this->ptips,$this->paddon,'value/u','options/u','listorder/d']);
         if(S::one("name = '$d[name]' AND addon = '$d[addon]'")) return $this->returnMsg("该配置名称已经存在");
-        $d["addtime"] = time();
-        if(S::insert($d)){
-            S::cache(1);
-            return $this->returnMsg("添加配置项成功", 1);
-        }else{
-            return $this->returnMsg('添加配置项失败');
-        }
+        $d["creator"] = $this->manUser['username'];
+        S::create($d);
+        S::cache(1);
+        return $this->returnMsg("添加配置项成功", 1);
     }
 
     /**
@@ -188,7 +188,7 @@ class Setting extends AdminBase
             }else{
                 $value = intval($value);
             }
-            if($Myobj->save([$field=>$value])){
+            if($Myobj->save([$field=>$value,'editor'=>$this->manUser['username']])){
                 S::cache(1);
                 return $this->returnMsg("设置成功", 1);
             }else{
@@ -197,7 +197,7 @@ class Setting extends AdminBase
         }else{
             if(S::one("name = '$d[name]' AND addon = '' AND id<>$id")) return $this->returnMsg("该配置名称已经存在");
             if(strpos($d['value'], '***') !== false) unset($d['value']);
-            $d["edittime"] = time();
+            $d["editor"] = $this->manUser['username'];
             if($Myobj->save($d)){
                 S::cache(1);
                 return $this->returnMsg("编辑成功", 1);
@@ -214,16 +214,12 @@ class Setting extends AdminBase
     public function bdel()
     {
         $id = $this->only(['@token'=>'','id'])['id'];
-        $id = is_array($id) ? implode(',',$id) : $id;
+        $id = is_array($id) ? $id : [$id];
         if(!$id) return $this->returnMsg('参数错误');
-        $ids = explode(',', $id);
-        if(in_array(1,$ids) || in_array(2,$ids)) return $this->returnMsg("系统关键配置项不可删除");
-        if(S::del("id IN($id)")){
-            S::cache(1);
-            return $this->returnMsg("删除成功", 1);
-        }else{
-            return $this->returnMsg("删除失败");
-        }
+        if(in_array(1,$id) || in_array(2,$id)) return $this->returnMsg("系统关键配置项不可删除");
+        S::destroy($id);
+        S::cache(1);
+        return $this->returnMsg("删除成功", 1);
     }
 
     /**

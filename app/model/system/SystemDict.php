@@ -18,6 +18,11 @@ use think\facade\Db;
 class SystemDict extends Base
 {
     /**
+     * 启用软删除操作
+     */
+    use \think\model\concern\SoftDelete; /**/
+
+    /**
      *定义主键
      * @var string 
      */
@@ -50,7 +55,7 @@ class SystemDict extends Base
         if(!$r || $s){
             $r = [];
             $g = SystemDictGroup::all("groupid > 0",'id,code,sql');
-            $p = config('database.connections.'.config('database.default').'.prefix');
+            $p = env('database.prefix', 'vt_');
             foreach($g as $v){
                 if($v['sql']){
                     $sql = str_ireplace(['update','replace','delete','drop','vt_'], ['@@','@@','@@','@@',$p], $v['sql']);

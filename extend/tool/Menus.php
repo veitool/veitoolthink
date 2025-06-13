@@ -40,8 +40,7 @@ class Menus
     {
         $i = 0;
         if($name){
-            $i = M::del(['name'=>$name]);
-            if($i>0){
+            if($i = M::del(['name'=>$name], true)){
                 M::cache(1);
             }
         }

@@ -231,7 +231,7 @@ class Setting extends AdminBase
         $msg = '无数据导出';
         $group = $this->only([$this->pgroup])['group'];
         $where = $group ? "`group` = '$group' AND addon = ''" : "addon <> ''";
-        $data = S::where($where ." AND state")->order('listorder', 'asc')->column("name,title,group,type,value,options,tips,relation,private,addtime,edittime,listorder,addon,state");
+        $data = S::where($where ." AND state")->order('listorder', 'asc')->column("name,title,group,type,value,options,tips,relation,private,add_time,upd_time,listorder,addon,state");
         if($data){
             $file = $group ? 'sysSettings_'. $group .'.php' : 'sysSettings_addon.php';
             $content = "<?php\nreturn ".var_export($data,true).";";

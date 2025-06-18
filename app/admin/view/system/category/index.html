@@ -26,7 +26,7 @@ layui.use(['buildItems'], function(){
             {type:"checkbox",fixed:"left"},
             {field:"icon",title:"类图",align:'center',width:50,templet:function(d){return '<div class="categorys_item"><img src="'+ (d.icon ? d.icon : '') +'" lay-event="categorys-image"/></div>';}},
             {field:"catid",align:'center',width:60,title: "ID"},
-            {field:"new_title",title: "类别名称"},
+            {field:"new_title",escape:false,title: "类别名称"},
             {field:'sign',edit:'text',width:100,align:'center',title:'扩展标识'},
             {field:'listorder',edit:'text',width:60,align:'center',title:'排序'},
             {fixed:'right',width:100,align:'center',toolbar:'<div><a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a><a class="layui-btn layui-btn-xs" lay-event="del">删除</a></div>',title:'操作'}

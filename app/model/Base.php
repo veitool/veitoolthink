@@ -14,13 +14,6 @@ use think\Model;
 
 /**
  * 模型公用类
- * 
- * 支持自动时间戳的方法有
- * 1. (new P)->save($d) 返回 布尔值  (new P)->saveAll($d) 返回的是包含新增模型（带自增ID）的数据集对象
- * 2. P::create($d, ['允许的字段1','允许的字段2'..]) 返回 当前模型的对象实例, 默认会过滤不是数据表的字段信息。
- * 软删除 P::destroy(主键ID); 或  P::destroy([主键ID1,主键ID2,主键ID3..]) 或 $p = P::find(1); $p->delete();
- * 真实删除: P::destroy(主键ID, true); 或  P::destroy([主键ID1,主键ID2,主键ID3..], true) 或 $p = P::find(1); $p->force()->delete();
- * 闭包删除：P::destroy(function($query){$query->where('id','>',10);});
  */
 class Base extends Model
 {

@@ -28,7 +28,7 @@ use WeakMap;
 
 /**
  * Class Model.
- * @mixin Query
+ * @mixin \think\db\Query
  *
  * @method static void  onAfterRead(Model $model)     after_read事件定义
  * @method static mixed onBeforeInsert(Model $model)  before_insert事件定义
@@ -240,11 +240,10 @@ abstract class Model implements JsonSerializable, ArrayAccess, Arrayable, Jsonab
      * 创建新的模型实例.
      *
      * @param array|object $data
-     * @param array        $options
      *
      * @return Model|Entity
      */
-    public function newInstance(array | object $data = [], array $options = [])
+    public function newInstance(array | object $data = [])
     {
         $model = new static($data);
         if (!empty($data)) {
@@ -312,6 +311,17 @@ abstract class Model implements JsonSerializable, ArrayAccess, Arrayable, Jsonab
     }
 
     /**
+     * 设置验证场景. 
+     *
+     * @param string|array $scene 场景名或数组
+     * @return $this
+     */
+    public function scene(string|array $scene)
+    {
+        return $this->setOption('scene', $scene);
+    }
+
+    /**
      * 验证模型数据.
      *
      * @param array $data 数据
@@ -325,7 +335,7 @@ abstract class Model implements JsonSerializable, ArrayAccess, Arrayable, Jsonab
         $validater = $this->getOption('validate');
         if (!empty($validater)) {
             validate($validater)
-                ->only($allow ?: array_keys($data))
+                ->scene($this->getOption('scene') ?: $allow)
                 ->check($data);
         }
     }
@@ -382,7 +392,12 @@ abstract class Model implements JsonSerializable, ArrayAccess, Arrayable, Jsonab
 
         if (!$isUpdate) {
             $this->exists(true);
-            $this->setKey($db->getLastInsID());
+            // 写入自增键值
+            $key = $db->getAutoInc();
+            $val = $db->getLastInsID();
+            if ($key && $val) {
+                $this->setData($key, $val);
+            }
         } elseif ($refresh) {
             // 刷新数据
             $this->refresh();
@@ -589,11 +604,15 @@ abstract class Model implements JsonSerializable, ArrayAccess, Arrayable, Jsonab
      * @param array|object  $data 数据
      * @param array  $allowField  允许字段
      * @param bool   $replace     使用Replace
+     * @param string $suffix      数据表后缀
      * @return Modelable
      */
-    public static function create(array | object $data, array $allowField = [], bool $replace = false): Modelable
+    public static function create(array | object $data, array $allowField = [], bool $replace = false, string $suffix = ''): Modelable
     {
         $model = new static();
+        if (!empty($suffix)) {
+            $model->setSuffix($suffix);
+        }
         $model->allowField($allowField)->replace($replace)->save($data, true);            
         return $model->fetchModel($model);
     }
@@ -604,12 +623,16 @@ abstract class Model implements JsonSerializable, ArrayAccess, Arrayable, Jsonab
      * @param array|object  $data 数据
      * @param mixed  $where       更新条件
      * @param array  $allowField  允许字段
+     * @param string $suffix      数据表后缀
      * @param bool   $refresh     是否刷新数据
      * @return Modelable
      */
-    public static function update(array | object $data, $where = [], array $allowField = [], bool $refresh = false): Modelable
+    public static function update(array | object $data, $where = [], array $allowField = [], string $suffix = '', bool $refresh = false): Modelable
     {
         $model  = new static();
+        if (!empty($suffix)) {
+            $model->setSuffix($suffix);
+        }        
         $model->allowField($allowField)->exists(true)->save($data, $where, $refresh);
         return $model->fetchModel($model);
     }

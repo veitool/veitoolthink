@@ -439,11 +439,11 @@ class Query extends BaseQuery
      * @access public
      * @param  string  $field    字段名
      * @param  string  $type     自增或者自减
-     * @param  float   $step     写入步进值
+     * @param  float|int   $step     写入步进值
      * @param  int     $lazyTime 延时时间(s)
      * @return false|integer
      */
-    public function lazyWrite(string $field, string $type, float $step, int $lazyTime)
+    public function lazyWrite(string $field, string $type, float|int $step, int $lazyTime)
     {
         $guid  = $this->getLazyFieldCacheKey($field);
         $cache = $this->getCache();

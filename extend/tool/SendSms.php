@@ -57,7 +57,7 @@ class SendSms
     /**
      * 七牛发送短信
      * @access  public
-     * @param   string       $mobile       手机号
+     * @param   string      $mobile        手机号
      * @param   string      $message       短信内容
      * @param   int         $lent          间隔时间(秒)
      * @param   string      $tips          提示

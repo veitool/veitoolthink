@@ -272,12 +272,11 @@ class MorphOne extends Relation
             $closure($this->query);
         }
 
-        $method = ($subRelation || !empty($cache)) ? 'select' : 'cursor';
-        $list   = $this->query
+        $list = $this->query
             ->where($where)
             ->with($subRelation)
             ->cache($cache[0] ?? false, $cache[1] ?? null, $cache[2] ?? null)
-            ->$method();
+            ->lazy();
 
         // 组装模型数据
         $data     = [];

@@ -265,11 +265,10 @@ class MorphToMany extends BelongsToMany
         }
 
         // 预载入关联查询 支持嵌套预载入
-        $method = ($subRelation || !empty($cache)) ? 'select' : 'cursor';
-        $list   = $this->belongsToManyQuery($this->foreignKey, $this->localKey, $where)
+        $list = $this->belongsToManyQuery($this->foreignKey, $this->localKey, $where)
             ->with($subRelation)
             ->cache($cache[0] ?? false, $cache[1] ?? null, $cache[2] ?? null)
-            ->$method();
+            ->lazy();
 
         // 组装模型数据
         $data = [];

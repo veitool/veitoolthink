@@ -133,7 +133,7 @@ abstract class View extends Entity
         if ($relations) {
             $mapping   = $this->getOption('viewMapping', []);
             foreach ($relations as $relation) {
-                if (isset($data[$relation]) && $this->model()->$relation->hasData($field)) {
+                if (isset($data[$relation]) && $data[$relation] instanceof Model && $this->model()->$relation->hasData($field)) {
                     $value = $this->model()->$relation->$field;
                     if (!isset($mapping[$field])) {
                         $mapping[$field] = $relation . '->' . $field;
@@ -259,7 +259,7 @@ abstract class View extends Entity
         }
 
         foreach ($this->getEntityProperties() as $field) {
-            $this->$field = $data[$field] ?? null;
+            $this->$field = $data[$field] ?? ($this->$field ?? null);
         }
 
         // 验证数据
@@ -406,6 +406,7 @@ abstract class View extends Entity
     {
         // 获取属性映射
         $properties = $this->getEntityPropertiesMap();
+        $relations  = $this->getOption('autoMapping', []);
         $data       = $this->getData();
         $item       = [];
         $together   = [];
@@ -430,6 +431,14 @@ abstract class View extends Entity
                         // 新增关联
                         $array[$relation][$field] = $data[$key];
                     }
+                }
+            } elseif (is_string($key) && in_array($field, $relations)) {
+                $together[] = $field;
+                // 关联数据赋值
+                if ($this->model()->hasData($field)) {
+                    $this->model()->$field = $data[$key];
+                } else {
+                    $array[$field] = $data[$key];
                 }
             } else {
                 $value =  $data[is_int($key) ? $field : $key];

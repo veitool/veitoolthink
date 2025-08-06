@@ -97,11 +97,11 @@ trait Attribute
     /**
      * 获取主键名.
      *
-     * @return string|array
+     * @return null|string|array
      */
     public function getPk()
     {
-        return $this->getOption('pk', 'id');
+        return $this->getOption('pk');
     }
 
     /**

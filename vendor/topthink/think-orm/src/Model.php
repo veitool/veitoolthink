@@ -205,7 +205,7 @@ abstract class Model implements JsonSerializable, ArrayAccess, Arrayable, Jsonab
         self::$weakMap[$this][$name] = $value;
         if (property_exists($this, $name)) {
             $this->$name = $value;
-        }        
+        }
         return $this;
     }
 
@@ -281,9 +281,7 @@ abstract class Model implements JsonSerializable, ArrayAccess, Arrayable, Jsonab
     {
         $class = $model->getOption('entityClass', str_replace('\\model\\', '\\entity\\', static::class));
         if (class_exists($class) && is_subclass_of($class, Entity::class)) {
-            $entity = new $class($model);
-            $model->entity($entity);
-            return $entity;
+            return new $class($model);
         }
         return $model;
     }
@@ -632,7 +630,7 @@ abstract class Model implements JsonSerializable, ArrayAccess, Arrayable, Jsonab
         $model  = new static();
         if (!empty($suffix)) {
             $model->setSuffix($suffix);
-        }        
+        }
         $model->allowField($allowField)->exists(true)->save($data, $where, $refresh);
         return $model->fetchModel($model);
     }
@@ -642,13 +640,16 @@ abstract class Model implements JsonSerializable, ArrayAccess, Arrayable, Jsonab
      *
      * @param mixed $data  主键列表 支持闭包查询条件
      * @param bool  $force 是否强制删除
+     * @param array $together 关联删除
      *
      * @return bool
      */
-    public static function destroy($data, bool $force = false): bool
+    public static function destroy($data, bool $force = false, array $together = []): bool
     {
-        $model = new static();
-        $db    = $model->db();
+        if (empty($data) && 0 !== $data) {
+            return false;
+        }        
+        $db = (new static())->db();
 
         if (is_array($data) && key($data) !== 0) {
             $db->where($data);
@@ -661,7 +662,7 @@ abstract class Model implements JsonSerializable, ArrayAccess, Arrayable, Jsonab
         $resultSet = $db->select((array) $data);
 
         foreach ($resultSet as $result) {
-            $result->force($force)->delete();
+            $result->force($force)->together($together)->delete();
         }
         return true;
     }

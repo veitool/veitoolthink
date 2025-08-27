@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace Nette\PhpGenerator;
 
 use Nette;
+use const PHP_VERSION_ID;
 
 
 final class ClassManipulator
@@ -119,13 +120,5 @@ final class ClassManipulator
 		$property->setHooks([])->setAbstract(false);
 		$this->class->addMember($property);
 		return $property;
-	}
-
-
-	/** @deprecated use implement() */
-	public function implementInterface(string $interfaceName): void
-	{
-		trigger_error(__METHOD__ . '() is deprecated, use implement()', E_USER_DEPRECATED);
-		$this->implement($interfaceName);
 	}
 }

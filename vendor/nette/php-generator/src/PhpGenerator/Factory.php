@@ -11,6 +11,8 @@ namespace Nette\PhpGenerator;
 
 use Nette;
 use Nette\Utils\Reflection;
+use function array_diff, array_filter, array_key_exists, array_map, count, explode, file_get_contents, implode, is_object, is_subclass_of, method_exists, reset;
+use const PHP_VERSION_ID;
 
 
 /**
@@ -36,7 +38,7 @@ final class Factory
 		}
 
 		$enumIface = null;
-		if (PHP_VERSION_ID >= 80100 && $from->isEnum()) {
+		if ($from->isEnum()) {
 			$class = new EnumType($from->getShortName(), new PhpNamespace($from->getNamespaceName()));
 			$from = new \ReflectionEnum($from->getName());
 			$enumIface = $from->isBacked() ? \BackedEnum::class : \UnitEnum::class;
@@ -115,7 +117,7 @@ final class Factory
 			}
 
 			$modifier = $declaringMethod->getModifiers() !== $method->getModifiers()
-				? ' ' . $this->getVisibility($method)
+				? ' ' . $this->getVisibility($method)->value
 				: null;
 			$alias = $declaringMethod->name !== $method->name ? ' ' . $method->name : '';
 			if ($modifier || $alias) {
@@ -126,7 +128,10 @@ final class Factory
 		$class->setMethods($methods);
 
 		foreach ($from->getTraitNames() as $trait) {
-			$class->addTrait($trait, $resolutions);
+			$trait = $class->addTrait($trait);
+			foreach ($resolutions as $resolution) {
+				$trait->addResolution($resolution);
+			}
 			$resolutions = [];
 		}
 
@@ -209,7 +214,8 @@ final class Factory
 			$property = $from->getDeclaringClass()->getProperty($from->name);
 			$param = (new PromotedParameter($from->name))
 				->setVisibility($this->getVisibility($property))
-				->setReadOnly(PHP_VERSION_ID >= 80100 && $property->isReadonly());
+				->setReadOnly($property->isReadonly())
+				->setFinal(PHP_VERSION_ID >= 80500 && $property->isFinal() && !$property->isPrivateSet());
 			$this->addHooks($property, $param);
 		} else {
 			$param = new Parameter($from->name);
@@ -242,7 +248,7 @@ final class Factory
 		$const = new Constant($from->name);
 		$const->setValue($from->getValue());
 		$const->setVisibility($this->getVisibility($from));
-		$const->setFinal(PHP_VERSION_ID >= 80100 && $from->isFinal());
+		$const->setFinal($from->isFinal());
 		$const->setComment(Helpers::unformatDocComment((string) $from->getDocComment()));
 		$const->setAttributes($this->getAttributes($from));
 		return $const;
@@ -268,7 +274,7 @@ final class Factory
 		$prop->setVisibility($this->getVisibility($from));
 		$prop->setType((string) $from->getType());
 		$prop->setInitialized($from->hasType() && array_key_exists($prop->getName(), $defaults));
-		$prop->setReadOnly(PHP_VERSION_ID >= 80100 && $from->isReadOnly());
+		$prop->setReadOnly($from->isReadOnly());
 		$prop->setComment(Helpers::unformatDocComment((string) $from->getDocComment()));
 		$prop->setAttributes($this->getAttributes($from));
 
@@ -339,6 +345,7 @@ final class Factory
 	}
 
 
+	/** @return Attribute[] */
 	private function getAttributes($from): array
 	{
 		return array_map(function ($attr) {
@@ -354,7 +361,7 @@ final class Factory
 	}
 
 
-	private function getVisibility($from): string
+	private function getVisibility(\ReflectionProperty|\ReflectionMethod|\ReflectionClassConstant $from): Visibility
 	{
 		return $from->isPrivate()
 			? Visibility::Private

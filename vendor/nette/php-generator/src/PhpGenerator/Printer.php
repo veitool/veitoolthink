@@ -11,6 +11,7 @@ namespace Nette\PhpGenerator;
 
 use Nette;
 use Nette\Utils\Strings;
+use function array_filter, array_map, count, end, get_debug_type, implode, is_scalar, ltrim, preg_replace, rtrim, str_contains, str_repeat, str_replace, strlen, substr;
 
 
 /**
@@ -344,7 +345,10 @@ class Printer
 				$this->printDocComment($param)
 				. ($attrs ? ($multiline ? substr($attrs, 0, -1) . "\n" : $attrs) : '')
 				. ($param instanceof PromotedParameter
-					? $this->printPropertyVisibility($param) . ($param->isReadOnly() && $param->getType() ? ' readonly' : '') . ' '
+					? ($param->isFinal() ? 'final ' : '')
+						. $this->printPropertyVisibility($param)
+						. ($param->isReadOnly() && $param->getType() ? ' readonly' : '')
+						. ' '
 					: '')
 				. ltrim($this->printType($param->getType(), $param->isNullable()) . ' ')
 				. ($param->isReference() ? '&' : '')
@@ -476,7 +480,7 @@ class Printer
 		}
 
 		$simple = true;
-		foreach ($property->getHooks() as $type => $hook) {
+		foreach ($hooks as $type => $hook) {
 			$simple = $simple && ($hook->isAbstract() || $isInterface);
 			$hooks[$type] = $this->printDocComment($hook)
 				. $this->printAttributes($hook->getAttributes())

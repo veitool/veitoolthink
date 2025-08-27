@@ -96,6 +96,10 @@ class ComposerStaticInit118552ef2b3077b276422e248ece3c62
         array (
             'OSS\\' => 4,
         ),
+        'N' => 
+        array (
+            'Nette\\' => 6,
+        ),
         'M' => 
         array (
             'MyCLabs\\Enum\\' => 13,
@@ -288,6 +292,11 @@ class ComposerStaticInit118552ef2b3077b276422e248ece3c62
         'OSS\\' => 
         array (
             0 => __DIR__ . '/..' . '/aliyuncs/oss-sdk-php/src/OSS',
+        ),
+        'Nette\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/nette/utils/src',
+            1 => __DIR__ . '/..' . '/nette/php-generator/src',
         ),
         'MyCLabs\\Enum\\' => 
         array (

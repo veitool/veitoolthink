@@ -684,6 +684,21 @@ trait Attribute
     }
 
     /**
+     * 批量设置数据对象值 支持数据类型转换
+     *
+     * @param array $data 数据
+     *
+     * @return void
+     */
+    public function setAttrs(array $data): void
+    {
+        // 进行数据处理
+        foreach ($data as $key => $value) {
+            $this->set($key, $value);
+        }
+    }
+
+    /**
      * 设置数据是否存在.
      *
      * @param bool $exists

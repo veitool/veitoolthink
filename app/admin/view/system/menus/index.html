@@ -151,11 +151,14 @@ layui.use(['trTable','iconPicker','buildItems'],function(){
     });/**/
     /*是否菜单、菜单显示*/
     form.on('switch(menus-chang)',function(obj){
-        var json = JSON.parse(decodeURIComponent($(this).data('json')));
-        var av = obj.elem.checked ? 1 : 0;
-        admin.req(app_root+"edit?do=up",{menuid:json.menuid,av:av,af:obj.elem.name},function(res){
+        var json = JSON.parse(decodeURIComponent($(this).data('json'))), value = obj.elem.checked ? 1 : 0, name = obj.elem.name;
+        admin.req(app_root+"edit?do=up",{menuid:json.menuid,av:value,af:name},function(res){
             layer.tips(res.msg,obj.othis,{time:1000});
-            if(res.code === 0) obj.elem.checked = parseInt(obj.value);
+            if(res.code === 0){
+                obj.elem.checked = parseInt(obj.value);
+            }else{
+                menusTb.findDataById(parseInt(json.menuid))[name] = value;
+            }
         },'post',{headersToken:true});
     });/**/
     /*快编监听*/

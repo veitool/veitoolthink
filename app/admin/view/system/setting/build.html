@@ -112,11 +112,14 @@ layui.use(['buildItems'],function(){
     });/**/
     /*是否隐私、启用状态*/
     form.on('switch(settings-chang)',function(obj){
-        var json = JSON.parse(decodeURIComponent($(this).data('json')));
-        var av = obj.elem.checked ? 1 : 0;
-        admin.req(app_root+"bedit?do=up",{id:json.id,av:av,af:obj.elem.name},function(res){
-            layer.tips(res.msg,obj.othis,{time:2000});
-            if(res.code === 0) obj.elem.checked = parseInt(obj.value);
+        var json = JSON.parse(decodeURIComponent($(this).data('json'))), value = obj.elem.checked ? 1 : 0, name = obj.elem.name;
+        admin.req(app_root+"bedit?do=up",{id:json.id,av:value,af:name},function(res){
+            layer.tips(res.msg,obj.othis,{time:1000});
+            if(res.code === 0){
+                obj.elem.checked = parseInt(obj.value);
+            }else{
+                table.cache['settings'][json.LAY_INDEX][name] = value;
+            }
         },'post',{headersToken:true});
     });/**/
     /*工具条监听*/

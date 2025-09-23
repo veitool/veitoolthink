@@ -36,11 +36,14 @@ layui.use(['iconPicker','buildItems'], function(){
     });/**/
     /*类别显示*/
     form.on('switch(menucategory-state-chang)',function(obj){
-        var json = JSON.parse(decodeURIComponent($(this).data('json')));
-        var state = obj.elem.checked ? 1 : 0;
-        admin.req(cat_root+"catedit?do=up",{catid:json.catid,av:state,af:'state'},function(res){
+        var json = JSON.parse(decodeURIComponent($(this).data('json'))), value = obj.elem.checked ? 1 : 0;
+        admin.req(cat_root+"catedit?do=up",{catid:json.catid,av:value,af:'state'},function(res){
             layer.tips(res.msg,obj.othis,{time:1000,tips:[3,'#333']});
-            if(res.code === 0) obj.elem.checked = parseInt(obj.value);
+            if(res.code === 0){
+                obj.elem.checked = parseInt(obj.value);
+            }else{
+                table.cache['menucategory'][json.LAY_INDEX].state = value;
+            }
         },'post',{headersToken:true});
     });/**/
     /*快编监听*/

@@ -88,7 +88,7 @@ class Base extends Model
      */
     public static function del($where, bool $soft = false, bool $force = true)
     {
-        if($soft){
+        if($soft && !is_string($where)){
             if(empty($where) && 0 !== $where){ // 传入空值（包括空字符串和空数组）的时候不会做任何的数据删除操作，但传入0则是有效的
                 return false;
             }

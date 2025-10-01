@@ -49,6 +49,7 @@ class Upload extends AdminBase
         'access_key_id'=> '',
         'access_key_secret'=> '',
         'aliyun_domain'=> '',
+        'aliyun_endpoint'=> '',
         //腾讯云
         'qcloud_bucket'=> '',
         'region'=> '',
@@ -84,7 +85,8 @@ class Upload extends AdminBase
                     'bucket'=>$this->CF['aliyun_bucket'],
                     'access_key_id'=>$this->CF['access_key_id'],
                     'access_key_secret'=>$this->CF['access_key_secret'],
-                    'domain'=>$this->CF['aliyun_domain']
+                    'domain'=>$this->CF['aliyun_domain'],
+                    'endpoint'=>$this->CF['aliyun_endpoint']
                 ),
                 'qcloud'=>array(
                     'bucket'=>$this->CF['qcloud_bucket'],

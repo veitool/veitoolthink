@@ -513,6 +513,7 @@ INSERT INTO `vt_system_setting` VALUES ('37', 'region', '所属地域 Region', '
 INSERT INTO `vt_system_setting` VALUES ('38', 'secret_id', 'SecretId', 'upload', 'text', '', '', '腾讯云COS SecretId', 'up_qcloud', '1', '20', '', '1', '', '', '1475240646', '0', '0');
 INSERT INTO `vt_system_setting` VALUES ('39', 'qcloud_secret_key', 'SecretKey', 'upload', 'text', '', '', '腾讯云COS SecretKey', 'up_qcloud', '1', '21', '', '1', '', '', '1475240646', '0', '0');
 INSERT INTO `vt_system_setting` VALUES ('40', 'qcloud_domain', '空间域名 Domain', 'upload', 'text', '', '', '腾讯云COS 请补全http:// 或 https://，例如：http://v.abc.com', 'up_qcloud', '0', '22', '', '1', '', '', '1475240646', '0', '0');
+INSERT INTO `vt_system_setting` VALUES ('41', 'aliyun_endpoint', '上传节点 Endpoint', 'upload', 'text', '', '', '如：https://oss-cn-beijing.aliyuncs.com，不设则按空间域名配置，也可以用内网域名（如：ECS同地域时）', 'up_aliyun', '0', '17', '', '1', '', '', '1475240646', '0', '0');
 
 -- ----------------------------
 -- Table structure for vt_system_sms

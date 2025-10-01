@@ -42,7 +42,7 @@ class Aliyun extends Server
             $ossClient = new OssClient(
                 $this->config['access_key_id'],
                 $this->config['access_key_secret'],
-                $this->config['domain'],
+                $this->config['endpoint'] ?: $this->config['domain'],
                 true
             );
             $result = $ossClient->uploadFile(
@@ -68,7 +68,7 @@ class Aliyun extends Server
             $ossClient = new OssClient(
                 $this->config['access_key_id'],
                 $this->config['access_key_secret'],
-                $this->config['domain'],
+                $this->config['endpoint'] ?: $this->config['domain'],
                 true
             );
             $ossClient->deleteObject($this->config['bucket'], $fileName);

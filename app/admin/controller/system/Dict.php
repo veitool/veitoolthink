@@ -242,11 +242,15 @@ class Dict extends AdminBase
             $arr  = explode("\n", $d['titles']);
             $arrparentid = $rs ? (empty($rs['arrparentid']) ? $rs['id'] : $rs['arrparentid'].','.$rs['id']) : '';
             foreach($arr as $v){
-                if(word_count($v) < 1) continue;
+                $v = trim($v);
+                if($v === '') continue;
                 $vs = explode('|', $v);
-                $data[] = ['name'=>$vs[0],'value'=>$vs[1] ?? $vs[0],'groupid'=>$d['groupid'],'parentid'=>$id,'arrparentid'=>$arrparentid,'listorder'=>100,'creator'=>$this->manUser['username']];
+                $name = trim($vs[0]);
+                if($name === '') continue;
+                $value = isset($vs[1]) && $vs[1] !== '' ? trim($vs[1]) : $name;
+                $data[] = ['name'=>$name,'value'=>$value,'groupid'=>$d['groupid'],'parentid'=>$id,'arrparentid'=>$arrparentid,'listorder'=>100,'creator'=>$this->manUser['username']];
             }
-            if(D::saveAll($data)){
+            if($data && D::saveAll($data)){
                 D::cache(1);
                 return $this->returnMsg("批量添加成功", 1);
             }else{

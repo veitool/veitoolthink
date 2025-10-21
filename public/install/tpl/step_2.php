@@ -40,9 +40,9 @@
             <?php }?>
         </table>
         <table class="layui-table" lay-even lay-skin="nob" lay-size="sm">
-            <tr><th width="60%">文件权限检测</th><th width="25%">所需状态</th><th>当前状态</th></tr>
+            <tr><th width="60%">文件权限检测</th><th width="25%">所需权限</th><th>当前权限</th></tr>
             <?php foreach ($iswrite_array as $v){?>
-            <tr><td><?php echo $v; ?></td><td>可写</td><td><?php isWrite($v); ?></td></tr>
+            <tr><td><?php echo $v[0]; ?></td><td><?php echo $v[1];?></td><td><?php isWrite($v[0],$v[1]); ?></td></tr>
             <?php }?>
         </table>
     </div>

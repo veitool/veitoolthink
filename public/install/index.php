@@ -36,7 +36,7 @@ if($s == 2){
     // 初始通过
     $isOK = true;
     // 检测是否可写的路径
-    $iswrite_array = ['/.env','/public/static/file/'];
+    $iswrite_array = [['/.env',644],['/config/app.php',644],['/runtime/',755],['/public/install/',755],['/public/static/file/',755]];
     // 获取检测的函数数据
     $exists_array = ['curl_init', 'bcadd', 'mb_substr', 'simplexml_load_string'];
     // 获取扩展要求数据
@@ -207,12 +207,17 @@ function setOk($val)
 }
 
 // 测试可写性
-function isWrite($file)
+function isWrite($path, $i = 0)
 {
-    if(is_writable(ROOT_DIR . $file)){
-        echo '<b class="green">可写</b>';
-    }else{
-        echo '<span>不可写</span>';
+    if (!@file_exists(ROOT_DIR . $path)) {
+        $perms = 0;
+    } else {
+        $perms = (int)substr(sprintf('%o', @fileperms(ROOT_DIR . $path)), -3);
+    }
+    if ($perms >= $i) {
+        echo '<b class="green">符合('.$perms.')</b>';
+    } else {
+        echo '<span>不符合('.$perms.')</span>';
         setOk(false);
     }
 }

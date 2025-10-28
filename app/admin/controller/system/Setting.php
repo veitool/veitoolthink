@@ -66,8 +66,7 @@ class Setting extends AdminBase
      */
     public function edit()
     {
-        $this->only(['@token'=>'']);
-        $d = $this->request->post();
+        $d = $this->only(['@token'=>''], 'post', 'strip_sql', false);
         $group = $d['__g'] ?? 'system';
         $where = [];
         $where[] = ['state','=',1];
@@ -153,7 +152,7 @@ class Setting extends AdminBase
     public function badd()
     {
         $d = $this->only(['@token'=>'',$this->ptype,$this->pname,$this->ptitle,$this->pgroup,$this->ptips,$this->paddon,'value/u','options/u','listorder/d']);
-        if(S::one("name = '$d[name]' AND addon = '$d[addon]'")) return $this->returnMsg("该配置名称已经存在");
+        if(S::one([['name', '=', $d['name']],['addon', '=', $d['addon']]])) return $this->returnMsg("该配置名称已经存在");
         $d["creator"] = $this->manUser['username'];
         S::create($d);
         S::cache(1);
@@ -167,10 +166,10 @@ class Setting extends AdminBase
      */
     public function bedit(string $do = '')
     {
-        $d = $this->only($do ? ['@token'=>'','id/d/ID参数错误','av','af'] : ['@token'=>'','id/d/ID参数错误',$this->ptype,$this->pname,$this->ptitle,$this->pgroup,$this->ptips,'value/u','options/u','listorder/d']);
+        $d = $this->only($do ? ['@token'=>'','@id/d/ID参数错误','av','af'] : ['@token'=>'','@id/d/ID参数错误',$this->ptype,$this->pname,$this->ptitle,$this->pgroup,$this->ptips,'value/u','options/u','@listorder/d']);
         $id = $d['id'];
         if(in_array($id, [1,2])) return $this->returnMsg("系统关键配置项不可修改");
-        $Myobj = S::one("id = $id");
+        $Myobj = S::one(['id'=>$id]);
         if(!$Myobj) return $this->returnMsg("数据不存在");
         if($do=='up'){
             $value = $d['av'];
@@ -178,7 +177,7 @@ class Setting extends AdminBase
             if(!in_array($field,['name','title','addon','listorder','relation','private','state'])) return $this->returnMsg("参数错误");
             if($field=='name'){
                 $this->only([str_replace('name','av',$this->pname)]);
-                if(S::one("name = '$value' AND addon = '' AND id<>$id")) return $this->returnMsg("该配置名称已经存在");
+                if(S::one([['name', '=', $value],['addon', '=', ''],['id', '<>', $id]])) return $this->returnMsg("该配置名称已经存在");
             }elseif($field=='title'){
                 $this->only([str_replace('title','av',$this->ptitle)]);
             }elseif($field=='addon'){
@@ -195,7 +194,7 @@ class Setting extends AdminBase
                 return $this->returnMsg("设置失败");
             }
         }else{
-            if(S::one("name = '$d[name]' AND addon = '' AND id<>$id")) return $this->returnMsg("该配置名称已经存在");
+            if(S::one([['name', '=', $d['name']],['addon', '=', ''],['id', '<>', $id]])) return $this->returnMsg("该配置名称已经存在");
             if(strpos($d['value'], '***') !== false) unset($d['value']);
             $d["editor"] = $this->manUser['username'];
             if($Myobj->save($d)){

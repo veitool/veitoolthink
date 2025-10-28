@@ -256,10 +256,10 @@ abstract class BaseController
                 $this->token = token($this->tokenName);
             }
             unset($name['@token']);
-            if(!$name) return [];
+            if(!$name && $bin) return [];
         }
         $item = [];
-        $data = $this->request->$type(false);
+        $data = $bin ? $this->request->$type(false) : $this->request->$type('','',$filter);
         $preg = [
             'e'=>[2=>'email',3=>'邮箱地址格式错误',4=>'',5=>''],
             'm'=>[2=>'mobile',3=>'手机号码格式错误',4=>'',5=>''],

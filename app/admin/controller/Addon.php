@@ -39,7 +39,7 @@ class Addon extends AdminBase
      */
     public function exist()
     {
-        $d = $this->only(['kw','uid/d','catid/d','version'=>'0','all'=>'list'],'get');
+        $d = $this->only(['kw','@uid/d','@catid/d','version'=>'0','all'=>'list'],'get');
         $kw = $d['kw'];
         $catid = $d['catid'];
         $d['catid'] = -1;
@@ -69,7 +69,7 @@ class Addon extends AdminBase
      */
     public function install()
     {
-        $d = $this->only(['name/*/a','uid/d','token','version'=>'1.0.0']);
+        $d = $this->only(['name/*/a','@uid/d','token','version'=>'1.0.0']);
         try{
             $d['vversion'] = VT_VERSION;
             Service::install($d['name'], config('veitool.force',1), $d);
@@ -87,7 +87,7 @@ class Addon extends AdminBase
      */
     public function local()
     {
-        $d = $this->only(['uid/d','token']);
+        $d = $this->only(['@uid/d','token']);
         if(!$d["uid"] || !$d["token"]) return $this->returnMsg('请先登录Veitool会员后再进行离线安装！',2);
         try{
             $d["vversion"] = VT_VERSION;
@@ -133,7 +133,7 @@ class Addon extends AdminBase
      */
     public function state()
     {
-        $d = $this->only(['name/*/a','state/d']);
+        $d = $this->only(['name/*/a','@state/d']);
         try{
             $action = $d['state'] ? 'enable' : 'disable';
             Service::$action($d['name'], config('veitool.force',1));
@@ -151,7 +151,7 @@ class Addon extends AdminBase
      */
     public function upgrade()
     {
-        $d = $this->only(['name/*/a','uid/d','token','version'=>'1.0.0']);
+        $d = $this->only(['name/*/a','@uid/d','token','version'=>'1.0.0']);
         try{
             $d["vversion"] = VT_VERSION;
             Service::upgrade($d['name'], $d);
@@ -206,8 +206,7 @@ class Addon extends AdminBase
      */
     public function setup()
     {
-        $this->only(['@token'=>'']);
-        $d = $this->request->post();
+        $d = $this->only(['@token'=>''], 'post', 'strip_sql', false);
         $group = $d['__g'] ?? '';
         $addon = $d['__a'] ?? '';
         if(!$addon) return $this->returnMsg("参数错误");

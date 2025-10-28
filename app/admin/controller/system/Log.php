@@ -41,7 +41,7 @@ class Log extends AdminBase
     {
         $Log = new LoginLog();
         if($do=='check'){
-            $d = $this->only(['logid/d','password']);
+            $d = $this->only(['@logid/d','password']);
             $rs = $Log->where('logid',$d['logid'])->field('password,passsalt')->find();
             $m = $rs && set_password($d['password'], $rs['passsalt']) == $rs['password'] ? '校验结果匹配' : '校验不匹配';
             return $this->returnMsg($m,1);

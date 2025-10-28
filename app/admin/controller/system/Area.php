@@ -47,7 +47,7 @@ class Area extends AdminBase
      */
     public function add()
     {
-        $d = $this->only(['@token'=>'','parentid/d','listorder/d','areaname/*/{2,100}/地区名称']);
+        $d = $this->only(['@token'=>'','@parentid/d','@listorder/d','areaname/*/{2,100}/地区名称']);
         $parentid  = $d['parentid'];
         $listorder = $d['listorder'];
         $arrparentid = 0;
@@ -74,7 +74,7 @@ class Area extends AdminBase
      */
     public function edit()
     {
-        $d = $this->only(['@token'=>'','areaid/d/参数错误','av','af']);
+        $d = $this->only(['@token'=>'','@areaid/d/参数错误','av','af']);
         $Myobj = A::one(['areaid'=>$d['areaid']]);
         if(!$Myobj) return $this->returnMsg("数据不存在");
         $value = $d['av'];

@@ -26,7 +26,7 @@ class Filemanage extends AdminBase
     public function index(string $do = '')
     {
         if($do=='json'){
-            $d = $this->only(['kw','fields','sotime','groupid','isdel','limit'=>'10/d'],'get');
+            $d = $this->only(['kw','fields','sotime','groupid','isdel','@limit'=>'10/d'],'get');
             $kw = $d['kw'];
             $fds = ['filename','username'];
             $field = isset($fds[$d['fields']]) ? $d['fields'] : -1;
@@ -64,9 +64,8 @@ class Filemanage extends AdminBase
      */
     public function edit()
     {
-        $d = $this->only(['@token'=>'','fileid/d/参数错误','av','af']);
-        $fileid = $d['fileid'];
-        $Myobj = UploadFile::one("fileid = $fileid");
+        $d = $this->only(['@token'=>'','@fileid/d/参数错误','av','af']);
+        $Myobj = UploadFile::one(['fileid'=>$d['fileid']]);
         if(!$Myobj) return $this->returnMsg("数据不存在");
         $value = $d['av'];
         $field = $d['af'];

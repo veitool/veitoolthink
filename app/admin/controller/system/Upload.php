@@ -317,7 +317,7 @@ class Upload extends AdminBase
     public function files(string $action = '', string $type = 'image')
     {
         if($action=='move'){
-            $d = $this->only(['groupid/d','fileids/a']);
+            $d = $this->only(['@groupid/d','fileids/a']);
             $fileids = implode(',', array_map('intval',$d['fileids']));
             $rs = UploadFile::update(['groupid'=>$d['groupid'],'editor'=>$this->manUser['username']],[['fileid','in',$fileids]]);
             if($rs){
@@ -357,7 +357,7 @@ class Upload extends AdminBase
     public function group(string $action = '')
     {
         if(!$action) return $this->returnMsg('参数错误');
-        $d = $this->only($action=='del' ? ['groupid/d'] : ['groupid/d','groupname/*/{1,20}/分组名称/0/','grouptype/h']);
+        $d = $this->only($action=='del' ? ['@groupid/d'] : ['@groupid/d','groupname/*/{1,20}/分组名称/0/','grouptype/h']);
         if($action=='add'){
             $d["listorder"] = 10;
             $d["creator"]   = $this->manUser['username'];
@@ -366,7 +366,7 @@ class Upload extends AdminBase
             $d['groupid'] = $U->groupid;
             return $this->returnMsg($d, 1);
         }elseif($action=='edit'){
-            $Myobj = UploadGroup::one("groupid = $d[groupid]");
+            $Myobj = UploadGroup::one(['groupid'=>$d['groupid']]);
             if(!$Myobj) return $this->returnMsg("数据不存在");
             $d['editor'] = $this->manUser['username'];
             unset($d['grouptype']);

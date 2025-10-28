@@ -53,8 +53,8 @@ class Sequence extends AdminBase
      */
     public function edit(string $do = '')
     {
-        $d = $this->only($do ? ['@token'=>'','id','av','af'] : ['@token'=>'','id','name/h','code/h','prefix/h']);
-        $Myobj = MD::one("id = $d[id]");
+        $d = $this->only($do ? ['@token'=>'','@id/d','av','af'] : ['@token'=>'','@id/d','name/h','code/h','prefix/h']);
+        $Myobj = MD::one(['id'=>$d['id']]);
         if(!$Myobj) return $this->returnMsg("数据不存在");
         if($do == 'up'){
             $value = $d['av'];

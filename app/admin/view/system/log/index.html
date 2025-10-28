@@ -156,16 +156,7 @@ layui.use(['vinfo'],function(){
                         },'post');
                     });
                 }else if(obj.event === 'userinfo'){
-                    if(data.admin>0){
-                        var type = 'user';
-                        var title = '会员详细';
-                        var url = map_root + 'member.index/index?do=info&username=' + data.username;
-                    }else{
-                        var type = 'muser';
-                        var title = '用户详细';
-                        var url = map_root + 'system.manager/index?do=info&username=' + data.username
-                    }
-                    layui.vinfo.open({type:type,title:title,url:url});
+                    userInfo(data);
                 }else if(obj.event === 'showip'){
                     admin.util.ip(data.loginip);
                 }
@@ -185,7 +176,7 @@ layui.use(['vinfo'],function(){
                 cols: [[
                     {field:"logid",fixed:"left",width:80,align:'center',title:"ID",sort:!0},
                     {field:"url",edit:'text',title:"路径"},
-                    {field:"username",width:120,align:'center',title: "用户"},
+                    {field:"username",width:120,align:'center',title: "用户",toolbar:'<div><a style="cursor:pointer;" lay-event="userinfo">{{d.username}}</a></div>'},
                     {field:"ip",align:'center',width:150,title:"IP",toolbar:'<div><a style="cursor:pointer;" lay-event="showip">{{d.ip}}</a></div>'},
                     {field:"logtime",width:150,align:'center',title:"时间",sort:!0,templet:function(d){return layui.util.toDateString(d.logtime*1000)}}
                 ]]
@@ -203,7 +194,10 @@ layui.use(['vinfo'],function(){
             /*工具条监听*/
             table.on('tool(managerlog)', function(obj){
                 var data = obj.data;
-                if(obj.event === 'showip'){
+                if(obj.event === 'userinfo'){
+                    data.admin = 0;
+                    userInfo(data);
+                }else if(obj.event === 'showip'){
                     admin.util.ip(data.ip);
                 }
             });/**/
@@ -241,13 +235,27 @@ layui.use(['vinfo'],function(){
             /*工具条监听*/
             table.on('tool(weblog)', function(obj){
                 var data = obj.data;
-                if(obj.event === 'showip'){
+                if(obj.event === 'userinfo'){
+                    data.admin = 1;
+                    userInfo(data);
+                }else if(obj.event === 'showip'){
                     admin.util.ip(data.ip);
-                }else if(obj.event === 'userinfo'){
-                    layui.vinfo.open({type:'user',title:'会员详细',url:map_root + 'member.index/index?do=info&username=' + data.username});
                 }
             });/**/
         }/**/
+        /*获取用户信息*/
+        var userInfo = function(data){
+            if(data.admin>0){
+                var type = 'user';
+                var title = '会员详细';
+                var url = map_root + 'member.index/index?do=info&username=' + data.username;
+            }else{
+                var type = 'muser';
+                var title = '用户详细';
+                var url = map_root + 'system.manager/index?do=info&username=' + data.username
+            }
+            layui.vinfo.open({type:type,title:title,url:url});
+        };/**/
     }/**/
 });
 </script>

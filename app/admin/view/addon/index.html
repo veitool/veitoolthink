@@ -204,6 +204,7 @@ layui.use(function(){
         size: 'sm',
         page: true,
         limit:{$limit},
+        height: 'full-300',
         url: app_api + "api/addon/index" + getUser('uids'),
         where:{catid:catid,type:type,version:version,first:1},
         css: '.layui-table[lay-size=sm] td .layui-table-cell{height:50px;line-height:50px;padding:0 5px;}.layui-table[lay-size=sm] .layui-table-cell:not([align]){padding-left:10px;}',

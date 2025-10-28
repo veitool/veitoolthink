@@ -129,10 +129,9 @@ class Setting extends AdminBase
             }
             return $this->returnMsg($rs);
         }elseif($do=='check'){ //检测配置名称是否被占用
-            $d = $this->only(['id/d',$this->pname]);
+            $d = $this->only(['id/d',$this->pname,$this->paddon]);
             $id = $d['id'];
-            $where[] = ['name','=',$d['name']];
-            $where[] = ['addon','=',''];
+            $where = [['name','=',$d['name']],['addon','=',$d['addon']]];
             if($id) $where[] = ['id','<>',$id];
             $rs = S::one($where);
             $msg = $rs ? ['code'=>0,'msg'=>'配置名称【'.$d['name'].'】已被占用！'] : ['code'=>1,'msg'=>'可用'];
@@ -166,7 +165,7 @@ class Setting extends AdminBase
      */
     public function bedit(string $do = '')
     {
-        $d = $this->only($do ? ['@token'=>'','@id/d/ID参数错误','av','af'] : ['@token'=>'','@id/d/ID参数错误',$this->ptype,$this->pname,$this->ptitle,$this->pgroup,$this->ptips,'value/u','options/u','@listorder/d']);
+        $d = $this->only($do ? ['@token'=>'','@id/d/ID参数错误','av','af'] : ['@token'=>'','@id/d/ID参数错误',$this->ptype,$this->pname,$this->paddon,$this->ptitle,$this->pgroup,$this->ptips,'value/u','options/u','@listorder/d']);
         $id = $d['id'];
         if(in_array($id, [1,2])) return $this->returnMsg("系统关键配置项不可修改");
         $Myobj = S::one(['id'=>$id]);
@@ -194,7 +193,7 @@ class Setting extends AdminBase
                 return $this->returnMsg("设置失败");
             }
         }else{
-            if(S::one([['name', '=', $d['name']],['addon', '=', ''],['id', '<>', $id]])) return $this->returnMsg("该配置名称已经存在");
+            if(S::one([['name', '=', $d['name']],['addon', '=', $d['addon']],['id', '<>', $id]])) return $this->returnMsg("该配置名称已经存在");
             if(strpos($d['value'], '***') !== false) unset($d['value']);
             $d["editor"] = $this->manUser['username'];
             if($Myobj->save($d)){

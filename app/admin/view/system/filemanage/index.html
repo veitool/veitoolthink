@@ -1,6 +1,6 @@
 <style>
-.files_item{width:60px;height:60px;line-height:40px;cursor:pointer;margin:10px auto 0 auto;padding:4px;border:1px solid #ddd;background:#fff;display:-webkit-box;-moz-box-align:center;-webkit-box-align:center;-moz-box-pack:center;-webkit-box-pack:center;}
-.files_item img{max-width:50px;max-height:50px;border:0}
+.files_item{width:40px;height:40px;line-height:20px;cursor:pointer;margin:10px auto 0 auto;padding:4px;border:1px solid #ddd;background:#fff;display:-webkit-box;-moz-box-align:center;-webkit-box-align:center;-moz-box-pack:center;-webkit-box-pack:center;}
+.files_item img{max-width:40px;max-height:40px;border:0}
 </style>
 <div class="layui-fluid">
     <div class="layui-card">
@@ -54,9 +54,10 @@ layui.use(function(){
         elem: '#filemanage',
         page: true,
         limit:{$limit},
+        height: 'full-260',
         cellExpandedMode:'tips',
         url: app_root+"index?do=json",
-        css: 'td .layui-table-cell{height:80px;line-height:80px;padding:0 5px;}',
+        css: 'td .layui-table-cell{height:60px;line-height:60px;padding:0 5px;}',
         cols: [[
             {type:'checkbox',fixed:'left'},
             {field:"fileurl",align:'center',title:"预览图",width:80,templet:function(d){return '<div class="files_item"><img src="'+ get_icon(d.fileurl,d.filetype,d.fileext) +'" alt="'+d.filename+'" lay-event="file-event-image"/></div>';}},

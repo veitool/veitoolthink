@@ -46,6 +46,7 @@ layui.use(['buildItems'],function(){
         elem: '#settings',
         page: true,
         limit:{$limit},
+        height: 'full-300',
         where:{group:group},
         url: app_root+"build?do=json",
         cols: [[
@@ -166,14 +167,17 @@ layui.use(['buildItems'],function(){
                     ]
                 });
                 form.val('settings_items_form',Dt);
-                $("input").blur(function(){ /*输入框内容监测 判断配置名称是否已被占用*/
-                    var o = $(this);
-                    var obj = o.attr('name');
-                    var val = o.val();
-                    if(obj==='name' && val.length>0){
-                        return admin.req(app_root+"build/do/check",{name:val,id:(Dt ? Dt.id : 0)},function(res){
+                $("#settings_items input[name='name']").on("blur",function(){ /*输入框内容监测 判断配置名称是否已被占用*/
+                    var o = $(this), val = o.val(), addon = $("#settings_items input[name='addon']");
+                    addon_val = addon.val();
+                    if(!addon.is(":hidden") && addon_val==''){
+                        layer.msg('请先填写所属插件名称',{shade:[0.4,'#000'],time:1500},function(){o.val('');addon.focus();});
+                        return;
+                    }
+                    if(val.length>0){
+                        return admin.req(app_root+"build?do=check",{name:val,addon:addon_val,id:(Dt ? Dt.id : 0)},function(res){
                             if(res.code==0){
-                                layer.msg(res.msg,{shade:[0.4,'#000'],time:1500},function(){o.val('');o.focus();});
+                                layer.msg(res.msg,{shade:[0.4,'#000'],time:1500},function(){o.focus();});
                             }
                         },'post');
                     }
@@ -185,7 +189,7 @@ layui.use(['buildItems'],function(){
                         layer.msg(res.msg,{shade:[0.4,'#000'],time:1500},function(){
                             if(res.code==1){
                                 layer.close(index);
-                                table.reload('settings');
+                                table.reloadData('settings');
                             }
                             btn.removeAttr('stop');
                         });

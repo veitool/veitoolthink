@@ -12,7 +12,7 @@
 .file-library .file-group .nav-new li:hover .group-delete:hover,.file-library .file-group .nav-new li:hover .group-edit:hover{color:#16baaa}
 .file-library .file-group a.group-add{display:block;margin-top:.9rem;font-size:.7rem;color:#0e90d2;padding:0 2.1rem}
 
-.file-library .file-list{margin:0 20px 10px 150px;display:block;}
+.file-library .file-list{margin:0 20px 20px 150px;display:block;}
 .file-library .file-list .file-list-header{margin:0 0 5px 10px;display:block;}
 .file-library .file-list .file-list-header .file-right{float:right;}
 

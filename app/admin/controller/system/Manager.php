@@ -65,7 +65,7 @@ class Manager extends AdminBase
                 $where[]  = ['username','=',$username];
                 if($userid) $where[] = ['userid','<>',$userid];
                 $rs  = M::one($where);
-                $msg = $rs ? ['code'=>1,'msg'=>'用户【'.$username.'】已经存在1'] : ['code'=>0,'msg'=>'可用'];
+                $msg = $rs ? ['code'=>1,'msg'=>'用户【'.$username.'】已经存在'] : ['code'=>0,'msg'=>'可用'];
                 return $this->returnMsg($msg);
             }
         }

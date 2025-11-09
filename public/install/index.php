@@ -47,35 +47,66 @@ if($s == 2){
     $currentHost = ($_SERVER['SERVER_PORT'] == 443 ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . '/';
 }elseif($s == 4){
     // 初始化信息
-    $dbhost = $_GET['dbhost'] ?? '';
-    $dbname = $_GET['dbname'] ?? '';
-    $dbpre  = $_GET['dbpre'] ?? 'vt_';
-    $dbuser = $_GET['dbuser'] ?? '';
-    $dbpwd  = $_GET['dbpwd'] ?? '';
-    $dbport = $_GET['dbport'] ?? 3306;
-    $adminmap  = $_GET['adminmap'] ?? 'admin';
-    $adminuser = $_GET['adminuser'] ?? 'admin';
-    $adminpass = $_GET['adminpass'] ?? '123456';
+    $dbhost = trim($_GET['dbhost'] ?? '');
+    $dbname = trim($_GET['dbname'] ?? '');
+    $dbpre  = trim($_GET['dbpre'] ?? 'vt_');
+    $dbuser = trim($_GET['dbuser'] ?? '');
+    $dbpwd  = trim($_GET['dbpwd'] ?? '');
+    $dbport = trim($_GET['dbport'] ?? 3306);
+    $overwrite = intval($_GET['overwrite'] ?? 0);
+    $adminmap  = trim($_GET['adminmap'] ?? 'admin');
+    $adminuser = trim($_GET['adminuser'] ?? 'admin');
+    $adminpass = trim($_GET['adminpass'] ?? '123456');
     // 连接证数据库
     try{
-        $dsn = "mysql:host={$dbhost};port={$dbport};charset=utf8";
-        $pdo = new PDO($dsn, $dbuser, $dbpwd);
-        $pdo->query("SET NAMES utf8"); // 设置数据库编码
+        $pdo = getPDO($dbhost, $dbuser, $dbpwd, $dbport);
     }catch(Exception $e){
         tipMsg('数据库连接错误，请检查！',1);
         exit(header('HTTP/1.0 500 Internal Server Error'));
     }
-    // 查询数据库
-    $res = $pdo->query('show Databases');
-    // 遍历所有数据库，存入数组
-    $dbnameArr = [];
-    foreach($res->fetchAll(PDO::FETCH_ASSOC) as $row){
-        $dbnameArr[] = $row['Database'];
-    }
-    // 检查数据库是否存在，没有则创建数据库
-    if(!in_array(trim($dbname), $dbnameArr)){
+    // 查询数据库是否存在
+    $res = $pdo->query("show databases like '$dbname'");
+    if (empty($res->fetchAll())) {
         if(!$pdo->exec("CREATE DATABASE `$dbname`")){
             tipMsg("创建数据库失败，请检查权限或联系管理员！",1);
+            exit(header('HTTP/1.0 500 Internal Server Error'));
+        }
+    }
+    // 指定操作目标库
+    $pdo->query("USE `$dbname`");
+    // 清空全部表 或 表重名检查
+    if($overwrite){
+        $tables_install = [
+            $dbpre.'system_area',
+            $dbpre.'system_category',
+            $dbpre.'system_dict',
+            $dbpre.'system_dict_group',
+            $dbpre.'system_login_log',
+            $dbpre.'system_manager',
+            $dbpre.'system_manager_log',
+            $dbpre.'system_menus',
+            $dbpre.'system_online',
+            $dbpre.'system_organ',
+            $dbpre.'system_roles',
+            $dbpre.'system_sequence',
+            $dbpre.'system_setting',
+            $dbpre.'system_sms',
+            $dbpre.'system_upload_file',
+            $dbpre.'system_upload_group',
+            $dbpre.'system_web_log',
+        ];
+        $tables_tips = '';
+        $tables = $pdo->query("show tables")->fetchAll();
+        foreach ($tables as $table) {
+            $table = current($table);
+            if ($overwrite == 1) {
+                $pdo->exec("DROP TABLE `$table`");
+            } elseif ($overwrite == 2 && in_array($table, $tables_install)) {
+                $tables_tips .= '<p>数据表【'.$table.'】</p>';
+            }
+        }
+        if ($tables_tips) {
+            tipMsg("<p>数据库【{$dbname}】中以下表已经存在</p>". $tables_tips. "<p>如需覆盖请选择 覆盖重名表 或 清空全部表！</p>");
             exit(header('HTTP/1.0 500 Internal Server Error'));
         }
     }
@@ -84,8 +115,6 @@ if($s == 2){
     $fp = fopen(ROOT_DIR . '/config/app.php', 'w');
     fwrite($fp, $config_str);
     fclose($fp);
-    // 数据库创建完成，开始连接
-    $pdo->query("USE `$dbname`");
     // 获取.env模板内容
     $env_str = getEnvs();
     $env_str = str_replace('~db_host~', $dbhost, $env_str);
@@ -186,35 +215,65 @@ if($s == 2){
     fwrite($fp, '程序已正确安装，重新安装请删除本文件');
     fclose($fp);
 }elseif($s == 6){ //异步检查数据库密码
-    $dbhost = $_GET['dbhost'] ?? '';
-    $dbport = $_GET['dbport'] ?? '';
-    $dbuser = $_GET['dbuser'] ?? '';
-    $dbpwd  = $_GET['dbpwd'] ?? '';
+    $dbhost = trim($_GET['dbhost'] ?? '');
+    $dbport = trim($_GET['dbport'] ?? '');
+    $dbuser = trim($_GET['dbuser'] ?? '');
+    $dbpwd  = trim($_GET['dbpwd'] ?? '');
     try{
-        $dsn = "mysql:host={$dbhost};port={$dbport};charset=utf8";
-        $pdo = new PDO($dsn, $dbuser, $dbpwd);
+        getPDO($dbhost, $dbuser, $dbpwd, $dbport);
         exit('true');
     }catch(Exception $e){
         exit('false');
     }
 }
 
-// 设置是否允许下一步
-function setOk($val)
+/**
+* 获取pdo连接
+* @param string $host     数据库地址
+* @param string $username 数据库账号
+* @param string $password 数据库密码
+* @param string $port     数据库端口
+* @param string $database 数据库名称
+* @return PDO
+*/
+function getPDO($host, $username, $password, $port, $database = null)
+{
+   $dsn = "mysql:host={$host};port={$port};".($database ? "dbname={$database}" : "");
+   $params = [
+       PDO::MYSQL_ATTR_INIT_COMMAND => "set names utf8mb4",
+       PDO::MYSQL_ATTR_USE_BUFFERED_QUERY => true,
+       PDO::ATTR_EMULATE_PREPARES => false,
+       PDO::ATTR_TIMEOUT => 5,
+       PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
+   ];
+   return new PDO($dsn, $username, $password, $params);
+}
+
+/**
+ * 设置步骤全局状态 $isOK 的值
+ * @global bool $isOK
+ * @param  bool $val
+ */
+function setOk(bool $val)
 {
     global $isOK;
     $isOK = $val;
 }
 
-// 测试可写性
-function isWrite($path, $i = 0)
+/**
+ * 测试可写性
+ * @param  string $path 路径
+ * @param  int    $p    权限值
+ * @return string
+ */
+function isWrite(string $path, int $p = 0)
 {
     if (!@file_exists(ROOT_DIR . $path)) {
         $perms = 0;
     } else {
         $perms = (int)substr(sprintf('%o', @fileperms(ROOT_DIR . $path)), -3);
     }
-    if ($perms >= $i) {
+    if ($perms >= $p) {
         echo '<b class="green">符合('.$perms.')</b>';
     } else {
         echo '<span>不符合('.$perms.')</span>';
@@ -222,8 +281,12 @@ function isWrite($path, $i = 0)
     }
 }
 
-// 测试函数是否存在
-function isFunExists($func)
+/**
+ * 测试函数是否存在
+ * @param  string  $func  函数名
+ * @return bool
+ */
+function isFunExists(string $func)
 {
     $state = function_exists($func);
     if($state === false){
@@ -232,8 +295,12 @@ function isFunExists($func)
     return $state;
 }
 
-// 测试函数是否存在
-function isFunExistsTxt($func)
+/**
+ * 测试函数是否存在
+ * @param  string  $func  函数名
+ * @return string
+ */
+function isFunExistsTxt(string $func)
 {
     if(isFunExists($func)){
         echo '<b class="layui-icon green">&#xe697;</b>';
@@ -301,8 +368,9 @@ function getExtendArray()
  * 输出提示
  * @param  string  $str   追加的文本
  * @param  int     $err   是否终止
+ * @return string
  */
-function tipMsg($str,$err=0)
+function tipMsg(string $str, int $err = 0)
 {
     echo $err ? '<p class="red">'. $str .'</p>' : '<p>'. $str .'</p>';
 }
@@ -312,7 +380,7 @@ function tipMsg($str,$err=0)
  * @param  string  $map  映射地址
  * @return string
  */
-function getConfigs($map)
+function getConfigs(string $map)
 {
     return <<<EOT
 <?php

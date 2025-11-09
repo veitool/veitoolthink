@@ -1,4 +1,4 @@
-<div class="main">
+<?php defined('ROOT_DIR') or exit('Nothing');?><div class="main">
     <div class="progress"><ul class="p-2"><li><span>许可协议</span></li><li><span>环境检测</span></li><li><span>设定配置</span></li><li><span>安装完成</span></li></ul></div>
     <div>
         <table class="layui-table" lay-even lay-skin="nob" lay-size="sm">

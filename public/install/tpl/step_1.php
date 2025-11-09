@@ -1,4 +1,4 @@
-<div class="main">
+<?php defined('ROOT_DIR') or exit('Nothing');?><div class="main">
     <div class="progress"><ul class="p-1"><li><span>许可协议</span></li><li><span>环境检测</span></li><li><span>设定配置</span></li><li><span>安装完成</span></li></ul></div>
     <div class="text">
         <h1>软件许可协议（软件著作权登记号：2022SR0502416）</h1>

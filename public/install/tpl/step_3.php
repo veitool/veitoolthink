@@ -1,4 +1,4 @@
-<form class="layui-form" action="?s=4">
+<?php defined('ROOT_DIR') or exit('Nothing');?><form class="layui-form" action="?s=4">
     <div class="main">
         <div class="progress"><ul class="p-3"><li><span>许可协议</span></li><li><span>环境检测</span></li><li><span>设定配置</span></li><li><span>安装完成</span></li></ul></div>
         <div class="upform">
@@ -32,6 +32,14 @@
                 <label class="layui-form-label"><font color="red">*</font> 数据库密码</label>
                 <div class="layui-input-inline"><input type="password" class="layui-input" name="dbpwd" id="dbpwd" autocomplete="off" lay-verify="required" lay-reqtext="请输入数据库密码" lay-affix="eye" value=""/></div>
                 <div class="layui-form-mid layui-word-aux">请输入连接数据库账号的密码</div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">强制覆盖表</label>
+                <div class="layui-input-block">
+                    <input type="radio" name="overwrite" value="0" title="覆盖重名表" >
+                    <input type="radio" name="overwrite" value="1" title="清空全部表">
+                    <input type="radio" name="overwrite" value="2" title="检查重名表" checked>
+                </div>
             </div>
             <h2>管理信息</h2>
             <div class="layui-form-item">
@@ -82,7 +90,7 @@ layui.use(['form', 'layer'],function(){
     form.on('submit(install)',function(data){
         if($(this).hasClass('layui-btn-disabled')) return false;
         var d = data.field;
-        var url = '?s=4&dbhost='+d.dbhost+'&dbname='+d.dbname+'&dbpre='+d.dbpre+'&dbuser='+d.dbuser+'&dbpwd='+encodeURIComponent(d.dbpwd)+'&dbport='+d.dbport+'&adminmap='+d.adminmap+'&adminuser='+d.adminuser+'&adminpass='+d.adminpass;
+        var url = '?s=4&dbhost='+d.dbhost+'&dbname='+d.dbname+'&dbpre='+d.dbpre+'&dbuser='+d.dbuser+'&dbpwd='+encodeURIComponent(d.dbpwd)+'&dbport='+d.dbport+'&overwrite='+d.overwrite+'&adminmap='+d.adminmap+'&adminuser='+d.adminuser+'&adminpass='+d.adminpass;
         layer.open({
             type: 1,
             area: ['500px', '300px'],

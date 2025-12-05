@@ -41,6 +41,17 @@ function is_md5($w){
 }
 
 /**
+ * 时间格式判断（可检测闰年）
+ * @param string  $date   日期时间
+ * @param string  $format 格式 Y-m-d / H:i:s / Y-m-d H:i:s
+ * @return bool
+ */
+function is_date($date, $format = 'Y-m-d') {
+    $d = DateTime::createFromFormat($format, $date);
+    return $d && $d->format($format) === $date;
+}
+
+/**
  * 判断字符是否合乎规则
  * @param   string   $s   目标字符串
  * @param   string   $f   正则类型 ip,mobile,email 或者 允许有的位数范围,如:{1,3}

@@ -17,11 +17,11 @@ layui.define(['tagsInput','fileLibrary','cascader'], function(e){
     c.item_html = '<div class="layui-form-item" id="item-{{ d.relation ? d.relation + "-" : "" }}{{ d.name }}" style="{{# if(d.itemStyle){ }}{{ d.itemStyle }}{{# } }}{{# if(d.hide || (d.relation && d.relation.indexOf("_")!=-1)){ }}display:none;{{# } }}">' + c.label_html;
     c.tips_html = '{{# if(d.tips){ }}<div class="layui-form-mid{{# if(d.type ==\'switch\' || d.type ==\'captcha\' || d.type ==\'keyval\' || d.type ==\'colorpicker\'){ }} tipx{{# } }}"><i class="layui-icon">&#xe748;</i> {{ d.tips }}</div>{{# } }}';
     c.vers_html = '{{# if(d.verify){ }}lay-verify="{{ d.verify }}" lay-vertype="{{ d.vertype || \'\' }}" lay-reqtext="{{ d.reqtext || d.placeholder || \'\' }}" {{# } }}';
-    c.plac_html = '{{# if(d.placeholder){ }}placeholder="{{ d.placeholder }}" {{# } }}{{# if(d.readonly){ }}readonly {{# } }}';
+    c.plac_html = '{{# if(d.maxlength){ }}maxlength="{{ d.maxlength }}" {{# } }}{{# if(d.placeholder){ }}placeholder="{{ d.placeholder }}" {{# } }}{{# if(d.readonly){ }}readonly {{# } }}';
     c.affix_html = '{{# if(d.affix){ }}lay-affix="{{ d.affix }}" {{# } }}';
     c.item_style = '{{# if(d.style){ }}style="{{ d.style }}" {{# } }}';
     //表单元素
-    c.text_html = '<input type="text" name="{{ d.name }}" lay-filter="{{ d.name }}" value="{{ d.value }}" ' + c.item_style + c.vers_html + '{{# if(d.maxlength){ }}maxlength="{{ d.maxlength }}"{{# } }} ' + c.plac_html + c.affix_html;
+    c.text_html = '<input type="text" name="{{ d.name }}" lay-filter="{{ d.name }}" value="{{ d.value }}" ' + c.item_style + c.vers_html + c.plac_html + c.affix_html;
     c.number_html = '<input type="number" name="{{ d.name }}" lay-filter="{{ d.name }}" value="{{ d.value }}" ' + c.item_style + c.vers_html + c.plac_html + '{{# if(d.id){ }}id="{{ d.id }}"{{# } }} class="layui-input" lay-affix="number">';
     c.switch_html = '{{# layui.buildItems.on(d.name,d.relation || "","switch"); }}<input type="checkbox" name="{{ d.name }}" lay-skin="switch" lay-text="ON|OFF" lay-filter="{{ d.name }}" value="1" {{ d.value ==1 ? "checked" : "" }}/>';
     c.radio_html = '{{# layui.buildItems.on(d.name,d.relation || "","radio"); layui.each(d.options, function(key, txt){ }}<input type="radio" name="{{ d.name }}" lay-filter="{{ d.name }}" value="{{ key }}" title="{{ txt }}" {{ d.value == key ? "checked" : "" }} />{{# }); }}';
@@ -62,7 +62,7 @@ layui.define(['tagsInput','fileLibrary','cascader'], function(e){
     //标签
     c.tags = c.item_html + c.block_html + '>' + c.text_html + 'class="layui-hide" id="show-tags-{{ d.name }}"/>' + c.tips_html + '</div></div>';
     //数字
-    c.number = c.item_html + c.block_html + '>' + c.number_html + c.tips_html + '</div></div>';
+    c.number = c.item_html + c.block_html + '>' + c.number_html.replace("maxlength=", "max=") + c.tips_html + '</div></div>';
     //级联地区
     c.areas = c.item_html + c.block_html + '>' + c.text_html + 'id="areas-{{ d.name }}" class="layui-input"/>' + c.tips_html + '</div></div>';
     //取色器

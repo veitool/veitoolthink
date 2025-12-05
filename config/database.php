@@ -13,7 +13,7 @@ return [
     'auto_timestamp'  => 'int',
 
     // 时间字段取出后的默认时间格式
-    'datetime_format' => false, //'Y-m-d H:i:s',
+    'datetime_format' => 'Y-m-d H:i:s',
 
     // 数据库连接配置信息
     'connections'     => [

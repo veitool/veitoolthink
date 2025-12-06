@@ -36,7 +36,7 @@ class Dompdf extends Pdf
         $orientation = $this->getOrientation() ?? $setup->getOrientation();
         $orientation = ($orientation === PageSetup::ORIENTATION_LANDSCAPE) ? 'L' : 'P';
         $printPaperSize = $this->getPaperSize() ?? $setup->getPaperSize();
-        $paperSize = self::$paperSizes[$printPaperSize] ?? PageSetup::getPaperSizeDefault();
+        $paperSize = self::$paperSizes[$printPaperSize] ?? self::$paperSizes[PageSetup::getPaperSizeDefault()] ?? 'LETTER';
         if (is_array($paperSize) && count($paperSize) === 2) {
             $paperSize = [0.0, 0.0, $paperSize[0], $paperSize[1]];
         }
@@ -44,13 +44,6 @@ class Dompdf extends Pdf
         $orientation = ($orientation == 'L') ? 'landscape' : 'portrait';
 
         //  Create PDF
-        $restoreHandler = false;
-        if (PHP_VERSION_ID >= self::$temporaryVersionCheck) {
-            // @codeCoverageIgnoreStart
-            set_error_handler(self::specialErrorHandler(...));
-            $restoreHandler = true;
-            // @codeCoverageIgnoreEnd
-        }
         $pdf = $this->createExternalWriterInstance();
         $pdf->setPaper($paperSize, $orientation);
 
@@ -58,29 +51,8 @@ class Dompdf extends Pdf
         $pdf->render();
 
         //  Write to file
-        fwrite($fileHandle, $pdf->output() ?? '');
+        fwrite($fileHandle, $pdf->output());
 
-        if ($restoreHandler) {
-            restore_error_handler(); // @codeCoverageIgnore
-        }
         parent::restoreStateAfterSave();
-    }
-
-    protected static int $temporaryVersionCheck = 80500;
-
-    /**
-     * Temporary handler for Php8.5 waiting for Dompdf release.
-     *
-     * @codeCoverageIgnore
-     */
-    public function specialErrorHandler(int $errno, string $errstr, string $filename, int $lineno): bool
-    {
-        if ($errno === E_DEPRECATED) {
-            if (preg_match('/canonical|imagedestroy|http_get_last_response_headers/', $errstr) === 1) {
-                return true;
-            }
-        }
-
-        return false; // continue error handling
     }
 }

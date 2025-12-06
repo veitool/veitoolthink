@@ -56,7 +56,8 @@ class DateTime implements Typeable
             return null;
         }
 
-        return $this->data->format($format ?: $this->format);
+        $f = $format ?: $this->format;
+        return $f ? $this->data->format($f) : $this->data;
     }
 
     public function value()

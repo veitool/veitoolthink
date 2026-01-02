@@ -52,12 +52,11 @@ class DateTime implements Typeable
             return $this->data->__toString();
         }
 
-        if (is_null($this->data)) {
-            return null;
+        if (is_null($this->data) || is_string($this->data)) {
+            return $this->data;
         }
 
-        $f = $format ?: $this->format;
-        return $f ? $this->data->format($f) : $this->data;
+        return $this->data->format($format ?: $this->format);
     }
 
     public function value()

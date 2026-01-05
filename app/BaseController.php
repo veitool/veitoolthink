@@ -271,6 +271,12 @@ abstract class BaseController
             'a'=>[2=>'{3,20}',3=>'插件名',4=>'1,2',5=>''],
             'v'=>[2=>'{2,20}',3=>'配置名',4=>'1,2,3',5=>'_']
         ];
+        if(isset($name['@regex']) && is_array($name['@regex'])){
+            foreach($name['@regex'] as $k => $v){
+                if(is_array($v)) $preg[$k] = array_replace([2=>'',3=>'',4=>'0',5=>''], $v);
+            }
+            unset($name['@regex']);
+        }
         foreach($name as $key => $val){
             $default = '';
             $sub = ['','','','','0',' .#-']; // 对应['key','转换类型|验证符*或?','验证规则','提示','合法的字符集','允许的字符']
@@ -319,10 +325,10 @@ abstract class BaseController
                         $reg = explode(',',$sub[4]);
                         if($must && !is_preg($v,$sub[2],$reg,$sub[5])){
                             if($msg){
-                                $tip = $tip ?: "字段{$key}不合规范"; $txt = ['汉字字母数字下划线','数字','小写字母','大写字母','汉字','任何非空白字符'];
+                                $tip = $tip ?: "字段{$key}不合规范"; $txt = ['汉字、字母、数字、下划线','数字','小写字母','大写字母','汉字','任何非空白字符'];
                                 if($reg[0]!==''){
                                     $str = ''; foreach($reg as $i){$str .= ($txt[$i] ?? '').'、';}
-                                    $tip = $tip.'必须由'.(str_replace(['{',',','}'],['','-',''],$sub[2])).'位'.rtrim($str,'、').($sub[5] ? '和'.str_replace(' ', '空格', $sub[5]) : '').'组成';
+                                    $tip .= is_regex($sub[2]) ? '不符合规范' : '必须由'.(str_replace(['{',',','}'],['','-',''],$sub[2])).'位'.rtrim($str,'、').($sub[5] ? '或'.str_replace(' ', '空格', $sub[5]) : '').'组成';
                                 }
                                 $this->exitMsg($tip);
                             }else{

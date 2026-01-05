@@ -69,7 +69,11 @@ function is_preg($s,$f='',$t=[0],$o=''){
         'class' => "/^[A-Z]{1}[a-zA-Z0-9]{1,15}$/",
         'idcard'=> "/^([1-6][1-9]|50)\d{4}(19|20)\d{2}((0[1-9])|10|11|12)(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/"
     ];
-    if(isset($p[$f])) return preg_match($p[$f],$s);
+    if(isset($p[$f])){
+        return preg_match($p[$f],$s);
+    }elseif(is_regex($f)){
+        return preg_match($f,$s);
+    }
     $m = '/^[';
     $p = ['\w',"0-9",'a-z','A-Z','\x{4e00}-\x{9fa5}','\S'];
     foreach($t as $v){
@@ -77,6 +81,22 @@ function is_preg($s,$f='',$t=[0],$o=''){
     }
     $m .= $o ? $o.']'.$f.'+$/u' : ']'.$f.'+$/u';
     return preg_match($m,$s);
+}
+
+/**
+ * 判断字符串是否为合法的正则表达式
+ * @param  string $str 待判断的字符串
+ * @return bool   true=合法
+ */
+function is_regex(string $str){
+    if (empty($str)) return false;
+    $firstChar = $str[0];
+    if (ctype_alnum($firstChar) || $firstChar === '\\') return false;
+    $lastDelimiterPos = strrpos($str, $firstChar);
+    if ($lastDelimiterPos === false || $lastDelimiterPos === 0) return false;
+    @preg_match($str, '');
+    $errorCode = preg_last_error();
+    return $errorCode === PREG_NO_ERROR;
 }
 
 /**

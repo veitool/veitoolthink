@@ -58,7 +58,7 @@ layui.define(function(g){
                     skin: 'file-library',
                     area: '840px',
                     anim: 1,
-                    btn: ['确定','取消'],
+                    btn: ['确定','取消','复制URL'],
                     content: f.tpl(c.main_html,data),
                     success: function(res){
                         GP = data.group_list;
@@ -72,6 +72,17 @@ layui.define(function(g){
                         //确认回调,返回二维数组{[file_id, file_path]}
                         typeof success === 'function' && success(f.getSelectedFiles());
                         layer.close(index);
+                    },
+                    btn3: function(){
+                        let obj = f.getSelectedFiles();
+                        let str = obj.map(item => item.file_path).join('\n');
+                        if(str){
+                            layui.lay.clipboard.writeText({text:str});
+                            layer.msg('复制成功！',{shade:[0.4,'#000'],time:800});
+                        }else{
+                            layer.msg('请先选择要复制的文件',{shade:[0.4,'#000'],time:1500});
+                        }
+                        return false;
                     }
                 });
             });

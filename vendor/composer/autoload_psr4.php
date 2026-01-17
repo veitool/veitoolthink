@@ -14,7 +14,7 @@ return array(
     'think\\dumper\\' => array($vendorDir . '/topthink/think-dumper/src'),
     'think\\captcha\\' => array($vendorDir . '/topthink/think-captcha/src'),
     'think\\app\\' => array($vendorDir . '/topthink/think-multi-app/src'),
-    'think\\' => array($vendorDir . '/topthink/framework/src/think', $vendorDir . '/topthink/think-container/src', $vendorDir . '/topthink/think-filesystem/src', $vendorDir . '/topthink/think-image/src', $vendorDir . '/topthink/think-log/src', $vendorDir . '/topthink/think-queue/src', $vendorDir . '/topthink/think-template/src', $vendorDir . '/topthink/think-validate/src', $vendorDir . '/topthink/think-helper/src', $vendorDir . '/topthink/think-orm/src'),
+    'think\\' => array($vendorDir . '/topthink/framework/src/think', $vendorDir . '/topthink/think-container/src', $vendorDir . '/topthink/think-filesystem/src', $vendorDir . '/topthink/think-helper/src', $vendorDir . '/topthink/think-image/src', $vendorDir . '/topthink/think-log/src', $vendorDir . '/topthink/think-orm/src', $vendorDir . '/topthink/think-queue/src', $vendorDir . '/topthink/think-template/src', $vendorDir . '/topthink/think-validate/src'),
     'app\\' => array($baseDir . '/app'),
     'addons\\' => array($baseDir . '/addons'),
     'ZipStream\\' => array($vendorDir . '/maennchen/zipstream-php/src'),

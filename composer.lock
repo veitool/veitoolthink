@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0213316d6b27d1d8937ea5f5c7dab23f",
+    "content-hash": "2a095b3ca08010bf6106f4db149b91dd",
     "packages": [
         {
             "name": "aliyuncs/oss-sdk-php",
@@ -1675,16 +1675,16 @@
         },
         {
             "name": "phpoffice/phpspreadsheet",
-            "version": "3.10.2",
+            "version": "3.10.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPOffice/PhpSpreadsheet.git",
-                "reference": "cd1dd91d6ef2afc0629982e0ea5911b3746fe51e"
+                "reference": "ceba166a6c21830922e145c59999adc855412fe6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/cd1dd91d6ef2afc0629982e0ea5911b3746fe51e",
-                "reference": "cd1dd91d6ef2afc0629982e0ea5911b3746fe51e",
+                "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/ceba166a6c21830922e145c59999adc855412fe6",
+                "reference": "ceba166a6c21830922e145c59999adc855412fe6",
                 "shasum": ""
             },
             "require": {
@@ -1706,8 +1706,6 @@
                 "markbaker/complex": "^3.0",
                 "markbaker/matrix": "^3.0",
                 "php": "^8.1",
-                "psr/http-client": "^1.0",
-                "psr/http-factory": "^1.0",
                 "psr/simple-cache": "^1.0 || ^2.0 || ^3.0"
             },
             "require-dev": {
@@ -1758,6 +1756,9 @@
                 },
                 {
                     "name": "Adrien Crivelli"
+                },
+                {
+                    "name": "Owen Leibman"
                 }
             ],
             "description": "PHPSpreadsheet - Read, Create and Write Spreadsheet documents in PHP - Spreadsheet engine",
@@ -1774,9 +1775,9 @@
             ],
             "support": {
                 "issues": "https://github.com/PHPOffice/PhpSpreadsheet/issues",
-                "source": "https://github.com/PHPOffice/PhpSpreadsheet/tree/3.10.2"
+                "source": "https://github.com/PHPOffice/PhpSpreadsheet/tree/3.10.3"
             },
-            "time": "2025-11-24T16:10:02+00:00"
+            "time": "2026-01-11T06:13:14+00:00"
         },
         {
             "name": "phpoffice/phpword",
@@ -2145,16 +2146,16 @@
         },
         {
             "name": "psr/http-message",
-            "version": "1.1",
+            "version": "2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/http-message.git",
-                "reference": "cb6ce4845ce34a8ad9e68117c10ee90a29919eba"
+                "reference": "402d35bcb92c70c026d1a6a9883f06b2ead23d71"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/http-message/zipball/cb6ce4845ce34a8ad9e68117c10ee90a29919eba",
-                "reference": "cb6ce4845ce34a8ad9e68117c10ee90a29919eba",
+                "url": "https://api.github.com/repos/php-fig/http-message/zipball/402d35bcb92c70c026d1a6a9883f06b2ead23d71",
+                "reference": "402d35bcb92c70c026d1a6a9883f06b2ead23d71",
                 "shasum": ""
             },
             "require": {
@@ -2163,7 +2164,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.1.x-dev"
+                    "dev-master": "2.0.x-dev"
                 }
             },
             "autoload": {
@@ -2178,7 +2179,7 @@
             "authors": [
                 {
                     "name": "PHP-FIG",
-                    "homepage": "http://www.php-fig.org/"
+                    "homepage": "https://www.php-fig.org/"
                 }
             ],
             "description": "Common interface for HTTP messages",
@@ -2192,9 +2193,9 @@
                 "response"
             ],
             "support": {
-                "source": "https://github.com/php-fig/http-message/tree/1.1"
+                "source": "https://github.com/php-fig/http-message/tree/2.0"
             },
-            "time": "2023-04-04T09:50:52+00:00"
+            "time": "2023-04-04T09:54:51+00:00"
         },
         {
             "name": "psr/log",
@@ -3255,16 +3256,16 @@
         },
         {
             "name": "topthink/framework",
-            "version": "v8.1.3",
+            "version": "v8.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/top-think/framework.git",
-                "reference": "e4207e98b66f92d26097ed6efd535930cba90e8f"
+                "reference": "8e7b2b2364047cbf71a38c4e397a9ca0d4ef2b01"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/top-think/framework/zipball/e4207e98b66f92d26097ed6efd535930cba90e8f",
-                "reference": "e4207e98b66f92d26097ed6efd535930cba90e8f",
+                "url": "https://api.github.com/repos/top-think/framework/zipball/8e7b2b2364047cbf71a38c4e397a9ca0d4ef2b01",
+                "reference": "8e7b2b2364047cbf71a38c4e397a9ca0d4ef2b01",
                 "shasum": ""
             },
             "require": {
@@ -3272,7 +3273,7 @@
                 "ext-json": "*",
                 "ext-mbstring": "*",
                 "php": ">=8.0.0",
-                "psr/http-message": "^1.0",
+                "psr/http-message": "^1.0|^2.0",
                 "psr/log": "^1.0|^2.0|^3.0",
                 "psr/simple-cache": "^1.0|^2.0|^3.0",
                 "topthink/think-container": "^3.0",
@@ -3281,6 +3282,7 @@
                 "topthink/think-validate": "^3.0"
             },
             "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.92",
                 "guzzlehttp/psr7": "^2.1.0",
                 "mikey179/vfsstream": "^1.6",
                 "mockery/mockery": "^1.2",
@@ -3316,9 +3318,9 @@
             ],
             "support": {
                 "issues": "https://github.com/top-think/framework/issues",
-                "source": "https://github.com/top-think/framework/tree/v8.1.3"
+                "source": "https://github.com/top-think/framework/tree/v8.1.4"
             },
-            "time": "2025-07-14T03:48:44+00:00"
+            "time": "2026-01-15T02:45:10+00:00"
         },
         {
             "name": "topthink/think-captcha",
@@ -4264,16 +4266,16 @@
         },
         {
             "name": "topthink/think-dumper",
-            "version": "v1.0.5",
+            "version": "v1.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/top-think/think-dumper.git",
-                "reference": "eba662a1843d5db68059050c530f7d43287289fc"
+                "reference": "2140ea8293d1a27637ada9b830078b8a1e0f44b3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/top-think/think-dumper/zipball/eba662a1843d5db68059050c530f7d43287289fc",
-                "reference": "eba662a1843d5db68059050c530f7d43287289fc",
+                "url": "https://api.github.com/repos/top-think/think-dumper/zipball/2140ea8293d1a27637ada9b830078b8a1e0f44b3",
+                "reference": "2140ea8293d1a27637ada9b830078b8a1e0f44b3",
                 "shasum": ""
             },
             "require": {
@@ -4306,27 +4308,27 @@
             "description": "Dumper extend for thinkphp",
             "support": {
                 "issues": "https://github.com/top-think/think-dumper/issues",
-                "source": "https://github.com/top-think/think-dumper/tree/v1.0.5"
+                "source": "https://github.com/top-think/think-dumper/tree/v1.0.6"
             },
-            "time": "2025-03-21T07:15:45+00:00"
+            "time": "2026-01-14T08:50:35+00:00"
         },
         {
             "name": "topthink/think-trace",
-            "version": "v1.6",
+            "version": "v2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/top-think/think-trace.git",
-                "reference": "136cd5d97e8bdb780e4b5c1637c588ed7ca3e142"
+                "reference": "4ba6da2945b37931d61900a6e55dc02b05e5a63f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/top-think/think-trace/zipball/136cd5d97e8bdb780e4b5c1637c588ed7ca3e142",
-                "reference": "136cd5d97e8bdb780e4b5c1637c588ed7ca3e142",
+                "url": "https://api.github.com/repos/top-think/think-trace/zipball/4ba6da2945b37931d61900a6e55dc02b05e5a63f",
+                "reference": "4ba6da2945b37931d61900a6e55dc02b05e5a63f",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.1.0",
-                "topthink/framework": "^6.0|^8.0"
+                "php": ">=8.0",
+                "topthink/framework": "^8.1"
             },
             "type": "library",
             "extra": {
@@ -4357,9 +4359,9 @@
             "description": "thinkphp debug trace",
             "support": {
                 "issues": "https://github.com/top-think/think-trace/issues",
-                "source": "https://github.com/top-think/think-trace/tree/v1.6"
+                "source": "https://github.com/top-think/think-trace/tree/v2.0"
             },
-            "time": "2023-02-07T08:36:32+00:00"
+            "time": "2025-06-12T09:18:19+00:00"
         }
     ],
     "aliases": [],

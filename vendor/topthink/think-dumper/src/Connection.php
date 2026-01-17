@@ -72,11 +72,4 @@ class Connection
             restore_error_handler();
         }
     }
-
-    public function __destruct()
-    {
-        if ($this->handle) {
-            curl_close($this->handle);
-        }
-    }
 }

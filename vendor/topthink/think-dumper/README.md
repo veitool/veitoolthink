@@ -22,7 +22,7 @@ composer require topthink/think-dumper --dev
 DUMPER_TOKEN = 令牌值
 ```
 
-然后 在代码中使用助手函数`d`输出变量调试
+然后 在代码中使用助手函数输出变量调试
 ```
 dump($var...)
 ```

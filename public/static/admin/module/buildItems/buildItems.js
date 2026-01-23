@@ -592,59 +592,54 @@ layui.define(['tagsInput','fileLibrary','cascader'], function(e){
                 });
             }
         },
-        getCT: function(success){
+        getCT: (success) => {
             if(window.cityData){
                 typeof success === 'function' && success();
             }else{
                 $.getScript(static + "script/cityData.js", function(){
-                    window.cityData = cityData;
                     typeof success === 'function' && success();
                 });
             }
         },
-        getUE: function(success){
+        getUE: (success) => {
             if(window.UE){
                 typeof success === 'function' && setTimeout(function(){success()},100);
             }else{
                 $.getScript(static + "ueditor/ueditor.all.min.js", function(){
-                    window.UE = UE;
                     typeof success === 'function' && success();
                 });
             }
         },
-        getCM: function(success){
+        getCM: (success) => {
             if(window.Cherry){
                 typeof success === 'function' && setTimeout(function(){success()},500);/*延迟：解决存在于OPEN窗口中时编辑区的渲染尺寸问题*/
             }else{
                 layui.link(static + "cherrymd/cherry-markdown.min.css");
                 $.getScript(static + "cherrymd/cherry-markdown.min.js", function(){
-                    window.Cherry = Cherry;
                     typeof success === 'function' && success();
                 });
             }
         },
-        getEM: function(success){
+        getEM: (success) => {
             if(window.editormd){
                 typeof success === 'function' && setTimeout(function(){success()},100);
             }else{
                 layui.link(static + "editormd/css/editormd.min.css");
                 $.getScript(static + "editormd/editormd.min.js", function(){
-                    window.editormd = editormd;
                     typeof success === 'function' && success();
                 });
             }
         },
-        getTE: function(success){
+        getTE: (success) => {
             if(window.tinymce){
                 typeof success === 'function' && success();
             }else{
                 $.getScript(static + "tinymce/tinymce.min.js", function(){
-                    window.tinymce = tinymce;
                     typeof success === 'function' && success();
                 });
             }
         },
-        setArr: function(name){
+        setArr: (name) => {
             var obj = {}, val;
             $h.find("#keyval-show-"+ name +" .keyval_item").each(function(){
                 let key = $(this).find("input:eq(0)").val();

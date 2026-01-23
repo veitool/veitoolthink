@@ -121,6 +121,10 @@ class ComposerStaticInitd011e134d1acc4431ea1478829c15198
             'GuzzleHttp\\' => 11,
             'GatewayWorker\\' => 14,
         ),
+        'F' => 
+        array (
+            'Firebase\\JWT\\' => 13,
+        ),
         'C' => 
         array (
             'Composer\\Pcre\\' => 14,
@@ -345,6 +349,10 @@ class ComposerStaticInitd011e134d1acc4431ea1478829c15198
         'GatewayWorker\\' => 
         array (
             0 => __DIR__ . '/..' . '/workerman/gateway-worker/src',
+        ),
+        'Firebase\\JWT\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/firebase/php-jwt/src',
         ),
         'Composer\\Pcre\\' => 
         array (

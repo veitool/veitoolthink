@@ -49,12 +49,13 @@
 <!-- js部分 -->
 <script src="{STATIC__PATH}layui/layui.js"></script>
 <script>
-var $ = jQuery = layui.$;
+var $ = jQuery = layui.$, rsa_public = `{:config('veitool.rsa_pub_key')}`;
 layui.config({
     base: "{STATIC__PATH}admin/module/",
     maps: ("{$appMap}" || "/admin") + "/", // 映射后的后台根路径
     static: "{STATIC__PATH}",  // 静态资源根路径 buildItems.js中有用
     version: "{:VT_VERSION}",  // 框架版本
+    rsa_public: rsa_public,    // rsa加密公钥
     bins:{
         baseServer: '',    // 接口地址，实际项目请换成http形式的地址
         pageTabs: true,    // 是否开启多标签

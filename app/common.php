@@ -3,13 +3,13 @@
  * ===========================================================================
  * Veitool 快捷开发框架系统
  * Author: Niaho 26843818@qq.com
- * Copyright (c)2019-2025 www.veitool.com All rights reserved.
+ * Copyright (c)2019-2026 www.veitool.com All rights reserved.
  * Licensed: 这不是一个自由软件，不允许对程序代码以任何形式任何目的的再发行
  * ---------------------------------------------------------------------------
  */
 
 // 版本信息
-define('VT_VERSION', '2.3.4');
+define('VT_VERSION', '2.3.5');
 // 后台管理员 session 标识
 define('VT_MANAGER', 'V_MANAGER');
 // 前台会员 session 标识

@@ -3,7 +3,7 @@
  * ===========================================================================
  * Veitool 快捷开发框架系统
  * Author: Niaho 26843818@qq.com
- * Copyright (c)2019-2025 www.veitool.com All rights reserved.
+ * Copyright (c)2019-2026 www.veitool.com All rights reserved.
  * Licensed: 这不是一个自由软件，不允许对程序代码以任何形式任何目的的再发行
  * ---------------------------------------------------------------------------
  */

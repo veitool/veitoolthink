@@ -1,11 +1,9 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * This file is part of the Nette Framework (https://nette.org)
  * Copyright (c) 2004 David Grudl (https://davidgrudl.com)
  */
-
-declare(strict_types=1);
 
 namespace Nette\PhpGenerator;
 
@@ -20,10 +18,10 @@ use const PHP_VERSION_ID;
  */
 final class Factory
 {
-	/** @var string[][]  */
+	/** @var array<string, array<string, string>> */
 	private array $bodyCache = [];
 
-	/** @var Extractor[]  */
+	/** @var array<string, Extractor> */
 	private array $extractorCache = [];
 
 
@@ -37,43 +35,70 @@ final class Factory
 			throw new Nette\NotSupportedException('The $withBodies parameter cannot be used for anonymous or internal classes or interfaces.');
 		}
 
-		$enumIface = null;
-		if ($from->isEnum()) {
-			$class = new EnumType($from->getShortName(), new PhpNamespace($from->getNamespaceName()));
-			$from = new \ReflectionEnum($from->getName());
-			$enumIface = $from->isBacked() ? \BackedEnum::class : \UnitEnum::class;
-		} elseif ($from->isAnonymous()) {
-			$class = new ClassType;
+		$class = $this->createClassObject($from);
+		$this->setupInheritance($class, $from);
+		$this->populateMembers($class, $from, $withBodies);
+		return $class;
+	}
+
+
+	/** @param \ReflectionClass<object> $from */
+	private function createClassObject(\ReflectionClass &$from): ClassLike
+	{
+		if ($from->isAnonymous()) {
+			return new ClassType;
+		} elseif ($from->isEnum()) {
+			$name = $from->getName();
+			/** @var class-string<\UnitEnum> $name */
+			$from = new \ReflectionEnum($name);
+			$class = new EnumType($from->getName());
 		} elseif ($from->isInterface()) {
-			$class = new InterfaceType($from->getShortName(), new PhpNamespace($from->getNamespaceName()));
+			$class = new InterfaceType($from->getName());
 		} elseif ($from->isTrait()) {
-			$class = new TraitType($from->getShortName(), new PhpNamespace($from->getNamespaceName()));
+			$class = new TraitType($from->getName());
 		} else {
-			$class = new ClassType($from->getShortName(), new PhpNamespace($from->getNamespaceName()));
+			$class = new ClassType($from->getShortName());
 			$class->setFinal($from->isFinal() && $class->isClass());
 			$class->setAbstract($from->isAbstract() && $class->isClass());
 			$class->setReadOnly(PHP_VERSION_ID >= 80200 && $from->isReadOnly());
 		}
 
+		(new PhpNamespace($from->getNamespaceName()))->add($class);
+		return $class;
+	}
+
+
+	/** @param \ReflectionClass<object> $from */
+	private function setupInheritance(ClassLike $class, \ReflectionClass $from): void
+	{
 		$ifaces = $from->getInterfaceNames();
 		foreach ($ifaces as $iface) {
 			$ifaces = array_filter($ifaces, fn(string $item): bool => !is_subclass_of($iface, $item));
 		}
 
 		if ($from->isInterface()) {
-			$class->setExtends($ifaces);
+			assert($class instanceof InterfaceType);
+			$class->setExtends(array_values($ifaces));
 		} elseif ($ifaces) {
-			$ifaces = array_diff($ifaces, [$enumIface]);
-			$class->setImplements($ifaces);
+			assert($class instanceof ClassType || $class instanceof EnumType);
+			$ifaces = array_diff($ifaces, [\BackedEnum::class, \UnitEnum::class]);
+			$class->setImplements(array_values($ifaces));
 		}
 
 		$class->setComment(Helpers::unformatDocComment((string) $from->getDocComment()));
-		$class->setAttributes($this->getAttributes($from));
+		$class->setAttributes($this->formatAttributes($from->getAttributes()));
 		if ($from->getParentClass()) {
+			assert($class instanceof ClassType);
 			$class->setExtends($from->getParentClass()->name);
-			$class->setImplements(array_diff($class->getImplements(), $from->getParentClass()->getInterfaceNames()));
+			$class->setImplements(array_values(array_diff($class->getImplements(), $from->getParentClass()->getInterfaceNames())));
 		}
+	}
 
+
+	/** @param \ReflectionClass<object> $from */
+	private function populateMembers(ClassLike $class, \ReflectionClass $from, bool $withBodies): void
+	{
+		// Properties
 		$props = [];
 		foreach ($from->getProperties() as $prop) {
 			$declaringClass = Reflection::getPropertyDeclaringClass($prop);
@@ -84,19 +109,23 @@ final class Factory
 				&& !$class->isEnum()
 			) {
 				$props[] = $p = $this->fromPropertyReflection($prop);
-				if ($withBodies) {
-					$hookBodies ??= $this->getExtractor($declaringClass->getFileName())->extractPropertyHookBodies($declaringClass->name);
-					foreach ($hookBodies[$prop->getName()] ?? [] as $hookType => [$body, $short]) {
-						$p->getHook($hookType)->setBody($body, short: $short);
+				if ($withBodies && ($file = $declaringClass->getFileName())) {
+					$hookBodies ??= $this->getExtractor($file)->extractPropertyHookBodies($declaringClass->name);
+					/** @var array<'set'|'get', array{string, bool}> $propHookBodies */
+					$propHookBodies = $hookBodies[$prop->getName()] ?? [];
+					foreach ($propHookBodies as $hookType => [$body, $short]) {
+						$p->getHook($hookType)?->setBody($body, short: $short);
 					}
 				}
 			}
 		}
 
 		if ($props) {
+			assert($class instanceof ClassType || $class instanceof InterfaceType || $class instanceof TraitType);
 			$class->setProperties($props);
 		}
 
+		// Methods and trait resolutions
 		$methods = $resolutions = [];
 		foreach ($from->getMethods() as $method) {
 			$declaringMethod = Reflection::getMethodDeclaringMethod($method);
@@ -104,12 +133,12 @@ final class Factory
 
 			if (
 				$declaringClass->name === $from->name
-				&& (!$enumIface || !method_exists($enumIface, $method->name))
+				&& (!$from instanceof \ReflectionEnum || !method_exists($from->isBacked() ? \BackedEnum::class : \UnitEnum::class, $method->name))
 			) {
 				$methods[] = $m = $this->fromMethodReflection($method);
-				if ($withBodies) {
+				if ($withBodies && ($file = $declaringClass->getFileName())) {
 					$bodies = &$this->bodyCache[$declaringClass->name];
-					$bodies ??= $this->getExtractor($declaringClass->getFileName())->extractMethodBodies($declaringClass->name);
+					$bodies ??= $this->getExtractor($file)->extractMethodBodies($declaringClass->name);
 					if (isset($bodies[$declaringMethod->name])) {
 						$m->setBody($bodies[$declaringMethod->name]);
 					}
@@ -125,9 +154,12 @@ final class Factory
 			}
 		}
 
+		assert($class instanceof ClassType || $class instanceof InterfaceType || $class instanceof TraitType || $class instanceof EnumType);
 		$class->setMethods($methods);
 
+		// Traits
 		foreach ($from->getTraitNames() as $trait) {
+			assert($class instanceof ClassType || $class instanceof TraitType || $class instanceof EnumType);
 			$trait = $class->addTrait($trait);
 			foreach ($resolutions as $resolution) {
 				$trait->addResolution($resolution);
@@ -135,9 +167,10 @@ final class Factory
 			$resolutions = [];
 		}
 
+		// Constants and enum cases
 		$consts = $cases = [];
 		foreach ($from->getReflectionConstants() as $const) {
-			if ($class->isEnum() && $from->hasCase($const->name)) {
+			if ($from instanceof \ReflectionEnum && $from->hasCase($const->name)) {
 				$cases[] = $this->fromCaseReflection($const);
 			} elseif ($const->getDeclaringClass()->name === $from->name) {
 				$consts[] = $this->fromConstantReflection($const);
@@ -148,17 +181,16 @@ final class Factory
 			$class->setConstants($consts);
 		}
 		if ($cases) {
+			assert($class instanceof EnumType);
 			$class->setCases($cases);
 		}
-
-		return $class;
 	}
 
 
 	public function fromMethodReflection(\ReflectionMethod $from): Method
 	{
 		$method = new Method($from->name);
-		$method->setParameters(array_map([$this, 'fromParameterReflection'], $from->getParameters()));
+		$method->setParameters(array_map($this->fromParameterReflection(...), $from->getParameters()));
 		$method->setStatic($from->isStatic());
 		$isInterface = $from->getDeclaringClass()->isInterface();
 		$method->setVisibility($isInterface ? null : $this->getVisibility($from));
@@ -167,7 +199,7 @@ final class Factory
 		$method->setReturnReference($from->returnsReference());
 		$method->setVariadic($from->isVariadic());
 		$method->setComment(Helpers::unformatDocComment((string) $from->getDocComment()));
-		$method->setAttributes($this->getAttributes($from));
+		$method->setAttributes($this->formatAttributes($from->getAttributes()));
 		$method->setReturnType((string) $from->getReturnType());
 
 		return $method;
@@ -177,28 +209,30 @@ final class Factory
 	public function fromFunctionReflection(\ReflectionFunction $from, bool $withBody = false): GlobalFunction|Closure
 	{
 		$function = $from->isClosure() ? new Closure : new GlobalFunction($from->name);
-		$function->setParameters(array_map([$this, 'fromParameterReflection'], $from->getParameters()));
+		$function->setParameters(array_map($this->fromParameterReflection(...), $from->getParameters()));
 		$function->setReturnReference($from->returnsReference());
 		$function->setVariadic($from->isVariadic());
 		if (!$from->isClosure()) {
+			assert($function instanceof GlobalFunction);
 			$function->setComment(Helpers::unformatDocComment((string) $from->getDocComment()));
 		}
 
-		$function->setAttributes($this->getAttributes($from));
+		$function->setAttributes($this->formatAttributes($from->getAttributes()));
 		$function->setReturnType((string) $from->getReturnType());
 
 		if ($withBody) {
-			if ($from->isClosure() || $from->isInternal()) {
+			if ($from->isClosure() || $from->isInternal() || !($file = $from->getFileName())) {
 				throw new Nette\NotSupportedException('The $withBody parameter cannot be used for closures or internal functions.');
 			}
 
-			$function->setBody($this->getExtractor($from->getFileName())->extractFunctionBody($from->name));
+			$function->setBody($this->getExtractor($file)->extractFunctionBody($from->name));
 		}
 
 		return $function;
 	}
 
 
+	/** @param callable(): mixed  $from */
 	public function fromCallable(callable $from): Method|GlobalFunction|Closure
 	{
 		$ref = Nette\Utils\Callback::toReflection($from);
@@ -211,10 +245,11 @@ final class Factory
 	public function fromParameterReflection(\ReflectionParameter $from): Parameter
 	{
 		if ($from->isPromoted()) {
-			$property = $from->getDeclaringClass()->getProperty($from->name);
+			$property = $from->getDeclaringClass()?->getProperty($from->name);
+			\assert($property instanceof \ReflectionProperty);
 			$param = (new PromotedParameter($from->name))
 				->setVisibility($this->getVisibility($property))
-				->setReadOnly($property->isReadonly())
+				->setReadOnly($property->isReadOnly())
 				->setFinal(PHP_VERSION_ID >= 80500 && $property->isFinal() && !$property->isPrivateSet());
 			$this->addHooks($property, $param);
 		} else {
@@ -225,7 +260,7 @@ final class Factory
 
 		if ($from->isDefaultValueAvailable()) {
 			if ($from->isDefaultValueConstant()) {
-				$parts = explode('::', $from->getDefaultValueConstantName());
+				$parts = explode('::', $from->getDefaultValueConstantName() ?? '');
 				if (count($parts) > 1) {
 					$parts[0] = Helpers::tagName($parts[0]);
 				}
@@ -238,7 +273,7 @@ final class Factory
 			}
 		}
 
-		$param->setAttributes($this->getAttributes($from));
+		$param->setAttributes($this->formatAttributes($from->getAttributes()));
 		return $param;
 	}
 
@@ -250,7 +285,7 @@ final class Factory
 		$const->setVisibility($this->getVisibility($from));
 		$const->setFinal($from->isFinal());
 		$const->setComment(Helpers::unformatDocComment((string) $from->getDocComment()));
-		$const->setAttributes($this->getAttributes($from));
+		$const->setAttributes($this->formatAttributes($from->getAttributes()));
 		return $const;
 	}
 
@@ -260,7 +295,7 @@ final class Factory
 		$const = new EnumCase($from->name);
 		$const->setValue($from->getValue()->value ?? null);
 		$const->setComment(Helpers::unformatDocComment((string) $from->getDocComment()));
-		$const->setAttributes($this->getAttributes($from));
+		$const->setAttributes($this->formatAttributes($from->getAttributes()));
 		return $const;
 	}
 
@@ -276,7 +311,7 @@ final class Factory
 		$prop->setInitialized($from->hasType() && array_key_exists($prop->getName(), $defaults));
 		$prop->setReadOnly($from->isReadOnly());
 		$prop->setComment(Helpers::unformatDocComment((string) $from->getDocComment()));
-		$prop->setAttributes($this->getAttributes($from));
+		$prop->setAttributes($this->formatAttributes($from->getAttributes()));
 
 		if (PHP_VERSION_ID >= 80400) {
 			$this->addHooks($from, $prop);
@@ -305,6 +340,7 @@ final class Factory
 			$prop->setVisibility($getV === Visibility::Public ? null : $getV, $setV);
 		}
 
+		/** @var 'set'|'get' $type */
 		foreach ($from->getHooks() as $type => $hook) {
 			$params = $hook->getParameters();
 			if (
@@ -315,12 +351,12 @@ final class Factory
 				$params = [];
 			}
 			$prop->addHook($type)
-				->setParameters(array_map([$this, 'fromParameterReflection'], $params))
+				->setParameters(array_map($this->fromParameterReflection(...), $params))
 				->setAbstract($hook->isAbstract())
 				->setFinal($hook->isFinal())
 				->setReturnReference($hook->returnsReference())
 				->setComment(Helpers::unformatDocComment((string) $hook->getDocComment()))
-				->setAttributes($this->getAttributes($hook));
+				->setAttributes($this->formatAttributes($hook->getAttributes()));
 		}
 	}
 
@@ -345,19 +381,23 @@ final class Factory
 	}
 
 
-	/** @return Attribute[] */
-	private function getAttributes($from): array
+	/**
+	 * @param  list<\ReflectionAttribute<object>>  $attrs
+	 * @return list<Attribute>
+	 */
+	private function formatAttributes(array $attrs): array
 	{
-		return array_map(function ($attr) {
+		$res = [];
+		foreach ($attrs as $attr) {
 			$args = $attr->getArguments();
 			foreach ($args as &$arg) {
 				if (is_object($arg)) {
 					$arg = $this->fromObject($arg);
 				}
 			}
-
-			return new Attribute($attr->getName(), $args);
-		}, $from->getAttributes());
+			$res[] = new Attribute($attr->getName(), $args);
+		}
+		return $res;
 	}
 
 
@@ -372,7 +412,7 @@ final class Factory
 	private function getExtractor(string $file): Extractor
 	{
 		$cache = &$this->extractorCache[$file];
-		$cache ??= new Extractor(file_get_contents($file));
+		$cache ??= new Extractor(file_get_contents($file) ?: throw new Nette\InvalidStateException("Unable to read file '$file'."));
 		return $cache;
 	}
 }

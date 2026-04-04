@@ -1,11 +1,9 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * This file is part of the Nette Framework (https://nette.org)
  * Copyright (c) 2004 David Grudl (https://davidgrudl.com)
  */
-
-declare(strict_types=1);
 
 namespace Nette\PhpGenerator\Traits;
 
@@ -30,6 +28,10 @@ trait PropertyLike
 	private array $hooks = ['set' => null, 'get' => null];
 
 
+	/**
+	 * @param  Visibility|'public'|'protected'|'private'|null  $get
+	 * @param  Visibility|'public'|'protected'|'private'|null  $set
+	 */
 	public function setVisibility(Visibility|string|null $get, Visibility|string|null $set = null): static
 	{
 		$this->visibility = [
@@ -40,6 +42,7 @@ trait PropertyLike
 	}
 
 
+	/** @return 'public'|'protected'|'private'|null */
 	public function getVisibility(PropertyAccessMode|string $mode = PropertyAccessMode::Get): ?string
 	{
 		$mode = is_string($mode) ? PropertyAccessMode::from($mode) : $mode;
@@ -47,6 +50,7 @@ trait PropertyLike
 	}
 
 
+	/** @param  PropertyAccessMode|'set'|'get'  $mode */
 	public function setPublic(PropertyAccessMode|string $mode = PropertyAccessMode::Get): static
 	{
 		$mode = is_string($mode) ? PropertyAccessMode::from($mode) : $mode;
@@ -55,13 +59,15 @@ trait PropertyLike
 	}
 
 
+	/** @param  PropertyAccessMode|'set'|'get'  $mode */
 	public function isPublic(PropertyAccessMode|string $mode = PropertyAccessMode::Get): bool
 	{
 		$mode = is_string($mode) ? PropertyAccessMode::from($mode) : $mode;
-		return in_array($this->visibility[$mode->value], [Visibility::Public, null], true);
+		return in_array($this->visibility[$mode->value], [Visibility::Public, null], strict: true);
 	}
 
 
+	/** @param  PropertyAccessMode|'set'|'get'  $mode */
 	public function setProtected(PropertyAccessMode|string $mode = PropertyAccessMode::Get): static
 	{
 		$mode = is_string($mode) ? PropertyAccessMode::from($mode) : $mode;
@@ -70,6 +76,7 @@ trait PropertyLike
 	}
 
 
+	/** @param  PropertyAccessMode|'set'|'get'  $mode */
 	public function isProtected(PropertyAccessMode|string $mode = PropertyAccessMode::Get): bool
 	{
 		$mode = is_string($mode) ? PropertyAccessMode::from($mode) : $mode;
@@ -77,6 +84,7 @@ trait PropertyLike
 	}
 
 
+	/** @param  PropertyAccessMode|'set'|'get'  $mode */
 	public function setPrivate(PropertyAccessMode|string $mode = PropertyAccessMode::Get): static
 	{
 		$mode = is_string($mode) ? PropertyAccessMode::from($mode) : $mode;
@@ -85,6 +93,7 @@ trait PropertyLike
 	}
 
 
+	/** @param  PropertyAccessMode|'set'|'get'  $mode */
 	public function isPrivate(PropertyAccessMode|string $mode = PropertyAccessMode::Get): bool
 	{
 		$mode = is_string($mode) ? PropertyAccessMode::from($mode) : $mode;
@@ -120,7 +129,7 @@ trait PropertyLike
 
 	/**
 	 * Replaces all hooks.
-	 * @param  PropertyHook[]  $hooks
+	 * @param  array<string, PropertyHook>  $hooks
 	 */
 	public function setHooks(array $hooks): static
 	{
@@ -137,6 +146,7 @@ trait PropertyLike
 	}
 
 
+	/** @param  PropertyHookType|'set'|'get'  $type */
 	public function addHook(PropertyHookType|string $type, string $shortBody = ''): PropertyHook
 	{
 		$type = is_string($type) ? PropertyHookType::from($type) : $type;
@@ -145,6 +155,7 @@ trait PropertyLike
 	}
 
 
+	/** @param  PropertyHookType|'set'|'get'  $type */
 	public function getHook(PropertyHookType|string $type): ?PropertyHook
 	{
 		$type = is_string($type) ? PropertyHookType::from($type) : $type;
@@ -152,6 +163,7 @@ trait PropertyLike
 	}
 
 
+	/** @param  PropertyHookType|'set'|'get'  $type */
 	public function hasHook(PropertyHookType|string $type): bool
 	{
 		$type = is_string($type) ? PropertyHookType::from($type) : $type;

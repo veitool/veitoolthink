@@ -1,11 +1,9 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * This file is part of the Nette Framework (https://nette.org)
  * Copyright (c) 2004 David Grudl (https://davidgrudl.com)
  */
-
-declare(strict_types=1);
 
 namespace Nette\PhpGenerator;
 
@@ -62,6 +60,7 @@ final class Helpers
 	}
 
 
+	/** @param  PhpNamespace::Name*  $of */
 	public static function tagName(string $name, string $of = PhpNamespace::NameNormal): string
 	{
 		return isset(self::Keywords[strtolower($name)])
@@ -129,6 +128,7 @@ final class Helpers
 
 
 	/**
+	 * @param  class-string  $class
 	 * @param  mixed[]  $props
 	 * @internal
 	 */

@@ -1,11 +1,9 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * This file is part of the Nette Framework (https://nette.org)
  * Copyright (c) 2004 David Grudl (https://davidgrudl.com)
  */
-
-declare(strict_types=1);
 
 namespace Nette\PhpGenerator\Traits;
 
@@ -20,6 +18,7 @@ trait VisibilityAware
 	private ?Visibility $visibility = null;
 
 
+	/** @param  Visibility|'public'|'protected'|'private'|null  $value */
 	public function setVisibility(Visibility|string|null $value): static
 	{
 		$this->visibility = $value instanceof Visibility || $value === null
@@ -29,6 +28,7 @@ trait VisibilityAware
 	}
 
 
+	/** @return 'public'|'protected'|'private'|null */
 	public function getVisibility(): ?string
 	{
 		return $this->visibility?->value;

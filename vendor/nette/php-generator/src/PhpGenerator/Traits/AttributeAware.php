@@ -1,11 +1,9 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * This file is part of the Nette Framework (https://nette.org)
  * Copyright (c) 2004 David Grudl (https://davidgrudl.com)
  */
-
-declare(strict_types=1);
 
 namespace Nette\PhpGenerator\Traits;
 
@@ -17,11 +15,11 @@ use Nette\PhpGenerator\Attribute;
  */
 trait AttributeAware
 {
-	/** @var Attribute[] */
+	/** @var list<Attribute> */
 	private array $attributes = [];
 
 
-	/** @param  mixed[]  $args */
+	/** @param mixed[]  $args */
 	public function addAttribute(string $name, array $args = []): static
 	{
 		$this->attributes[] = new Attribute($name, $args);
@@ -31,7 +29,7 @@ trait AttributeAware
 
 	/**
 	 * Replaces all attributes.
-	 * @param  Attribute[]  $attrs
+	 * @param list<Attribute>  $attrs
 	 */
 	public function setAttributes(array $attrs): static
 	{
@@ -41,7 +39,7 @@ trait AttributeAware
 	}
 
 
-	/** @return Attribute[] */
+	/** @return list<Attribute> */
 	public function getAttributes(): array
 	{
 		return $this->attributes;

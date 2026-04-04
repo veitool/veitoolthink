@@ -299,8 +299,8 @@ class ComposerStaticInitd011e134d1acc4431ea1478829c15198
         ),
         'Nette\\' => 
         array (
-            0 => __DIR__ . '/..' . '/nette/php-generator/src',
-            1 => __DIR__ . '/..' . '/nette/utils/src',
+            0 => __DIR__ . '/..' . '/nette/utils/src',
+            1 => __DIR__ . '/..' . '/nette/php-generator/src',
         ),
         'MyCLabs\\Enum\\' => 
         array (

@@ -1,11 +1,9 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * This file is part of the Nette Framework (https://nette.org)
  * Copyright (c) 2004 David Grudl (https://davidgrudl.com)
  */
-
-declare(strict_types=1);
 
 namespace Nette\PhpGenerator\Traits;
 
@@ -24,7 +22,7 @@ trait FunctionLike
 {
 	private string $body = '';
 
-	/** @var Parameter[] */
+	/** @var array<string, Parameter> */
 	private array $parameters = [];
 	private bool $variadic = false;
 	private ?string $returnType = null;
@@ -64,9 +62,7 @@ trait FunctionLike
 	}
 
 
-	/**
-	 * @param  Parameter[]  $val
-	 */
+	/** @param list<Parameter>  $val */
 	public function setParameters(array $val): static
 	{
 		(function (Parameter ...$val) {})(...$val);
@@ -79,7 +75,7 @@ trait FunctionLike
 	}
 
 
-	/** @return Parameter[] */
+	/** @return array<string, Parameter> */
 	public function getParameters(): array
 	{
 		return $this->parameters;

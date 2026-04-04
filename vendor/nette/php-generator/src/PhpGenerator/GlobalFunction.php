@@ -1,11 +1,9 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * This file is part of the Nette Framework (https://nette.org)
  * Copyright (c) 2004 David Grudl (https://davidgrudl.com)
  */
-
-declare(strict_types=1);
 
 namespace Nette\PhpGenerator;
 
@@ -22,6 +20,7 @@ final class GlobalFunction
 	use Traits\CommentAware;
 	use Traits\AttributeAware;
 
+	/** @param string|(\Closure(): mixed)  $function */
 	public static function from(string|\Closure $function, bool $withBody = false): self
 	{
 		return (new Factory)->fromFunctionReflection(Nette\Utils\Callback::toReflection($function), $withBody);

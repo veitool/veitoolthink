@@ -32,8 +32,8 @@ class SystemDictGroup extends Base
      * @param  array          $where    查询条件
      * @param  string         $fields   排除字段
      * @param  int            $limit    查询条数
-     * @param  array/string   $order    查询排序
-     * @return obj
+     * @param  array|string   $order    查询排序
+     * @return object
      */
     public function listQuery(array $where = [], string $fields = '', int $limit = 0, array|string $order = ['id'=>'asc'])
     {

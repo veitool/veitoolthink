@@ -43,7 +43,7 @@ class Area extends AdminBase
 
     /**
      * 地区添加
-     * @return json
+     * @return html/json
      */
     public function add()
     {
@@ -70,7 +70,7 @@ class Area extends AdminBase
 
     /**
      * 地区编辑
-     * @return json
+     * @return html/json
      */
     public function edit()
     {
@@ -95,7 +95,7 @@ class Area extends AdminBase
 
     /**
      * 数据导入
-     * @return json
+     * @return html/json
      */
     public function import()
     {
@@ -121,7 +121,7 @@ class Area extends AdminBase
 
     /**
      * 地区删除
-     * @return json
+     * @return html/json
      */
     public function del()
     {

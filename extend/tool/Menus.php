@@ -57,7 +57,7 @@ class Menus
     private static function menuUpdate(array $newMenu = [], int $parentid = 0, string $name = '')
     {
         $time = time();
-        $allow = ['catid'=>'1','name'=>'','menu_name'=>'莫名菜单','role_name'=>'','link_url'=>'','menu_url'=>'','role_url'=>'','link_url'=>'','icon'=>'','ismenu'=>'0','listorder'=>10,'state'=>'0','type'=>'1'];
+        $allow = ['catid'=>'1','name'=>'','menu_name'=>'莫名菜单','role_name'=>'','link_url'=>'','menu_url'=>'','role_url'=>'','icon'=>'','ismenu'=>'0','listorder'=>10,'state'=>'0','type'=>'1'];
         foreach($newMenu as $k => $v){
             $data = array_intersect_key($v, $allow);
             $data = array_merge($allow, $data);
@@ -67,7 +67,7 @@ class Menus
             $data['name'] = $name ?: $data['name'];
             $menu = M::create($data);
             if(isset($v['sublist']) && $v['sublist']){
-                self::menuUpdate($v['sublist'], $menu['menuid'], $name);
+                self::menuUpdate($v['sublist'], $menu->menuid, $name);
             }
         }
     }

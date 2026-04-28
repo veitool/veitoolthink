@@ -51,7 +51,7 @@ class Dict extends AdminBase
 
     /**
      * 字典添加
-     * @return json
+     * @return html/json
      */
     public function add()
     {
@@ -68,7 +68,7 @@ class Dict extends AdminBase
     /**
      * 字典编辑
      * @param  string   $do   快编操作
-     * @return json
+     * @return html/json
      */
     public function edit(string $do = '')
     {
@@ -107,7 +107,7 @@ class Dict extends AdminBase
 
     /**
      * 字典删除
-     * @return json
+     * @return html/json
      */
     public function del()
     {
@@ -124,7 +124,7 @@ class Dict extends AdminBase
 
     /**
      * 字典组添加
-     * @return json
+     * @return html/json
      */
     public function gadd()
     {
@@ -138,7 +138,7 @@ class Dict extends AdminBase
 
     /**
      * 字典组编辑
-     * @return json
+     * @return html/json
      */
     public function gedit()
     {
@@ -179,7 +179,7 @@ class Dict extends AdminBase
 
     /**
      * 字典组删除
-     * @return json
+     * @return html/json
      */
     public function gdel()
     {
@@ -216,7 +216,7 @@ class Dict extends AdminBase
     
     /**
      * 字典项添加
-     * @return json
+     * @return html/json
      */
     public function iadd()
     {
@@ -231,7 +231,7 @@ class Dict extends AdminBase
 
     /**
      * 字典项批量添加
-     * @return json
+     * @return html/json
      */
     public function iadds()
     {
@@ -266,7 +266,7 @@ class Dict extends AdminBase
     /**
      * 字典项编辑
      * @param  string   $do   快编参数
-     * @return json
+     * @return html/json
      */
     public function iedit(string $do = '')
     {
@@ -323,7 +323,7 @@ class Dict extends AdminBase
 
     /**
      * 字典项删除
-     * @return json
+     * @return html/json
      */
     public function idel()
     {
@@ -341,7 +341,7 @@ class Dict extends AdminBase
     /**
      * 获取字典集
      * @param  string  $code  字典编码
-     * @return json
+     * @return html/json
      */
     public function json(string $code = '')
     {

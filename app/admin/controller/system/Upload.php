@@ -105,7 +105,7 @@ class Upload extends AdminBase
      * @param   int      $groupid  上传的文件分组ID
      * @param   string   $action   上传的文件类型
      * @param   string   $thum     是否生成缩略图,如:100|100
-     * @return  json
+     * @return  html/json
      * @throws \think\Exception
      */
     public function upfile(string $file = 'file', int $groupid = 0, string $action = '', string $thum = '')
@@ -147,11 +147,11 @@ class Upload extends AdminBase
             if($data['fileext']=='jpg'){
                 $pics = Imagecreatefromjpeg($pic);
                 Imagejpeg($pics,$pic,70);
-                imagedestroy($pics);
+                unset($pics);
             }elseif($data['fileext']=='png'){
                 $pics = imagecreatefrompng($pic);
                 imagepng($pics,$pic,9);
-                imagedestroy($pics);
+                unset($pics);
             }
         }
         return $this->returnMsg('上传成功！', 1, $data);
@@ -162,7 +162,7 @@ class Upload extends AdminBase
      * @param   string   $file     上传文件form名称
      * @param   int      $groupid  上传的文件分组ID
      * @param   string   $action   上传的文件类型 或 其他动作
-     * @return  json
+     * @return  html/json
      */
     public function ueditor(string $file = 'file', int $groupid = 0, string $action = '')
     {
@@ -312,7 +312,7 @@ class Upload extends AdminBase
      * 文件管理
      * @param   string   $action    操作参数
      * @param   string   $type      文件类型
-     * @return  json
+     * @return  html/json
      */
     public function files(string $action = '', string $type = 'image')
     {
@@ -352,7 +352,7 @@ class Upload extends AdminBase
     /**
      * 文件分组管理
      * @param   string   $action   操作参数(有权限)
-     * @return  json
+     * @return  html/json
      */
     public function group(string $action = '')
     {

@@ -35,7 +35,7 @@ class Sequence extends AdminBase
 
     /**
      * 单据前缀添加
-     * @return json
+     * @return html/json
      */
     public function add()
     {
@@ -49,7 +49,7 @@ class Sequence extends AdminBase
     /**
      * 单据前缀编辑
      * @param  string   $do   快编操作
-     * @return json
+     * @return html/json
      */
     public function edit(string $do = '')
     {
@@ -76,7 +76,7 @@ class Sequence extends AdminBase
 
     /**
      * 单据前缀删除
-     * @return json
+     * @return html/json
      */
     public function del()
     {

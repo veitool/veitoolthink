@@ -23,8 +23,8 @@ class SystemSetting extends Base
 
     /**
      * 列表(分页)
-     * @param  string/array  $where  查询条件
-     * @return obj
+     * @param  string|array  $where  查询条件
+     * @return object
      */
     public function listQuery(string|array $where = '')
     {
@@ -33,7 +33,7 @@ class SystemSetting extends Base
 
     /**
      * 列表
-     * @param  string/array  $where  查询条件
+     * @param  string|array  $where  查询条件
      * @param  string        $field  查询的字段
      * @return array
      */

@@ -35,7 +35,7 @@ class Log extends AdminBase
     /**
      * 登录日志
      * @param  string  $do  异步操作
-     * @return json
+     * @return html/json
      */
     public function login(string $do = '')
     {
@@ -60,7 +60,7 @@ class Log extends AdminBase
 
     /**
      * 清理登录日志
-     * @return json
+     * @return html/json
      */
     public function ldel()
     {
@@ -74,7 +74,7 @@ class Log extends AdminBase
 
     /**
      * 管理日志
-     * @return json
+     * @return html/json
      */
     public function manager()
     {
@@ -90,7 +90,7 @@ class Log extends AdminBase
 
     /**
      * 清理管理日志
-     * @return json
+     * @return html/json
      */
     public function mdel()
     {
@@ -104,7 +104,7 @@ class Log extends AdminBase
 
     /**
      * 网站日志
-     * @return json
+     * @return html/json
      */
     public function web()
     {
@@ -120,7 +120,7 @@ class Log extends AdminBase
 
     /**
      * 清理网站日志
-     * @return json
+     * @return html/json
      */
     public function wdel()
     {

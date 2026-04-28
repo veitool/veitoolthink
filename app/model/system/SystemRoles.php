@@ -32,7 +32,7 @@ class SystemRoles extends Base
 
     /**
      * 分页列表
-     * @return obj
+     * @return object
      */
     public function listQuery()
     {
@@ -50,7 +50,7 @@ class SystemRoles extends Base
 
     /**
      * 缓存角色权限
-     * @param    int/array   $role     角色ID 或者 array('roleid'=>角色ID,'role_name'=>角色名,'role_menuid'=>拥有的菜单ID串)
+     * @param    int|array   $role     角色ID 或者 array('roleid'=>角色ID,'role_name'=>角色名,'role_menuid'=>拥有的菜单ID串)
      * @param    int         $reset    是否重置 默认 否
      * @return   array ['roleid'=>角色ID,'role_name'=>角色名,'role_menuid'=>拥有的菜单ID串,'role_ext'=>控制器内扩展权限控制,'actions'=>权限记录集]
      */

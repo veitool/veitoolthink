@@ -118,7 +118,7 @@ abstract class AdminBase extends BaseController
     /**
      * 日志/在线处理
      * @access  protected
-     * @param   sting   $tip   提示
+     * @param   string   $tip   提示
      */
     protected function logon(string $tip = '')
     {

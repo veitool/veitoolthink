@@ -79,7 +79,7 @@ class Manager extends AdminBase
 
     /**
      * 用户添加
-     * @return json
+     * @return html/json
      */
     public function add()
     {
@@ -96,7 +96,7 @@ class Manager extends AdminBase
     /**
      * 用户编辑
      * @param  string   $do   快编操作
-     * @return json
+     * @return html/json
      */
     public function edit(string $do = '')
     {
@@ -140,7 +140,7 @@ class Manager extends AdminBase
 
     /**
      * 用户中心个人信息编辑
-     * @return json
+     * @return html/json
      */
     public function edits()
     {
@@ -156,7 +156,7 @@ class Manager extends AdminBase
 
     /**
      * 用户删除
-     * @return json
+     * @return html/json
      */
     public function del()
     {
@@ -174,7 +174,7 @@ class Manager extends AdminBase
 
     /**
      * 个人修改密码
-     * @return json
+     * @return html/json
      */
     public function changpwd()
     {
@@ -193,7 +193,7 @@ class Manager extends AdminBase
 
     /**
      * 重置密码
-     * @return json
+     * @return html/json
      */
     public function resetpwd()
     {
@@ -213,7 +213,7 @@ class Manager extends AdminBase
 
     /**
      * 组织机构添加
-     * @return json
+     * @return html/json
      */
     public function oadd()
     {
@@ -227,7 +227,7 @@ class Manager extends AdminBase
 
     /**
      * 组织机构编辑
-     * @return json
+     * @return html/json
      */
     public function oedit()
     {
@@ -268,7 +268,7 @@ class Manager extends AdminBase
 
     /**
      * 组织机构删除
-     * @return json
+     * @return html/json
      */
     public function odel()
     {

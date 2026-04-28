@@ -34,7 +34,7 @@ class Sms extends AdminBase
 
     /**
      * 发送短信
-     * @return json
+     * @return html/json
      */
     public function send()
     {
@@ -50,7 +50,7 @@ class Sms extends AdminBase
 
     /**
      * 删除短信记录
-     * @return json
+     * @return html/json
      */
     public function del()
     {

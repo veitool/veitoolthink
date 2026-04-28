@@ -86,13 +86,13 @@ class SystemArea extends Base
      */
     public static function cache(int $reset = 0, int $flag = 0)
     {
+        $data = [];
         $key = 'VAREAS';
         $rs = cache($key);
         if(!$rs || $reset){
             $rs = self::order('listorder','asc')->column('areaid,areaname,parentid,arrparentid,childs,listorder','areaid');
             if(!$rs) return $rs;
             cache($key,$rs,31536000);
-            $data = [];
             foreach ($rs as $v){
                 $data[$v['areaid']] = $v['areaname'];
             }

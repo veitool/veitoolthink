@@ -62,7 +62,7 @@ class Setting extends AdminBase
 
     /**
      * 设置更新
-     * @return json
+     * @return html/json
      */
     public function edit()
     {
@@ -103,7 +103,7 @@ class Setting extends AdminBase
     /**
      * 系统配置构建列表
      * @param  string   $do   异步数据/操作
-     * @return json
+     * @return html/json
      */
     public function build(string $do = '')
     {
@@ -146,7 +146,7 @@ class Setting extends AdminBase
 
     /**
      * 配置项添加
-     * @return json
+     * @return html/json
      */
     public function badd()
     {
@@ -161,7 +161,7 @@ class Setting extends AdminBase
     /**
      * 配置项编辑
      * @param  string   $do   快编操作
-     * @return json
+     * @return html/json
      */
     public function bedit(string $do = '')
     {
@@ -207,7 +207,7 @@ class Setting extends AdminBase
 
     /**
      * 配置项删除
-     * @return json
+     * @return html/json
      */
     public function bdel()
     {
@@ -222,7 +222,7 @@ class Setting extends AdminBase
 
     /**
      * 配置项导出
-     * @return json
+     * @return html/json
      */
     public function bout()
     {
@@ -243,7 +243,7 @@ class Setting extends AdminBase
 
     /**
      * 配置项导入
-     * @return json
+     * @return html/json
      */
     public function bup()
     {

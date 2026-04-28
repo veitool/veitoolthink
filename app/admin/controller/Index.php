@@ -43,7 +43,7 @@ class Index extends AdminBase
     /**
      * 获取左侧菜单和用户信息
      * @param  int   $do   是否更新字典缓存0否1是
-     * @return json
+     * @return html/json
      */
     public function json(int $do = 0)
     {
@@ -60,7 +60,7 @@ class Index extends AdminBase
  
     /**
      * 清空缓存
-     * @return json
+     * @return html/json
      */
     public function clear(){
         \think\facade\Cache::clear(); 

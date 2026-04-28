@@ -35,7 +35,7 @@ class SystemCategory extends Base
 
     /**
      * 获取内容公用类别数据
-     * @param   string/array    $where     条件
+     * @param   string|array    $where     条件
      * @param   int             $iskey     是否以主键作为索引（键）
      * @param   string          $field     查询的字段(主键作为索引时只查询1个字段时为1维数组)
      * @return  array

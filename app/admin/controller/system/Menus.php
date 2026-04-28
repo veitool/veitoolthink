@@ -48,7 +48,7 @@ class Menus extends AdminBase
 
     /**
      * 菜单添加
-     * @return json
+     * @return html/json
      */
     public function add()
     {
@@ -61,7 +61,7 @@ class Menus extends AdminBase
 
     /**
      * 菜单批量添加
-     * @return json
+     * @return html/json
      */
     public function adds()
     {
@@ -87,7 +87,7 @@ class Menus extends AdminBase
     /**
      * 菜单编辑
      * @param  string   $do   快编参数
-     * @return json
+     * @return html/json
      */
     public function edit(string $do = '')
     {
@@ -132,7 +132,7 @@ class Menus extends AdminBase
 
     /**
      * 菜单删除
-     * @return json
+     * @return html/json
      */
     public function del()
     {
@@ -149,7 +149,7 @@ class Menus extends AdminBase
 
     /**
      * 菜单导出
-     * @return json
+     * @return html/json
      */
     public function out()
     {
@@ -176,7 +176,7 @@ class Menus extends AdminBase
 
     /**
      * 菜单导入
-     * @return json
+     * @return html/json
      */
     public function up()
     {
@@ -213,7 +213,7 @@ class Menus extends AdminBase
 
     /**
      * 分类添加
-     * @return json
+     * @return html/json
      */
     public function catadd()
     {
@@ -227,7 +227,7 @@ class Menus extends AdminBase
     /**
      * 分类编辑
      * @param  string   $do   操作参数
-     * @return json
+     * @return html/json
      */
     public function catedit(string $do = '')
     {
@@ -260,7 +260,7 @@ class Menus extends AdminBase
 
     /**
      * 分类删除
-     * @return json
+     * @return html/json
      */
     public function catdel()
     {

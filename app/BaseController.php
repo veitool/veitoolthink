@@ -118,7 +118,7 @@ abstract class BaseController
     {
         $flag1 = vconfig('home_log',0);
         $flag2 = in_array(vconfig('online_on',0),[2,3]);
-        if($flag1 || $flag2) $url = substr(vhtmlspecialchars(strip_sql($this->request->url())),0,200);
+        $url = ($flag1 || $flag2) ? substr(vhtmlspecialchars(strip_sql($this->request->url())),0,200) : '';
         /*访问日志*/
         if($flag1){
             \app\model\system\SystemWebLog::add(['url'=>$url.$tip,'username'=>$this->memUser['username'] ?? '','ip'=>$this->request->ip()]);
@@ -340,7 +340,7 @@ abstract class BaseController
                         $v = (float) $v;
                         break;
                     case 'b':
-                        $v = (boolean) $v;
+                        $v = (bool) $v;
                         break;
                     case 's':
                         if(is_scalar($v)){

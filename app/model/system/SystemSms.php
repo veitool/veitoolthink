@@ -30,10 +30,10 @@ class SystemSms extends Base
     /**
      * 短信记录（分页）
      * @param  array          $where    条件
-     * @param  array/string   $order    排序
+     * @param  array|string   $order    排序
      * @param  string         $fields   字段
      * @param  int            $limit    条数
-     * @return obj
+     * @return object
      */
     public function listQuery(array $where = [], array|string $order = ['id'=>'desc'], string $fields = '*', int $limit = 0)
     {

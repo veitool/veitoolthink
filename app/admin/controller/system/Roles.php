@@ -48,7 +48,7 @@ class Roles extends AdminBase
 
     /**
      * 角色添加
-     * @return json
+     * @return html/json
      */
     public function add()
     {
@@ -63,7 +63,7 @@ class Roles extends AdminBase
     /**
      * 角色编辑
      * @param  array   $do   快编操作
-     * @return json
+     * @return html/json
      */
     public function edit(string $do = '')
     {
@@ -100,7 +100,7 @@ class Roles extends AdminBase
 
     /**
      * 角色删除
-     * @return json
+     * @return html/json
      */
     public function del()
     {

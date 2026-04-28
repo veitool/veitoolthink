@@ -43,7 +43,7 @@ class Base extends Model
 
     /**
      * 只读字段
-     * @var attay
+     * @var array
      */
     protected $readonly = ['add_time'];
 
@@ -58,7 +58,7 @@ class Base extends Model
      * @param  string|array  $where   查询条件
      * @param  string        $field   查询字段
      * @param  string|array  $order   排序
-     * @return obj|null
+     * @return object|null|array
      */
     public static function one(string|array $where = '', string $field = '*', string|array $order = [])
     {
@@ -70,7 +70,7 @@ class Base extends Model
      * @param  string|array  $where   查询条件
      * @param  string        $field   查询字段
      * @param  string|array  $order   排序
-     * @return obj|array
+     * @return object|array
      */
     public static function all(string|array $where = '', string $field = '*', string|array $order = [])
     {

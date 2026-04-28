@@ -60,7 +60,7 @@ class Database extends AdminBase
 
     /**
      * 数据表备份处理
-     * @return json
+     * @return html/json
      */
     public function backup()
     {
@@ -70,7 +70,7 @@ class Database extends AdminBase
 
     /**
      * 备份数据替换
-     * @return json
+     * @return html/json
      */
     public function replace()
     {
@@ -81,7 +81,7 @@ class Database extends AdminBase
 
     /**
      * 数据备份列表
-     * @return json
+     * @return html/json
      */
     public function imports()
     {
@@ -92,7 +92,7 @@ class Database extends AdminBase
 
     /**
      * 数据备份删除
-     * @return json
+     * @return html/json
      */
     public function del()
     {
@@ -106,7 +106,7 @@ class Database extends AdminBase
 
     /**
      * 数据导入
-     * @return json
+     * @return html/json
      */
     public function import()
     {
@@ -127,7 +127,7 @@ class Database extends AdminBase
 
     /**
      * 数据表注释修改
-     * @return json
+     * @return html/json
      */
     public function edit()
     {
@@ -140,7 +140,7 @@ class Database extends AdminBase
     /**
      * 数据表字典
      * @param  string   $table   操作表名
-     * @return json
+     * @return html/json
      */
     public function dict(string $table = '')
     {
@@ -151,7 +151,7 @@ class Database extends AdminBase
 
     /**
      * 数据表修复
-     * @return json
+     * @return html/json
      */
     public function xiufu()
     {
@@ -163,7 +163,7 @@ class Database extends AdminBase
 
     /**
      * 数据表优化
-     * @return json
+     * @return html/json
      */
     public function youhua()
     {

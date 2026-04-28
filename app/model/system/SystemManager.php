@@ -33,7 +33,7 @@ class SystemManager extends Base
      * @param  string  $fields   排除字段
      * @param  int     $limit    查询条数
      * @param  array   $order    查询排序
-     * @return obj
+     * @return object
      */
     public function listQuery(array $where = [], string $fields = '', int $limit = 0, array|string $order = ['userid'=>'asc'])
     {

@@ -33,7 +33,6 @@ class SystemMenus extends Base
     /**
      * 获取层级管理菜单（递归 用于左侧栏目 调用）
      * @param   array    $data    菜单集或会员信息集(必须含键：userid、role_menuid/group_menuid)
-     * @param   int      $pid     上级ID
      * @return  array
      */
     public static function getMenus(array $data = [])

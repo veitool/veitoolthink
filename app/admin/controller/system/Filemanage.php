@@ -60,7 +60,7 @@ class Filemanage extends AdminBase
 
     /**
      * 编辑文件
-     * @return json
+     * @return html/json
      */
     public function edit()
     {
@@ -79,7 +79,7 @@ class Filemanage extends AdminBase
 
     /**
      * 删除文件
-     * @return json
+     * @return html/json
      */
     public function del()
     {
@@ -95,7 +95,7 @@ class Filemanage extends AdminBase
 
     /**
      * 恢复文件
-     * @return json
+     * @return html/json
      */
     public function reset()
     {
@@ -111,7 +111,7 @@ class Filemanage extends AdminBase
 
     /**
      * 清理文件
-     * @return json
+     * @return html/json
      */
     public function clear()
     {

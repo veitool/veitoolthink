@@ -33,7 +33,7 @@ class SystemSequence extends Base
      * @param  string  $fields   查询字段
      * @param  array   $order    默认排序
      * @param  int     $limit    每页条数
-     * @return obj
+     * @return object
      */
     public function listQuery(array $where = [], string $fields = '*', array|string $order = [], int $limit = 0)
     {

@@ -62,7 +62,7 @@ class Roles extends AdminBase
 
     /**
      * 角色编辑
-     * @param  array   $do   快编操作
+     * @param  string   $do   快编操作
      * @return html/json
      */
     public function edit(string $do = '')

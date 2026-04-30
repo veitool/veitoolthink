@@ -17,13 +17,13 @@ use app\model\system\SystemSetting as S;
  */
 class Setting extends AdminBase
 {
-    private $pname  = 'name/*/v';
-    private $ptype  = 'type/*/v/配置类型';
-    private $pgroup = 'group/?/v/配置组名';
-    private $ptitle = 'title/*/{2,30}/配置标题';
-    private $ptips  = 'tips/?/{2,100}/配置说明/0/,，:：.。';
-    private $paddon = 'addon/?/a';
-    private $prelation = 'av/?/v/关联项';
+    private string $pname  = 'name/*/v';
+    private string $ptype  = 'type/*/v/配置类型';
+    private string $pgroup = 'group/?/v/配置组名';
+    private string $ptitle = 'title/*/{2,30}/配置标题';
+    private string $ptips  = 'tips/?/{2,100}/配置说明/0/,，:：.。';
+    private string $paddon = 'addon/?/a';
+    private string $prelation = 'av/?/v/关联项';
 
     /**
      * 系统设置

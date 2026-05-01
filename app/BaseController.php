@@ -188,12 +188,12 @@ abstract class BaseController
     /**
      * 返回组信息
      * @access  protected
-     * @param   string|array|obj    $msg      信息字符
-     * @param   int                 $code     状态码
-     * @param   array               $data     数组信息
-     * @param   int                 $scode    页头状态码
-     * @param   array               $header   头部
-     * @param   array               $options  参数
+     * @param   string|array|object  $msg      信息字符
+     * @param   int                  $code     状态码
+     * @param   array                $data     数组信息
+     * @param   int                  $scode    页头状态码
+     * @param   array                $header   头部
+     * @param   array                $options  参数
      * @return  html/json
      */
     protected final function returnMsg($msg = '', $code = 0, $data = [], $scode = 200, $header = [], $options = [])

@@ -308,26 +308,26 @@ function rmdirs($dirname, $self = true){
  * @param  string  $dest    目标文件夹
  */
 function copydirs($source, $dest){
-   if(!is_dir($dest)){
-       mkdir($dest, 0755, true);
-   }
-   $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($source, RecursiveDirectoryIterator::SKIP_DOTS),RecursiveIteratorIterator::SELF_FIRST);
-   foreach($iterator as $item){
-       if($item->isDir()){
-           $sontDir = $dest . VT_DS . $iterator->getSubPathName();
-           if(!is_dir($sontDir)){
-               mkdir($sontDir, 0755, true);
-           }
-       }else{
-           copy($item, $dest . VT_DS . $iterator->getSubPathName());
-       }
-   }
+    if(!is_dir($dest)){
+        mkdir($dest, 0755, true);
+    }
+    $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($source, RecursiveDirectoryIterator::SKIP_DOTS),RecursiveIteratorIterator::SELF_FIRST);
+    foreach($iterator as $item){
+        if($item->isDir()){
+            $sontDir = $dest . VT_DS . $iterator->getSubPathName();
+            if(!is_dir($sontDir)){
+                mkdir($sontDir, 0755, true);
+            }
+        }else{
+            copy($item, $dest . VT_DS . $iterator->getSubPathName());
+        }
+    }
 }
 
 /**
  * 移除空目录
- * @param   string   $dir  目录
- * @return
+ * @param  string   $dir  目录
+ * @return mixed
  */
 function remove_empty_folder($dir){
     try{
@@ -466,16 +466,16 @@ function area_pos($areaid, $str = ' &raquo; ', $deep = 0, $start = 0){
     $arrparentid = $area[$areaid]['arrparentid'] ? explode(',', $area[$areaid]['arrparentid']) : [];
     $arrparentid[] = $areaid;
     $pos = '';
-    if($deep) $i = 1;
+    $i = 1;
     $j = 0;
-    foreach($arrparentid as $areaid){
-        if(!$areaid || !isset($area[$areaid])) continue;
+    foreach($arrparentid as $id){
+        if(!$id || !isset($area[$id])) continue;
         if($j++ < $start) continue;
         if($deep){
             if($i > $deep) continue;
             $i++;
         }
-        $pos .= $area[$areaid]['areaname'].$str;
+        $pos .= $area[$id]['areaname'].$str;
     }
     $_len = strlen($str);
     if($str && substr($pos, -$_len, $_len) === $str) $pos = substr($pos, 0, strlen($pos)-$_len);

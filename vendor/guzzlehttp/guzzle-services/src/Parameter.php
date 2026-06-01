@@ -12,7 +12,10 @@ class Parameter implements ToArrayInterface
 {
     private $originalData;
 
-    /** @var string */
+    /** @var array */
+    private $resolvedData;
+
+    /** @var string|null */
     private $name;
 
     /** @var string */
@@ -60,7 +63,7 @@ class Parameter implements ToArrayInterface
     /** @var string */
     private $location;
 
-    /** @var string */
+    /** @var string|null */
     private $sentAs;
 
     /** @var array */
@@ -183,13 +186,13 @@ class Parameter implements ToArrayInterface
 
         if (isset($options['description'])) {
             $this->serviceDescription = $options['description'];
-            if (!($this->serviceDescription instanceof DescriptionInterface)) {
+            if (!$this->serviceDescription instanceof DescriptionInterface) {
                 throw new \InvalidArgumentException('description must be a Description');
             }
             if (isset($data['$ref'])) {
                 if ($model = $this->serviceDescription->getModel($data['$ref'])) {
                     $name = isset($data['name']) ? $data['name'] : null;
-                    $data = $model->toArray() + $data;
+                    $data = $model->toResolvedArray() + $data;
                     if ($name) {
                         $data['name'] = $name;
                     }
@@ -199,10 +202,12 @@ class Parameter implements ToArrayInterface
                 // with the actual data union in the parent's data (e.g. actual
                 // supersedes parent)
                 if ($extends = $this->serviceDescription->getModel($data['extends'])) {
-                    $data += $extends->toArray();
+                    $data += $extends->toResolvedArray();
                 }
             }
         }
+
+        $this->resolvedData = $data;
 
         // Pull configuration data into the parameter
         foreach ($data as $key => $value) {
@@ -229,6 +234,16 @@ class Parameter implements ToArrayInterface
     public function toArray()
     {
         return $this->originalData;
+    }
+
+    /**
+     * Convert the object to its internally resolved array
+     *
+     * @return array
+     */
+    private function toResolvedArray()
+    {
+        return $this->resolvedData;
     }
 
     /**
@@ -303,7 +318,7 @@ class Parameter implements ToArrayInterface
     /**
      * Get the name of the parameter
      *
-     * @return string
+     * @return string|null
      */
     public function getName()
     {
@@ -324,7 +339,7 @@ class Parameter implements ToArrayInterface
      * Get the key of the parameter, where sentAs will supersede name if it is
      * set.
      *
-     * @return string
+     * @return string|null
      */
     public function getWireName()
     {
@@ -524,7 +539,7 @@ class Parameter implements ToArrayInterface
             return null;
         }
 
-        if (!($this->properties[$name] instanceof self)) {
+        if (!$this->properties[$name] instanceof self) {
             $this->properties[$name]['name'] = $name;
             $this->properties[$name] = new static(
                 $this->properties[$name],

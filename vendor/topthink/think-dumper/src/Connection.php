@@ -10,7 +10,7 @@ class Connection
     private string $token;
     private array  $contextProviders;
 
-    private $handle;
+    private array $handles = [];
 
     public function __construct(array $contextProviders = [])
     {
@@ -21,9 +21,10 @@ class Connection
 
     public function write(Data $data): bool
     {
-        if (!$this->handle = $this->handle ?: $this->createHandle()) {
+        if (!$handle = $this->getHandle() ?: $this->createHandle()) {
             return false;
         }
+        $this->setHandle($handle);
 
         $context = ['timestamp' => microtime(true)];
         foreach ($this->contextProviders as $name => $provider) {
@@ -40,16 +41,41 @@ class Connection
         }
     }
 
+    private function getCoroutineId(): string
+    {
+        if (extension_loaded('swoole') && $cid = \Swoole\Coroutine::getCid()) {
+            return (string) $cid;
+        }
+        return 'default';
+    }
+
+    private function getHandle()
+    {
+        $cid = $this->getCoroutineId();
+        return $this->handles[$cid] ?? null;
+    }
+
+    private function setHandle($handle): void
+    {
+        $cid = $this->getCoroutineId();
+        if ($handle === null) {
+            unset($this->handles[$cid]);
+        } else {
+            $this->handles[$cid] = $handle;
+        }
+    }
+
     private function sendPayload($payload)
     {
-        curl_setopt($this->handle, CURLOPT_POSTFIELDS, $payload);
-        $res = curl_exec($this->handle);
+        $handle = $this->getHandle();
+        curl_setopt($handle, CURLOPT_POSTFIELDS, $payload);
+        $res = curl_exec($handle);
         if ($res === false) {
-            curl_close($this->handle);
-            $this->handle = null;
+            curl_close($handle);
+            $this->setHandle(null);
             return false;
         }
-        $code = curl_getinfo($this->handle, CURLINFO_HTTP_CODE);
+        $code = curl_getinfo($handle, CURLINFO_HTTP_CODE);
         return $code == 204;
     }
 

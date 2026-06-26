@@ -138,6 +138,7 @@ class SchemaValidator
             // Convert the value to an array
             if (!$valueIsArray && $value instanceof ToArrayInterface) {
                 $value = $value->toArray();
+                $valueIsArray = true;
             }
 
             if ($valueIsArray) {
@@ -245,47 +246,58 @@ class SchemaValidator
 
         // Perform type specific validation for strings, arrays, and integers
         if ($type == 'string') {
+            $enum = $param->getEnum();
+
             // Strings can have enums which are a list of predefined values
-            if (($enum = $param->getEnum()) && !in_array($value, $enum)) {
+            if ($enum && !in_array($value, $enum)) {
                 $this->errors[] = "{$path} must be one of ".implode(' or ', array_map(function ($s) {
                     return '"'.addslashes($s).'"';
                 }, $enum));
             }
+
+            $pattern = $param->getPattern();
+
             // Strings can have a regex pattern that the value must match
-            if (($pattern = $param->getPattern()) && !preg_match($pattern, $value)) {
-                $this->errors[] = "{$path} must match the following regular expression: {$pattern}";
+            if ($pattern !== null && $pattern !== '') {
+                $matched = @preg_match($pattern, $value);
+
+                if ($matched === false) {
+                    $this->errors[] = "{$path} could not be matched against {$pattern}: ".preg_last_error_msg();
+                } elseif ($matched === 0) {
+                    $this->errors[] = "{$path} must match the following regular expression: {$pattern}";
+                }
             }
 
             $strLen = null;
-            if ($min = $param->getMinLength()) {
+            if (null !== ($min = $param->getMinLength())) {
                 $strLen = strlen($value);
                 if ($strLen < $min) {
                     $this->errors[] = "{$path} length must be greater than or equal to {$min}";
                 }
             }
-            if ($max = $param->getMaxLength()) {
-                if (($strLen ?: strlen($value)) > $max) {
+            if (null !== ($max = $param->getMaxLength())) {
+                if (($strLen !== null ? $strLen : strlen($value)) > $max) {
                     $this->errors[] = "{$path} length must be less than or equal to {$max}";
                 }
             }
         } elseif ($type == 'array') {
             $size = null;
-            if ($min = $param->getMinItems()) {
+            if (null !== ($min = $param->getMinItems())) {
                 $size = count($value);
                 if ($size < $min) {
                     $this->errors[] = "{$path} must contain {$min} or more elements";
                 }
             }
-            if ($max = $param->getMaxItems()) {
-                if (($size ?: count($value)) > $max) {
+            if (null !== ($max = $param->getMaxItems())) {
+                if (($size !== null ? $size : count($value)) > $max) {
                     $this->errors[] = "{$path} must contain {$max} or fewer elements";
                 }
             }
         } elseif ($type == 'integer' || $type == 'number' || $type == 'numeric') {
-            if (($min = $param->getMinimum()) && $value < $min) {
+            if (null !== ($min = $param->getMinimum()) && $value < $min) {
                 $this->errors[] = "{$path} must be greater than or equal to {$min}";
             }
-            if (($max = $param->getMaximum()) && $value > $max) {
+            if (null !== ($max = $param->getMaximum()) && $value > $max) {
                 $this->errors[] = "{$path} must be less than or equal to {$max}";
             }
         }

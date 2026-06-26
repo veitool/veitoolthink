@@ -25,12 +25,12 @@ class Parameter implements ToArrayInterface
     private $type;
 
     /** @var bool */
-    private $required;
+    private $required = false;
 
     /** @var array|null */
     private $enum;
 
-    /** @var string */
+    /** @var string|null */
     private $pattern;
 
     /** @var int */
@@ -55,10 +55,10 @@ class Parameter implements ToArrayInterface
     private $default;
 
     /** @var bool */
-    private $static;
+    private $static = false;
 
     /** @var array */
-    private $filters;
+    private $filters = [];
 
     /** @var string */
     private $location;
@@ -67,7 +67,7 @@ class Parameter implements ToArrayInterface
     private $sentAs;
 
     /** @var array */
-    private $data;
+    private $data = [];
 
     /** @var array */
     private $properties = [];
@@ -184,6 +184,12 @@ class Parameter implements ToArrayInterface
     {
         $this->originalData = $data;
 
+        foreach (['$ref', 'extends', 'name'] as $key) {
+            if (array_key_exists($key, $data)) {
+                $data[$key] = self::normalizeStringValue($key, $data[$key]);
+            }
+        }
+
         if (isset($options['description'])) {
             $this->serviceDescription = $options['description'];
             if (!$this->serviceDescription instanceof DescriptionInterface) {
@@ -207,18 +213,20 @@ class Parameter implements ToArrayInterface
             }
         }
 
-        $this->resolvedData = $data;
+        $this->resolvedData = [];
 
         // Pull configuration data into the parameter
         foreach ($data as $key => $value) {
+            $value = self::normalizeParameterDataValue($key, $value);
+            if ($key === 'filters') {
+                $this->setFilters($value);
+                $this->resolvedData[$key] = $value;
+
+                continue;
+            }
+
             $this->{$key} = $value;
-        }
-
-        $this->required = (bool) $this->required;
-        $this->data = (array) $this->data;
-
-        if ($this->filters) {
-            $this->setFilters((array) $this->filters);
+            $this->resolvedData[$key] = $value;
         }
 
         if ($this->type == 'object' && $this->additionalProperties === null) {
@@ -244,6 +252,262 @@ class Parameter implements ToArrayInterface
     private function toResolvedArray()
     {
         return $this->resolvedData;
+    }
+
+    /**
+     * @param string|int $key
+     * @param mixed      $value
+     *
+     * @return mixed
+     */
+    private static function normalizeParameterDataValue($key, $value)
+    {
+        switch ($key) {
+            case 'name':
+            case 'description':
+            case 'location':
+            case 'sentAs':
+            case 'pattern':
+            case 'format':
+            case '$ref':
+            case 'extends':
+                return self::normalizeStringValue((string) $key, $value);
+            case 'required':
+            case 'static':
+                return self::normalizeBooleanValue((string) $key, $value);
+            case 'minimum':
+            case 'maximum':
+            case 'minLength':
+            case 'maxLength':
+            case 'minItems':
+            case 'maxItems':
+                return self::normalizeIntegerValue((string) $key, $value);
+            case 'filters':
+                return self::normalizeFiltersValue($value);
+            case 'properties':
+                return self::normalizePropertiesValue($value);
+            case 'data':
+                return self::normalizeArrayValue('data', $value);
+            case 'enum':
+                return self::normalizeNullableArrayValue('enum', $value);
+            case 'additionalProperties':
+                return self::normalizeAdditionalPropertiesValue($value);
+            case 'items':
+                return self::normalizeItemsValue($value);
+            case 'type':
+                return self::normalizeTypeValue($value);
+            default:
+                return $value;
+        }
+    }
+
+    /**
+     * @param mixed $value
+     *
+     * @return string|null
+     */
+    private static function normalizeStringValue(string $key, $value)
+    {
+        if ($value === null || is_string($value)) {
+            return $value;
+        }
+
+        if (is_scalar($value) || (is_object($value) && method_exists($value, '__toString'))) {
+            self::deprecateLooseParameterValue($key, $value, 'string|null');
+
+            return (string) $value;
+        }
+
+        throw new \InvalidArgumentException($key.' must be a string, stringable value, or null');
+    }
+
+    /**
+     * @param mixed $value
+     *
+     * @return bool
+     */
+    private static function normalizeBooleanValue(string $key, $value)
+    {
+        if (is_bool($value)) {
+            return $value;
+        }
+
+        if ($value === null || is_scalar($value)) {
+            self::deprecateLooseParameterValue($key, $value, 'bool');
+
+            return (bool) $value;
+        }
+
+        throw new \InvalidArgumentException($key.' must be a boolean, scalar, or null');
+    }
+
+    /**
+     * @param mixed $value
+     *
+     * @return int|null
+     */
+    private static function normalizeIntegerValue(string $key, $value)
+    {
+        if ($value === null || is_int($value)) {
+            return $value;
+        }
+
+        if (!is_bool($value) && is_scalar($value)) {
+            $filtered = filter_var($value, FILTER_VALIDATE_INT);
+            if ($filtered !== false) {
+                self::deprecateLooseParameterValue($key, $value, 'int|null');
+
+                return $filtered;
+            }
+        }
+
+        throw new \InvalidArgumentException($key.' must be an integer or null');
+    }
+
+    /**
+     * @param mixed $value
+     *
+     * @return array
+     */
+    private static function normalizeFiltersValue($value)
+    {
+        if (is_array($value)) {
+            return $value;
+        }
+
+        if ($value === null) {
+            self::deprecateLooseParameterValue('filters', $value, 'array');
+
+            return [];
+        }
+
+        if (is_string($value)) {
+            self::deprecateLooseParameterValue('filters', $value, 'array');
+
+            return [$value];
+        }
+
+        throw new \InvalidArgumentException('filters must be an array, string, or null');
+    }
+
+    /**
+     * @param mixed $value
+     *
+     * @return array
+     */
+    private static function normalizePropertiesValue($value)
+    {
+        $value = self::normalizeArrayValue('properties', $value);
+        foreach ($value as $property) {
+            if (!is_array($property) && !$property instanceof self) {
+                throw new \InvalidArgumentException('properties must contain only arrays or Parameter instances');
+            }
+        }
+
+        return $value;
+    }
+
+    /**
+     * @param mixed $value
+     *
+     * @return array
+     */
+    private static function normalizeArrayValue(string $key, $value)
+    {
+        if (is_array($value)) {
+            return $value;
+        }
+
+        if ($value === null) {
+            self::deprecateLooseParameterValue($key, $value, 'array');
+
+            return [];
+        }
+
+        throw new \InvalidArgumentException($key.' must be an array or null');
+    }
+
+    /**
+     * @param mixed $value
+     *
+     * @return array|null
+     */
+    private static function normalizeNullableArrayValue(string $key, $value)
+    {
+        if ($value === null || is_array($value)) {
+            return $value;
+        }
+
+        throw new \InvalidArgumentException($key.' must be an array or null');
+    }
+
+    /**
+     * @param mixed $value
+     *
+     * @return array|bool|Parameter|null
+     */
+    private static function normalizeAdditionalPropertiesValue($value)
+    {
+        if ($value === null || is_bool($value) || is_array($value) || $value instanceof self) {
+            return $value;
+        }
+
+        throw new \InvalidArgumentException('additionalProperties must be a boolean, array, Parameter, or null');
+    }
+
+    /**
+     * @param mixed $value
+     *
+     * @return array|Parameter|null
+     */
+    private static function normalizeItemsValue($value)
+    {
+        if ($value === null || is_array($value) || $value instanceof self) {
+            return $value;
+        }
+
+        throw new \InvalidArgumentException('items must be an array, Parameter, or null');
+    }
+
+    /**
+     * @param mixed $value
+     *
+     * @return string|array|null
+     */
+    private static function normalizeTypeValue($value)
+    {
+        if ($value === null || is_string($value)) {
+            return $value;
+        }
+
+        if (is_array($value)) {
+            foreach ($value as $type) {
+                if (!is_string($type)) {
+                    throw new \InvalidArgumentException('type arrays must contain only strings');
+                }
+            }
+
+            return $value;
+        }
+
+        throw new \InvalidArgumentException('type must be a string, array, or null');
+    }
+
+    /**
+     * @param mixed $value
+     *
+     * @return void
+     */
+    private static function deprecateLooseParameterValue(string $key, $value, string $expected)
+    {
+        \trigger_deprecation(
+            'guzzlehttp/guzzle-services',
+            '1.6',
+            'Passing %s as a parameter "%s" value is deprecated; guzzlehttp/guzzle-services 2.0 requires %s.',
+            get_debug_type($value),
+            $key,
+            $expected
+        );
     }
 
     /**
@@ -409,7 +673,7 @@ class Parameter implements ToArrayInterface
     /**
      * Get the minimum allowed length of a string value
      *
-     * @return int
+     * @return int|null
      */
     public function getMinLength()
     {
@@ -439,7 +703,7 @@ class Parameter implements ToArrayInterface
     /**
      * Get the minimum allowed number of items in an array value
      *
-     * @return int
+     * @return int|null
      */
     public function getMinItems()
     {
@@ -597,7 +861,7 @@ class Parameter implements ToArrayInterface
     /**
      * Get the regex pattern that must match a value when the value is a string
      *
-     * @return string
+     * @return string|null
      */
     public function getPattern()
     {
@@ -634,7 +898,7 @@ class Parameter implements ToArrayInterface
     /**
      * Add a filter to the parameter
      *
-     * @param string|array $filter Method to filter the value through
+     * @param mixed $filter Method to filter the value through
      *
      * @return self
      *
@@ -642,19 +906,29 @@ class Parameter implements ToArrayInterface
      */
     private function addFilter($filter)
     {
-        if (is_array($filter)) {
-            if (!isset($filter['method'])) {
-                throw new \InvalidArgumentException(
-                    'A [method] value must be specified for each complex filter'
-                );
-            }
+        if (is_string($filter)) {
+            $this->filters[] = $filter;
+
+            return $this;
         }
 
-        if (!$this->filters) {
-            $this->filters = [$filter];
-        } else {
-            $this->filters[] = $filter;
+        if (!is_array($filter)) {
+            throw new \InvalidArgumentException('Filters must be strings or complex filter arrays');
         }
+
+        if (!isset($filter['method'])) {
+            throw new \InvalidArgumentException(
+                'A [method] value must be specified for each complex filter'
+            );
+        }
+
+        if (!isset($filter['args']) || !is_array($filter['args'])) {
+            throw new \InvalidArgumentException(
+                'An [args] array must be specified for each complex filter'
+            );
+        }
+
+        $this->filters[] = $filter;
 
         return $this;
     }

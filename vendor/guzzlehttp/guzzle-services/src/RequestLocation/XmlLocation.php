@@ -3,6 +3,7 @@
 namespace GuzzleHttp\Command\Guzzle\RequestLocation;
 
 use GuzzleHttp\Command\CommandInterface;
+use GuzzleHttp\Command\Guzzle\NonFiniteFloats;
 use GuzzleHttp\Command\Guzzle\Operation;
 use GuzzleHttp\Command\Guzzle\Parameter;
 use GuzzleHttp\Psr7;
@@ -175,6 +176,7 @@ class XmlLocation extends AbstractLocation
 
             return;
         }
+        $value = NonFiniteFloats::normalize($value, 'an xml location value');
         if ($param->getData('xmlAttribute')) {
             $this->writeAttribute($writer, $prefix, $name, $namespace, $value);
         } else {
@@ -217,11 +219,26 @@ class XmlLocation extends AbstractLocation
             $writer->startElement($name);
         }
         if ($value !== null && strpbrk($value, '<>&')) {
-            $writer->writeCData($value);
+            $this->writeSafeCData($writer, $value);
         } else {
             $writer->writeRaw($value);
         }
         $writer->endElement();
+    }
+
+    protected function writeSafeCData(\XMLWriter $writer, $value)
+    {
+        $parts = explode(']]>', $value);
+        $last = array_pop($parts);
+
+        foreach ($parts as $part) {
+            $writer->writeCData($part.']]');
+            $writer->writeCData('>');
+        }
+
+        if ($last !== '') {
+            $writer->writeCData($last);
+        }
     }
 
     /**

@@ -1,5 +1,47 @@
 # CHANGELOG
 
+## 1.7.1 - 2026-06-23
+
+* Require `guzzlehttp/guzzle` ^7.12.3 and `guzzlehttp/psr7` ^2.12.3
+* Require `guzzlehttp/command` ^1.5.1 and `guzzlehttp/uri-template` ^1.0.8
+* Fixed XML response parsing for default-namespace `sentAs` object properties
+* Report PCRE errors separately from ordinary schema pattern mismatches
+
+## 1.7.0 - 2026-06-16
+
+* Require `guzzlehttp/guzzle` ^7.12, `guzzlehttp/psr7` ^2.12, and `guzzlehttp/uri-template` ^1.0.7
+* Deprecate invalid `GuzzleClient` configuration option values
+* Deprecate non-finite float location values; 2.0 rejects them
+
+## 1.6.2 - 2026-06-12
+
+* Fixed non-finite float values emitting coercion warnings on PHP 8.5
+
+## 1.6.1 - 2026-06-04
+
+* Allow deprecated `null` header location values to normalize to empty strings
+
+## 1.6.0 - 2026-06-02
+
+* Require `guzzlehttp/guzzle` ^7.11 and `guzzlehttp/psr7` ^2.11
+* Require `guzzlehttp/command` ^1.5 and `guzzlehttp/uri-template` ^1.0.6
+* Deprecate the legacy `baseUrl` service description option; use `baseUri` instead
+* Deprecate the legacy `responseClass` operation option; use `responseModel` instead
+* Deprecate non-uppercase operation `httpMethod` values; 2.0 preserves method casing
+* Deprecate non-string and empty-array header location values
+* Deprecate loose parameter schema values and reject values that cannot be safely normalized
+
+## 1.5.4 - 2026-06-02
+
+* Prevent XML CDATA injection during request serialization (GHSA-q8r6-5hfw-5jff)
+
+## 1.5.3 - 2026-06-02
+
+* Harden request serialization state after failures
+* Preserve explicit `null` JSON response properties
+* Validate `ToArrayInterface` object properties after conversion
+* Enforce zero-valued schema validation bounds
+
 ## 1.5.2 - 2026-05-22
 
 * Fix request serialization for validation-only `additionalParameters`

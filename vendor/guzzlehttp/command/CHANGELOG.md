@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## 1.5.1 - 2026-06-23
+
+* Require `guzzlehttp/guzzle` ^7.12.3 and `guzzlehttp/psr7` ^2.12.3
+
+## 1.5.0 - 2026-06-02
+
+* Require `guzzlehttp/guzzle` ^7.11, `guzzlehttp/promises` ^2.5, and `guzzlehttp/psr7` ^2.11
+* Deprecate non-iterable command collections
+
 ## 1.4.0 - 2026-05-18
 
 * Add PHP 8.5 support
@@ -51,3 +60,21 @@
 * Switch README from .rst to .md format 
 * Update dependencies
 * Add command to handler call to provide support for GuzzleServices
+
+## 0.9.0 - 2016-01-30
+
+* Updated to use Guzzle 6 and PSR-7.
+* Event system has been replaced with a middleware system
+    * Middleware at the command layer work the same as middleware from the
+      HTTP layer, but work with `Command` and `Result` objects instead of
+      `Request` and `Response` objects
+    * The command middleware is in a separate `HandlerStack` instance than the
+      HTTP middleware.
+* `Result` objects are the result of executing a `Command` and are used to hold
+  the parsed response data.
+* Asynchronous code now uses the `guzzlehttp/promises` package instead of
+  `guzzlehttp/ringphp`, which means that asynchronous results are implemented
+  as Promises/A+ compliant `Promise` objects, instead of futures.
+* The existing `Subscriber`s were removed.
+* The `ServiceClientInterface` and `ServiceClient` class now provide the basic
+  foundation of a web service client.

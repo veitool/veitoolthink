@@ -25,7 +25,7 @@ class SystemOnline extends Base
     /**
      * 列表（分页）
      * @param  array          $where    条件
-     * @param  array/string   $order    排序
+     * @param  array|string   $order    排序
      * @param  string         $fields   字段
      * @param  int            $limit    条数
      * @return array

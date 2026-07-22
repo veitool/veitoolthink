@@ -94,7 +94,8 @@ trait InteractsWithWebsocket
             });
 
             try {
-                $id = "{$this->workerId}.{$fd}";
+                // {nodeId}.{workerId}.{fd}
+                $id = "{$this->getNodeId()}.{$this->workerId}.{$fd}";
 
                 $websocket->setSender($id);
                 $websocket->join($id);
@@ -209,7 +210,15 @@ trait InteractsWithWebsocket
         $this->onEvent('message', function ($message) {
             if ($message instanceof PushMessage) {
                 if (isset($this->wsMessageChannel[$message->fd])) {
-                    $this->wsMessageChannel[$message->fd]->push($message->data);
+                    if ($message->data instanceof Frame) {
+                        $frame = $message->data;
+                    } else {
+                        $frame         = new Frame();
+                        $frame->data   = $message->data;
+                        $frame->opcode = $message->opcode;
+                    }
+
+                    $this->wsMessageChannel[$message->fd]->push($frame);
                 }
             }
         });
@@ -218,6 +227,10 @@ trait InteractsWithWebsocket
             $this->bindWebsocketRoom();
             $this->bindWebsocketHandler();
             $this->prepareWebsocketListener();
+        });
+
+        $this->onEvent('beforeWorkerStop', function () {
+            $this->wsRoom?->clear($this->getNodeId(), $this->workerId);
         });
     }
 

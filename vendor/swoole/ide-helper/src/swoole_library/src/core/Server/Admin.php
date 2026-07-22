@@ -67,7 +67,7 @@ class Admin
 
     private static string $accessToken = '';
 
-    public static function init(Server $server)
+    public static function init(Server $server): void
     {
         $accepted_process_types = SWOOLE_SERVER_COMMAND_MASTER |
             SWOOLE_SERVER_COMMAND_MANAGER |
@@ -808,9 +808,6 @@ class Admin
             }
 
             if ($param->isOptional() && !$param->isVariadic()) {
-                if (!$result['user_defined'] && PHP_VERSION_ID < 80000) {
-                    continue;
-                }
                 $optional = '?';
                 if ($param->isDefaultValueAvailable()) {
                     $value = $param->getDefaultValue();

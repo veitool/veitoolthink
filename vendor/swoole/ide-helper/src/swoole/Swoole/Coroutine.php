@@ -134,6 +134,12 @@ class Coroutine
     {
     }
 
+    /**
+     * Resume the execution of given coroutine.
+     *
+     * @param int $cid Coroutine ID.
+     * @return bool Returns true if successfully resumed, or false on failure.
+     */
     public static function resume(int $cid): bool
     {
     }
@@ -471,11 +477,17 @@ class Coroutine
     }
 
     /**
+     * Wait for given signal(s) with a timeout.
+     *
+     * @param int|array<int> $signals An integer or an array of integers representing the signal number(s).
+     *                                Before Swoole v6.0.0, only integer is supported.
+     * @param float $timeout The timeout value in seconds. Minimum value is 0.001. -1 means no timeout.
+     * @return int|false Returns the signal number received on success, or false on failure.
      * @alias Alias of method \Swoole\Coroutine\System::waitSignal().
      * @see \Swoole\Coroutine\System::waitSignal()
      * @since 4.5.0
      */
-    public static function waitSignal(int $signo, float $timeout = -1): bool
+    public static function waitSignal(int|array $signals, float $timeout = -1): int|false
     {
     }
 
@@ -491,9 +503,10 @@ class Coroutine
 
     /**
      * @alias This method is an alias of method \Swoole\Coroutine\System::fread().
+     * @param mixed $handle
      * @see \Swoole\Coroutine\System::fread()
      * @deprecated 4.5.1 Turn on runtime hook SWOOLE_HOOK_FILE or SWOOLE_HOOK_ALL, and use the built-in PHP function fread() directly.
-     * @param mixed $handle
+     * @removed 6.0.0
      */
     public static function fread($handle, int $length = 0): string|false
     {
@@ -501,9 +514,10 @@ class Coroutine
 
     /**
      * @alias This method is an alias of method \Swoole\Coroutine\System::fgets().
+     * @param mixed $handle
      * @see \Swoole\Coroutine\System::fgets()
      * @deprecated 4.5.1 Turn on runtime hook SWOOLE_HOOK_FILE or SWOOLE_HOOK_ALL, and use the built-in PHP function fgets() directly.
-     * @param mixed $handle
+     * @removed 6.0.0
      */
     public static function fgets($handle): string|false
     {
@@ -511,9 +525,10 @@ class Coroutine
 
     /**
      * @alias This method is an alias of method \Swoole\Coroutine\System::fwrite().
+     * @param mixed $handle
      * @see \Swoole\Coroutine\System::fwrite()
      * @deprecated 4.5.1 Turn on runtime hook SWOOLE_HOOK_FILE or SWOOLE_HOOK_ALL, and use the built-in PHP function fwrite() directly.
-     * @param mixed $handle
+     * @removed 6.0.0
      */
     public static function fwrite($handle, string $data, int $length = 0): int|false
     {

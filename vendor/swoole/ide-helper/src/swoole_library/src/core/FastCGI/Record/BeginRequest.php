@@ -85,9 +85,9 @@ class BeginRequest extends Record
      * {@inheritdoc}
      * @param static $self
      */
-    protected static function unpackPayload($self, string $binaryData): void
+    protected static function unpackPayload(Record $self, string $binaryData): void
     {
-        assert($self instanceof self);
+        assert($self instanceof self); // @phpstan-ignore function.alreadyNarrowedType,instanceof.alwaysTrue
 
         /** @phpstan-var false|array{role: int, flags: int, reserved: string} */
         $payload = unpack('nrole/Cflags/a5reserved', $binaryData);
@@ -97,7 +97,7 @@ class BeginRequest extends Record
         [
             $self->role,
             $self->flags,
-            $self->reserved1
+            $self->reserved1,
         ] = array_values($payload);
     }
 

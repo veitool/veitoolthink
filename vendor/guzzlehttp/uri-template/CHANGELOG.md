@@ -4,6 +4,18 @@ All notable changes to `uri-template` will be documented in this file.
 
 Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## v1.0.10 - 2026-07-17
+
+### Fixed
+
+- Fixed prefix modifiers counting Unicode code points and pct-encoded characters instead of bytes
+
+## v1.0.9 - 2026-07-08
+
+### Changed
+
+- Pass explicit trim characters ahead of the PHP 8.6 trim default change
+
 ## v1.0.8 - 2026-06-23
 
 ### Fixed

@@ -9,8 +9,8 @@
 
 declare(strict_types=1);
 
-if (PHP_VERSION_ID < 70200) {
-    throw new RuntimeException('require PHP version 7.2 or later');
+if (PHP_VERSION_ID < 80100) { // @phpstan-ignore smaller.alwaysFalse
+    throw new RuntimeException('require PHP version 8.1 or later');
 }
 
 if (SWOOLE_USE_SHORTNAME) { // @phpstan-ignore if.alwaysTrue
@@ -150,7 +150,7 @@ function swoole_container_cpu_num()
         $cpu_max  = file_get_contents($cpu_max);
         $fields   = explode($cpu_max, ' ');
         $quota_us = $fields[0];
-        if ($quota_us == 'max') {
+        if ($quota_us === 'max') { // @phpstan-ignore identical.alwaysFalse
             return swoole_cpu_num();
         }
         $period_us = $fields[1] ?? 100000;

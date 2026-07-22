@@ -102,7 +102,7 @@ function swoole_test_kernel_coroutine(int $count = 100, float $sleep_time = 1.0)
  * @alias This function has an alias function swoole_select().
  * @see swoole_select()
  */
-function swoole_client_select(array &$read_array, array &$write_array, array &$error_array, float $timeout = 0.5): int|false
+function swoole_client_select(array &$read, array &$write, array &$except, float $timeout = 0.5): int|false
 {
 }
 
@@ -110,7 +110,7 @@ function swoole_client_select(array &$read_array, array &$write_array, array &$e
  * @alias This function is an alias of function swoole_client_select().
  * @see swoole_client_select()
  */
-function swoole_select(array &$read_array, array &$write_array, array &$error_array, float $timeout = 0.5): int|false
+function swoole_select(array &$read, array &$write, array &$except, float $timeout = 0.5): int|false
 {
 }
 
@@ -253,6 +253,17 @@ function swoole_substr_json_decode(string $str, int $offset, int $length, bool $
 {
 }
 
+/**
+ * Triggers an error based on the provided string. Possible actions include triggering a fatal error,
+ * throwing an exception, or exiting with a non-zero status code.
+ *
+ * @internal This function is intended for testing purposes only.
+ * @since 6.0.0
+ */
+function swoole_implicit_fn(string $fn, int $args = 95): void
+{
+}
+
 function swoole_internal_call_user_shutdown_begin(): bool
 {
 }
@@ -384,20 +395,6 @@ function swoole_event_wait(): void
  * @see \Swoole\Event::exit()
  */
 function swoole_event_exit(): void
-{
-}
-
-/**
- * Set runtime options for timers.
- *
- * @param array $settings An array of settings. There is only one option available:
- *                        - \Swoole\Constant::OPTION_ENABLE_COROUTINE: whether to enable coroutine support for timers.
- * @see \Swoole\Timer::set()
- * @see \Swoole\Constant::OPTION_ENABLE_COROUTINE
- * @alias This function is an alias of method \Swoole\Timer::set().
- * @deprecated 4.6.0
- */
-function swoole_timer_set(array $settings): void
 {
 }
 

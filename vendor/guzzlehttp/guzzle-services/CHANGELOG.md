@@ -1,5 +1,19 @@
 # CHANGELOG
 
+## 1.7.3 - 2026-07-17
+
+* Require `guzzlehttp/guzzle` ^7.15 and `guzzlehttp/psr7` ^2.13
+* Require `guzzlehttp/command` ^1.5.3 and `guzzlehttp/uri-template` ^1.0.10
+* Replace deprecated Guzzle JSON utility methods with native JSON functions
+* Normalize operation HTTP methods with locale-independent ASCII uppercasing
+* Capitalize magic command names with locale-independent ASCII folding
+
+## 1.7.2 - 2026-07-08
+
+* Require `guzzlehttp/guzzle` ^7.13.3 and `guzzlehttp/psr7` ^2.12.4
+* Require `guzzlehttp/command` ^1.5.2 and `guzzlehttp/uri-template` ^1.0.9
+* Pass explicit trim characters ahead of the PHP 8.6 trim default change
+
 ## 1.7.1 - 2026-06-23
 
 * Require `guzzlehttp/guzzle` ^7.12.3 and `guzzlehttp/psr7` ^2.12.3

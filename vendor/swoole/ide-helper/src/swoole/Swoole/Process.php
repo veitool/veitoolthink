@@ -29,6 +29,8 @@ class Process
 
     /**
      * Process ID. This is to uniquely identify the process in the OS.
+     *
+     * @readonly
      */
     public int $pid;
 
@@ -38,12 +40,22 @@ class Process
      * In a Swoole program (e.g., a Swoole-based server), there are different types of processes, including event worker
      * processes, task worker processes, and user worker processes. This ID is to uniquely identify the process in the
      * running Swoole program.
+     *
+     * @readonly
      */
     public int $id;
 
+    /**
+     * @var callable The callback function of the process.
+     */
     private $callback;
 
-    public function __construct(callable $callback, bool $redirect_stdin_and_stdout = false, int $pipe_type = 2, bool $enable_coroutine = false)
+    /**
+     * The constructor.
+     *
+     * @param callable $callback The callback function of the process.
+     */
+    public function __construct(callable $callback, bool $redirect_stdin_and_stdout = false, int $pipe_type = SOCK_DGRAM, bool $enable_coroutine = false)
     {
     }
 
@@ -215,6 +227,19 @@ class Process
      * @see https://linux.die.net/man/2/sched_setaffinity
      */
     public static function setAffinity(array $cpu_settings): bool
+    {
+    }
+
+    /**
+     * Get a process's CPU affinity mask.
+     *
+     * This method is available only on some operating systems that support CPU affinity. It's not available on Windows
+     * or macOS.
+     *
+     * @return array<int> An array of integers representing the affinity mask of current process.
+     * @see https://linux.die.net/man/2/sched_getaffinity
+     */
+    public static function getAffinity(): array
     {
     }
 }

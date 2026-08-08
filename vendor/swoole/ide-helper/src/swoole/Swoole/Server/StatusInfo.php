@@ -7,14 +7,12 @@ namespace Swoole\Server;
 /**
  * When an event worker process or a task worker process crashes, an onWorkerError event will be triggered in the manager
  * process, with a StatusInfo object as the second parameter. The StatusInfo object can be used to log the issue and
- * send out alerts.
- *
- * @example
- * <pre>
+ * send out alerts. e.g.,
+ * ```php
  * $server->on('WorkerError', function (Swoole\Server $serv, Swoole\Server\StatusInfo $info) {
  *   var_dump($info);
  * });
- * <pre>
+ * ```
  */
 class StatusInfo
 {
@@ -29,7 +27,10 @@ class StatusInfo
     public int $worker_pid = 0;
 
     /**
-     * @var int The status field that was filled in by the waitpid function after the worker process was created.
+     * @var int The raw process status reported by the operating system when the worker process exited (the status
+     *          value filled in by the waitpid(2) system call). Properties $exit_code and $signal are both derived
+     *          from this value, so usually there is no need to inspect it directly.
+     * @see https://man7.org/linux/man-pages/man2/waitpid.2.html
      */
     public int $status = 0;
 

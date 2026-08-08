@@ -89,21 +89,69 @@ class Constant
 
     public const OPTION_DNS_SERVER = 'dns_server';
 
+    /**
+     * Socket DNS timeout in seconds.
+     */
     public const OPTION_SOCKET_DNS_TIMEOUT = 'socket_dns_timeout';
 
+    /**
+     * Default socket connect timeout in seconds.
+     */
     public const OPTION_SOCKET_CONNECT_TIMEOUT = 'socket_connect_timeout';
 
+    /**
+     * Default socket write timeout in seconds.
+     *
+     * This one works the same as option "socket_send_timeout", but has higher priority.
+     *
+     * @see Constant::OPTION_SOCKET_SEND_TIMEOUT
+     */
     public const OPTION_SOCKET_WRITE_TIMEOUT = 'socket_write_timeout';
 
+    /**
+     * Default socket write timeout in seconds.
+     *
+     * This one works the same as option "socket_write_timeout", but has lower priority.
+     *
+     * @see Constant::OPTION_SOCKET_WRITE_TIMEOUT
+     */
     public const OPTION_SOCKET_SEND_TIMEOUT = 'socket_send_timeout';
 
+    /**
+     * Default socket read timeout in seconds.
+     *
+     * This one works the same as option "socket_recv_timeout", but has higher priority.
+     *
+     * @see Constant::OPTION_SOCKET_RECV_TIMEOUT
+     */
     public const OPTION_SOCKET_READ_TIMEOUT = 'socket_read_timeout';
 
+    /**
+     * Default socket read timeout in seconds.
+     *
+     * This one works the same as option "socket_read_timeout", but has lower priority.
+     *
+     * @see Constant::OPTION_SOCKET_READ_TIMEOUT
+     */
     public const OPTION_SOCKET_RECV_TIMEOUT = 'socket_recv_timeout';
 
-    public const OPTION_SOCKET_BUFFER_SIZE = 'socket_buffer_size';
-
+    /**
+     * Default socket read/write timeout in seconds.
+     *
+     * This one has the highest priority than the other read/write timeout options:
+     * - Constant::OPTION_SOCKET_WRITE_TIMEOUT
+     * - Constant::OPTION_SOCKET_SEND_TIMEOUT
+     * - Constant::OPTION_SOCKET_READ_TIMEOUT
+     * - Constant::OPTION_SOCKET_RECV_TIMEOUT
+     *
+     * @see Constant::OPTION_SOCKET_SEND_TIMEOUT
+     * @see Constant::OPTION_SOCKET_WRITE_TIMEOUT
+     * @see Constant::OPTION_SOCKET_RECV_TIMEOUT
+     * @see Constant::OPTION_SOCKET_READ_TIMEOUT
+     */
     public const OPTION_SOCKET_TIMEOUT = 'socket_timeout';
+
+    public const OPTION_SOCKET_BUFFER_SIZE = 'socket_buffer_size';
 
     public const OPTION_HTTP2_HEADER_TABLE_SIZE = 'http2_header_table_size';
 
@@ -142,6 +190,11 @@ class Constant
 
     public const OPTION_ENABLE_SIGNALFD = 'enable_signalfd';
 
+    /**
+     * @since 6.1.0
+     */
+    public const OPTION_ENABLE_KQUEUE = 'enable_kqueue';
+
     public const OPTION_WAIT_SIGNAL = 'wait_signal';
 
     public const OPTION_DNS_CACHE_REFRESH_TIME = 'dns_cache_refresh_time';
@@ -152,6 +205,9 @@ class Constant
 
     public const OPTION_MAX_THREAD_NUM = 'max_thread_num';
 
+    /**
+     * @removed 6.1.0
+     */
     public const OPTION_SOCKET_DONTWAIT = 'socket_dontwait';
 
     public const OPTION_DNS_LOOKUP_RANDOM = 'dns_lookup_random';
@@ -391,6 +447,11 @@ class Constant
     public const OPTION_HTTP_INDEX_FILES = 'http_index_files';
 
     public const OPTION_STATIC_HANDLER_LOCATIONS = 'static_handler_locations';
+
+    /**
+     * @since 6.2.0
+     */
+    public const OPTION_URL_REWRITE_RULES = 'url_rewrite_rules';
 
     public const OPTION_INPUT_BUFFER_SIZE = 'input_buffer_size';
 

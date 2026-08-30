@@ -240,14 +240,7 @@ layui.use(function(){
     table.on('tool(addon)', function(obj){
         var data = obj.data;
         if(obj.event === 'setting'){
-            admin.open({
-                type: 1,
-                area: ['60%','80%'],
-                title: '【'+ data.title +' - 配置管理】',
-                url: app_root + "setting?addon=" + data.name,
-                btn: ['确认保存', '取消'],
-                yes: function(id,lay){lay.find("[lay-submit]").trigger('click');}
-            });
+            setting(data);
         }else if(obj.event === 'install' || obj.event === 'upgrade'){
             doReq(data.name,data.version,obj.event);
         }else if(obj.event === 'uninstall'){
@@ -257,6 +250,9 @@ layui.use(function(){
             let _Dt = admin.util.deepClone(data.releaselist);
             if(typeof addons[data.name] != 'undefined'){
                 _Dt = _Dt.filter(item => item.title !== addons[data.name].version);
+                if(addons[data.name].config){
+                    _Dt.push({require:"setting",title:"配 置"});
+                }
                 _Dt.push({require:"uninstall",title:"卸 载"});
             }
             layui.dropdown.render({
@@ -264,7 +260,9 @@ layui.use(function(){
                 show: true,
                 data: _Dt,
                 click: function(obj){
-                    if(obj.require == 'uninstall'){
+                    if(obj.require == 'setting'){
+                        setting(data);
+                    }else if(obj.require == 'uninstall'){
                         uninstall(data.name);
                     }else{
                         doReq(data.name,obj.title,way);
@@ -354,8 +352,22 @@ layui.use(function(){
         },'post');
     }/**/
     /**
+     * 配置插件
+     * @param {object}  data  插件数据
+     */
+    function setting(data){
+        admin.open({
+            type: 1,
+            area: ['60%','80%'],
+            title: '【'+ data.title +' - 配置管理】',
+            url: app_root + "setting?addon=" + data.name,
+            btn: ['确认保存', '取消'],
+            yes: function(id,lay){lay.find("[lay-submit]").trigger('click');}
+        });
+    }/**/
+    /**
      * 卸载插件
-     * @param {string}  name   插件名
+     * @param {string}  name  插件名
      */
     function uninstall(name){
         if(addons[name].state==1){

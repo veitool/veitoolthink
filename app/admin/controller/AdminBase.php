@@ -69,7 +69,7 @@ abstract class AdminBase extends BaseController
      */
     private function isLogin()
     {
-        if(is_null($this->manUser = session(VT_MANAGER))){
+        if(!$this->manUser = session(VT_MANAGER)){
             $url = $this->appMap.'/login/index';
             if($this->request->isAjax()){
                 $this->exitMsg('您还未登录或已过期，请先登录！',401,['url'=>$url]);

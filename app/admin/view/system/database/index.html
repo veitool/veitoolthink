@@ -26,7 +26,7 @@ layui.use(['buildItems'],function(){
         even: true,
         data: <?=$list?>,
         cols: [[
-            {type:"checkbox",fixed:"left"},
+            {type:"checkbox",align:'center',fixed:"left"},
             {field:"name",title: "表名"},
             {field:"comment",edit:'text',title:"备注"},
             {field:"engine",align:'center',width:100,title:"类型"},
@@ -94,7 +94,7 @@ layui.use(['buildItems'],function(){
                     url: app_root + 'imports',
                     even: true,
                     cols: [[
-                        {type:"checkbox",fixed:"left"},
+                        {type:"checkbox",align:'center',fixed:"left"},
                         {field:"filename",title: "备份系列"},
                         {field:"mtime",align:'center',title:"备份时间",sort:true,templet:function(d){return layui.util.toDateString(d.mtime*1000)}},
                         {field:"filesize",align:'center',width:120,title: "数据大小(Mb)",sort:true},

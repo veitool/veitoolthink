@@ -24,7 +24,7 @@ layui.use(['zTree','buildItems'], function(){
         height: 'full-251',
         url: app_root+"index?do=json",
         cols: [[
-            {type:'checkbox',fixed:'left'},
+            {type:'checkbox',align:'center',fixed:'left'},
             {field:'roleid',width:60,unresize:true,align:'center',title:'ID'},
             {field:'role_name',edit:'text',minWidth:200,title:'角色名称'},
             {field:'add_time',width:180,align:'center',title:'添加时间',templet:function(d){return layui.util.toDateString(d.add_time*1000)}},

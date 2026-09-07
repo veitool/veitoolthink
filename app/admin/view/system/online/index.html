@@ -50,7 +50,7 @@ layui.use(['vinfo'],function(){
         height: 'full-255',
         url: app_root+"index?do=json",
         cols: [[
-            {type:'checkbox',fixed:'left'},
+            {type:'checkbox',align:'center',fixed:'left'},
             {field:"username",align:'center',width:120,title:"用户",templet:function(d){return '<a style="cursor:pointer;" lay-event="userinfo"><font'+ (!d.type && d.ip == '{:request()->ip()}' ? ' color=blue' : '') +'>'+ d.username +'</font></a>'}},
             {field:"uid",align:'center',width:150,title:"编号"},
             {field:"url",title:"路径"},

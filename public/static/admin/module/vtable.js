@@ -33,6 +33,8 @@ layui.define(function(e){
         let tpl = function(res){
             laytpl(c.html).render(res.data,function(html){
                 $h.html(html);
+                $h.addClass('layui-form').attr('lay-filter',c.elem);
+                form.render('checkbox', c.elem);
                 form.render('checkbox');
                 if(res.count>0){
                     laypage.render({

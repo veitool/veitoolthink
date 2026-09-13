@@ -93,11 +93,11 @@ class Base extends Model
         if($force){
             $query->removeOption('soft_delete');
         }
-        if((is_string($where) && strpos($where, ' ') !== false) || (is_array($where) && key($where) !== 0)){ //查询字符串 或 键值对形式
+        if((is_string($where) && str_contains($where, ' ')) || (is_array($where) && (key($where) !== 0 || is_array($where[0])))){ //查询字符串 或 键值对形式['id'=>'1'] 或 二维数组形式 [['id','IN','1,2']]
             $query->where($where);
             $where = [];
         }elseif ($where instanceof \Closure){ //闭包形式
-            call_user_func_array($where, [ &$query]);
+            call_user_func_array($where, [&$query]);
             $where = [];
         }
 

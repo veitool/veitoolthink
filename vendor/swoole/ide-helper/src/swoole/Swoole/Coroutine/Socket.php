@@ -147,7 +147,7 @@ class Socket
      * @param string $host The IP address or host name to connect to; for AF_UNIX sockets, the file path of the Unix socket.
      * @param int $port The port to connect to. It's required for AF_INET and AF_INET6 sockets, and must be between 1 and 65535.
      * @param float $timeout The maximum time to wait for the connection to be established (in seconds). If it's 0 (the
-     *                       default), the socket's own connect timeout applies (2 seconds unless changed); a negative
+     *                       default), the socket's own connect timeout applies (10 seconds unless changed); a negative
      *                       value means waiting indefinitely.
      * @return bool Returns TRUE on success; otherwise FALSE, with properties $errCode and $errMsg updated accordingly.
      */
@@ -514,7 +514,14 @@ class Socket
      * @param int $opt_name The option to set, e.g., SO_REUSEADDR or SO_LINGER.
      * @param mixed $opt_value The value to set the option to: an integer for most options, or an array for structured
      *                         options (e.g., ["l_onoff" => ..., "l_linger" => ...] for SO_LINGER, or ["sec" => ...,
-     *                         "usec" => ...] for SO_RCVTIMEO and SO_SNDTIMEO).
+     *                         "usec" => ...] for SO_RCVTIMEO and SO_SNDTIMEO). Since Swoole 6.2.0, for SO_LINGER,
+     *                         SO_RCVTIMEO, and SO_SNDTIMEO, this value must actually be an array (or an object, whose
+     *                         public properties are read instead): a TypeError is thrown otherwise, instead of it being
+     *                         silently coerced as before. For SO_LINGER specifically, "l_onoff" and "l_linger" must each
+     *                         be between 0 and 65535; a ValueError is thrown otherwise, instead of the value being
+     *                         silently truncated as before. Note that, before Swoole 6.2.3, passing an object for
+     *                         SO_RCVTIMEO or SO_SNDTIMEO didn't work (the object was mistakenly read as if it were an
+     *                         array), so pass an array on older versions.
      * @return bool Returns TRUE on success, or FALSE on failure.
      * @see https://www.php.net/socket_set_option The PHP function \socket_set_option(), which this method mirrors.
      * @see \Swoole\Coroutine\Socket::getOption()
@@ -570,9 +577,13 @@ class Socket
     /**
      * Close the socket.
      *
-     * @return bool Returns TRUE on success, or FALSE if the socket is owned by another object (e.g., when it's
-     *              retrieved through method \Swoole\Coroutine\Client::exportSocket() or method
-     *              \Swoole\Process::exportSocket()) and thus can't be closed directly.
+     * A socket obtained through method \Swoole\Coroutine\Client::exportSocket() is the client's own socket, so
+     * closing it really does close the client's connection too, not just the exported object. A socket obtained
+     * through method \Swoole\Process::exportSocket(), on the other hand, is a duplicate of the process's pipe file
+     * descriptor, so closing it does NOT close the pipe itself.
+     *
+     * @return bool Returns TRUE if the socket was closed; FALSE if it was already closed (with property $errCode set
+     *              to EBADF).
      * @see \Swoole\Coroutine\Client::exportSocket()
      * @see \Swoole\Process::exportSocket()
      */
@@ -617,7 +628,7 @@ class Socket
      *
      * The stream must wrap a socket (e.g., one created by function \stream_socket_client() or \stream_socket_server()).
      *
-     * @param mixed $stream A PHP stream resource that wraps a socket.
+     * @param resource $stream A PHP stream resource that wraps a socket.
      * @return Socket|false Returns a new \Swoole\Coroutine\Socket object on success, or FALSE if the given stream
      *                      doesn't wrap a socket or its details can't be retrieved.
      * @since 5.0.0

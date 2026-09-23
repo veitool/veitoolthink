@@ -194,83 +194,155 @@ class Server
     public ?AdminServer $admin_server = null;
 
     /**
+     * Path of the PHP script that each worker thread runs as its entry script when the server runs in the
+     * SWOOLE_THREAD mode.
+     *
+     * It can be set through option \Swoole\Constant::OPTION_BOOTSTRAP of method \Swoole\Server::set(). When left
+     * unset, it stays an empty string until method \Swoole\Server::start() is called, at which point it defaults to
+     * the script currently being executed. Before Swoole 6.2.3, method \Swoole\Server::set() filled in that default
+     * itself, which also meant that a later \Swoole\Server::set() call without the option silently reset a value set
+     * earlier.
+     *
      * This property is available only when PHP is compiled with Zend Thread Safety (ZTS) enabled and Swoole is
      * installed with the "--enable-swoole-thread" configuration option.
      *
+     * @see \Swoole\Constant::OPTION_BOOTSTRAP
+     * @see \Swoole\Server::set()
+     * @see \Swoole\Server::start()
      * @since 6.0.0
      */
     public string $bootstrap = '';
 
     /**
-     * @var callable
+     * Callback for the "Start" event, fired in the master process when the server starts.
+     * NULL until registered through method on().
+     *
+     * @var callable|null
+     * @see \Swoole\Server::on()
      */
     private $onStart;
 
     /**
-     * @var callable
+     * Callback for the "BeforeShutdown" event, fired right before the server shuts down.
+     * NULL until registered through method on().
+     *
+     * @var callable|null
      * @since 4.8.0
+     * @see \Swoole\Server::on()
      */
     private $onBeforeShutdown;
 
     /**
-     * @var callable
+     * Callback for the "Shutdown" event, fired when the server shuts down.
+     * NULL until registered through method on().
+     *
+     * @var callable|null
+     * @see \Swoole\Server::on()
      */
     private $onShutdown;
 
     /**
-     * @var callable
+     * Callback for the "WorkerStart" event, fired when a worker (or task worker) process starts.
+     * NULL until registered through method on().
+     *
+     * @var callable|null
+     * @see \Swoole\Server::on()
      */
     private $onWorkerStart;
 
     /**
-     * @var callable
+     * Callback for the "WorkerStop" event, fired when a worker (or task worker) process stops normally.
+     * NULL until registered through method on().
+     *
+     * @var callable|null
+     * @see \Swoole\Server::on()
      */
     private $onWorkerStop;
 
     /**
-     * @var callable
+     * Callback for the "BeforeReload" event, fired in the manager process before all worker processes are reloaded.
+     * NULL until registered through method on().
+     *
+     * @var callable|null
      * @since 4.5.0
+     * @see \Swoole\Server::on()
      */
     private $onBeforeReload;
 
     /**
-     * @var callable
+     * Callback for the "AfterReload" event, fired in the manager process after all worker processes have been reloaded.
+     * NULL until registered through method on().
+     *
+     * @var callable|null
      * @since 4.5.0
+     * @see \Swoole\Server::on()
      */
     private $onAfterReload;
 
     /**
-     * @var callable
+     * Callback for the "WorkerExit" event, fired repeatedly in a worker process after the server asks it to exit (only
+     * when option "reload_async" is enabled).
+     * NULL until registered through method on().
+     *
+     * @var callable|null
+     * @see \Swoole\Server::on()
      */
     private $onWorkerExit;
 
     /**
-     * @var callable
+     * Callback for the "WorkerError" event, fired in the manager process when a worker (or task worker) process
+     * terminates abnormally.
+     * NULL until registered through method on().
+     *
+     * @var callable|null
+     * @see \Swoole\Server::on()
      */
     private $onWorkerError;
 
     /**
-     * @var callable
+     * Callback for the "Task" event, fired in a task worker process when a task is received.
+     * NULL until registered through method on().
+     *
+     * @var callable|null
+     * @see \Swoole\Server::on()
      */
     private $onTask;
 
     /**
-     * @var callable
+     * Callback for the "Finish" event, fired in a worker process when a task worker finishes a task and returns a
+     * result.
+     * NULL until registered through method on().
+     *
+     * @var callable|null
+     * @see \Swoole\Server::on()
      */
     private $onFinish;
 
     /**
-     * @var callable
+     * Callback for the "ManagerStart" event, fired when the manager process starts.
+     * NULL until registered through method on().
+     *
+     * @var callable|null
+     * @see \Swoole\Server::on()
      */
     private $onManagerStart;
 
     /**
-     * @var callable
+     * Callback for the "ManagerStop" event, fired when the manager process stops.
+     * NULL until registered through method on().
+     *
+     * @var callable|null
+     * @see \Swoole\Server::on()
      */
     private $onManagerStop;
 
     /**
-     * @var callable
+     * Callback for the "PipeMessage" event, fired in a worker (or task worker) process when it receives a message sent
+     * by method sendMessage().
+     * NULL until registered through method on().
+     *
+     * @var callable|null
+     * @see \Swoole\Server::on()
      */
     private $onPipeMessage;
 
@@ -286,6 +358,8 @@ class Server
      *                  SWOOLE_PROCESS to SWOOLE_BASE. For details, please check property \Swoole\Server::$mode.
      * @param int $sock_type Type of the socket. For details, please check property \Swoole\Server::$type.
      * @throws \Error When an invalid server mode is given, or when the constructor is called more than once on the same object.
+     * @throws Exception When called outside of PHP CLI mode, when a server is already running in the current
+     *                   process, or when the server fails to listen on the given host and port.
      * @see \Swoole\Server::$mode
      */
     public function __construct(string $host = '0.0.0.0', int $port = 0, int $mode = SWOOLE_BASE, int $sock_type = SWOOLE_SOCK_TCP)
@@ -357,7 +431,7 @@ class Server
      *
      * Event names are case-insensitive. This method can only be called before the server is started.
      *
-     * As of Swoole 6.0.2, there are
+     * As of Swoole 6.2.3, there are
      *   - 14 server events.
      *     - \Swoole\Constant::EVENT_START
      *     - \Swoole\Constant::EVENT_BEFORE_SHUTDOWN
@@ -382,7 +456,7 @@ class Server
      *     - \Swoole\Constant::EVENT_BUFFER_EMPTY
      *     - \Swoole\Constant::EVENT_REQUEST
      *     - \Swoole\Constant::EVENT_HANDSHAKE
-     *     - \Swoole\Constant::EVENT_BEFORE_HAND_SHAKE_RESPONSE
+     *     - \Swoole\Constant::EVENT_BEFORE_HANDSHAKE_RESPONSE
      *     - \Swoole\Constant::EVENT_OPEN
      *     - \Swoole\Constant::EVENT_MESSAGE
      *     - \Swoole\Constant::EVENT_DISCONNECT
@@ -392,8 +466,8 @@ class Server
      * @return bool Returns true on success, or false on failure.
      * @see \Swoole\Server\Port::on()
      * @see \Swoole\Server::getCallback()
-     * @see https://github.com/swoole/swoole-src/blob/v6.2.2/ext-src/swoole_server.cc#L50
-     * @see https://github.com/swoole/swoole-src/blob/v6.2.2/ext-src/swoole_server_port.cc#L33
+     * @see https://github.com/swoole/swoole-src/blob/v6.2.3/ext-src/swoole_server.cc#L50
+     * @see https://github.com/swoole/swoole-src/blob/v6.2.3/ext-src/swoole_server_port.cc#L33
      */
     public function on(string $event_name, callable $callback): bool
     {
@@ -457,11 +531,21 @@ class Server
      * For a connection on a stream (TCP or UNIX-stream) port, the data may be queued in the send buffer of the
      * connection if it can't be written out at once.
      *
+     * When option \Swoole\Constant::OPTION_SEND_YIELD is enabled and the send buffer is full, the call suspends the
+     * current coroutine until there is room again, or until option \Swoole\Constant::OPTION_SEND_TIMEOUT expires
+     * (in which case it fails with FALSE returned and function swoole_last_error() reporting SWOOLE_ERROR_CO_TIMEDOUT).
+     * If the connection is closed while the call is suspended, it fails with FALSE returned as well; since Swoole
+     * 6.2.3, the suspended call is cancelled right away in that case, with function swoole_last_error() reporting
+     * SWOOLE_ERROR_CO_CANCELED.
+     *
      * @param int|string $fd Session ID of the connection. To send data back to a client on a UNIX domain datagram socket, pass the path of the peer socket as a string instead.
      * @param string $send_data The data to send. It must not be empty.
      * @param int $serverSocket This parameter is used only when sending data back to a client on a UNIX domain datagram socket, to specify the file descriptor of the listening socket to send the data from; by default (-1), the socket where the server received the last datagram is used. It's ignored otherwise.
      * @return bool Returns true on success. Returns false on failure, e.g., the server is not running yet, the data given is empty, or the connection specified does not exist or is already closed.
      * @see \Swoole\Server::sendwait()
+     * @see \Swoole\Constant::OPTION_SEND_YIELD
+     * @see \Swoole\Constant::OPTION_SEND_TIMEOUT
+     * @see swoole_last_error()
      */
     public function send(int|string $fd, string $send_data, int $serverSocket = -1): bool
     {
@@ -565,7 +649,7 @@ class Server
     /**
      * Close a connection.
      *
-     * @param int $fd File descriptor of the connection.
+     * @param int $fd Session ID of the connection.
      * @param bool $reset Whether to reset the connection or not.
      *                    - FALSE: If there is data pending in the send buffer of the connection, the connection is closed only after the pending data has been sent out.
      *                    - TRUE: The send buffer is discarded and the connection is closed immediately. When Swoole is built with SO_LINGER support included, the socket is also closed with a linger timeout of 0, which resets the connection (sends a TCP RST packet) instead of closing it gracefully.
@@ -594,7 +678,7 @@ class Server
     /**
      * Pause receiving client-side data.
      *
-     * @param int $fd File descriptor of the connection.
+     * @param int $fd Session ID of the connection.
      * @return bool Returns true on success, or false on failure.
      * @see \Swoole\Server::resume()
      */
@@ -605,7 +689,7 @@ class Server
     /**
      * Resume receiving client-side data.
      *
-     * @param int $fd File descriptor of the connection.
+     * @param int $fd Session ID of the connection.
      * @return bool Returns true on success, or false on failure.
      * @see \Swoole\Server::pause()
      */
@@ -685,17 +769,20 @@ class Server
      * Dispatch tasks to task worker processes.
      *
      * This method can be used only when the server has task worker processes included/created. i.e., the server should
-     * have option \Swoole\Constant::OPTION_TASK_WORKER_NUM set to a value greater than 0.
+     * have option \Swoole\Constant::OPTION_TASK_WORKER_NUM set to a value greater than 0. It can only be called from
+     * event worker processes.
      *
-     * Before Swoole 4.8.12+ and 5.0.1+, this method doesn't support coroutine. If the server is running with option
-     * Swoole\Constant::OPTION_TASK_ENABLE_COROUTINE set to true, use method Server::taskCo() instead.
+     * What decides how this method waits is simply whether it's called inside a coroutine:
+     *   - Called inside a coroutine, it works exactly the same as method \Swoole\Server::taskCo(): only the calling
+     *     coroutine is suspended while waiting for the task results, and the other coroutines of the process keep
+     *     running.
+     *   - Called outside of a coroutine, the whole event worker process is blocked until the results arrive or the
+     *     timeout is exceeded.
      *
-     * Method \Swoole\Server::taskWaitMulti() works exactly the same as method \Swoole\Server::taskCo() when all the
-     * following conditions are met:
-     *   - used in Swoole 4.8.12+ or 5.0.1+.
-     *   - server option \Swoole\Constant::OPTION_TASK_ENABLE_COROUTINE is set to TRUE.
+     * (Before Swoole 4.8.12 and 5.0.1, this method didn't support coroutine at all; back then, method
+     * \Swoole\Server::taskCo() had to be used instead when coroutine support was needed.)
      *
-     * @param mixed[] $tasks List of tasks to be dispatched. Maximum number of tasks: 1024.
+     * @param mixed[] $tasks List of tasks to be dispatched. Maximum number of tasks: 1023.
      * @param float $timeout The maximum waiting time (in seconds) for the task results. If the timeout is exceeded, results of unfinished tasks will be discarded.
      * @return mixed[]|false Return an array of task results, or false on failure. For details, please check the pseudocode included in this method.
      * @see \Swoole\Server::taskCo()
@@ -703,16 +790,8 @@ class Server
      */
     public function taskWaitMulti(array $tasks, float $timeout = 0.5): array|false
     {
-        if (!empty($this->setting[Constant::OPTION_TASK_ENABLE_COROUTINE])) { // Task worker processes have coroutine enabled.
-            if (SWOOLE_MAJOR_VERSION < 5) {
-                if (version_compare(SWOOLE_VERSION, '4.8.12', '>=')) { // If Swoole version is 4.8.12 or later, but less than 5.0.0.
-                    return $this->taskCo($tasks, $timeout);
-                }
-            } else {
-                if (version_compare(SWOOLE_VERSION, '5.0.1', '>=')) { // If Swoole version is 5.0.1 or later.
-                    return $this->taskCo($tasks, $timeout);
-                }
-            }
+        if (Coroutine::getCid() !== -1) { // Called inside a coroutine (supported since Swoole 4.8.12 and 5.0.1).
+            return $this->taskCo($tasks, $timeout);
         }
 
         // Now, the server dispatches tasks to task worker processes and waits for the results.
@@ -739,24 +818,23 @@ class Server
     /**
      * To dispatch tasks to task worker processes, with the following constraints applied:
      *   - The server should have option \Swoole\Constant::OPTION_TASK_WORKER_NUM set to a value greater than 0.
-     *   - The server should have option \Swoole\Constant::OPTION_TASK_ENABLE_COROUTINE set to true.
+     *   - This method can only be called from event worker processes, and only inside a coroutine; calling it outside
+     *     of a coroutine makes Swoole throw a \Swoole\Error.
      *
      * Here is a piece of code to illustrate how to configure the server before using this method:
      *   $server = new \Swoole\Server('0.0.0.0', 9501);
      *   $server->set(
      *     [
-     *       \Swoole\Constant::OPTION_TASK_WORKER_NUM       => 3,    // Have three task worker processes included/created.
-     *       \Swoole\Constant::OPTION_TASK_ENABLE_COROUTINE => true, // Support coroutine in task worker processes.
+     *       \Swoole\Constant::OPTION_TASK_WORKER_NUM => 3, // Have three task worker processes included/created.
      *       // ...
      *     ]
      *   );
      *
-     * Method \Swoole\Server::taskCo() works exactly the same as method \Swoole\Server::taskWaitMulti() when all the
-     * following conditions are met:
-     *   - used in Swoole 4.8.12+ or 5.0.1+.
-     *   - server option \Swoole\Constant::OPTION_TASK_ENABLE_COROUTINE is set to TRUE.
+     * Only the calling coroutine is suspended while waiting for the task results; the other coroutines of the process
+     * keep running. Method \Swoole\Server::taskWaitMulti() works exactly the same as this method when it, too, is
+     * called inside a coroutine (supported since Swoole 4.8.12 and 5.0.1).
      *
-     * @param mixed[] $tasks List of tasks to be dispatched. Maximum number of tasks: 1024.
+     * @param mixed[] $tasks List of tasks to be dispatched. Maximum number of tasks: 1023.
      * @param float $timeout The maximum waiting time (in seconds) for the task results. If the timeout is exceeded, results of unfinished tasks will be discarded.
      * @return mixed[]|false Return an array of task results, or false on failure. For details, please check the pseudocode included in this method.
      * @see \Swoole\Server::taskWaitMulti()
@@ -840,6 +918,14 @@ class Server
      *
      * This method can be called from worker processes.
      *
+     * In the SWOOLE_PROCESS mode, before Swoole 6.2.0 this method sent the SIGTERM signal directly to the master
+     * process, which failed silently when the calling worker process ran as a different, non-privileged system user
+     * (set through server options "user"/"group") than the master process. Since Swoole 6.2.0, the request is instead
+     * delivered as a message through the internal pipe connecting the worker to the reactor, which then signals the
+     * master process itself; this makes the method work regardless of which system user the worker runs as. The
+     * SWOOLE_BASE mode and the SWOOLE_THREAD mode are unaffected, since they have no separate master process to signal
+     * this way.
+     *
      * @return bool TRUE on success, FALSE on failure.
      */
     public function shutdown(): bool
@@ -853,8 +939,16 @@ class Server
      * replace the stopped one.
      *
      * When stopping the current worker process from within itself, the exit happens right after the current event
-     * callback returns. Any other worker process is stopped by sending signal SIGTERM to it. In the SWOOLE_THREAD
-     * mode, a shutdown message is delivered to the target worker thread instead.
+     * callback returns. Any other worker (or, in the SWOOLE_THREAD mode, worker thread) is stopped by delivering a
+     * shutdown message to it through Swoole's internal communication channel (its pipe, or the message queue for a
+     * task worker when server option "task_ipc_mode" is set to use one), not by sending it a signal.
+     *
+     * Calling this method with the default $workerId (-1) from a process that isn't itself a worker process fails:
+     * -1 only means "the current worker" when there is one, so a worker ID must be given explicitly in that case.
+     * This includes the manager process, and the master process when running in the SWOOLE_PROCESS mode — but NOT a
+     * process added through method \Swoole\Server::addProcess() (or an explicitly started \Swoole\Process), which
+     * counts as a worker process too, nor the master process in the SWOOLE_BASE mode with a single worker, where the
+     * master process doubles as that worker.
      *
      * The signature of this method changed in Swoole 6.1.0:
      *   - before: public function stop(int $workerId = -1, bool $waitEvent = false): bool
@@ -905,7 +999,7 @@ class Server
      * @see \Swoole\Server::protect()
      * @see \Swoole\Constant::OPTION_HEARTBEAT_IDLE_TIME
      * @see \Swoole\Constant::OPTION_HEARTBEAT_CHECK_INTERVAL
-     * @see https://github.com/swoole/swoole-src/blob/v6.2.2/ext-src/swoole_server.cc#L3054 The actual default value of parameter $ifCloseConnection
+     * @see https://github.com/swoole/swoole-src/blob/v6.2.3/ext-src/swoole_server.cc#L3055 The actual default value of parameter $ifCloseConnection
      */
     public function heartbeat(bool $ifCloseConnection = false): array|false
     {
@@ -945,11 +1039,10 @@ class Server
      *   - ssl_client_cert: The client-side SSL certificate in PEM format. Optional; included only when the client sends
      *     one, and only in the process where the certificate was received.
      *
-     * @param int $fd File descriptor of the connection.
+     * @param int $fd Session ID of the connection.
      * @param int $reactor_id This parameter is accepted for backward compatibility only; it is not used at all.
-     * @param bool $ignoreError Whether to return information of a closed connection or not. By default, false is
-     *                          returned for a connection that is not active (established) anymore; set this parameter
-     *                          to TRUE to have the information of such a connection returned.
+     * @param bool $ignoreError Accepted but not read at all; it has no effect. A closed/inactive connection always
+     *                          makes this method return false, regardless of what is passed here.
      * @return array|false Return an array of connection information, or false on failure.
      * @alias This method has an alias of \Swoole\Server::connection_info().
      * @see \Swoole\Server::connection_info()
@@ -1044,11 +1137,10 @@ class Server
     /**
      * Get information of a connection.
      *
-     * @param int $fd File descriptor of the connection.
+     * @param int $fd Session ID of the connection.
      * @param int $reactor_id This parameter is accepted for backward compatibility only; it is not used at all.
-     * @param bool $ignoreError Whether to return information of a closed connection or not. By default, false is
-     *                          returned for a connection that is not active (established) anymore; set this parameter
-     *                          to TRUE to have the information of such a connection returned.
+     * @param bool $ignoreError Accepted but not read at all; it has no effect. A closed/inactive connection always
+     *                          makes this method return false, regardless of what is passed here.
      * @return array|false Return an array of connection information, or false on failure. For the list of keys included in the array, please check method \Swoole\Server::getClientInfo().
      * @alias Alias of method \Swoole\Server::getClientInfo().
      * @see \Swoole\Server::getClientInfo()
@@ -1219,7 +1311,7 @@ class Server
      * from connections is dispatched to event worker processes based on this ID (instead of the session ID), so that
      * data from connections sharing the same ID is always processed by the same worker process.
      *
-     * @param int $fd File descriptor of the connection.
+     * @param int $fd Session ID of the connection.
      * @param int $uid The ID to bind to the connection. It must fit in a 32-bit integer. A connection can have an ID bound to it once only.
      * @return bool Returns true on success. Returns false on failure, e.g., the connection does not exist, the connection already has an ID bound to it, or parameter $uid is out of range.
      * @see \Swoole\Server::getClientInfo()

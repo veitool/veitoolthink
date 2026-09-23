@@ -24,6 +24,10 @@ namespace Swoole;
 class Atomic
 {
     /**
+     * Create a new atomic counter, initialized to the given value.
+     *
+     * The counter is allocated in shared memory, so it can be shared among processes forked afterwards.
+     *
      * @param int $value The initial value of the counter. The default value is 0. It shouldn't be a negative number.
      */
     public function __construct(int $value = 0)
@@ -73,15 +77,23 @@ class Atomic
      *
      * Before using this method, the counter must be either 0 or 1, otherwise the behavior is undefined.
      *   - When the counter is 0, the current process will be put into a blocking state.
-     *   - When the counter is 1, it means the process doesn't need to wait; the method returns true immediately.
+     *   - When the counter is 1, it means the process doesn't need to wait; the method resets the counter back to 0
+     *     (consuming the pending wake-up signal) and returns true immediately.
      *
      * WARNING: This method blocks the whole process, not just the current coroutine. Thus, it's not recommended to use
      *          this method in Swoole servers nor coroutines.
      *
+     * Before Swoole 6.2.3, the counter rules above were followed on Linux only; on other platforms (e.g., macOS), the
+     * method was implemented by repeatedly polling the counter and didn't behave reliably. Since Swoole 6.2.3, it
+     * behaves the same everywhere; on platforms other than Linux, the counter is checked about once every
+     * millisecond, so waking up may take slightly longer than on Linux.
+     *
      * @param float $timeout The timeout in seconds.
      *                       > 0: The process will be woken up after the specified number of seconds (or by another process).
      *                       <= 0: No timeout. The process will resume execution only when woken up by another process.
-     * @return bool Returns true if no need to wait or woken up by another process; otherwise returns false.
+     * @return bool Returns true if there was no need to wait, or if the process was woken up by another process and
+     *              managed to consume the wake-up signal; returns false if the timeout expired, or if another process
+     *              consumed the wake-up signal first.
      *
      * @see https://github.com/deminy/swoole-by-examples/blob/master/examples/io/block-processes-using-swoole-atomic.php
      *      An example showing how to block processes using class \Swoole\Atomic in a multiprocessing environment.
@@ -94,8 +106,10 @@ class Atomic
      * Wake up one or more processes that are blocked by method \Swoole\Atomic::wait().
      *
      * Before using this method, the counter must be either 0 or 1, otherwise the behavior is undefined.
-     *   - When the counter is 0, it means there is no any processes blocked; the method returns true immediately.
-     *   - When the counter is 1, it means there are some processes blocked; the method wakes up (some of) them and returns true.
+     *   - When the counter is 0, there may be processes blocked; the method sets the counter to 1 and wakes up (up to
+     *     $count of) them. It returns true whether or not any process was actually blocked.
+     *   - When the counter is 1, it means an earlier wake-up signal hasn't been consumed yet; the method does nothing
+     *     and returns true immediately.
      *
      * When there are N processes blocked by method \Swoole\Atomic::wait(), the following two statements have the same effect:
      *   - $atomic->wakeup(N);
@@ -104,8 +118,13 @@ class Atomic
      * There is no guarantee about which processes are awoken. e.g., a process with a higher scheduling priority is not
      * guaranteed to be awoken in preference to a process with a lower priority.
      *
-     * @param int $count The number of processes to wake up.
-     * @return bool Returns true if the counter is 0 or the method wakes up at least one process; otherwise returns false.
+     * Before Swoole 6.2.3, on platforms other than Linux (e.g., macOS), the method added $count to the counter instead
+     * of setting it to 1, breaking the counter rules above; see method \Swoole\Atomic::wait() for details.
+     *
+     * @param int $count The number of processes to wake up. It should be at least 1.
+     * @return bool Returns true in practice, whether or not any process was actually woken up; it returns false only
+     *              when the underlying wake-up operation fails at the operating system level, or (since Swoole 6.2.3,
+     *              on platforms other than Linux) when $count is smaller than 1.
      *
      * @see https://github.com/deminy/swoole-by-examples/blob/master/examples/io/block-processes-using-swoole-atomic.php
      *      An example showing how to block processes using class \Swoole\Atomic in a multiprocessing environment.

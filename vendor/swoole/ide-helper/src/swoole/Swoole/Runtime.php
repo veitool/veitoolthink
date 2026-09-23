@@ -4,12 +4,29 @@ declare(strict_types=1);
 
 namespace Swoole;
 
+/**
+ * Class for managing Swoole's runtime hooks.
+ *
+ * Runtime hooks transparently replace PHP's blocking, built-in functionality (e.g., function sleep(), file and
+ * stream operations, and database extensions like PDO and mysqli) with coroutine-friendly implementations, so that
+ * existing synchronous code can run inside coroutines without blocking the whole process. Which parts of PHP get
+ * hooked is controlled by the SWOOLE_HOOK_* flags (e.g., SWOOLE_HOOK_ALL, SWOOLE_HOOK_TCP, SWOOLE_HOOK_SLEEP),
+ * passed to method enableCoroutine() or setHookFlags().
+ *
+ * This class can't be instantiated; all of its methods are static.
+ *
+ * @see \Swoole\Runtime::enableCoroutine()
+ * @see \Swoole\Runtime::setHookFlags()
+ */
 class Runtime
 {
     /**
      * To enable/disable runtime hooks in coroutines.
      *
-     * Before Swoole v6.0.0, this method accepts different types of parameters to enable or disable runtime hooks.
+     * This method can only be used when PHP runs in command-line (CLI) mode; calling it under any other SAPI raises a
+     * fatal error.
+     *
+     * Before Swoole 6.0.0, this method accepts different types of parameters to enable or disable runtime hooks.
      *
      * When PHP is compiled with Zend Thread Safety (ZTS) enabled and Swoole is installed with the
      * "--enable-swoole-thread" configuration option, runtime hooks are shared by all threads. Since Swoole 6.1.3, they
@@ -29,6 +46,18 @@ class Runtime
 
     /**
      * Get current runtime hook flags.
+     *
+     * This returns the flags last requested through enableCoroutine()/setHookFlags(), which can differ from what's
+     * actually in effect: it still includes SWOOLE_HOOK_SOCKETS even after Swoole silently drops it because the
+     * "sockets" extension isn't loaded (or SWOOLE_HOOK_NET_FUNCTION/SWOOLE_HOOK_MONGODB when ini directive
+     * "swoole.enable_library" is off), and it reflects a request that was actually rejected (e.g., because
+     * enableCoroutine()/setHookFlags() wasn't called from the main thread, or was called after other threads had
+     * already been created).
+     *
+     * @return int A bitwise combination of the SWOOLE_HOOK_* constants last requested; 0 when runtime hooks are
+     *             disabled.
+     * @see \Swoole\Runtime::setHookFlags()
+     * @since 4.5.0
      */
     public static function getHookFlags(): int
     {
@@ -36,6 +65,9 @@ class Runtime
 
     /**
      * Set runtime hook flags. This overrides any flags set previously.
+     *
+     * This method can only be used when PHP runs in command-line (CLI) mode; calling it under any other SAPI raises a
+     * fatal error.
      *
      * Here are some examples of setting runtime hook flags:
      * - setHookFlags(SWOOLE_HOOK_TCP): Enable TCP hook only.

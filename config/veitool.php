@@ -14,7 +14,7 @@ return [
     //插件卸载时是否删除相关数据表和配置
     'ddata'   => true,
     //插件应用路由
-    'addons' => [],
+    'addons'  => [],
     //服务端解密私钥，左边不要有空格，百度“rsa密钥在线生成”，需2048位PKCS1格式
     'rsa_pri_key' => <<<EOF
 -----BEGIN PRIVATE KEY-----

@@ -15,6 +15,7 @@ use PhpOffice\PhpSpreadsheet\Style\ConditionalFormatting\CellStyleAssessor;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use PhpOffice\PhpSpreadsheet\Style\Protection;
 use PhpOffice\PhpSpreadsheet\Style\Style;
+use PhpOffice\PhpSpreadsheet\Worksheet\BaseDrawing;
 use PhpOffice\PhpSpreadsheet\Worksheet\Table;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use Stringable;
@@ -181,9 +182,7 @@ class Cell implements Stringable
 
     public function getValueString(): string
     {
-        $value = $this->value;
-
-        return ($value === '' || is_scalar($value) || $value instanceof Stringable) ? "$value" : '';
+        return StringHelper::convertToString($this->value, false);
     }
 
     /**
@@ -192,21 +191,31 @@ class Cell implements Stringable
     public function getFormattedValue(): string
     {
         $currentCalendar = SharedDate::getExcelCalendar();
-        SharedDate::setExcelCalendar($this->getWorksheet()->getParent()?->getExcelCalendar());
-        $formattedValue = (string) NumberFormat::toFormattedString(
-            $this->getCalculatedValueString(),
-            (string) $this->getStyle()->getNumberFormat()->getFormatCode(true)
+        SharedDate::setExcelCalendar(
+            $this->getWorksheet()
+                ->getParent()
+                ?->getExcelCalendar()
         );
-        SharedDate::setExcelCalendar($currentCalendar);
+
+        try {
+            $formattedValue = NumberFormat::toFormattedString(
+                $this->getCalculatedValueString(),
+                (string) $this->getStyle()
+                    ->getNumberFormat()
+                    ->getFormatCode(true)
+            );
+        } finally {
+            SharedDate::setExcelCalendar($currentCalendar);
+        }
 
         return $formattedValue;
     }
 
     protected static function updateIfCellIsTableHeader(?Worksheet $workSheet, self $cell, mixed $oldValue, mixed $newValue): void
     {
-        $oldValue = (is_scalar($oldValue) || $oldValue instanceof Stringable) ? ((string) $oldValue) : null;
-        $newValue = (is_scalar($newValue) || $newValue instanceof Stringable) ? ((string) $newValue) : null;
-        if (StringHelper::strToLower($oldValue ?? '') === StringHelper::strToLower($newValue ?? '') || $workSheet === null) {
+        $oldValue = StringHelper::convertToString($oldValue, false);
+        $newValue = StringHelper::convertToString($newValue, false);
+        if (StringHelper::strToLower($oldValue) === StringHelper::strToLower($newValue) || $workSheet === null) {
             return;
         }
 
@@ -235,6 +244,9 @@ class Cell implements Stringable
      */
     public function setValue(mixed $value, ?IValueBinder $binder = null): self
     {
+        if ($this->hadHyperlink) {
+            $this->clearHyperlink();
+        }
         // Cells?->Worksheet?->Spreadsheet
         $binder ??= $this->parent?->getParent()?->getParent()?->getValueBinder() ?? self::getValueBinder();
         if (!$binder->bindValue($this, $value)) {
@@ -244,11 +256,31 @@ class Cell implements Stringable
         return $this;
     }
 
+    private bool $hadHyperlink = false;
+
+    /** @internal */
+    public function setHadHyperlink(bool $hadHyperlink): void
+    {
+        $this->hadHyperlink = $hadHyperlink;
+    }
+
+    private function clearHyperlink(): void
+    {
+        $worksheet = $this->getWorksheetOrNull();
+        if ($worksheet !== null) {
+            $coordinate = $this->getCoordinate();
+            $worksheet->setHyperlink($coordinate, null);
+        }
+        $this->hadHyperlink = false;
+    }
+
     /**
      * Set the value for a cell, with the explicit data type passed to the method (bypassing any use of the value binder).
      *
      * @param mixed $value Value
      * @param string $dataType Explicit data type, see DataType::TYPE_*
+     *        This parameter is currently optional (default = string).
+     *        Omitting it is ***DEPRECATED***, and the default will be removed in a future release.
      *        Note that PhpSpreadsheet does not validate that the value and datatype are consistent, in using this
      *             method, then it is your responsibility as an end-user developer to validate that the value and
      *             the datatype match.
@@ -259,6 +291,9 @@ class Cell implements Stringable
      */
     public function setValueExplicit(mixed $value, string $dataType = DataType::TYPE_STRING): self
     {
+        if ($this->hadHyperlink) {
+            $this->clearHyperlink();
+        }
         $oldValue = $this->value;
         $quotePrefix = false;
 
@@ -279,24 +314,26 @@ class Cell implements Stringable
                 // no break
             case DataType::TYPE_INLINE:
                 // Rich text
-                if ($value !== null && !is_scalar($value) && !($value instanceof Stringable)) {
-                    throw new SpreadsheetException('Invalid unstringable value for datatype Inline/String/String2');
+                $value2 = StringHelper::convertToString($value, true);
+                // Cells?->Worksheet?->Spreadsheet
+                $binder = $this->parent?->getParent()?->getParent()?->getValueBinder();
+                $preserveCr = false;
+                if ($binder !== null && method_exists($binder, 'getPreserveCr')) {
+                    /** @var bool */
+                    $preserveCr = $binder->getPreserveCr();
                 }
-                $this->value = DataType::checkString(($value instanceof RichText) ? $value : ((string) $value));
+                $this->value = DataType::checkString(($value instanceof RichText) ? $value : $value2, $preserveCr);
 
                 break;
             case DataType::TYPE_NUMERIC:
-                if (is_string($value) && !is_numeric($value)) {
+                if ($value !== null && !is_bool($value) && !is_numeric($value)) {
                     throw new SpreadsheetException('Invalid numeric value for datatype Numeric');
                 }
                 $this->value = 0 + $value;
 
                 break;
             case DataType::TYPE_FORMULA:
-                if ($value !== null && !is_scalar($value) && !($value instanceof Stringable)) {
-                    throw new SpreadsheetException('Invalid unstringable value for datatype Formula');
-                }
-                $this->value = (string) $value;
+                $this->value = StringHelper::convertToString($value, true);
 
                 break;
             case DataType::TYPE_BOOL:
@@ -306,6 +343,14 @@ class Cell implements Stringable
             case DataType::TYPE_ISO_DATE:
                 $this->value = SharedDate::convertIsoDate($value);
                 $dataType = DataType::TYPE_NUMERIC;
+
+                break;
+            case DataType::TYPE_DRAWING_IN_CELL:
+                if ($value instanceof BaseDrawing) {
+                    $this->value = $value;
+                } else {
+                    throw new SpreadsheetException('Item is not a drawing');
+                }
 
                 break;
             case DataType::TYPE_ERROR:
@@ -325,16 +370,16 @@ class Cell implements Stringable
         $worksheet = $this->getWorksheet();
         $spreadsheet = $worksheet->getParent();
         if (isset($spreadsheet) && $spreadsheet->getIndex($worksheet, true) >= 0) {
-            $originalSelected = $worksheet->getSelectedCells();
-            $activeSheetIndex = $spreadsheet->getActiveSheetIndex();
-            $style = $this->getStyle();
-            $oldQuotePrefix = $style->getQuotePrefix();
+            // Avoid Worksheet::getStyle() (selection + validation) unless quotePrefix must change.
+            $oldQuotePrefix = $spreadsheet->getCellXfByIndex($this->getXfIndex())->getQuotePrefix();
             if ($oldQuotePrefix !== $quotePrefix) {
-                $style->setQuotePrefix($quotePrefix);
-            }
-            $worksheet->setSelectedCells($originalSelected);
-            if ($activeSheetIndex >= 0) {
-                $spreadsheet->setActiveSheetIndex($activeSheetIndex);
+                $originalSelected = $worksheet->getSelectedCells();
+                $activeSheetIndex = $spreadsheet->getActiveSheetIndex();
+                $this->getStyle()->setQuotePrefix($quotePrefix);
+                $worksheet->setSelectedCells($originalSelected);
+                if ($activeSheetIndex >= 0) {
+                    $spreadsheet->setActiveSheetIndex($activeSheetIndex);
+                }
             }
         }
 
@@ -391,7 +436,7 @@ class Cell implements Stringable
             $value = array_shift($value);
         }
 
-        return ($value === '' || is_scalar($value) || $value instanceof Stringable) ? "$value" : '';
+        return StringHelper::convertToString($value, false, convertBool: true);
     }
 
     /**
@@ -408,9 +453,6 @@ class Cell implements Stringable
         $oldAttributesT = $oldAttributes['t'] ?? '';
         $coordinate = $this->getCoordinate();
         $oldAttributesRef = $oldAttributes['ref'] ?? $coordinate;
-        if (!str_contains($oldAttributesRef, ':')) {
-            $oldAttributesRef .= ":$oldAttributesRef";
-        }
         $originalValue = $this->value;
         $originalDataType = $this->dataType;
         $this->formulaAttributes = [];
@@ -434,6 +476,14 @@ class Cell implements Stringable
                         $result = array_shift($result);
                     }
                 }
+                if (
+                    !is_array($result)
+                    && $calculation->getInstanceArrayReturnType() === Calculation::RETURN_ARRAY_AS_ARRAY
+                    && $oldAttributesT === 'array'
+                    && ($oldAttributesRef === $coordinate || $oldAttributesRef === "$coordinate:$coordinate")
+                ) {
+                    $result = [$result];
+                }
                 // if return_as_array for formula like '=sheet!cell'
                 if (is_array($result) && count($result) === 1) {
                     $resultKey = array_keys($result)[0];
@@ -448,6 +498,7 @@ class Cell implements Stringable
                 }
                 $newColumn = $this->getColumn();
                 if (is_array($result)) {
+                    $result = self::convertSpecialArray($result);
                     $this->formulaAttributes['t'] = 'array';
                     $this->formulaAttributes['ref'] = $maxCoordinate = $coordinate;
                     $newRow = $row = $this->getRow();
@@ -466,6 +517,7 @@ class Cell implements Stringable
                                         }
                                     }
                                 }
+                                /** @var string $newColumn */
                                 StringHelper::stringIncrement($newColumn);
                             }
                             ++$newRow;
@@ -496,15 +548,15 @@ class Cell implements Stringable
                             $coordinate = $this->getCoordinate();
                             $ref = $oldAttributesRef;
                             if (preg_match('/^([A-Z]{1,3})([0-9]{1,7})(:([A-Z]{1,3})([0-9]{1,7}))?$/', $ref, $matches) === 1) {
-                                if (isset($matches[3])) {
+                                if (isset($matches[5])) {
                                     $minCol = $matches[1];
                                     $minRow = (int) $matches[2];
-                                    // https://github.com/phpstan/phpstan/issues/11602
-                                    $maxCol = $matches[4]; // @phpstan-ignore-line
+                                    $maxCol = $matches[4];
                                     StringHelper::stringIncrement($maxCol);
-                                    $maxRow = (int) $matches[5]; // @phpstan-ignore-line
+                                    $maxRow = (int) $matches[5];
                                     for ($row = $minRow; $row <= $maxRow; ++$row) {
                                         for ($col = $minCol; $col !== $maxCol; StringHelper::stringIncrement($col)) {
+                                            /** @var string $col */
                                             if ("$col$row" !== $coordinate) {
                                                 $thisworksheet->getCell("$col$row")->setValue(null);
                                             }
@@ -527,7 +579,9 @@ class Cell implements Stringable
                             $newColumn = $column;
                             foreach ($resultRow as $resultValue) {
                                 if ($row !== $newRow || $column !== $newColumn) {
-                                    $thisworksheet->getCell($newColumn . $newRow)->setValue($resultValue);
+                                    $thisworksheet
+                                        ->getCell($newColumn . $newRow)
+                                        ->setValue($resultValue);
                                 }
                                 StringHelper::stringIncrement($newColumn);
                             }
@@ -560,6 +614,8 @@ class Cell implements Stringable
             SharedDate::setExcelCalendar($currentCalendar);
 
             if ($result === Functions::NOT_YET_IMPLEMENTED) {
+                $this->formulaAttributes = $oldAttributes;
+
                 return $this->calculatedValue; // Fallback if calculation engine does not support the formula.
             }
 
@@ -569,6 +625,36 @@ class Cell implements Stringable
         }
 
         return $this->convertDateTimeInt($this->value);
+    }
+
+    /**
+     * Convert array like the following (preserve values, lose indexes):
+     * [
+     *   rowNumber1 => [colLetter1 => value, colLetter2 => value ...],
+     *   rowNumber2 => [colLetter1 => value, colLetter2 => value ...],
+     *   ...
+     * ].
+     *
+     * @param mixed[] $array
+     *
+     * @return mixed[]
+     */
+    private static function convertSpecialArray(array $array): array
+    {
+        $newArray = [];
+        foreach ($array as $rowIndex => $row) {
+            if (!is_int($rowIndex) || $rowIndex <= 0 || !is_array($row)) {
+                return $array;
+            }
+            $keys = array_keys($row);
+            $key0 = $keys[0] ?? '';
+            if (!is_string($key0)) {
+                return $array;
+            }
+            $newArray[] = array_values($row);
+        }
+
+        return $newArray;
     }
 
     /**
@@ -705,7 +791,8 @@ class Cell implements Stringable
             throw new SpreadsheetException('Cannot get hyperlink for cell that is not bound to a worksheet');
         }
 
-        return $this->getWorksheet()->getHyperlink($this->getCoordinate());
+        return $this->getWorksheet()
+            ->getHyperlink($this->getCoordinate());
     }
 
     /**
@@ -719,7 +806,8 @@ class Cell implements Stringable
             throw new SpreadsheetException('Cannot set hyperlink for cell that is not bound to a worksheet');
         }
 
-        $this->getWorksheet()->setHyperlink($this->getCoordinate(), $hyperlink);
+        $this->getWorksheet()
+            ->setHyperlink($this->getCoordinate(), $hyperlink);
 
         return $this->updateInCollection();
     }
@@ -933,11 +1021,22 @@ class Cell implements Stringable
     }
 
     /**
+     * Set the XF index without triggering updateInCollection().
+     *
+     * This is intended for use by readers that will immediately follow with
+     * setValueExplicit(), avoiding a redundant cache write.
+     *
+     * @internal
+     */
+    public function setXfIndexNoUpdate(int $indexValue): void
+    {
+        $this->xfIndex = $indexValue;
+    }
+
+    /**
      * Set the formula attributes.
      *
-     * @param $attributes null|array<string, string>
-     *
-     * @return $this
+     * @param null|array<string, string> $attributes
      */
     public function setFormulaAttributes(?array $attributes): self
     {
@@ -951,7 +1050,7 @@ class Cell implements Stringable
      *
      * @return null|array<string, string>
      */
-    public function getFormulaAttributes(): ?array
+    public function getFormulaAttributes(): mixed
     {
         return $this->formulaAttributes;
     }
@@ -963,7 +1062,7 @@ class Cell implements Stringable
     {
         $retVal = $this->value;
 
-        return ($retVal === null || is_scalar($retVal) || $retVal instanceof Stringable) ? ((string) $retVal) : '';
+        return StringHelper::convertToString($retVal, false);
     }
 
     public function getIgnoredErrors(): IgnoredErrors
@@ -994,5 +1093,97 @@ class Cell implements Stringable
         $hidden = $this->getStyle()->getProtection()->getHidden();
 
         return $hidden !== Protection::PROTECTION_UNPROTECTED;
+    }
+
+    /**
+     * Return cell $right positions to the right of this one.
+     */
+    public function cursorRight(int $right = 1): self
+    {
+        $row = $this->getRow();
+        $col = $this->getColumn();
+        $colIndex = Coordinate::columnIndexFromString($col);
+        $newCol = max(
+            1,
+            min($colIndex + $right, AddressRange::MAX_COLUMN_INT)
+        );
+        $newColStr = Coordinate::stringFromColumnIndex($newCol);
+
+        return $this->getWorksheet()->getCell("$newColStr$row");
+    }
+
+    /**
+     * Return cell $left positions to the left of this one.
+     */
+    public function cursorLeft(int $left = 1): self
+    {
+        return $this->cursorRight(-$left);
+    }
+
+    /**
+     * Return cell $down positions below this one.
+     */
+    public function cursorDown(int $down = 1): self
+    {
+        $row = $this->getRow();
+        $col = $this->getColumn();
+        $newRow = max(
+            1,
+            min($row + $down, AddressRange::MAX_ROW)
+        );
+
+        return $this->getWorksheet()->getCell("$col$newRow");
+    }
+
+    /**
+     * Return cell $up positions above this one.
+     */
+    public function cursorUp(int $up = 1): self
+    {
+        return $this->cursorDown(-$up);
+    }
+
+    /**
+     * Return cell at row $row in current column.
+     */
+    public function cursorRow(int $row = 1): self
+    {
+        $col = $this->getColumn();
+        $newRow = max(
+            1,
+            min($row, AddressRange::MAX_ROW)
+        );
+
+        return $this->getWorksheet()->getCell("$col$newRow");
+    }
+
+    /**
+     * Return cell at column $column in current row.
+     */
+    public function cursorColumn(string $column = 'A'): self
+    {
+        $row = $this->getRow();
+        $colIndex = Coordinate::columnIndexFromString($column);
+        $newCol = max(
+            1,
+            min($colIndex, AddressRange::MAX_COLUMN_INT)
+        );
+        $newColStr = Coordinate::stringFromColumnIndex($newCol);
+
+        return $this->getWorksheet()->getCell("$newColStr$row");
+    }
+
+    /**
+     * Return cell adjusted for Xls limits if applicable.
+     */
+    public function cursorXlsLimits(): self
+    {
+        $row = min($this->getRow(), AddressRange::MAX_ROW_XLS);
+        $column = $this->getColumn();
+        $colIndex = Coordinate::columnIndexFromString($column);
+        $newCol = min($colIndex, AddressRange::MAX_COLUMN_INT_XLS);
+        $newColStr = Coordinate::stringFromColumnIndex($newCol);
+
+        return $this->getWorksheet()->getCell("$newColStr$row");
     }
 }

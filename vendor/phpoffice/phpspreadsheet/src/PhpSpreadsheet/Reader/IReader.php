@@ -19,11 +19,6 @@ interface IReader
     public const READ_DATA_ONLY = 2;
 
     /**
-     * @deprecated 3.4.0 use IGNORE_EMPTY_CELLS instead.
-     */
-    public const SKIP_EMPTY_CELLS = self::IGNORE_EMPTY_CELLS;
-
-    /**
      * Flag used to ignore empty cells when reading.
      *
      * The ignored cells will not be instantiated.
@@ -38,8 +33,6 @@ interface IReader
      */
     public const IGNORE_ROWS_WITH_NO_CELLS = 8;
 
-    public const CREATE_BLANK_SHEET_IF_NONE_READ = 64;
-
     /**
      * Allow external images. Use with caution.
      * Improper specification of these within a spreadsheet
@@ -47,6 +40,8 @@ interface IReader
      */
     public const ALLOW_EXTERNAL_IMAGES = 16;
     public const DONT_ALLOW_EXTERNAL_IMAGES = 32;
+
+    public const CREATE_BLANK_SHEET_IF_NONE_READ = 64;
 
     public function __construct();
 
@@ -111,13 +106,15 @@ interface IReader
      * Get which sheets to load
      * Returns either an array of worksheet names (the list of worksheets that should be loaded), or a null
      *        indicating that all worksheets in the workbook should be loaded.
+     *
+     * @return null|string[]
      */
     public function getLoadSheetsOnly(): ?array;
 
     /**
      * Set which sheets to load.
      *
-     * @param null|array|string $value This should be either an array of worksheet names to be loaded,
+     * @param null|string|string[] $value This should be either an array of worksheet names to be loaded,
      *          or a string containing a single worksheet name. If NULL, then it tells the Reader to
      *          read all worksheets in the workbook
      *
@@ -139,6 +136,13 @@ interface IReader
     public function getReadFilter(): IReadFilter;
 
     /**
+     * Set read filter.
+     *
+     * @return $this
+     */
+    public function setReadFilter(IReadFilter $readFilter): self;
+
+    /**
      * Allow external images. Use with caution.
      * Improper specification of these within a spreadsheet
      * can subject the caller to security exploits.
@@ -152,13 +156,6 @@ interface IReader
      * possibly due to a typo when using LoadSheetsOnly.
      */
     public function setCreateBlankSheetIfNoneRead(bool $createBlankSheetIfNoneRead): self;
-
-    /**
-     * Set read filter.
-     *
-     * @return $this
-     */
-    public function setReadFilter(IReadFilter $readFilter): self;
 
     /**
      * Loads PhpSpreadsheet from file.

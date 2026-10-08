@@ -9,22 +9,31 @@
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
 
-// +----------------------------------------------------------------------
-// | Workerman设置 仅对 php think worker 指令有效
-// +----------------------------------------------------------------------
-return [
-    // 扩展自身需要的配置
-    'host'                  => '0.0.0.0', // 监听地址
-    'port'                  => 2346, // 监听端口
-    'root'                  => '', // WEB 根目录 默认会定位public目录
-    'app_path'              => '', // 应用目录 守护进程模式必须设置（绝对路径）
-    'file_monitor'          => false, // 是否开启PHP文件更改监控（调试模式下自动开启）
-    'file_monitor_interval' => 2, // 文件监控检测时间间隔（秒）
-    'file_monitor_path'     => [], // 文件监控目录 默认监控application和config目录
+use think\worker\websocket\Handler;
 
-    // 支持workerman的所有配置参数
-    'name'                  => 'thinkphp',
-    'count'                 => 4,
-    'daemonize'             => false,
-    'pidFile'               => '',
+return [
+    'http'       => [
+        'enable'     => true,
+        'host'       => '0.0.0.0',
+        'port'       => 8080,
+        'worker_num' => 4,
+        'options'    => [],
+    ],
+    'websocket'  => [
+        'enable'        => false,
+        'handler'       => Handler::class,
+        'ping_interval' => 25000,
+        'ping_timeout'  => 60000,
+    ],
+    //队列
+    'queue'      => [
+        'enable'  => false,
+        'workers' => [],
+    ],
+    'hot_update' => [
+        'enable'  => env('APP_DEBUG', false),
+        'name'    => ['*.php'],
+        'include' => [app_path(), config_path(), root_path('route')],
+        'exclude' => [],
+    ],
 ];

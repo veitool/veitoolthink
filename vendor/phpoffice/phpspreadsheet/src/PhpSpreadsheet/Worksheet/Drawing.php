@@ -59,6 +59,9 @@ class Drawing extends BaseDrawing
      */
     public function getExtension(): string
     {
+        if (Preg::isMatch('~^data:image/([^;]+);base64,~', $this->path, $matches)) {
+            return $matches[1];
+        }
         $exploded = explode('.', basename($this->path));
 
         return $exploded[count($exploded) - 1];
@@ -206,20 +209,6 @@ class Drawing extends BaseDrawing
     }
 
     /**
-     * Set isURL.
-     *
-     * @return $this
-     *
-     * @deprecated 3.7.0 not needed, property is set by setPath
-     */
-    public function setIsURL(bool $isUrl): self
-    {
-        $this->isUrl = $isUrl;
-
-        return $this;
-    }
-
-    /**
      * Get hash code.
      *
      * @return string Hash code
@@ -246,7 +235,7 @@ class Drawing extends BaseDrawing
     }
 
     /**
-     * Get Image file extention for Save.
+     * Get Image file extension for Save.
      */
     public function getImageFileExtensionForSave(bool $includeDot = true): string
     {

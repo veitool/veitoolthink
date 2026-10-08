@@ -31,11 +31,11 @@ class ComposerStaticInitd011e134d1acc4431ea1478829c15198
     );
 
     public static $prefixLengthsPsr4 = array (
-        'v' => 
+        'v' =>
         array (
             'veitool\\' => 8,
         ),
-        't' => 
+        't' =>
         array (
             'think\\worker\\' => 13,
             'think\\view\\driver\\' => 18,
@@ -46,20 +46,21 @@ class ComposerStaticInitd011e134d1acc4431ea1478829c15198
             'think\\app\\' => 10,
             'think\\' => 6,
         ),
-        'a' => 
+        'a' =>
         array (
             'app\\' => 4,
             'addons\\' => 7,
         ),
-        'Z' => 
+        'Z' =>
         array (
             'ZipStream\\' => 10,
         ),
-        'W' => 
+        'W' =>
         array (
+            'Workerman\\Redis\\' => 16,
             'Workerman\\' => 10,
         ),
-        'S' => 
+        'S' =>
         array (
             'Symfony\\Polyfill\\Php83\\' => 23,
             'Symfony\\Polyfill\\Php80\\' => 23,
@@ -73,12 +74,16 @@ class ComposerStaticInitd011e134d1acc4431ea1478829c15198
             'Smf\\ConnectionPool\\' => 19,
             'STS\\Backoff\\' => 12,
         ),
-        'Q' => 
+        'R' =>
+        array (
+            'Revolt\\' => 7,
+        ),
+        'Q' =>
         array (
             'Qiniu\\' => 6,
             'Qcloud\\Cos\\' => 11,
         ),
-        'P' => 
+        'P' =>
         array (
             'Psr\\SimpleCache\\' => 16,
             'Psr\\Log\\' => 8,
@@ -91,26 +96,26 @@ class ComposerStaticInitd011e134d1acc4431ea1478829c15198
             'PhpOffice\\PhpSpreadsheet\\' => 25,
             'PhpOffice\\Math\\' => 15,
         ),
-        'O' => 
+        'O' =>
         array (
             'OSS\\' => 4,
         ),
-        'N' => 
+        'N' =>
         array (
             'Nette\\' => 6,
         ),
-        'M' => 
+        'M' =>
         array (
             'MyCLabs\\Enum\\' => 13,
             'Matrix\\' => 7,
         ),
-        'L' => 
+        'L' =>
         array (
             'League\\MimeTypeDetection\\' => 25,
             'League\\Flysystem\\Local\\' => 23,
             'League\\Flysystem\\' => 17,
         ),
-        'G' => 
+        'G' =>
         array (
             'GuzzleHttp\\UriTemplate\\' => 23,
             'GuzzleHttp\\Psr7\\' => 16,
@@ -118,13 +123,12 @@ class ComposerStaticInitd011e134d1acc4431ea1478829c15198
             'GuzzleHttp\\Command\\Guzzle\\' => 26,
             'GuzzleHttp\\Command\\' => 19,
             'GuzzleHttp\\' => 11,
-            'GatewayWorker\\' => 14,
         ),
-        'F' => 
+        'F' =>
         array (
             'Firebase\\JWT\\' => 13,
         ),
-        'C' => 
+        'C' =>
         array (
             'Composer\\Pcre\\' => 14,
             'Complex\\' => 8,
@@ -134,234 +138,237 @@ class ComposerStaticInitd011e134d1acc4431ea1478829c15198
     );
 
     public static $prefixDirsPsr4 = array (
-        'veitool\\' => 
+        'veitool\\' =>
         array (
             0 => __DIR__ . '/..' . '/veitool/admin/src/veitool',
         ),
-        'think\\worker\\' => 
+        'think\\worker\\' =>
         array (
             0 => __DIR__ . '/..' . '/topthink/think-worker/src',
         ),
-        'think\\view\\driver\\' => 
+        'think\\view\\driver\\' =>
         array (
             0 => __DIR__ . '/..' . '/topthink/think-view/src',
         ),
-        'think\\trace\\' => 
+        'think\\trace\\' =>
         array (
             0 => __DIR__ . '/..' . '/topthink/think-trace/src',
         ),
-        'think\\swoole\\' => 
+        'think\\swoole\\' =>
         array (
             0 => __DIR__ . '/..' . '/topthink/think-swoole/src',
         ),
-        'think\\dumper\\' => 
+        'think\\dumper\\' =>
         array (
             0 => __DIR__ . '/..' . '/topthink/think-dumper/src',
         ),
-        'think\\captcha\\' => 
+        'think\\captcha\\' =>
         array (
             0 => __DIR__ . '/..' . '/topthink/think-captcha/src',
         ),
-        'think\\app\\' => 
+        'think\\app\\' =>
         array (
             0 => __DIR__ . '/..' . '/topthink/think-multi-app/src',
         ),
-        'think\\' => 
+        'think\\' =>
         array (
-            0 => __DIR__ . '/..' . '/topthink/framework/src/think',
-            1 => __DIR__ . '/..' . '/topthink/think-container/src',
-            2 => __DIR__ . '/..' . '/topthink/think-helper/src',
-            3 => __DIR__ . '/..' . '/topthink/think-image/src',
-            4 => __DIR__ . '/..' . '/topthink/think-log/src',
+            0 => __DIR__ . '/..' . '/topthink/think-queue/src',
+            1 => __DIR__ . '/..' . '/topthink/think-image/src',
+            2 => __DIR__ . '/..' . '/topthink/think-filesystem/src',
+            3 => __DIR__ . '/..' . '/topthink/think-template/src',
+            4 => __DIR__ . '/..' . '/topthink/framework/src/think',
             5 => __DIR__ . '/..' . '/topthink/think-orm/src',
-            6 => __DIR__ . '/..' . '/topthink/think-queue/src',
-            7 => __DIR__ . '/..' . '/topthink/think-template/src',
-            8 => __DIR__ . '/..' . '/topthink/think-validate/src',
-            9 => __DIR__ . '/..' . '/topthink/think-filesystem/src',
+            6 => __DIR__ . '/..' . '/topthink/think-validate/src',
+            7 => __DIR__ . '/..' . '/topthink/think-container/src',
+            8 => __DIR__ . '/..' . '/topthink/think-helper/src',
         ),
-        'app\\' => 
+        'app\\' =>
         array (
             0 => __DIR__ . '/../..' . '/app',
         ),
-        'addons\\' => 
+        'addons\\' =>
         array (
             0 => __DIR__ . '/../..' . '/addons',
         ),
-        'ZipStream\\' => 
+        'ZipStream\\' =>
         array (
             0 => __DIR__ . '/..' . '/maennchen/zipstream-php/src',
         ),
-        'Workerman\\' => 
+        'Workerman\\Redis\\' =>
         array (
-            0 => __DIR__ . '/..' . '/workerman/workerman',
+            0 => __DIR__ . '/..' . '/workerman/redis/src',
         ),
-        'Symfony\\Polyfill\\Php83\\' => 
+        'Workerman\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/workerman/workerman/src',
+        ),
+        'Symfony\\Polyfill\\Php83\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-php83',
         ),
-        'Symfony\\Polyfill\\Php80\\' => 
+        'Symfony\\Polyfill\\Php80\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-php80',
         ),
-        'Symfony\\Polyfill\\Mbstring\\' => 
+        'Symfony\\Polyfill\\Mbstring\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-mbstring',
         ),
-        'Symfony\\Contracts\\Translation\\' => 
+        'Symfony\\Contracts\\Translation\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/translation-contracts',
         ),
-        'Symfony\\Component\\VarDumper\\' => 
+        'Symfony\\Component\\VarDumper\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/var-dumper',
         ),
-        'Symfony\\Component\\Translation\\' => 
+        'Symfony\\Component\\Translation\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/translation',
         ),
-        'Symfony\\Component\\Process\\' => 
+        'Symfony\\Component\\Process\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/process',
         ),
-        'Symfony\\Component\\Finder\\' => 
+        'Symfony\\Component\\Finder\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/finder',
         ),
-        'Symfony\\Component\\Clock\\' => 
+        'Symfony\\Component\\Clock\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/clock',
         ),
-        'Smf\\ConnectionPool\\' => 
+        'Smf\\ConnectionPool\\' =>
         array (
             0 => __DIR__ . '/..' . '/open-smf/connection-pool/src',
         ),
-        'STS\\Backoff\\' => 
+        'STS\\Backoff\\' =>
         array (
             0 => __DIR__ . '/..' . '/stechstudio/backoff/src',
         ),
-        'Qiniu\\' => 
+        'Revolt\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/revolt/event-loop/src',
+        ),
+        'Qiniu\\' =>
         array (
             0 => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu',
         ),
-        'Qcloud\\Cos\\' => 
+        'Qcloud\\Cos\\' =>
         array (
             0 => __DIR__ . '/..' . '/qcloud/cos-sdk-v5/src',
         ),
-        'Psr\\SimpleCache\\' => 
+        'Psr\\SimpleCache\\' =>
         array (
             0 => __DIR__ . '/..' . '/psr/simple-cache/src',
         ),
-        'Psr\\Log\\' => 
+        'Psr\\Log\\' =>
         array (
             0 => __DIR__ . '/..' . '/psr/log/src',
         ),
-        'Psr\\Http\\Message\\' => 
+        'Psr\\Http\\Message\\' =>
         array (
             0 => __DIR__ . '/..' . '/psr/http-factory/src',
             1 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
-        'Psr\\Http\\Client\\' => 
+        'Psr\\Http\\Client\\' =>
         array (
             0 => __DIR__ . '/..' . '/psr/http-client/src',
         ),
-        'Psr\\Container\\' => 
+        'Psr\\Container\\' =>
         array (
             0 => __DIR__ . '/..' . '/psr/container/src',
         ),
-        'Psr\\Clock\\' => 
+        'Psr\\Clock\\' =>
         array (
             0 => __DIR__ . '/..' . '/psr/clock/src',
         ),
-        'PhpZip\\' => 
+        'PhpZip\\' =>
         array (
             0 => __DIR__ . '/..' . '/nelexa/zip/src',
         ),
-        'PhpOffice\\PhpWord\\' => 
+        'PhpOffice\\PhpWord\\' =>
         array (
             0 => __DIR__ . '/..' . '/phpoffice/phpword/src/PhpWord',
         ),
-        'PhpOffice\\PhpSpreadsheet\\' => 
+        'PhpOffice\\PhpSpreadsheet\\' =>
         array (
             0 => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet',
         ),
-        'PhpOffice\\Math\\' => 
+        'PhpOffice\\Math\\' =>
         array (
             0 => __DIR__ . '/..' . '/phpoffice/math/src/Math',
         ),
-        'OSS\\' => 
+        'OSS\\' =>
         array (
             0 => __DIR__ . '/..' . '/aliyuncs/oss-sdk-php/src/OSS',
         ),
-        'Nette\\' => 
+        'Nette\\' =>
         array (
             0 => __DIR__ . '/..' . '/nette/php-generator/src',
             1 => __DIR__ . '/..' . '/nette/utils/src',
         ),
-        'MyCLabs\\Enum\\' => 
+        'MyCLabs\\Enum\\' =>
         array (
             0 => __DIR__ . '/..' . '/myclabs/php-enum/src',
         ),
-        'Matrix\\' => 
+        'Matrix\\' =>
         array (
             0 => __DIR__ . '/..' . '/markbaker/matrix/classes/src',
         ),
-        'League\\MimeTypeDetection\\' => 
+        'League\\MimeTypeDetection\\' =>
         array (
             0 => __DIR__ . '/..' . '/league/mime-type-detection/src',
         ),
-        'League\\Flysystem\\Local\\' => 
+        'League\\Flysystem\\Local\\' =>
         array (
             0 => __DIR__ . '/..' . '/league/flysystem-local',
         ),
-        'League\\Flysystem\\' => 
+        'League\\Flysystem\\' =>
         array (
             0 => __DIR__ . '/..' . '/league/flysystem/src',
         ),
-        'GuzzleHttp\\UriTemplate\\' => 
+        'GuzzleHttp\\UriTemplate\\' =>
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/uri-template/src',
         ),
-        'GuzzleHttp\\Psr7\\' => 
+        'GuzzleHttp\\Psr7\\' =>
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/psr7/src',
         ),
-        'GuzzleHttp\\Promise\\' => 
+        'GuzzleHttp\\Promise\\' =>
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/promises/src',
         ),
-        'GuzzleHttp\\Command\\Guzzle\\' => 
+        'GuzzleHttp\\Command\\Guzzle\\' =>
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/guzzle-services/src',
         ),
-        'GuzzleHttp\\Command\\' => 
+        'GuzzleHttp\\Command\\' =>
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/command/src',
         ),
-        'GuzzleHttp\\' => 
+        'GuzzleHttp\\' =>
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/guzzle/src',
         ),
-        'GatewayWorker\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/workerman/gateway-worker/src',
-        ),
-        'Firebase\\JWT\\' => 
+        'Firebase\\JWT\\' =>
         array (
             0 => __DIR__ . '/..' . '/firebase/php-jwt/src',
         ),
-        'Composer\\Pcre\\' => 
+        'Composer\\Pcre\\' =>
         array (
             0 => __DIR__ . '/..' . '/composer/pcre/src',
         ),
-        'Complex\\' => 
+        'Complex\\' =>
         array (
             0 => __DIR__ . '/..' . '/markbaker/complex/classes/src',
         ),
-        'Carbon\\Doctrine\\' => 
+        'Carbon\\Doctrine\\' =>
         array (
             0 => __DIR__ . '/..' . '/carbonphp/carbon-doctrine-types/src/Carbon/Doctrine',
         ),
-        'Carbon\\' => 
+        'Carbon\\' =>
         array (
             0 => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon',
         ),

@@ -33,7 +33,6 @@ class Workbook extends WriterPart
 
         // workbook
         $objWriter->startElement('workbook');
-        $objWriter->writeAttribute('xml:space', 'preserve');
         $objWriter->writeAttribute('xmlns', Namespaces::MAIN);
         $objWriter->writeAttribute('xmlns:r', Namespaces::SCHEMA_OFFICE_DOCUMENT);
 
@@ -60,10 +59,43 @@ class Workbook extends WriterPart
         // calcPr
         $this->writeCalcPr($objWriter, $preCalculateFormulas, $forceFullCalc);
 
+        // pivotCaches (preserved pivot cache registry)
+        $this->writePivotCaches($objWriter, $spreadsheet);
+
         $objWriter->endElement();
 
         // Return
         return $objWriter->getData();
+    }
+
+    /**
+     * Write the pivotCaches registry, mapping each preserved cache id to the
+     * workbook relationship that points at its cache definition part.
+     */
+    private function writePivotCaches(XMLWriter $objWriter, Spreadsheet $spreadsheet): void
+    {
+        /** @var array<string, mixed> $unparsedLoadedData */
+        $unparsedLoadedData = $spreadsheet->getUnparsedLoadedData();
+        /** @var array<array<string, string>> $workbookPivotCaches */
+        $workbookPivotCaches = $unparsedLoadedData['workbookPivotCaches'] ?? [];
+        if ($workbookPivotCaches === []) {
+            return;
+        }
+
+        $relationships = Rels::pivotCacheRelationships($spreadsheet);
+
+        $objWriter->startElement('pivotCaches');
+        foreach ($workbookPivotCaches as $pivotCache) {
+            $rId = '_pivotCacheDef_' . $pivotCache['cacheId'];
+            if (isset($relationships[$rId])) {
+                $objWriter->startElement('pivotCache');
+                $objWriter->writeAttribute('cacheId', $pivotCache['cacheId']);
+                // The relationship writer prefixes ids with "rId".
+                $objWriter->writeAttribute('r:id', 'rId' . $rId);
+                $objWriter->endElement();
+            }
+        }
+        $objWriter->endElement();
     }
 
     /**
@@ -126,18 +158,35 @@ class Workbook extends WriterPart
      */
     private function writeWorkbookProtection(XMLWriter $objWriter, Spreadsheet $spreadsheet): void
     {
-        if ($spreadsheet->getSecurity()->isSecurityEnabled()) {
+        $security = $spreadsheet->getSecurity();
+        if ($security->isSecurityEnabled()) {
             $objWriter->startElement('workbookProtection');
-            $objWriter->writeAttribute('lockRevision', ($spreadsheet->getSecurity()->getLockRevision() ? 'true' : 'false'));
-            $objWriter->writeAttribute('lockStructure', ($spreadsheet->getSecurity()->getLockStructure() ? 'true' : 'false'));
-            $objWriter->writeAttribute('lockWindows', ($spreadsheet->getSecurity()->getLockWindows() ? 'true' : 'false'));
+            $objWriter->writeAttribute('lockRevision', ($security->getLockRevision() ? 'true' : 'false'));
+            $objWriter->writeAttribute('lockStructure', ($security->getLockStructure() ? 'true' : 'false'));
+            $objWriter->writeAttribute('lockWindows', ($security->getLockWindows() ? 'true' : 'false'));
 
-            if ($spreadsheet->getSecurity()->getRevisionsPassword() != '') {
-                $objWriter->writeAttribute('revisionsPassword', $spreadsheet->getSecurity()->getRevisionsPassword());
+            if ($security->getRevisionsPassword() !== '') {
+                $objWriter->writeAttribute('revisionsPassword', $security->getRevisionsPassword());
+            } else {
+                $hashValue = $security->getRevisionsHashValue();
+                if ($hashValue !== '') {
+                    $objWriter->writeAttribute('revisionsAlgorithmName', $security->getRevisionsAlgorithmName());
+                    $objWriter->writeAttribute('revisionsHashValue', $hashValue);
+                    $objWriter->writeAttribute('revisionsSaltValue', $security->getRevisionsSaltValue());
+                    $objWriter->writeAttribute('revisionsSpinCount', (string) $security->getRevisionsSpinCount());
+                }
             }
 
-            if ($spreadsheet->getSecurity()->getWorkbookPassword() != '') {
-                $objWriter->writeAttribute('workbookPassword', $spreadsheet->getSecurity()->getWorkbookPassword());
+            if ($security->getWorkbookPassword() !== '') {
+                $objWriter->writeAttribute('workbookPassword', $security->getWorkbookPassword());
+            } else {
+                $hashValue = $security->getWorkbookHashValue();
+                if ($hashValue !== '') {
+                    $objWriter->writeAttribute('workbookAlgorithmName', $security->getWorkbookAlgorithmName());
+                    $objWriter->writeAttribute('workbookHashValue', $hashValue);
+                    $objWriter->writeAttribute('workbookSaltValue', $security->getWorkbookSaltValue());
+                    $objWriter->writeAttribute('workbookSpinCount', (string) $security->getWorkbookSpinCount());
+                }
             }
 
             $objWriter->endElement();

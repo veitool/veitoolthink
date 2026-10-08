@@ -310,7 +310,7 @@ INSERT INTO `vt_system_menus` VALUES ('85', '1', '', '文件清理', '文件清�
 INSERT INTO `vt_system_menus` VALUES ('86', '1', '', '登录日志', '日志查看', '', '', 'system.log/login', '', '18', '1', '0', '0', '1', '', '', '1700289715', '0', '0');
 INSERT INTO `vt_system_menus` VALUES ('87', '1', '', '登录日志清理', '日志删除', '', '', 'system.log/ldel', '', '18', '2', '0', '0', '1', '', '', '1700289715', '0', '0');
 INSERT INTO `vt_system_menus` VALUES ('88', '1', '', '后台日志', '后台日志', '', '', 'system.log/manager', '', '18', '3', '0', '0', '1', '', '', '1700289715', '0', '0');
-INSERT INTO `vt_system_menus` VALUES ('89', '1', '', '后台日志清理', '日志列表', '', '', 'system.log/mdel', '', '18', '4', '0', '0', '1', '', '', '1700289715', '0', '0');
+INSERT INTO `vt_system_menus` VALUES ('89', '1', '', '后台日志清理', '后台日志清理', '', '', 'system.log/mdel', '', '18', '4', '0', '0', '1', '', '', '1700289715', '0', '0');
 INSERT INTO `vt_system_menus` VALUES ('90', '1', '', '访问日志', '访问日志', '', '', 'system.log/web', '', '18', '5', '0', '0', '1', '', '', '1700289715', '0', '0');
 INSERT INTO `vt_system_menus` VALUES ('91', '1', '', '访问日志清理', '访问日志清理', '', '', 'system.log/wdel', '', '18', '6', '0', '0', '1', '', '', '1700289715', '0', '0');
 INSERT INTO `vt_system_menus` VALUES ('92', '1', '', '地区列表', '地区列表', '', '', 'system.area/index', '', '19', '10', '0', '0', '1', '', '', '1700289715', '0', '0');

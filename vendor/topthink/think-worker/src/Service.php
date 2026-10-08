@@ -10,16 +10,14 @@
 // +----------------------------------------------------------------------
 namespace think\worker;
 
-use think\Service as BaseService;
+use think\worker\command\Server;
 
-class Service extends BaseService
+class Service extends \think\Service
 {
-    public function register()
+    public function boot()
     {
         $this->commands([
-            'worker'         => '\\think\\worker\\command\\Worker',
-            'worker:server'  => '\\think\\worker\\command\\Server',
-            'worker:gateway' => '\\think\\worker\\command\\GatewayWorker',
+            Server::class,
         ]);
     }
 }

@@ -126,7 +126,7 @@ abstract class Base
             $val = $type ? array_unique(array_merge($arr, $data)) : array_diff($arr, $data);
             $val = $val ? "'".implode("', '", $val)."'" : '';
             $str = file_get_contents(ROOT_PATH . '/config/veitool.php');
-            $str = preg_replace('/addons(.*?)]/', "addons' => [{$val}]", $str);
+            $str = preg_replace('/addons(.*?)]/', "addons'  => [{$val}]", $str);
             $fop = fopen(ROOT_PATH . '/config/veitool.php', 'w');
             fwrite($fop, $str);
             fclose($fop);

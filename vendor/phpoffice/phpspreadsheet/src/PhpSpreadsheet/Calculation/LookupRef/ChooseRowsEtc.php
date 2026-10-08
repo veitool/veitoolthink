@@ -18,7 +18,7 @@ class ChooseRowsEtc
      */
     public static function transpose(array $array): array
     {
-        return empty($array) ? [] : (array_map((count($array) === 1) ? (fn ($x) => [$x]) : null, ...$array)); // @phpstan-ignore-line
+        return empty($array) ? [] : (array_map((count($array) === 1) ? (fn ($x) => [$x]) : null, ...$array)); // @phpstan-ignore argument.type (phstan is wrong), argument.type (phpstan is wrong)
     }
 
     /** @return mixed[] */
@@ -80,6 +80,11 @@ class ChooseRowsEtc
         return $outputArray;
     }
 
+    /**
+     * @param mixed[] $array
+     *
+     * @return mixed[]|string
+     */
     private static function dropRows(array $array, mixed $offset): array|string
     {
         if ($offset === null) {
@@ -134,6 +139,11 @@ class ChooseRowsEtc
         return self::transpose($outputArray3);
     }
 
+    /**
+     * @param mixed[] $array
+     *
+     * @return mixed[]|string
+     */
     private static function takeRows(array $array, mixed $offset): array|string
     {
         if ($offset === null) {

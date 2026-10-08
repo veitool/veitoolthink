@@ -17,7 +17,7 @@ class PlotArea
      *     First is position in %.
      *     Second is ChartColor.
      *
-     * @var array[]
+     * @var array<array{float, ChartColor}>
      */
     private array $gradientFillStops = [];
 
@@ -37,6 +37,8 @@ class PlotArea
      * @var DataSeries[]
      */
     private array $plotSeries;
+
+    private ?DataTable $dataTable = null;
 
     /**
      * Create a new PlotArea.
@@ -126,6 +128,7 @@ class PlotArea
         return $this->noFill;
     }
 
+    /** @param array<array{float, ChartColor}> $gradientFillStops */
     public function setGradientFillProperties(array $gradientFillStops, ?float $gradientFillAngle): self
     {
         $this->gradientFillStops = $gradientFillStops;
@@ -144,6 +147,8 @@ class PlotArea
 
     /**
      * Get gradientFillStops.
+     *
+     * @return array<array{float, ChartColor}>
      */
     public function getGradientFillStops(): array
     {
@@ -192,16 +197,34 @@ class PlotArea
         return $this;
     }
 
+    public function setDataTable(DataTable $dataTable): self
+    {
+        $this->dataTable = $dataTable;
+
+        return $this;
+    }
+
+    public function getDataTable(): ?DataTable
+    {
+        return $this->dataTable;
+    }
+
     /**
      * Implement PHP __clone to create a deep clone, not just a shallow copy.
      */
     public function __clone()
     {
         $this->layout = ($this->layout === null) ? null : clone $this->layout;
+        $this->dataTable = ($this->dataTable === null) ? null : clone $this->dataTable;
         $plotSeries = $this->plotSeries;
         $this->plotSeries = [];
         foreach ($plotSeries as $series) {
             $this->plotSeries[] = clone $series;
+        }
+        $gradientFillStops = $this->gradientFillStops;
+        $this->gradientFillStops = [];
+        foreach ($gradientFillStops as $gradientFillStop) {
+            $this->gradientFillStops[] = [$gradientFillStop[0], clone $gradientFillStop[1]];
         }
     }
 }

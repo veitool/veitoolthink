@@ -58,6 +58,8 @@ class OLE
 
     /**
      * Array of PPS's found on the OLE container.
+     *
+     * @var array<OLE\PPS|OLE\PPS\File|Root>
      */
     public array $_list = [];
 
@@ -69,21 +71,21 @@ class OLE
     /**
      * Big Block Allocation Table.
      *
-     * @var array (blockId => nextBlockId)
+     * @var mixed[] (blockId => nextBlockId)
      */
     public array $bbat;
 
     /**
      * Short Block Allocation Table.
      *
-     * @var array (blockId => nextBlockId)
+     * @var mixed[] (blockId => nextBlockId)
      */
     public array $sbat;
 
     /**
      * Size of big blocks. This is usually 512.
      *
-     * @var int number of octets per block
+     * @var int<1, max> number of octets per block
      */
     public int $bigBlockSize;
 
@@ -124,7 +126,9 @@ class OLE
             throw new ReaderException('Only Little-Endian encoding is supported.');
         }
         // Size of blocks and short blocks in bytes
-        $this->bigBlockSize = 2 ** self::readInt2($fh);
+        /** @var int<1, max> */
+        $temp = 2 ** self::readInt2($fh);
+        $this->bigBlockSize = $temp;
         $this->smallBlockSize = 2 ** self::readInt2($fh);
 
         // Skip UID, revision number and version number
@@ -217,22 +221,22 @@ class OLE
         // Store current instance in global array, so that it can be accessed
         // in OLE_ChainedBlockStream::stream_open().
         // Object is removed from self::$instances in OLE_Stream::close().
-        $GLOBALS['_OLE_INSTANCES'][] = $this;
-        $keys = array_keys($GLOBALS['_OLE_INSTANCES']);
+        $GLOBALS['_OLE_INSTANCES'][] = $this; //* @phpstan-ignore offsetAccess.nonOffsetAccessible (I don't know how to fix this)
+        $keys = array_keys($GLOBALS['_OLE_INSTANCES']); //* @phpstan-ignore argument.type (I don't know how to fix this)
         $instanceId = end($keys);
 
         $path = 'ole-chainedblockstream://oleInstanceId=' . $instanceId;
         if ($blockIdOrPps instanceof OLE\PPS) {
             $path .= '&blockId=' . $blockIdOrPps->startBlock;
             $path .= '&size=' . $blockIdOrPps->Size;
+            if ($blockIdOrPps instanceof Root) {
+                $path .= '&isRoot=1';
+            }
         } else {
             $path .= '&blockId=' . $blockIdOrPps;
         }
 
-        $resource = fopen($path, 'rb');
-        if ($resource === false) {
-            throw new Exception("Unable to open stream $path");
-        }
+        $resource = fopen($path, 'rb') ?: throw new Exception("Unable to open stream $path");
 
         return $resource;
     }
@@ -245,6 +249,7 @@ class OLE
     private static function readInt1($fileHandle): int
     {
         [, $tmp] = unpack('c', fread($fileHandle, 1) ?: '') ?: [0, 0];
+        /** @var int $tmp */
 
         return $tmp;
     }
@@ -257,6 +262,7 @@ class OLE
     private static function readInt2($fileHandle): int
     {
         [, $tmp] = unpack('v', fread($fileHandle, 2) ?: '') ?: [0, 0];
+        /** @var int $tmp */
 
         return $tmp;
     }
@@ -273,6 +279,7 @@ class OLE
     private static function readInt4($fileHandle): int
     {
         [, $tmp] = unpack('V', fread($fileHandle, 4) ?: '') ?: [0, 0];
+        /** @var int $tmp */
         if ($tmp >= self::SIGNED_4OCTET_LIMIT) {
             $tmp -= self::SIGNED_4OCTET_SUBTRACT;
         }
@@ -367,9 +374,13 @@ class OLE
      */
     private function ppsTreeComplete(int $index): bool
     {
-        return isset($this->_list[$index])
-            && ($pps = $this->_list[$index])
-            && ($pps->PrevPps == -1
+        if (!isset($this->_list[$index])) {
+            return false;
+        }
+        $pps = $this->_list[$index];
+
+        return
+            ($pps->PrevPps == -1
                 || $this->ppsTreeComplete($pps->PrevPps))
             && ($pps->NextPps == -1
                 || $this->ppsTreeComplete($pps->NextPps))
@@ -465,6 +476,86 @@ class OLE
     }
 
     /**
+     * Get the complete contents of a named file stream.
+     *
+     * @throws ReaderException if no file stream has the requested name
+     */
+    public function getDataByName(string $name): string
+    {
+        foreach ($this->_list as $index => $pps) {
+            if ($pps->Type === self::OLE_PPS_TYPE_FILE && $pps->Name === $name) {
+                return $this->getData($index, 0, $pps->Size);
+            }
+        }
+
+        throw new ReaderException("OLE stream '$name' was not found.");
+    }
+
+    /**
+     * Check whether a named file stream exists without reading its contents.
+     */
+    public function hasDataByName(string $name): bool
+    {
+        foreach ($this->_list as $pps) {
+            if ($pps->Type === self::OLE_PPS_TYPE_FILE && $pps->Name === $name) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Copy a named file stream to an open output handle without loading a
+     * large stream into memory.
+     *
+     * @param resource $output
+     *
+     * @throws ReaderException if no file stream has the requested name
+     */
+    public function copyDataByName(string $name, $output): void
+    {
+        foreach ($this->_list as $pps) {
+            if ($pps->Type !== self::OLE_PPS_TYPE_FILE || $pps->Name !== $name) {
+                continue;
+            }
+            if ($pps->Size < $this->bigBlockThreshold) {
+                $data = $this->getData($pps->No, 0, $pps->Size);
+                if (fwrite($output, $data) !== strlen($data)) {
+                    throw new ReaderException("Could not write OLE stream '$name'.");
+                }
+
+                return;
+            }
+
+            $remaining = $pps->Size;
+            $blockId = $pps->startBlock;
+            $blocks = [];
+            while ($remaining > 0) {
+                if (!is_int($blockId) || $blockId === -2 || isset($blocks[$blockId], $this->bbat[$blockId])) {
+                    throw new ReaderException("Invalid OLE stream '$name'.");
+                }
+                $blocks[$blockId] = true;
+                fseek($this->_file_handle, $this->getBlockOffset($blockId));
+                $length = min($remaining, $this->bigBlockSize);
+                $data = fread($this->_file_handle, $length);
+                if ($data === false || strlen($data) !== $length || fwrite($output, $data) !== $length) {
+                    throw new ReaderException("Could not copy OLE stream '$name'.");
+                }
+                $remaining -= $length;
+                $blockId = $this->bbat[$blockId] ?? null;
+                if (!is_int($blockId)) {
+                    throw new ReaderException("Invalid OLE stream '$name'.");
+                }
+            }
+
+            return;
+        }
+
+        throw new ReaderException("OLE stream '$name' was not found.");
+    }
+
+    /**
      * Utility function to transform ASCII text to Unicode.
      *
      * @param string $ascii The ASCII string to transform
@@ -498,7 +589,7 @@ class OLE
         }
         $dateTime = Date::dateTimeFromTimestamp("$date");
 
-        // days from 1-1-1601 until the beggining of UNIX era
+        // days from 1-1-1601 until the beginning of UNIX era
         $days = 134774;
         // calculate seconds
         $big_date = $days * 24 * 3600 + (float) $dateTime->format('U');
@@ -533,6 +624,7 @@ class OLE
         }
 
         // convert to units of 100 ns since 1601:
+        /** @var int[] */
         $unpackedTimestamp = unpack('v4', $oleTimestamp) ?: [];
         $timestampHigh = (float) $unpackedTimestamp[4] * 65536 + (float) $unpackedTimestamp[3];
         $timestampLow = (float) $unpackedTimestamp[2] * 65536 + (float) $unpackedTimestamp[1];

@@ -48,6 +48,7 @@ final class StructuredReference implements Operand, Stringable
 
     private ?int $totalsRow;
 
+    /** @var mixed[] */
     private array $columns;
 
     public function __construct(string $structuredReference)
@@ -55,6 +56,7 @@ final class StructuredReference implements Operand, Stringable
         $this->value = $structuredReference;
     }
 
+    /** @param string[] $matches */
     public static function fromParser(string $formula, int $index, array $matches): self
     {
         $val = $matches[0];
@@ -172,6 +174,11 @@ final class StructuredReference implements Operand, Stringable
         return $table;
     }
 
+    /**
+     * @param array{array{string, int}, array{string, int}} $tableRange
+     *
+     * @return mixed[]
+     */
     private function getColumns(Cell $cell, array $tableRange): array
     {
         $worksheet = $cell->getWorksheet();
@@ -180,6 +187,7 @@ final class StructuredReference implements Operand, Stringable
         $columns = [];
         $lastColumn = StringHelper::stringIncrement($tableRange[1][0]);
         for ($column = $tableRange[0][0]; $column !== $lastColumn; StringHelper::stringIncrement($column)) {
+            /** @var string $column */
             $columns[$column] = $worksheet
                 ->getCell($column . ($this->headersRow ?? ($this->firstDataRow - 1)))
                 ->getCalculatedValue();
@@ -196,8 +204,9 @@ final class StructuredReference implements Operand, Stringable
         /** @var string $reference */
         $reference = str_replace('[' . self::ITEM_SPECIFIER_THIS_ROW . '],', '', $reference);
 
-        foreach ($this->columns as $columnId => $columnName) {
-            $columnName = str_replace("\u{a0}", ' ', $columnName);
+        foreach ($this->columns as $columnId => $columnNamex) {
+            /** @var string $columnNamex */
+            $columnName = str_replace("\u{a0}", ' ', $columnNamex);
             $reference = $this->adjustRowReference($columnName, $reference, $cell, $columnId);
         }
 
@@ -330,8 +339,9 @@ final class StructuredReference implements Operand, Stringable
     private function getColumnsForColumnReference(string $reference, int $startRow, int $endRow): string
     {
         $columnsSelected = false;
-        foreach ($this->columns as $columnId => $columnName) {
-            $columnName = str_replace("\u{a0}", ' ', $columnName ?? '');
+        foreach ($this->columns as $columnId => $columnNamex) {
+            /** @var ?string $columnNamex */
+            $columnName = str_replace("\u{a0}", ' ', $columnNamex ?? '');
             $cellFrom = "{$columnId}{$startRow}";
             $cellTo = "{$columnId}{$endRow}";
             $cellReference = ($cellFrom === $cellTo) ? $cellFrom : "{$cellFrom}:{$cellTo}";

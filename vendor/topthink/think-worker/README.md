@@ -1,10 +1,15 @@
 ThinkPHP Workerman 扩展
 ===============
 
-由于workerman4.x架构调整较大，如需支持Workerman 4.x的版本，请期待新版！
-## 安装
+交流群：981069000 [![点击加群](https://pub.idqqimg.com/wpa/images/group.png "点击加群")](https://qm.qq.com/q/A8YNpzrzC8)
 
+## 安装
+```
 composer require topthink/think-worker
+```
+
+## 说明
+> 由于windows下无法在一个文件里启动多个worker，所以本扩展不支持windows平台
 
 ## 使用方法
 
@@ -18,90 +23,117 @@ php think worker
 然后就可以通过浏览器直接访问当前应用
 
 ~~~
-http://localhost:2346
+http://localhost:8080
 ~~~
 
-linux下面可以支持下面指令
-~~~
-php think worker [start|stop|reload|restart|status]
-~~~
+如果需要使用守护进程方式运行，建议使用supervisor来管理进程
 
-workerman的参数可以在应用配置目录下的worker.php里面配置。
+## 访问静态文件
+> 建议使用nginx来支持静态文件访问，也可使用路由输出文件内容，下面是示例，可参照修改
+1. 添加静态文件路由：
 
-由于onWorkerStart运行的时候没有HTTP_HOST，因此最好在应用配置文件中设置app_host
+```php
+Route::get('static/:path', function (string $path) {
+    $filename = public_path() . $path;
+    return new \think\worker\response\File($filename);
+})->pattern(['path' => '.*\.\w+$']);
+```
 
-### SocketServer
+2. 访问路由 `http://localhost/static/文件路径`
 
-在命令行启动服务端
-~~~
-php think worker:server
-~~~
+## 队列支持
 
-默认会在0.0.0.0:2345开启一个websocket服务。
+使用方法见 [think-queue](https://github.com/top-think/think-queue)
 
-如果需要自定义参数，可以在config/worker_server.php中进行配置，包括：
+以下配置代替think-queue里的最后一步:`监听任务并执行`,无需另外起进程执行队列
 
-配置参数 | 描述
---- | ---
-protocol| 协议
-host | 监听地址
-port | 监听端口
-socket | 完整的socket地址
-
-并且支持workerman所有的参数。
-也支持使用闭包方式定义相关事件回调。
-
-~~~
+```php
 return [
-	'socket' 	=>	'http://127.0.0.1:8000',
-	'name'		=>	'thinkphp',
-	'count'		=>	4,
-	'onMessage'	=>	function($connection, $data) {
-		$connection->send(json_encode($data));
-	},
+    // ...
+    'queue'      => [
+        'enable'  => true,
+        //键名是队列名称
+        'workers' => [
+            //下面参数是不设置时的默认配置
+            'default'            => [
+                'delay'      => 0,
+                'sleep'      => 3,
+                'tries'      => 0,
+                'timeout'    => 60,
+                'worker_num' => 1,
+            ],
+            //使用@符号后面可指定队列使用驱动
+            'default@connection' => [
+                //此处可不设置任何参数，使用上面的默认配置
+            ],
+        ],
+    ],
+    // ...
 ];
-~~~
 
-也支持使用自定义类作为Worker服务入口文件类。例如，我们可以创建一个服务类（必须要继承 think\worker\Server），然后设置属性和添加回调方法
+```
 
-~~~
-<?php
-namespace app\http;
+### websocket
 
-use think\worker\Server;
+> 使用路由调度的方式，可以让不同路径的websocket服务响应不同的事件
 
-class Worker extends Server
-{
-	protected $socket = 'http://0.0.0.0:2346';
+#### 配置
 
-	public function onMessage($connection,$data)
-	{
-		$connection->send(json_encode($data));
-	}
+```
+worker.websocket = true 时开启
+```
+
+#### 路由定义
+```php
+Route::get('path1','controller/action1');
+Route::get('path2','controller/action2');
+```
+
+#### 控制器
+
+```php
+use \think\worker\Websocket;
+use \think\worker\websocket\Frame;
+
+class Controller {
+
+    public function action1(){
+    
+        return (new \think\worker\response\Websocket())
+            ->onOpen(...)
+            ->onMessage(function(Websocket $websocket, Frame $frame){ 
+                ...
+            })
+            ->onClose(...);
+    }
+    
+    public function action2(){
+    
+        return (new \think\worker\response\Websocket())
+            ->onOpen(...)
+            ->onMessage(function(Websocket $websocket, Frame $frame){
+               ...
+            })
+            ->onClose(...);
+    }
 }
-~~~
-支持workerman所有的回调方法定义（回调方法必须是public类型）
+```
 
-然后在worker_server.php中增加配置参数：
-~~~
-return [
-	'worker_class'	=>	'app\http\Worker',
-];
-~~~
 
-定义该参数后，其它配置参数均不再有效。
+## 自定义worker
+监听`worker.init`事件 注入`Manager`对象，调用addWorker方法添加
+~~~php
+use think\worker\Manager;
+use \think\worker\Worker;
 
-在命令行启动服务端
-~~~
-php think worker:server
-~~~
+//...
 
-然后在浏览器里面访问
-~~~
-http://localhost:2346
-~~~
+public function handle(Manager $manager){
+   $worker = $manager->addWorker(function(Worker $worker){
+        //..其他回调或处理
+        //动态添加监听可参考 https://www.workerman.net/doc/workerman/worker/listen.html
+    });
+}
 
-如果在Linux下面，同样支持reload|restart|stop|status 操作
-~~~
-php think worker:server reload
+//...
 ~~~

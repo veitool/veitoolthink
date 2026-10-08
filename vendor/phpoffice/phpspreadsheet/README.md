@@ -10,14 +10,15 @@
 PhpSpreadsheet is a library written in pure PHP and offers a set of classes that
 allow you to read and write various spreadsheet file formats such as Excel and LibreOffice Calc.
 
-This branch (3.10.x) is maintained (for security and some bug fixes), but it is *not* the latest version of PhpSpreadsheet, and may therefore lack features and bug fixes found in the latest version.
+This is the master branch, and is maintained for security and bug fixes.
 
 ## PHP Version Support
 
 LTS: For maintained branches, support for PHP versions will only be maintained for a period of six months beyond the
 [end of life](https://www.php.net/supported-versions) of that PHP version.
+Dropping support for versions after that date will not be considered a breaking change.
 
-Currently the required PHP minimum version is PHP __8.1__, and we [will support that version](https://www.php.net/supported-versions.php) until 30th June 2026.
+Currently the required PHP minimum version is PHP __8.2__, and we [will support that version](https://www.php.net/supported-versions.php) until 30th June 2027.
 
 See the `composer.json` for other requirements.
 

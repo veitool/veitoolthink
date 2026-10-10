@@ -76,11 +76,11 @@ layui.use(['vinfo', 'buildItems'], function(){
     var map_root = layui.cache.maps;
     var app_root = map_root + 'system.manager/';
     var layer = layui.layer,table=layui.table,form=layui.form,admin=layui.admin;
-    var Roles = {$roles|raw};
+    var Roles = <?=$roles?>;
     /*顶部类别构建*/
     admin.util.buildOption('#search_roles_select',Roles,'选择角色');
     /*==============左树结构===============*/
-    var organObj, organData, Organ = {}, organArr = {$organ|raw}; /*左树 选中数据 和 总树数据*/
+    var organObj, organData, Organ = {}, organArr = <?=$organ?>; /*左树 选中数据 和 总树数据*/
     for(let v of organArr){Organ[v.id] = v.title}
     function renderTree(data,load){
         if(!load) organObj = data[0];

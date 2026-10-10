@@ -358,7 +358,9 @@ layui.use(function(){
     function setting(data){
         admin.open({
             type: 1,
-            area: ['60%','80%'],
+            offset: 'rb',
+            area: ["65%", "100%"],
+            skin: 'layui-anim layui-anim-rl layui-layer-Right',
             title: '【'+ data.title +' - 配置管理】',
             url: app_root + "setting?addon=" + data.name,
             btn: ['确认保存', '取消'],

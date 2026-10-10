@@ -11,6 +11,7 @@ namespace app\admin\controller\system;
 
 use app\admin\controller\AdminBase;
 use app\model\system\SystemSetting as S;
+use veitool\addons\Service;
 
 /**
  * 后台设置控制器
@@ -54,8 +55,15 @@ class Setting extends AdminBase
             }
             return $this->returnMsg($rs,1);
         }
+        //获取本地插件标识列表
+        $addons = [];
+        $addons_local = Service::hasAddon();
+        foreach($addons_local as $k=>$v){
+            if($v['config']) $addons[] = ['name'=>$k,'title'=>$v['title']];
+        }
         $this->assign([
-            'groups' => json_encode($groups)
+            'groups' => json_encode($groups),
+            'addons' => json_encode($addons)
         ]);
         return $this->fetch();
     }
@@ -137,9 +145,16 @@ class Setting extends AdminBase
             $msg = $rs ? ['code'=>0,'msg'=>'配置名称【'.$d['name'].'】已被占用！'] : ['code'=>1,'msg'=>'可用'];
             return $this->returnMsg($msg);
         }
+        //获取本地插件标识列表
+        $addons = [];
+        $addons_local = Service::hasAddon();
+        foreach($addons_local as $k=>$v){
+            $addons[] = ['id'=>$k,'title'=>$v['title'].' - '.$k];
+        }
         $this->assign([
-            'limit' => 10,
-            'datas' => json_encode(['groups'=>$groups,'types'=>$types]) //配置分组和配置类型
+            'limit'  => 10,
+            'datas'  => json_encode(['groups'=>$groups,'types'=>$types]), //配置分组和配置类型
+            'addons' => json_encode($addons) //获取启用的插件标识列表
         ]);
         return $this->fetch();
     }

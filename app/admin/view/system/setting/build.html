@@ -1,7 +1,10 @@
+<style>
+.layui-tab .settings_tab li{min-width:50px;padding:0 10px;}
+</style>
 <div class="layui-fluid">
     <div class="layui-card">
         <div class="layui-tab layui-tab-admin" lay-filter="settings_top_tab">
-            <ul class="layui-tab-title" id="settings_tab"></ul>
+            <ul class="layui-tab-title settings_tab" id="settings_tab"></ul>
         </div>
         <div class="layui-card-body">
             <div class="layui-card-box">
@@ -33,7 +36,7 @@
 layui.use(['buildItems'],function(){
     var app_root = layui.cache.maps + 'system.setting/';
     var table=layui.table,form=layui.form,admin=layui.admin;
-    var datas = <?=$datas?>;
+    var datas = <?=$datas?>, addons = <?=$addons?>;
     var types = {}; $.each(datas.types,function(k,v){types[k] = v +'：'+ k;}); /*重构[配置类型]数据*/
     /*解析顶部分组选项*/
     var tab = $("#settings_tab");
@@ -60,7 +63,7 @@ layui.use(['buildItems'],function(){
             {field:'listorder',edit:'text',width:60,align:'center',title:'排序'},
             {field:'private',width:80,align:'center',templet:function(d){return '<input type="checkbox" name="private" lay-skin="switch" lay-text="是|否" lay-filter="settings-chang" value="'+d.private+'" data-json="'+encodeURIComponent(JSON.stringify(d))+'"'+(d.private==1 ? ' checked' : '')+'>';},unresize:true,title:'文本隐私'},
             {field:'state',width:80,align:'center',templet:function(d){return '<input type="checkbox" name="state" lay-skin="switch" lay-text="启用|禁用" lay-filter="settings-chang" value="'+d.state+'" data-json="'+encodeURIComponent(JSON.stringify(d))+'"'+(d.state==1 ? ' checked' : '')+'>';},unresize:true,title:'启用状态'},
-            {fixed:'right',width:95,align:'center',toolbar:'<div><a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a><a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a></div>',title:'操作'}
+            {fixed:'right',width:130,align:'center',toolbar:'<div><a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a><a class="layui-btn layui-btn-xs layui-bg-blue" lay-event="copy">复制</a><a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a></div>',title:'操作'}
         ]]
     });/**/
     /*顶部选项卡监听*/
@@ -128,6 +131,10 @@ layui.use(['buildItems'],function(){
         var data = obj.data;
         if(obj.event === 'edit'){
             settingsOpen(data);
+        }else if(obj.event === 'copy'){
+            data.id = '';
+            data.name = '';
+            settingsOpen(data);
         }else if(obj.event === 'del'){
             del(data.id);
         }
@@ -149,14 +156,14 @@ layui.use(['buildItems'],function(){
             bid: 'settings_items',
             btn: ['保存', '取消'],
             area: ['800px', '90%'],
-            title: Dt ? '编辑配置项' : '添加配置项',
+            title: Dt && Dt.id ? '编辑配置项' : '添加配置项',
             success: function(l,index){
                 layui.buildItems.build({
                     bid: 'settings_items',
                     data: [
                         {name:"id",type:"hidden"},
                         {name:"group",title:"配置分组",type:group ? "radio" : "text",options:datas.groups,value:group,placeholder:"插件分组（选填）",must:true},
-                        {name:"addon",title:"插件名称",type:group ? "hidden" : "text",value:'',placeholder:"请输入所属插件标识名称",verify:group ? '' : 'required',must:group ? false : true},
+                        {name:"addon",title:"插件名称",type:group ? "hidden" : "text",value:'',placeholder:"请输入所属插件标识名称",verify:group ? '' : 'required',must:group ? false : true,id:"build_addon"},
                         {name:"type",title:"配置类型",type:"select",options:types,value:'',verify:'required',reqtext:'请选择配置类型',must:true},
                         {name:"name",title:"配置名称",type:"text",value:'',verify:'required',placeholder:"请输入配置名称",must:true},
                         {name:"title",title:"配置标题",type:"text",value:'',verify:'required',placeholder:"请输入配置标题",must:true},
@@ -167,6 +174,18 @@ layui.use(['buildItems'],function(){
                     ]
                 });
                 form.val('settings_items_form',Dt);
+                /*插件名称下拉选项*/
+                if(!group){
+                    layui.dropdown.render({
+                        elem: '#build_addon',
+                        closeOnClick: false,
+                        data: addons,
+                        click: function(obj){
+                            this.elem.val(obj.id);
+                        },
+                        style: function(){return 'min-width:'+ $('#build_addon').outerWidth() +'px;'}
+                    });
+                }/**/
                 $("#settings_items input[name='name']").on("blur",function(){ /*输入框内容监测 判断配置名称是否已被占用*/
                     var o = $(this), val = o.val(), addon = $("#settings_items input[name='addon']");
                     addon_val = addon.val();

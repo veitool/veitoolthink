@@ -3,11 +3,12 @@
 #seting_box .layui-form-label{width:130px}
 #seting_box .layui-input-block{margin-left:160px}
 #seting_box .layui-word-aux{color:#ccc!important;}
+.layui-tab .setting_tab li{min-width:50px;padding:0 10px;}
 </style>
 <div class="layui-fluid">
     <div class="layui-card">
         <div class="layui-tab layui-tab-admin" lay-filter="setting_top_tab">
-            <ul class="layui-tab-title" id="setting_tab"></ul>
+            <ul class="layui-tab-title setting_tab" id="setting_tab"></ul>
         </div>
         <div class="layui-card-body">
             <form class="layui-form" lay-filter="seting_box_form" style="padding-top:30px;">
@@ -21,18 +22,25 @@
 </div>
 <script>
 layui.use(['buildItems'], function(){
-    var app_root = layui.cache.maps + 'system.setting/';
-    var groups = <?=$groups?>;
+    var map_root = layui.cache.maps;
+    var app_root = map_root + 'system.setting/';
+    var groups = <?=$groups?>, addons = <?=$addons?>;
     /*解析顶部分组选项*/
     var tab = $("#setting_tab");
     layui.each(groups,function(k,v){tab.append('<li group="'+ k +'">'+ v +'</li>');});
+    addons.map(function(v){tab.append('<li lay-unselect group="@'+ v.name +'" title="插件：'+ v.title +'"><b>'+ v.name +'</b></li>');});
     var group = tab.children("li").first().addClass('layui-this').attr('group');
     /**/
     /*构建配置项*/
     build(group);
     /*顶部选项卡监听*/
     layui.element.on('tab(setting_top_tab)',function(){
-        group = this.getAttribute("group");
+        var _group = this.getAttribute("group");
+        if(_group[0]=='@'){
+            setting(_group.substr(1), this.getAttribute("title"));
+            return false;
+        }
+        group = _group;
         build(group);
     });/**/
     /*构建配置项 group 分组名*/
@@ -40,7 +48,7 @@ layui.use(['buildItems'], function(){
         layui.buildItems.build({
             bid: 'seting_box',
             url: app_root + 'index?do=json&group='+ group,
-            map: layui.cache.maps + 'system.upload/',
+            map: map_root + 'system.upload/',
             gid: 1
         });
     };/**/
@@ -54,5 +62,18 @@ layui.use(['buildItems'], function(){
         },'post',{headersToken:true});
         return false;
     });/**/
+    /*配置插件 group 插件标识 title 插件标题 */
+    function setting(group, title){
+        layui.admin.open({
+            type: 1,
+            offset: 'rb',
+            area: ["65%", "100%"],
+            skin: 'layui-anim layui-anim-rl layui-layer-Right',
+            title: '【'+ title +' - 配置管理】',
+            url: map_root + "addon/setting?addon=" + group,
+            btn: ['确认保存', '取消'],
+            yes: function(id,lay){lay.find("[lay-submit]").trigger('click');}
+        });
+    }/**/
 });
 </script>

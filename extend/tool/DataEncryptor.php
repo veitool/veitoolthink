@@ -69,7 +69,7 @@ class DataEncryptor
      * aes解密
      * @param  string $data 加密数据对象
      * @param  string $key 解密key
-     * @param  string $v 解密iv
+     * @param  string $iv 解密iv
      * @return array
      */
     public static function aesDecrypt(?string $data, string $key, string $iv) : array

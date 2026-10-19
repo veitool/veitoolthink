@@ -17,7 +17,7 @@ https://demo.veitool.com/admin
 veitoolphp@gmail.com
 
 ## 系统要求
-运行环境支持Nginx、Apache、IIS，要求PHP>=8.1。
+运行环境支持Nginx、Apache、IIS，要求PHP>=8.2。
 
 ## 系统特点
 

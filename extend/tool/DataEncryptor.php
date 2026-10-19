@@ -70,21 +70,25 @@ class DataEncryptor
      * @param  string $data 加密数据对象
      * @param  string $key 解密key
      * @param  string $iv 解密iv
-     * @return array
+     * @return array|string|int|float|bool|null
      */
-    public static function aesDecrypt(?string $data, string $key, string $iv) : array
+    public static function aesDecrypt(?string $data, string $key, string $iv) : array|string|int|float|bool|null
     {
         if (! $data) {
             throw new \Exception('AES解密数据不能为空');
         }
         try {
-            $data = base64_decode($data);
-            $data = openssl_decrypt($data, 'AES-256-CBC', $key, OPENSSL_RAW_DATA, $iv);
-            $data = json_decode($data, true);
-            if (! is_array($data)) {
+            $data = base64_decode($data, true);
+            if ($data === false) {
+                throw new \Exception('密文格式错误');
+            }
+            $decrypted = openssl_decrypt($data, 'AES-256-CBC', $key, OPENSSL_RAW_DATA, $iv);
+            if ($decrypted === false) {
                 throw new \Exception('解密失败');
             }
-            return self::formatJsonToArray($data);
+            $decoded = json_decode($decrypted, true, 512, JSON_THROW_ON_ERROR);
+            //return $decoded;
+            return is_array($decoded) ? self::formatJsonToArray($decoded) : $decoded;
         } catch (\Exception $e) {
             throw new \Exception("AES解密失败：{$e->getMessage()}");
         }
@@ -98,7 +102,7 @@ class DataEncryptor
     public static function formatJsonToArray(array $arr) : array
     {
         foreach ($arr as $key => $value) {
-            if (preg_match('/^(\w+)\[(\d+)\]$/', $key, $match)) {
+            if (preg_match('/^(\w+)\[(\d+)\]$/', (string)$key, $match)) {
                 $arr[$match[1]][] = $value;
                 unset($arr[$key]);
             }

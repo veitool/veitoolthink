@@ -9,7 +9,7 @@ namespace Nette\PhpGenerator\Traits;
 
 use Nette;
 use Nette\PhpGenerator\TraitUse;
-use function array_map, func_get_arg, func_num_args, is_array;
+use function func_num_args, is_array;
 
 
 /**
@@ -45,7 +45,8 @@ trait TraitsAware
 
 
 	/**
-	 * Adds a method. If it already exists, throws an exception.
+	 * Adds a trait use statement.
+	 * @throws Nette\InvalidStateException if the trait already exists
 	 */
 	public function addTrait(string $name): TraitUse
 	{

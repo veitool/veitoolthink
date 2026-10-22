@@ -7,11 +7,8 @@
 
 namespace Nette\PhpGenerator\Traits;
 
-use Nette\PhpGenerator\PropertyAccessMode;
-use Nette\PhpGenerator\PropertyHook;
-use Nette\PhpGenerator\PropertyHookType;
-use Nette\PhpGenerator\Visibility;
-use function array_filter, in_array, is_string;
+use Nette\PhpGenerator\{PropertyAccessMode, PropertyHook, PropertyHookType, Visibility};
+use function is_string;
 
 
 /**
@@ -29,6 +26,7 @@ trait PropertyLike
 
 
 	/**
+	 * Sets asymmetric visibility for get and set access modes.
 	 * @param  Visibility|'public'|'protected'|'private'|null  $get
 	 * @param  Visibility|'public'|'protected'|'private'|null  $set
 	 */
@@ -63,7 +61,7 @@ trait PropertyLike
 	public function isPublic(PropertyAccessMode|string $mode = PropertyAccessMode::Get): bool
 	{
 		$mode = is_string($mode) ? PropertyAccessMode::from($mode) : $mode;
-		return in_array($this->visibility[$mode->value], [Visibility::Public, null], strict: true);
+		return in_array($this->visibility[$mode->value], [Visibility::Public, null], true);
 	}
 
 
@@ -146,7 +144,10 @@ trait PropertyLike
 	}
 
 
-	/** @param  PropertyHookType|'set'|'get'  $type */
+	/**
+	 * Adds a get or set hook. When $shortBody is provided, it is used as an arrow-function-style body.
+	 * @param  PropertyHookType|'set'|'get'  $type
+	 */
 	public function addHook(PropertyHookType|string $type, string $shortBody = ''): PropertyHook
 	{
 		$type = is_string($type) ? PropertyHookType::from($type) : $type;

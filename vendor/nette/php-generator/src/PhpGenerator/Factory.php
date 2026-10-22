@@ -9,12 +9,12 @@ namespace Nette\PhpGenerator;
 
 use Nette;
 use Nette\Utils\Reflection;
-use function array_diff, array_filter, array_key_exists, array_map, count, explode, file_get_contents, implode, is_object, is_subclass_of, method_exists, reset;
+use function array_key_exists, count, is_object;
 use const PHP_VERSION_ID;
 
 
 /**
- * Creates a representations based on reflection or source code.
+ * Creates PhpGenerator representations from reflection objects or PHP source code.
  */
 final class Factory
 {
@@ -25,7 +25,11 @@ final class Factory
 	private array $extractorCache = [];
 
 
-	/** @param  \ReflectionClass<object>  $from */
+	/**
+	 * Creates a ClassLike instance from a reflection object.
+	 * @param  \ReflectionClass<object>  $from
+	 * @param  bool  $withBodies  load method bodies (requires nikic/php-parser, not available for anonymous/internal classes or interfaces)
+	 */
 	public function fromClassReflection(
 		\ReflectionClass $from,
 		bool $withBodies = false,
@@ -133,7 +137,8 @@ final class Factory
 
 			if (
 				$declaringClass->name === $from->name
-				&& (!$from instanceof \ReflectionEnum || !method_exists($from->isBacked() ? \BackedEnum::class : \UnitEnum::class, $method->name))
+				&& (!$from instanceof \ReflectionEnum
+					|| !method_exists($from->isBacked() ? \BackedEnum::class : \UnitEnum::class, $method->name))
 			) {
 				$methods[] = $m = $this->fromMethodReflection($method);
 				if ($withBodies && ($file = $declaringClass->getFileName())) {
@@ -206,6 +211,10 @@ final class Factory
 	}
 
 
+	/**
+	 * Creates a GlobalFunction or Closure instance from a reflection object.
+	 * @param  bool  $withBody  load function body (requires nikic/php-parser, not available for closures or internal functions)
+	 */
 	public function fromFunctionReflection(\ReflectionFunction $from, bool $withBody = false): GlobalFunction|Closure
 	{
 		$function = $from->isClosure() ? new Closure : new GlobalFunction($from->name);
@@ -232,7 +241,10 @@ final class Factory
 	}
 
 
-	/** @param callable(): mixed  $from */
+	/**
+	 * Creates a Method, GlobalFunction, or Closure instance from a callable.
+	 * @param  callable(): mixed  $from
+	 */
 	public function fromCallable(callable $from): Method|GlobalFunction|Closure
 	{
 		$ref = Nette\Utils\Callback::toReflection($from);
@@ -246,7 +258,7 @@ final class Factory
 	{
 		if ($from->isPromoted()) {
 			$property = $from->getDeclaringClass()?->getProperty($from->name);
-			\assert($property instanceof \ReflectionProperty);
+			assert($property instanceof \ReflectionProperty);
 			$param = (new PromotedParameter($from->name))
 				->setVisibility($this->getVisibility($property))
 				->setReadOnly($property->isReadOnly())
@@ -266,6 +278,7 @@ final class Factory
 				}
 
 				$param->setDefaultValue(new Literal(implode('::', $parts)));
+
 			} elseif (is_object($from->getDefaultValue())) {
 				$param->setDefaultValue($this->fromObject($from->getDefaultValue()));
 			} else {
@@ -284,6 +297,9 @@ final class Factory
 		$const->setValue($from->getValue());
 		$const->setVisibility($this->getVisibility($from));
 		$const->setFinal($from->isFinal());
+		if (PHP_VERSION_ID >= 80300 && ($type = $from->getType())) {
+			$const->setType((string) $type);
+		}
 		$const->setComment(Helpers::unformatDocComment((string) $from->getDocComment()));
 		$const->setAttributes($this->formatAttributes($from->getAttributes()));
 		return $const;
@@ -367,6 +383,10 @@ final class Factory
 	}
 
 
+	/**
+	 * Parses PHP source code and returns the first class-like type found.
+	 * @throws Nette\InvalidStateException if the code contains no class
+	 */
 	public function fromClassCode(string $code): ClassLike
 	{
 		$classes = $this->fromCode($code)->getClasses();
@@ -374,6 +394,9 @@ final class Factory
 	}
 
 
+	/**
+	 * Parses PHP source code and returns the resulting PhpFile representation.
+	 */
 	public function fromCode(string $code): PhpFile
 	{
 		$reader = new Extractor($code);

@@ -9,7 +9,6 @@ namespace Nette\PhpGenerator\Traits;
 
 use Nette;
 use Nette\PhpGenerator\Method;
-use function strtolower;
 
 
 /**
@@ -56,7 +55,8 @@ trait MethodsAware
 
 
 	/**
-	 * Adds a method. If it already exists, throws an exception or overwrites it if $overwrite is true.
+	 * Adds a method.
+	 * @throws Nette\InvalidStateException if the method already exists and $overwrite is false
 	 */
 	public function addMethod(string $name, bool $overwrite = false): Method
 	{

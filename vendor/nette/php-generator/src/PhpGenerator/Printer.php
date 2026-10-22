@@ -9,7 +9,7 @@ namespace Nette\PhpGenerator;
 
 use Nette;
 use Nette\Utils\Strings;
-use function array_filter, array_map, count, end, get_debug_type, implode, is_scalar, ltrim, preg_replace, rtrim, str_contains, str_repeat, str_replace, strlen, substr;
+use function count, is_scalar, strlen;
 
 
 /**
@@ -259,15 +259,12 @@ class Printer
 		$body = ($uses ? $uses . "\n" : '')
 			. implode("\n", $items);
 
-		if ($namespace->hasBracketedSyntax()) {
-			return 'namespace' . ($name ? " $name" : '') . "\n{\n"
+		return $namespace->hasBracketedSyntax()
+			? 'namespace' . ($name ? " $name" : '') . "\n{\n"
 				. $this->indent($body)
-				. "}\n";
-
-		} else {
-			return ($name ? "namespace $name;\n\n" : '')
+				. "}\n"
+			: ($name ? "namespace $name;\n\n" : '')
 				. $body;
-		}
 	}
 
 
@@ -290,7 +287,10 @@ class Printer
 	}
 
 
-	/** @param  PhpNamespace::Name*  $of */
+	/**
+	 * Generates use statements for the given namespace.
+	 * @param  PhpNamespace::Name*  $of
+	 */
 	protected function printUses(PhpNamespace $namespace, string $of = PhpNamespace::NameNormal): string
 	{
 		$prefix = [
@@ -403,7 +403,7 @@ class Printer
 
 	private function printPropertyVisibility(Property|PromotedParameter $param): string
 	{
-		$get = $param->getVisibility(PropertyAccessMode::Get);
+		$get = $param->getVisibility();
 		$set = $param->getVisibility(PropertyAccessMode::Set);
 		return $set
 			? ($get ? "$get $set(set)" : "$set(set)")
@@ -428,7 +428,7 @@ class Printer
 
 
 	/** @param  PhpFile|ClassLike|GlobalFunction|Method|Property|Constant|Parameter|EnumCase|TraitUse|PropertyHook  $commentable */
-	protected function printDocComment(/*Traits\CommentAware*/ $commentable): string
+	protected function printDocComment(/* Traits\CommentAware */ $commentable): string
 	{
 		$multiLine = $commentable instanceof GlobalFunction
 			|| $commentable instanceof Method
@@ -499,6 +499,9 @@ class Printer
 	}
 
 
+	/**
+	 * Enables or disables automatic simplification of fully qualified type names using namespace use statements.
+	 */
 	public function setTypeResolving(bool $state = true): static
 	{
 		$this->resolveTypes = $state;

@@ -8,7 +8,7 @@
 namespace Nette\PhpGenerator;
 
 use Nette;
-use function array_diff, array_map, func_num_args, strtolower;
+use function func_num_args;
 
 
 /**
@@ -132,6 +132,10 @@ final class ClassType extends ClassLike
 	}
 
 
+	/**
+	 * Adds a member to the class.
+	 * @throws Nette\InvalidStateException if the member already exists and $overwrite is false
+	 */
 	public function addMember(Method|Property|Constant|TraitUse $member, bool $overwrite = false): static
 	{
 		$name = $member->getName();

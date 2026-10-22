@@ -8,8 +8,7 @@
 namespace Nette\PhpGenerator;
 
 use Nette;
-use function addcslashes, array_keys, array_shift, count, dechex, get_mangled_object_vars, implode, in_array, is_array, is_int, is_object, is_resource, is_string, ltrim, method_exists, ord, preg_match, preg_replace, preg_replace_callback, preg_split, range, serialize, str_contains, str_pad, str_repeat, str_replace, strlen, strrpos, strtoupper, substr, trim, unserialize, var_export;
-use const PREG_SPLIT_DELIM_CAPTURE, STR_PAD_LEFT;
+use function count, is_array, is_int, is_object, is_resource, is_string, strlen;
 
 
 /**
@@ -26,7 +25,8 @@ final class Dumper
 
 
 	/**
-	 * Returns a PHP representation of a variable.
+	 * Converts a value to its PHP code representation.
+	 * @param  int  $column  current column for array wrapping decisions
 	 */
 	public function dump(mixed $var, int $column = 0): string
 	{
@@ -75,8 +75,8 @@ final class Dumper
 		$escaped = preg_replace_callback(
 			$utf8 ? '#[\p{C}\\\]#u' : '#[\x00-\x1F\x7F-\xFF\\\]#',
 			fn($m) => $special[$m[0]] ?? (strlen($m[0]) === 1
-					? '\x' . str_pad(strtoupper(dechex(ord($m[0]))), 2, '0', STR_PAD_LEFT)
-					: '\u{' . strtoupper(ltrim(dechex(self::utf8Ord($m[0])), '0')) . '}'),
+				? '\x' . str_pad(strtoupper(dechex(ord($m[0]))), 2, '0', STR_PAD_LEFT)
+				: '\u{' . strtoupper(ltrim(dechex(self::utf8Ord($m[0])), '0')) . '}'),
 			$s,
 		);
 		return $s === str_replace('\\\\', '\\', $escaped)
@@ -106,7 +106,7 @@ final class Dumper
 		if (empty($var)) {
 			return '[]';
 
-		} elseif ($level > $this->maxDepth || in_array($var, $parents, strict: true)) {
+		} elseif ($level > $this->maxDepth || in_array($var, $parents, true)) {
 			throw new Nette\InvalidStateException('Nesting level too deep or recursive dependency.');
 		}
 
@@ -132,7 +132,7 @@ final class Dumper
 	/** @param  array<mixed[]|object>  $parents */
 	private function dumpObject(object $var, array $parents, int $level, int $column): string
 	{
-		if ($level > $this->maxDepth || in_array($var, $parents, strict: true)) {
+		if ($level > $this->maxDepth || in_array($var, $parents, true)) {
 			throw new Nette\InvalidStateException('Nesting level too deep or recursive dependency.');
 		} elseif ((new \ReflectionObject($var))->isAnonymous()) {
 			throw new Nette\InvalidStateException('Cannot dump an instance of an anonymous class.');
@@ -214,7 +214,9 @@ final class Dumper
 
 
 	/**
-	 * Generates PHP statement. Supports placeholders: ?  \?  $?  ->?  ::?  ...?  ...?:  ?*
+	 * Formats a PHP expression using placeholders.
+	 * Supported placeholders: ? (value), \? (literal ?), $? (variable), ->? (property access),
+	 * ::? (static access), ...? (spread array), ...?: (named spread), ?* (alias for ...?)
 	 */
 	public function format(string $statement, mixed ...$args): string
 	{

@@ -8,7 +8,7 @@
 namespace Nette\PhpGenerator;
 
 use Nette;
-use function is_string, preg_match, preg_replace, preg_replace_callback, str_contains, str_repeat, str_replace, strrpos, strtolower, substr, trim;
+use function is_string;
 
 
 /**
@@ -138,6 +138,10 @@ final class Helpers
 	}
 
 
+	/**
+	 * Validates a type declaration. Strips the leading '?' and sets $nullable=true for nullable shorthand.
+	 * Returns null for empty/null types.
+	 */
 	public static function validateType(?string $type, bool &$nullable = false): ?string
 	{
 		if ($type === '' || $type === null) {

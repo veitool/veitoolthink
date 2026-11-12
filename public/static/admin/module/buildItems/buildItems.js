@@ -164,7 +164,7 @@ layui.define(['tagsInput','fileLibrary','cascader'], function(e){
                     html += (d.itemCol ? '<div class="'+ d.itemCol +'">' + str + '</div>' : str);
                 }
             }
-            html += tab_t ? '<div class="layui-tab layui-tab-brief"><ul class="layui-tab-title">'+tab_t+'</ul><div class="layui-tab-content">'+tab_c+'</div></div>' : !$h.addClass(c.space) || '';
+            html += tab_t ? '<div class="layui-tab layui-tab-brief"><ul class="layui-tab-title">'+tab_t+'</ul><div style="z-index:10" class="layui-tab-content">'+tab_c+'</div></div>' : !$h.addClass(c.space) || '';
             $h.html(c.style + html);
             form.render(null,c.bid+'_form');
             //显示选中的关联项

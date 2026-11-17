@@ -94,14 +94,14 @@ class ZipEntry
     private int $localHeaderOffset = 0;
 
     /**
-     * Collections of Extra Fields in Central Directory.
+     * Collections of extra fields in the central directory.
      * Keys from Header ID [int] and value Extra Field [ExtraField].
      */
     protected ExtraFieldsCollection $cdExtraFields;
 
     /**
-     * Collections of Extra Fields int local header.
-     * Keys from Header ID [int] and value Extra Field [ExtraField].
+     * Collections of extra fields in the local header.
+     * Keys are header IDs [int] and values are extra fields [ExtraField].
      */
     protected ExtraFieldsCollection $localExtraFields;
 
@@ -133,16 +133,11 @@ class ZipEntry
     }
 
     /**
-     * This method only internal use.
+     * This method is for internal use only.
      *
      * @internal
      *
      * @noinspection PhpTooManyParametersInspection
-     *
-     * @param ?string $comment
-     * @param ?string $charset
-     *
-     * @return ZipEntry
      */
     public static function create(
         string $name,
@@ -188,8 +183,6 @@ class ZipEntry
      *
      * @param string      $name    New entry name
      * @param string|null $charset Entry name charset
-     *
-     * @return ZipEntry
      */
     private function setName(string $name, ?string $charset = null): self
     {
@@ -228,10 +221,6 @@ class ZipEntry
 
     /**
      * @see DosCodePage::getCodePages()
-     *
-     * @param ?string $charset
-     *
-     * @return ZipEntry
      */
     public function setCharset(?string $charset = null): self
     {
@@ -293,8 +282,6 @@ class ZipEntry
 
     /**
      * Set platform.
-     *
-     * @return ZipEntry
      */
     public function setCreatedOS(int $platform): self
     {
@@ -313,8 +300,6 @@ class ZipEntry
 
     /**
      * Set extracted OS.
-     *
-     * @return ZipEntry
      */
     public function setExtractedOS(int $platform): self
     {
@@ -335,9 +320,6 @@ class ZipEntry
         return $this->softwareVersion;
     }
 
-    /**
-     * @return ZipEntry
-     */
     public function setSoftwareVersion(int $softwareVersion): self
     {
         $this->softwareVersion = $softwareVersion;
@@ -379,8 +361,6 @@ class ZipEntry
 
     /**
      * Set version needed to extract.
-     *
-     * @return ZipEntry
      */
     public function setExtractVersion(int $version): self
     {
@@ -401,8 +381,6 @@ class ZipEntry
      * Sets the compressed size of this entry.
      *
      * @param int $compressedSize the Compressed Size
-     *
-     * @return ZipEntry
      *
      * @internal
      */
@@ -429,8 +407,6 @@ class ZipEntry
      *
      * @param int $uncompressedSize the (Uncompressed) Size
      *
-     * @return ZipEntry
-     *
      * @internal
      */
     public function setUncompressedSize(int $uncompressedSize): self
@@ -452,8 +428,6 @@ class ZipEntry
     }
 
     /**
-     * @return ZipEntry
-     *
      * @internal
      */
     public function setLocalHeaderOffset(int $localHeaderOffset): self
@@ -478,8 +452,6 @@ class ZipEntry
      * Sets the General Purpose Bit Flags.
      *
      * @param int $gpbf general purpose bit flags
-     *
-     * @return ZipEntry
      *
      * @internal
      */
@@ -512,9 +484,6 @@ class ZipEntry
         }
     }
 
-    /**
-     * @return ZipEntry
-     */
     private function setGeneralBitFlag(int $mask, bool $enable): self
     {
         if ($enable) {
@@ -570,8 +539,6 @@ class ZipEntry
     /**
      * Sets the encryption property to false and removes any other
      * encryption artifacts.
-     *
-     * @return ZipEntry
      */
     public function disableEncryption(): self
     {
@@ -586,8 +553,6 @@ class ZipEntry
 
     /**
      * Sets the encryption flag for this ZIP entry.
-     *
-     * @return ZipEntry
      */
     private function setEncrypted(bool $encrypted): self
     {
@@ -608,8 +573,6 @@ class ZipEntry
      * Sets the compression method for this entry.
      *
      * @throws ZipUnsupportMethodException
-     *
-     * @return ZipEntry
      *
      * @see ZipCompressionMethod::STORED
      * @see ZipCompressionMethod::DEFLATED
@@ -652,8 +615,6 @@ class ZipEntry
 
     /**
      * Set Dos Time.
-     *
-     * @return ZipEntry
      */
     public function setDosTime(int $dosTime): self
     {
@@ -670,8 +631,6 @@ class ZipEntry
 
     /**
      * Set time from unix timestamp.
-     *
-     * @return ZipEntry
      */
     public function setTime(int $unixTimestamp): self
     {
@@ -698,8 +657,6 @@ class ZipEntry
      * Sets the external file attributes.
      *
      * @param int $externalAttributes the external file attributes
-     *
-     * @return ZipEntry
      */
     public function setExternalAttributes(int $externalAttributes): self
     {
@@ -730,8 +687,6 @@ class ZipEntry
      * Sets the internal file attributes.
      *
      * @param int $internalAttributes the internal file attributes
-     *
-     * @return ZipEntry
      */
     public function setInternalAttributes(int $internalAttributes): self
     {
@@ -762,9 +717,6 @@ class ZipEntry
         return $this->cdExtraFields->get($headerId);
     }
 
-    /**
-     * @return ZipEntry
-     */
     public function setCdExtraFields(ExtraFieldsCollection $cdExtraFields): self
     {
         $this->cdExtraFields = $cdExtraFields;
@@ -782,9 +734,6 @@ class ZipEntry
         return $this->localExtraFields[$headerId];
     }
 
-    /**
-     * @return ZipEntry
-     */
     public function setLocalExtraFields(ExtraFieldsCollection $localExtraFields): self
     {
         $this->localExtraFields = $localExtraFields;
@@ -837,10 +786,6 @@ class ZipEntry
 
     /**
      * Set entry comment.
-     *
-     * @param ?string $comment
-     *
-     * @return ZipEntry
      */
     public function setComment(?string $comment): self
     {
@@ -866,7 +811,7 @@ class ZipEntry
     }
 
     /**
-     * Return crc32 content or 0 for WinZip AES v2.
+     * Returns the CRC32 of the content, or 0 for WinZip AES v2.
      */
     public function getCrc(): int
     {
@@ -875,8 +820,6 @@ class ZipEntry
 
     /**
      * Set crc32 content.
-     *
-     * @return ZipEntry
      *
      * @internal
      */
@@ -894,11 +837,6 @@ class ZipEntry
 
     /**
      * Set password and encryption method from entry.
-     *
-     * @param ?string $password
-     * @param ?int    $encryptionMethod
-     *
-     * @return ZipEntry
      */
     public function setPassword(?string $password, ?int $encryptionMethod = null): self
     {
@@ -936,10 +874,6 @@ class ZipEntry
      * @see ZipEncryptionMethod::WINZIP_AES_256
      * @see ZipEncryptionMethod::WINZIP_AES_192
      * @see ZipEncryptionMethod::WINZIP_AES_128
-     *
-     * @param ?int $encryptionMethod
-     *
-     * @return ZipEntry
      */
     public function setEncryptionMethod(?int $encryptionMethod): self
     {
@@ -959,9 +893,6 @@ class ZipEntry
         return $this->compressionLevel;
     }
 
-    /**
-     * @return ZipEntry
-     */
     public function setCompressionLevel(int $compressionLevel): self
     {
         if ($compressionLevel === self::UNKNOWN) {
@@ -985,7 +916,7 @@ class ZipEntry
     }
 
     /**
-     * Update general purpose bit flogs.
+     * Update the general purpose bit flags.
      */
     private function updateGbpfCompLevel(): void
     {
@@ -1006,7 +937,7 @@ class ZipEntry
                     $bit1 = true;
                     $bit2 = true;
                     break;
-                // default is ZipCompressionLevel::NORMAL
+                    // default is ZipCompressionLevel::NORMAL
             }
 
             $this->generalPurposeBitFlags |= ($bit1 ? GeneralPurposeBitFlag::COMPRESSION_FLAG1 : 0);
@@ -1019,8 +950,6 @@ class ZipEntry
      * unzip command.
      *
      * @param int $mode mode an int value
-     *
-     * @return ZipEntry
      */
     public function setUnixMode(int $mode): self
     {
@@ -1037,7 +966,7 @@ class ZipEntry
     }
 
     /**
-     * Unix permission.
+     * Unix permissions.
      *
      * @return int the unix permissions
      */
@@ -1111,7 +1040,7 @@ class ZipEntry
         try {
             return new \DateTimeImmutable('@' . $timestamp);
         } catch (\Exception $e) {
-            throw new RuntimeException('Error create DateTime object with timestamp ' . $timestamp, 1, $e);
+            throw new RuntimeException('Cannot create a DateTime object for timestamp ' . $timestamp, 1, $e);
         }
     }
 

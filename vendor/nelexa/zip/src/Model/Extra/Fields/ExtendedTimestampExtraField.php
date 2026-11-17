@@ -119,13 +119,6 @@ final class ExtendedTimestampExtraField implements ZipExtraField
         $this->createTime = $createTime;
     }
 
-    /**
-     * @param ?int $modifyTime
-     * @param ?int $accessTime
-     * @param ?int $createTime
-     *
-     * @return ExtendedTimestampExtraField
-     */
     public static function create(?int $modifyTime, ?int $accessTime, ?int $createTime): self
     {
         $flags = 0;
@@ -160,8 +153,6 @@ final class ExtendedTimestampExtraField implements ZipExtraField
      *
      * @param string        $buffer the buffer to read data from
      * @param ZipEntry|null $entry  optional zip entry
-     *
-     * @return ExtendedTimestampExtraField
      */
     public static function unpackLocalFileData(string $buffer, ?ZipEntry $entry = null): self
     {
@@ -197,8 +188,6 @@ final class ExtendedTimestampExtraField implements ZipExtraField
      *
      * @param string        $buffer the buffer to read data from
      * @param ZipEntry|null $entry  optional zip entry
-     *
-     * @return ExtendedTimestampExtraField
      */
     public static function unpackCentralDirData(string $buffer, ?ZipEntry $entry = null): self
     {
@@ -331,7 +320,7 @@ final class ExtendedTimestampExtraField implements ZipExtraField
     }
 
     /**
-     * Returns the create time as a a \DateTimeInterface
+     * Returns the create time as a \DateTimeInterface
      * of this zip entry, or null if no such timestamp exists in the zip entry.
      * The milliseconds are always zeroed out, since the underlying data
      * offers only per-second precision.

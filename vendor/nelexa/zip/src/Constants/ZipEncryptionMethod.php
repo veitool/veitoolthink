@@ -67,7 +67,7 @@ final class ZipEncryptionMethod
     public static function checkSupport(int $encryptionMethod): void
     {
         if (!self::hasEncryptionMethod($encryptionMethod)) {
-            throw new InvalidArgumentException(sprintf(
+            throw new InvalidArgumentException(\sprintf(
                 'Encryption method %d is not supported.',
                 $encryptionMethod
             ));

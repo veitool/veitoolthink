@@ -145,7 +145,7 @@ class ZipWriter
 
         if ($size > 0xFFFF) {
             throw new ZipException(
-                sprintf(
+                \sprintf(
                     '%s (the total size of %s bytes for the name, extra fields and comment exceeds the maximum size of %d bytes)',
                     $entry->getName(),
                     $size,
@@ -223,7 +223,7 @@ class ZipWriter
 
         if ($size > 0xFFFF) {
             throw new ZipException(
-                sprintf(
+                \sprintf(
                     'Size extra out of range: %d. Extra data: %s',
                     $size,
                     $extraData
@@ -248,7 +248,7 @@ class ZipWriter
                 return;
             }
 
-            throw new ZipException(sprintf('No zip data for entry "%s"', $entry->getName()));
+            throw new ZipException(\sprintf('No zip data for entry "%s"', $entry->getName()));
         }
 
         // data write variants:
@@ -436,7 +436,7 @@ class ZipWriter
 
             default:
                 throw new ZipUnsupportMethodException(
-                    sprintf(
+                    \sprintf(
                         '%s (compression method %d (%s) is not supported)',
                         $entry->getName(),
                         $entry->getCompressionMethod(),

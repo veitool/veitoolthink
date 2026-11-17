@@ -40,7 +40,7 @@ class Client
     public string $errMsg = '';
 
     /**
-     * Unused. The property is declared for backward compatibility but, as of Swoole 6.2.3, is never updated by
+     * Unused. The property is declared for backward compatibility but, as of Swoole 6.2.5, is never updated by
      * Swoole; it always stays -1. Use property $socket to access the underlying connection instead.
      *
      * @see \Swoole\Coroutine\Http2\Client::$socket
@@ -48,7 +48,7 @@ class Client
     public int $sock = -1;
 
     /**
-     * Unused. The property is declared for backward compatibility but, as of Swoole 6.2.3, is never updated by
+     * Unused. The property is declared for backward compatibility but, as of Swoole 6.2.5, is never updated by
      * Swoole; it always stays 0.
      */
     public int $type = 0;
@@ -109,7 +109,9 @@ class Client
      * The constructor only stores the connection details in properties $host, $port, and $ssl; the actual connection
      * is not established until method connect() is called.
      *
-     * A \Swoole\Coroutine\Http2\Client\Exception is thrown when $host is an empty string.
+     * A \Swoole\Coroutine\Http2\Client\Exception is thrown when $host is an empty string. Since Swoole 6.2.4, calling
+     * the constructor a second time on the same object throws an \Error, since that would replace the connection the
+     * object already manages.
      *
      * @param string $host The target host to connect to.
      * @param int $port The target port to connect to. Defaults to 80.
@@ -118,6 +120,7 @@ class Client
      *                       "--enable-openssl" included, and the constructor threw a
      *                       \Swoole\Coroutine\Http2\Client\Exception otherwise; since Swoole 6.2.0, OpenSSL support
      *                       is always built in, so this option is always supported.
+     * @throws \Error When the constructor is called more than once on the same object (since Swoole 6.2.4).
      */
     public function __construct(string $host, int $port = 80, bool $open_ssl = false)
     {
@@ -165,8 +168,11 @@ class Client
      * @param string $key An optional field name. When given, only the value of that field is returned. Supported
      *                    field names are "current_stream_id", "last_stream_id", "local_settings",
      *                    "remote_settings", and "active_stream_num".
-     * @return int|array The value of the requested field, or (when no field name is given) an array containing all
-     *                   the fields listed above.
+     * @return int|array The value of the requested field (an array for "local_settings" and "remote_settings", an
+     *                   integer for the rest), or (when no field name is given) an array containing all the fields
+     *                   listed above. Despite the return type declared, NULL is returned at run time when an
+     *                   unsupported field name is given. The type declared here matches the one the extension itself
+     *                   declares, i.e., the mismatch is in Swoole, not in this stub.
      */
     public function stats(string $key = ''): int|array
     {
@@ -207,6 +213,10 @@ class Client
      *
      * The stream must have been created by sending a request with property $pipeline set to TRUE, and must not have
      * been ended yet.
+     *
+     * Since Swoole 6.2.5, a piece of data larger than the biggest frame the server accepts (16384 bytes, unless the
+     * server advertises a larger limit in its SETTINGS frame) is split into several DATA frames; before 6.2.5, it was
+     * sent as one oversized frame, which a server may reject as a protocol error.
      *
      * @param int $stream_id ID of the stream to write to, as returned by method send().
      * @param mixed $data The data to write: either a string (sent as is) or an array of form fields (sent

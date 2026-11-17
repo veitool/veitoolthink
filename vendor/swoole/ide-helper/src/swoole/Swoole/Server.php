@@ -24,7 +24,7 @@ use Swoole\Server\Port;
  * History Changes:
  * 1. Following alias methods have been removed from Swoole 5.0.0. Please use the original methods instead.
  *    * \Swoole\Server::after()      => \Swoole\Timer::after().
- *    * \Swoole\Server::clearTimer() => \Swoole\Timer::clearTimer().
+ *    * \Swoole\Server::clearTimer() => \Swoole\Timer::clear().
  *    * \Swoole\Server::tick()       => \Swoole\Timer::tick().
  *    * \Swoole\Server::defer()      => \Swoole\Event::defer().
  * 2. Starting from Swoole 5.0.0, default server mode has been changed from SWOOLE_PROCESS to SWOOLE_BASE.
@@ -431,7 +431,7 @@ class Server
      *
      * Event names are case-insensitive. This method can only be called before the server is started.
      *
-     * As of Swoole 6.2.3, there are
+     * As of Swoole 6.2.5, there are
      *   - 14 server events.
      *     - \Swoole\Constant::EVENT_START
      *     - \Swoole\Constant::EVENT_BEFORE_SHUTDOWN
@@ -466,8 +466,8 @@ class Server
      * @return bool Returns true on success, or false on failure.
      * @see \Swoole\Server\Port::on()
      * @see \Swoole\Server::getCallback()
-     * @see https://github.com/swoole/swoole-src/blob/v6.2.3/ext-src/swoole_server.cc#L50
-     * @see https://github.com/swoole/swoole-src/blob/v6.2.3/ext-src/swoole_server_port.cc#L33
+     * @see https://github.com/swoole/swoole-src/blob/v6.2.5/ext-src/swoole_server.cc#L50
+     * @see https://github.com/swoole/swoole-src/blob/v6.2.5/ext-src/swoole_server_port.cc#L33
      */
     public function on(string $event_name, callable $callback): bool
     {
@@ -587,10 +587,11 @@ class Server
     /**
      * Check if a connection exists.
      *
-     * @param int $fd The connection file descriptor.
+     * @param int $fd Session ID of the connection.
      * @return bool Returns true if the connection exists, or false if the connection does not exist or has been
      *              closed. Since Swoole 6.1.2, false is also returned while the connection is still in the process of
-     *              being closed (previously, true was returned until the connection was fully closed).
+     *              being closed (previously, true was returned until the connection was fully closed). False is also
+     *              returned (with a warning) when the server is not running.
      * @alias This method has an alias of \Swoole\Server::exist().
      * @see \Swoole\Server::exist()
      */
@@ -601,10 +602,11 @@ class Server
     /**
      * Check if a connection exists.
      *
-     * @param int $fd The connection file descriptor.
+     * @param int $fd Session ID of the connection.
      * @return bool Returns true if the connection exists, or false if the connection does not exist or has been
      *              closed. Since Swoole 6.1.2, false is also returned while the connection is still in the process of
-     *              being closed (previously, true was returned until the connection was fully closed).
+     *              being closed (previously, true was returned until the connection was fully closed). False is also
+     *              returned (with a warning) when the server is not running.
      * @alias Alias of method \Swoole\Server::exists().
      * @see \Swoole\Server::exists()
      */
@@ -666,10 +668,10 @@ class Server
      *
      * @param int $fd Session ID of the connection.
      * @return bool Returns true on success, or false if the connection does not exist or the operation fails.
-     * @alias Although this method and method \Swoole\Server::resume() are used for different purposes, they are
-     *        implemented exactly the same in Swoole.
      * @see \Swoole\Server::resume()
      * @see https://github.com/deminy/swoole-by-examples/blob/master/examples/servers/ddos-protection.php Example of DDoS protection using this method
+     * @alias Alias of method \Swoole\Server::resume(). Although the two methods are used for different purposes, they
+     *        are implemented exactly the same in Swoole.
      */
     public function confirm(int $fd): bool
     {
@@ -692,6 +694,8 @@ class Server
      * @param int $fd Session ID of the connection.
      * @return bool Returns true on success, or false on failure.
      * @see \Swoole\Server::pause()
+     * @see \Swoole\Server::confirm()
+     * @alias This method has an alias of \Swoole\Server::confirm().
      */
     public function resume(int $fd): bool
     {
@@ -821,14 +825,16 @@ class Server
      *   - This method can only be called from event worker processes, and only inside a coroutine; calling it outside
      *     of a coroutine makes Swoole throw a \Swoole\Error.
      *
-     * Here is a piece of code to illustrate how to configure the server before using this method:
-     *   $server = new \Swoole\Server('0.0.0.0', 9501);
-     *   $server->set(
+     * The server needs to be configured before using this method, e.g.,
+     * ```php
+     * $server = new \Swoole\Server('0.0.0.0', 9501);
+     * $server->set(
      *     [
-     *       \Swoole\Constant::OPTION_TASK_WORKER_NUM => 3, // Have three task worker processes included/created.
-     *       // ...
+     *         \Swoole\Constant::OPTION_TASK_WORKER_NUM => 3, // Have three task worker processes included/created.
+     *         // ...
      *     ]
-     *   );
+     * );
+     * ```
      *
      * Only the calling coroutine is suspended while waiting for the task results; the other coroutines of the process
      * keep running. Method \Swoole\Server::taskWaitMulti() works exactly the same as this method when it, too, is
@@ -970,8 +976,10 @@ class Server
     /**
      * Get the error code of the latest failed operation.
      *
-     * To translate the error code to an error message, use the following statement:
-     *     \swoole_strerror($server->getLastError(), SWOOLE_STRERROR_SWOOLE);
+     * To translate the error code to an error message, pass it to function \swoole_strerror(), e.g.,
+     * ```php
+     * \swoole_strerror($server->getLastError(), SWOOLE_STRERROR_SWOOLE);
+     * ```
      *
      * @return int The error code of the latest failed operation. The error codes are defined in the SWOOLE_ERROR_* constants.
      * @alias This method is an alias of function \swoole_last_error().
@@ -999,7 +1007,7 @@ class Server
      * @see \Swoole\Server::protect()
      * @see \Swoole\Constant::OPTION_HEARTBEAT_IDLE_TIME
      * @see \Swoole\Constant::OPTION_HEARTBEAT_CHECK_INTERVAL
-     * @see https://github.com/swoole/swoole-src/blob/v6.2.3/ext-src/swoole_server.cc#L3055 The actual default value of parameter $ifCloseConnection
+     * @see https://github.com/swoole/swoole-src/blob/v6.2.5/ext-src/swoole_server.cc#L3085 The actual default value of parameter $ifCloseConnection
      */
     public function heartbeat(bool $ifCloseConnection = false): array|false
     {

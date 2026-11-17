@@ -9,13 +9,13 @@ declare(strict_types=1);
  * source code (it kept reporting 60103, the value from Swoole 6.1.3), and Swoole 6.1.5 corrected it straight to
  * 60105. Keep this in mind when comparing against SWOOLE_VERSION_ID to detect Swoole 6.1.4.
  *
- * @see https://github.com/swoole/swoole-src/blob/v6.2.3/include/swoole_version.h#L26
+ * @see https://github.com/swoole/swoole-src/blob/v6.2.5/include/swoole_version.h#L26
  */
-define('SWOOLE_VERSION', '6.2.3');
-define('SWOOLE_VERSION_ID', 60203);
+define('SWOOLE_VERSION', '6.2.5');
+define('SWOOLE_VERSION_ID', 60205);
 define('SWOOLE_MAJOR_VERSION', 6);
 define('SWOOLE_MINOR_VERSION', 2);
-define('SWOOLE_RELEASE_VERSION', 3);
+define('SWOOLE_RELEASE_VERSION', 5);
 define('SWOOLE_EXTRA_VERSION', '');
 
 /*
@@ -124,7 +124,40 @@ define('SWOOLE_STRERROR_GAI', 1);
 define('SWOOLE_STRERROR_DNS', 2);
 define('SWOOLE_STRERROR_SWOOLE', 9);
 
-// Error codes.
+/*
+ * Swoole error codes. They are the values Swoole uses to report its own failures: a failed operation stores one of
+ * them where it can be read back, e.g., through function swoole_last_error(), or through the $errCode property of
+ * the object involved (e.g., \Swoole\Client::$errCode or \Swoole\Coroutine\Socket::$errCode). All of them are 500 or
+ * above, so that they never clash with operating system error numbers (the SOCKET_E* constants later in this file),
+ * which the same places report as well. Function swoole_strerror() turns a code into a readable message when passed
+ * SWOOLE_STRERROR_SWOOLE as its second parameter.
+ *
+ * The codes are grouped by range, following the grouping of the underlying C enum:
+ *   - 501-511: common errors.
+ *   - 550: no payload.
+ *   - 600-601: undefined behavior and thread-safety errors.
+ *   - 700-703: file and directory errors.
+ *   - 710-714: DNS lookup errors.
+ *   - 720-724: bad addresses, ports, socket types, and signals.
+ *   - 800-803: event loop errors.
+ *   - 1001-1020: connection (session) and SSL errors.
+ *   - 1201-1204: packet (protocol) errors.
+ *   - 2001-2003: task errors.
+ *   - 3001-3006: HTTP/2 protocol errors.
+ *   - 4001-4003: asynchronous I/O errors.
+ *   - 5001: client errors.
+ *   - 6001-6003: socket errors.
+ *   - 7001-7006: SOCKS5 proxy errors; 7101-7107: HTTP proxy and HTTP errors.
+ *   - 8501-8507: WebSocket errors.
+ *   - 9001-9016: server errors; 9101-9103: worker process errors.
+ *   - 10001-10019: coroutine errors.
+ *
+ * @see swoole_last_error()
+ * @see swoole_strerror()
+ * @see SWOOLE_STRERROR_SWOOLE
+ * @see https://github.com/swoole/swoole-src/blob/v6.2.5/include/swoole_error.h#L23
+ */
+// Common errors.
 define('SWOOLE_ERROR_MALLOC_FAIL', 501);
 define('SWOOLE_ERROR_SYSTEM_CALL_FAIL', 502);
 define('SWOOLE_ERROR_PHP_FATAL_ERROR', 503);
@@ -136,27 +169,34 @@ define('SWOOLE_ERROR_PROTOCOL_ERROR', 508);
 define('SWOOLE_ERROR_WRONG_OPERATION', 509);
 define('SWOOLE_ERROR_PHP_RUNTIME_NOTICE', 510); // @since 5.1.0
 define('SWOOLE_ERROR_FOR_TEST', 511); // @since 6.0.0
+// No payload.
 define('SWOOLE_ERROR_NO_PAYLOAD', 550); // @since 6.0.0
+// Undefined behavior and thread-safety errors.
 define('SWOOLE_ERROR_UNDEFINED_BEHAVIOR', 600); // @since 6.0.0
 define('SWOOLE_ERROR_NOT_THREAD_SAFETY', 601); // @since 6.0.0
+// File and directory errors.
 define('SWOOLE_ERROR_FILE_NOT_EXIST', 700);
 define('SWOOLE_ERROR_FILE_TOO_LARGE', 701);
 define('SWOOLE_ERROR_FILE_EMPTY', 702);
 define('SWOOLE_ERROR_DIR_NOT_EXIST', 703); // @since 6.1.0
+// DNS lookup errors.
 define('SWOOLE_ERROR_DNSLOOKUP_DUPLICATE_REQUEST', 710);
 define('SWOOLE_ERROR_DNSLOOKUP_RESOLVE_FAILED', 711);
 define('SWOOLE_ERROR_DNSLOOKUP_RESOLVE_TIMEOUT', 712);
 define('SWOOLE_ERROR_DNSLOOKUP_UNSUPPORTED', 713);
 define('SWOOLE_ERROR_DNSLOOKUP_NO_SERVER', 714);
+// Bad addresses, ports, socket types, and signals.
 define('SWOOLE_ERROR_BAD_IPV6_ADDRESS', 720);
 define('SWOOLE_ERROR_UNREGISTERED_SIGNAL', 721);
 define('SWOOLE_ERROR_BAD_HOST_ADDR', 722); // @since 6.0.0
 define('SWOOLE_ERROR_BAD_PORT', 723); // @since 6.1.0
 define('SWOOLE_ERROR_BAD_SOCKET_TYPE', 724); // @since 6.1.0
+// Event loop errors.
 define('SWOOLE_ERROR_EVENT_REMOVE_FAILED', 800); // @since 6.1.0
 define('SWOOLE_ERROR_EVENT_ADD_FAILED', 801); // @since 6.1.0
 define('SWOOLE_ERROR_EVENT_UPDATE_FAILED', 802); // @since 6.1.0
 define('SWOOLE_ERROR_EVENT_UNKNOWN_DATA', 803); // @since 6.1.0
+// Connection (session) and SSL errors.
 define('SWOOLE_ERROR_SESSION_CLOSED_BY_SERVER', 1001);
 define('SWOOLE_ERROR_SESSION_CLOSED_BY_CLIENT', 1002);
 define('SWOOLE_ERROR_SESSION_CLOSING', 1003);
@@ -177,32 +217,40 @@ define('SWOOLE_ERROR_SSL_RESET', 1017);
 define('SWOOLE_ERROR_SSL_HANDSHAKE_FAILED', 1018);
 define('SWOOLE_ERROR_SSL_CREATE_CONTEXT_FAILED', 1019); // @since 6.1.0
 define('SWOOLE_ERROR_SSL_CREATE_SESSION_FAILED', 1020); // @since 6.1.0
+// Packet (protocol) errors.
 define('SWOOLE_ERROR_PACKAGE_LENGTH_TOO_LARGE', 1201);
 define('SWOOLE_ERROR_PACKAGE_LENGTH_NOT_FOUND', 1202);
 define('SWOOLE_ERROR_DATA_LENGTH_TOO_LARGE', 1203);
 define('SWOOLE_ERROR_PACKAGE_MALFORMED_DATA', 1204);
+// Task errors.
 define('SWOOLE_ERROR_TASK_PACKAGE_TOO_BIG', 2001);
 define('SWOOLE_ERROR_TASK_DISPATCH_FAIL', 2002);
 define('SWOOLE_ERROR_TASK_TIMEOUT', 2003);
+// HTTP/2 protocol errors.
 define('SWOOLE_ERROR_HTTP2_STREAM_ID_TOO_BIG', 3001);
 define('SWOOLE_ERROR_HTTP2_STREAM_NO_HEADER', 3002);
 define('SWOOLE_ERROR_HTTP2_STREAM_NOT_FOUND', 3003);
 define('SWOOLE_ERROR_HTTP2_STREAM_IGNORE', 3004);
 define('SWOOLE_ERROR_HTTP2_SEND_CONTROL_FRAME_FAILED', 3005);
 define('SWOOLE_ERROR_HTTP2_INTERNAL_ERROR', 3006); // @since 6.1.0
+// Asynchronous I/O errors.
 define('SWOOLE_ERROR_AIO_BAD_REQUEST', 4001);
 define('SWOOLE_ERROR_AIO_CANCELED', 4002);
 define('SWOOLE_ERROR_AIO_TIMEOUT', 4003);
+// Client errors.
 define('SWOOLE_ERROR_CLIENT_NO_CONNECTION', 5001);
+// Socket errors.
 define('SWOOLE_ERROR_SOCKET_CLOSED', 6001);
 define('SWOOLE_ERROR_SOCKET_POLL_TIMEOUT', 6002);
 define('SWOOLE_ERROR_SOCKET_NOT_EXISTS', 6003); // @since 6.1.0
+// SOCKS5 proxy errors.
 define('SWOOLE_ERROR_SOCKS5_UNSUPPORT_VERSION', 7001);
 define('SWOOLE_ERROR_SOCKS5_UNSUPPORT_METHOD', 7002);
 define('SWOOLE_ERROR_SOCKS5_AUTH_FAILED', 7003);
 define('SWOOLE_ERROR_SOCKS5_SERVER_ERROR', 7004);
 define('SWOOLE_ERROR_SOCKS5_HANDSHAKE_FAILED', 7005);
 define('SWOOLE_ERROR_SOCKS5_CONNECT_FAILED', 7006); // @since 6.1.0
+// HTTP proxy and HTTP errors.
 define('SWOOLE_ERROR_HTTP_PROXY_HANDSHAKE_ERROR', 7101);
 define('SWOOLE_ERROR_HTTP_INVALID_PROTOCOL', 7102);
 define('SWOOLE_ERROR_HTTP_PROXY_HANDSHAKE_FAILED', 7103);
@@ -210,6 +258,7 @@ define('SWOOLE_ERROR_HTTP_PROXY_BAD_RESPONSE', 7104);
 define('SWOOLE_ERROR_HTTP_CONFLICT_HEADER', 7105); // @since 5.0.3
 define('SWOOLE_ERROR_HTTP_CONTEXT_UNAVAILABLE', 7106); // @since 5.1.2
 define('SWOOLE_ERROR_HTTP_COOKIE_UNAVAILABLE', 7107); // @since 6.0.0
+// WebSocket errors.
 define('SWOOLE_ERROR_WEBSOCKET_BAD_CLIENT', 8501);
 define('SWOOLE_ERROR_WEBSOCKET_BAD_OPCODE', 8502);
 define('SWOOLE_ERROR_WEBSOCKET_UNCONNECTED', 8503);
@@ -217,6 +266,7 @@ define('SWOOLE_ERROR_WEBSOCKET_HANDSHAKE_FAILED', 8504);
 define('SWOOLE_ERROR_WEBSOCKET_PACK_FAILED', 8505);
 define('SWOOLE_ERROR_WEBSOCKET_UNPACK_FAILED', 8506);
 define('SWOOLE_ERROR_WEBSOCKET_INCOMPLETE_PACKET', 8507);
+// Server errors.
 define('SWOOLE_ERROR_SERVER_MUST_CREATED_BEFORE_CLIENT', 9001);
 define('SWOOLE_ERROR_SERVER_TOO_MANY_SOCKET', 9002);
 define('SWOOLE_ERROR_SERVER_WORKER_TERMINATED', 9003);
@@ -233,9 +283,11 @@ define('SWOOLE_ERROR_SERVER_IS_NOT_REGULAR_FILE', 9013);
 define('SWOOLE_ERROR_SERVER_SEND_TO_WOKER_TIMEOUT', 9014);
 define('SWOOLE_ERROR_SERVER_INVALID_CALLBACK', 9015); // @since 6.0.0
 define('SWOOLE_ERROR_SERVER_UNRELATED_THREAD', 9016); // @since 6.0.0
+// Worker process errors.
 define('SWOOLE_ERROR_SERVER_WORKER_EXIT_TIMEOUT', 9101);
 define('SWOOLE_ERROR_SERVER_WORKER_ABNORMAL_PIPE_DATA', 9102);
 define('SWOOLE_ERROR_SERVER_WORKER_UNPROCESSED_DATA', 9103);
+// Coroutine errors.
 define('SWOOLE_ERROR_CO_OUT_OF_COROUTINE', 10001);
 define('SWOOLE_ERROR_CO_HAS_BEEN_BOUND', 10002);
 define('SWOOLE_ERROR_CO_HAS_BEEN_DISCARDED', 10003);
@@ -305,7 +357,15 @@ define('SWOOLE_TRACE_CO_ODBC', 8589934592); // 2^33; @since 5.1.0
 define('SWOOLE_TRACE_CO_ORACLE', 17179869184); // 2^34; @since 5.1.0
 define('SWOOLE_TRACE_CO_SQLITE', 34359738368); // 2^35; @since 5.1.2
 define('SWOOLE_TRACE_CO_FIREBIRD', 68719476736); // 2^36; @since 6.2.0
-define('SWOOLE_TRACE_CO_SSH2', 137438953472); // 2^37; @since 6.2.0
+/*
+ * Trace log type for the coroutine-friendly copy of the ssh2 extension that Swoole compiles in when installed with
+ * the "--with-swoole-ssh2" configuration option. The constant itself is defined in every build. As of Swoole 6.2.5,
+ * however, no Swoole code emits trace logs of this type yet, not even in a build with that option, so enabling it
+ * through setting "trace_flags" has no visible effect.
+ *
+ * @since 6.2.0
+ */
+define('SWOOLE_TRACE_CO_SSH2', 137438953472); // 2^37
 /*
  * Trace log type for threads.
  *
@@ -389,8 +449,9 @@ define('SWOOLE_IOV_MAX', 1024);
  *     be submitted without a system call, at the cost of keeping that thread running. Its value mirrors the kernel's
  *     IORING_SETUP_SQPOLL setup flag.
  *
- * These two constants are available only when Swoole is installed with the "--enable-iouring" configuration option
- * included (which additionally requires the liburing library to be present).
+ * These two constants are available only on Linux, when Swoole is installed with either the "--enable-iouring"
+ * configuration option or the "--with-liburing-dir" configuration option included (both require the liburing library;
+ * the latter points the build at a liburing installation in a specific directory).
  *
  * @see swoole_async_set()
  * @see https://man7.org/linux/man-pages/man2/io_uring_setup.2.html io_uring_setup(2)
@@ -423,7 +484,7 @@ define('SWOOLE_SPINLOCK', 5); # Supported only if the Spin Locks option is provi
  *   - https://github.com/php/php-src/blob/php-8.1.12/ext/pcntl/pcntl.c#L106
  *
  * Note that values of these constants are not always the same in different operating systems. The values shown here
- * is for Linux only.
+ * are for Linux only.
  */
 // SIG_* constants. Please see your systems signal(7) man page for details of the default behavior of these signals.
 define('SIG_IGN', 1);
@@ -792,6 +853,13 @@ define('SWOOLE_CHANNEL_CANCELED', -3);
 
 /*
  * Runtime hook flags.
+ *
+ * On the PHP streams hooked by the socket-related flags (SWOOLE_HOOK_TCP, SWOOLE_HOOK_UDP, SWOOLE_HOOK_UNIX,
+ * SWOOLE_HOOK_UDG, SWOOLE_HOOK_SSL, and SWOOLE_HOOK_TLS), the timeout set with function stream_set_timeout() applies
+ * to writes as well as reads since Swoole 6.2.4: a blocking fwrite() gives up once the timeout passes, returning
+ * FALSE (before 6.2.4, it kept waiting, and a timeout was reported as 0 bytes written together with a "Send of N
+ * bytes failed" notice). A read that times out fails as well, with fread() returning FALSE instead of an empty
+ * string as before 6.2.4. In neither case is the stream marked as having reached its end.
  */
 define('SWOOLE_HOOK_TCP', 2); // 2^1
 define('SWOOLE_HOOK_UDP', 4); // 2^2
@@ -830,7 +898,8 @@ define('SWOOLE_HOOK_STREAM_SELECT', SWOOLE_HOOK_STREAM_FUNCTION);
  * read using the original blocking implementation from PHP.
  *
  * By default the underlying file operations are carried out in a thread pool (function swoole_async_set() is used to
- * size that pool), or through io_uring when Swoole is installed with option "--enable-iouring" included.
+ * size that pool), or through io_uring when Swoole is installed with option "--enable-iouring" (or
+ * "--with-liburing-dir") included.
  *
  * Since Swoole 6.1.2, the same coroutine-friendly file operations can also be requested for one specific file at a
  * time, without enabling this hook flag globally: prefix the file path with the "async.file://" stream protocol
@@ -973,6 +1042,18 @@ define('SWOOLE_HOOK_STDIO', 32768); // 2^15
  * Runtime hook flag SWOOLE_HOOK_PDO_PGSQL makes the PDO_PGSQL driver coroutine-friendly. This flag is available only
  * when Swoole is installed with option "--enable-swoole-pgsql" included.
  *
+ * Since Swoole 6.2.5, with this hook enabled:
+ *   - DSN option "connect_timeout" is honored when connecting from inside a coroutine; before 6.2.5, it was ignored
+ *     there, so connecting to an unreachable server waited for the operating system's own connection timeout instead.
+ *   - When the network connection breaks while PDO is talking to the server, the failure is reported as a PDO
+ *     connection error (SQLSTATE 08006) whose message names the network error, and a persistent connection in that
+ *     state is removed from PDO's pool right away, so later code never gets the broken connection back; before 6.2.5,
+ *     the error carried whatever message the PostgreSQL client library had, and a broken persistent connection stayed
+ *     in the pool until it was found dead on reuse.
+ *   - Checking a persistent connection on reuse, and reconnecting it when it is found dead, no longer blocks the
+ *     process; before 6.2.5, the reconnect was a blocking call.
+ *
+ * @see https://www.php.net/manual/en/ref.pdo-pgsql.connection.php The PDO_PGSQL DSN options, e.g., "connect_timeout".
  * @since 5.1.0
  */
 define('SWOOLE_HOOK_PDO_PGSQL', 65536); // 2^16
@@ -1075,9 +1156,9 @@ if (class_exists(Swoole\Coroutine\Curl\Exception::class)) { // When Swoole is in
  * Unlike the other SOCKET_E* constants defined earlier in this file, this constant is defined by Swoole even when PHP
  * extension sockets is installed, since that extension does not define it.
  *
- * A typical use case of this constant can be found in class Swoole\Coroutine\Server.
+ * A typical use case of this constant can be found in class \Swoole\Coroutine\Server.
  *
- * @see Swoole\Coroutine\Server::start()
+ * @see \Swoole\Coroutine\Server::start()
  */
 define('SOCKET_ECANCELED', 125);
 
@@ -1256,7 +1337,7 @@ define('SWOOLE_WEBSOCKET_CLOSE_CLOSE_SERVICE_RESTART', 1012); // @since 5.1.2
 define('SWOOLE_WEBSOCKET_CLOSE_TRY_AGAIN_LATER', 1013); // @since 5.1.2
 define('SWOOLE_WEBSOCKET_CLOSE_BAD_GATEWAY', 1014); // @since 5.1.2
 define('SWOOLE_WEBSOCKET_CLOSE_TLS', 1015);
-// Next twelve constants are kept for backward compatibility.
+// Next fifteen constants are kept for backward compatibility.
 define('WEBSOCKET_CLOSE_NORMAL', SWOOLE_WEBSOCKET_CLOSE_NORMAL);
 define('WEBSOCKET_CLOSE_GOING_AWAY', SWOOLE_WEBSOCKET_CLOSE_GOING_AWAY);
 define('WEBSOCKET_CLOSE_PROTOCOL_ERROR', SWOOLE_WEBSOCKET_CLOSE_PROTOCOL_ERROR);
@@ -1292,7 +1373,7 @@ define('SWOOLE_TIMER_MAX_MS', 9223372036854775807);
  * The maximum number of seconds that can be used for time-related operations (e.g., timeout, time intervals, etc) in
  * Swoole. It equals to `(float) SWOOLE_TIMER_MAX_MS / 1000`.
  */
-define('SWOOLE_TIMER_MAX_SEC', (float) (SWOOLE_TIMER_MAX_MS / 1000));
+define('SWOOLE_TIMER_MAX_SEC', (float) SWOOLE_TIMER_MAX_MS / 1000);
 
 /*
  * Constants in this section are for SSL/TLS support. Before Swoole 6.2.0, they were available only when Swoole was
@@ -1300,7 +1381,17 @@ define('SWOOLE_TIMER_MAX_SEC', (float) (SWOOLE_TIMER_MAX_MS / 1000));
  * OpenSSL support is always built in, so these constants are always available (except for the ones tied to a
  * specific SSL/TLS protocol version, which still depend on the OpenSSL library Swoole was compiled against).
  */
+// Socket flag that turns on SSL/TLS encryption, e.g., SWOOLE_SOCK_TCP | SWOOLE_SSL.
 define('SWOOLE_SSL', 512); // 2^9
+/*
+ * SSL/TLS method constants. Each one names an OpenSSL connection method (a protocol version, optionally restricted to
+ * the client or server side). As of Swoole 6.2.5, these constants are still defined but not read by any Swoole
+ * setting or method; to restrict which protocol versions are allowed, use the SWOOLE_SSL_* constants below with
+ * setting "ssl_protocols" instead.
+ *
+ * Constants SWOOLE_TLS_METHOD, SWOOLE_TLS_SERVER_METHOD, and SWOOLE_TLS_CLIENT_METHOD are the newer names of
+ * SWOOLE_SSLv23_METHOD, SWOOLE_SSLv23_SERVER_METHOD, and SWOOLE_SSLv23_CLIENT_METHOD, and share the same values.
+ */
 define('SWOOLE_SSLv3_METHOD', 1);
 define('SWOOLE_SSLv3_SERVER_METHOD', 2);
 define('SWOOLE_SSLv3_CLIENT_METHOD', 3);
@@ -1332,6 +1423,14 @@ define('SWOOLE_TLS_METHOD', 0);
 define('SWOOLE_TLS_SERVER_METHOD', 4);
 define('SWOOLE_TLS_CLIENT_METHOD', 5);
 
+/*
+ * SSL/TLS protocol versions. They are bit flags, combined with the bitwise OR operator (|) to form the value of setting
+ * "ssl_protocols", which lists the protocol versions a server port, client, or coroutine socket accepts, e.g.,
+ * SWOOLE_SSL_TLSv1_2 | SWOOLE_SSL_TLSv1_3.
+ *
+ * @see \Swoole\Server::set()
+ * @see \Swoole\Coroutine\Socket::setProtocol()
+ */
 define('SWOOLE_SSL_SSLv2', 2);
 
 #ifdef HAVE_SSL3

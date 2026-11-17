@@ -15,7 +15,7 @@ use PhpZip\Exception\RuntimeException;
 use PhpZip\Model\ZipEntry;
 
 /**
- * Encryption PKWARE Traditional Encryption.
+ * PKWARE traditional encryption filter.
  */
 class PKEncryptionStreamFilter extends \php_user_filter
 {

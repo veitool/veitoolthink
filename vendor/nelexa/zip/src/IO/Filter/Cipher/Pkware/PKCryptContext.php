@@ -26,7 +26,7 @@ class PKCryptContext
     public const STD_DEC_HDR_SIZE = 12;
 
     /**
-     * Crc table.
+     * CRC table.
      *
      * @var int[]|array
      */
@@ -361,7 +361,7 @@ class PKCryptContext
     }
 
     /**
-     * Update crc.
+     * Update the CRC.
      */
     private function crc32(int $oldCrc, int $charAt): int
     {

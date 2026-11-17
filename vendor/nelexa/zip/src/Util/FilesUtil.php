@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace PhpZip\Util;
 
+use PhpZip\Exception\ZipException;
 use PhpZip\Util\Iterator\IgnoreFilesFilterIterator;
 use PhpZip\Util\Iterator\IgnoreFilesRecursiveFilterIterator;
 
@@ -250,14 +251,34 @@ final class FilesUtil
     /**
      * Normalizes zip path.
      *
+     * Treats both "/" and "\" as path separators, removes "." and ".."
+     * components and rejects absolute, drive-relative, UNC and stream-wrapper
+     * style names, so that a crafted archive cannot escape the extraction
+     * directory (Zip Slip). See issues #39, #100.
+     *
      * @param string $path Zip path
+     *
+     * @throws ZipException if the entry name is unsafe
      */
     public static function normalizeZipPath(string $path): string
     {
+        if (strpos($path, "\0") !== false) {
+            throw new ZipException(\sprintf('Invalid zip entry name "%s": contains NUL byte', $path));
+        }
+
+        // A Windows drive-relative name ("C:evil.txt", "C:\dir\file.txt"),
+        // a UNC path ("\\server\share\file") or a stream-wrapper-like name
+        // would bypass the extraction directory when joined with it.
+        if (preg_match('#^([A-Za-z]:|\\\\\\\\|[A-Za-z0-9+.-]+://)#', $path) === 1) {
+            throw new ZipException(\sprintf('Invalid zip entry name "%s": absolute or unsafe path', $path));
+        }
+
+        $parts = preg_split('#[/\\\\]#', $path);
+
         return implode(
             \DIRECTORY_SEPARATOR,
             array_filter(
-                explode('/', $path),
+                $parts === false ? [] : $parts,
                 static fn ($part) => $part !== '.' && $part !== '..'
             )
         );
@@ -288,6 +309,80 @@ final class FilesUtil
         }
 
         return symlink($target, $path);
+    }
+
+    /**
+     * Checks that a symlink target, resolved against the link location,
+     * stays inside the given extraction root. See issue #101.
+     *
+     * @param string $target       the raw symlink target stored in the zip entry
+     * @param string $linkPath     the filesystem path of the link being created
+     * @param string $rootRealPath the realpath of the extraction directory
+     */
+    public static function isSymlinkTargetInsideRoot(string $target, string $linkPath, string $rootRealPath): bool
+    {
+        $rootRealPath = rtrim($rootRealPath, '/');
+
+        if ($rootRealPath === ''
+            || $target === ''
+            || strpos($target, "\0") !== false
+            || self::isAbsolutePath($target)
+        ) {
+            return false;
+        }
+
+        $baseRealPath = realpath(\dirname($linkPath));
+
+        if ($baseRealPath === false) {
+            return false;
+        }
+
+        // Lexically resolve the relative target against the link's parent
+        // directory (the link itself does not exist yet).
+        $stack = explode('/', $baseRealPath);
+        $targetParts = preg_split('#[/\\\\]#', $target);
+
+        foreach ($targetParts === false ? [] : $targetParts as $targetPart) {
+            if ($targetPart === '' || $targetPart === '.') {
+                continue;
+            }
+            if ($targetPart === '..') {
+                array_pop($stack);
+                continue;
+            }
+            $stack[] = $targetPart;
+        }
+
+        $resolvedPath = implode('/', $stack);
+
+        if ($resolvedPath !== $rootRealPath
+            && strpos($resolvedPath, $rootRealPath . '/') !== 0
+        ) {
+            return false;
+        }
+
+        // The resolved path must not traverse through a directory symlink
+        // planted by an earlier entry pointing outside the root. Find the
+        // first existing ancestor and verify its real location.
+        $prefix = $resolvedPath;
+
+        while (strpos($prefix, $rootRealPath) === 0) {
+            if (file_exists($prefix)) {
+                $prefixRealPath = realpath($prefix);
+
+                return $prefixRealPath !== false
+                    && ($prefixRealPath === $rootRealPath
+                        || strpos($prefixRealPath, $rootRealPath . '/') === 0);
+            }
+            $parentPath = \dirname($prefix);
+
+            if ($parentPath === $prefix || strpos($parentPath, $rootRealPath) !== 0) {
+                break;
+            }
+            $prefix = $parentPath;
+        }
+
+        return false;
     }
 
     public static function isBadCompressionFile(string $file): bool

@@ -92,8 +92,6 @@ class ZipFile implements \Countable, \ArrayAccess, \Iterator
      * Open zip archive from file.
      *
      * @throws ZipException if can't open file
-     *
-     * @return ZipFile
      */
     public function openFile(string $filename, array $options = []): self
     {
@@ -117,8 +115,6 @@ class ZipFile implements \Countable, \ArrayAccess, \Iterator
      * Open zip archive from raw string data.
      *
      * @throws ZipException if can't open temp stream
-     *
-     * @return ZipFile
      */
     public function openFromString(string $data, array $options = []): self
     {
@@ -143,8 +139,6 @@ class ZipFile implements \Countable, \ArrayAccess, \Iterator
      * @param resource $handle
      *
      * @throws ZipException
-     *
-     * @return ZipFile
      */
     public function openFromStream($handle, array $options = []): self
     {
@@ -183,10 +177,6 @@ class ZipFile implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * Set archive comment.
-     *
-     * @param ?string $comment
-     *
-     * @return ZipFile
      */
     public function setArchiveComment(?string $comment = null): self
     {
@@ -239,12 +229,8 @@ class ZipFile implements \Countable, \ArrayAccess, \Iterator
     /**
      * Set entry comment.
      *
-     * @param ?string $comment
-     *
      * @throws ZipEntryNotFoundException
      * @throws ZipException
-     *
-     * @return ZipFile
      */
     public function setEntryComment(string $entryName, ?string $comment = null): self
     {
@@ -264,7 +250,7 @@ class ZipFile implements \Countable, \ArrayAccess, \Iterator
         $zipData = $this->zipContainer->getEntry($entryName)->getData();
 
         if ($zipData === null) {
-            throw new ZipException(sprintf('No data for zip entry %s', $entryName));
+            throw new ZipException(\sprintf('No data for zip entry %s', $entryName));
         }
 
         return $zipData->getDataAsString();
@@ -290,7 +276,7 @@ class ZipFile implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * Returns an array of zip records (ex. for modify time).
+     * Returns an array of zip entries (e.g. for inspecting modification times).
      *
      * @return ZipEntry[] array of raw zip entries
      */
@@ -312,8 +298,6 @@ class ZipFile implements \Countable, \ArrayAccess, \Iterator
      *                                     information about the extracted entries
      *
      * @throws ZipException
-     *
-     * @return ZipFile
      */
     public function extractTo(
         string $destDir,
@@ -322,15 +306,15 @@ class ZipFile implements \Countable, \ArrayAccess, \Iterator
         ?array &$extractedEntries = []
     ): self {
         if (!file_exists($destDir)) {
-            throw new ZipException(sprintf('Destination %s not found', $destDir));
+            throw new ZipException(\sprintf('Destination %s not found', $destDir));
         }
 
         if (!is_dir($destDir)) {
-            throw new ZipException('Destination is not directory');
+            throw new ZipException('Destination is not a directory');
         }
 
         if (!is_writable($destDir)) {
-            throw new ZipException('Destination is not writable directory');
+            throw new ZipException('Destination is not a writable directory');
         }
 
         if ($extractedEntries === null) {
@@ -389,7 +373,7 @@ class ZipFile implements \Countable, \ArrayAccess, \Iterator
 
                 if (!mkdir($dir, $dirMode, true) && !is_dir($dir)) {
                     // @codeCoverageIgnoreStart
-                    throw new \RuntimeException(sprintf('Directory "%s" was not created', $dir));
+                    throw new \RuntimeException(\sprintf('Directory "%s" was not created', $dir));
                     // @codeCoverageIgnoreEnd
                 }
                 chmod($dir, $dirMode);
@@ -428,7 +412,7 @@ class ZipFile implements \Countable, \ArrayAccess, \Iterator
             set_error_handler(
                 static function (int $errorNumber, string $errorString) use ($entry, $file): ?bool {
                     throw new ZipException(
-                        sprintf(
+                        \sprintf(
                             'Cannot extract zip entry %s. File %s cannot open for write. %s',
                             $entry->getName(),
                             $file,
@@ -464,8 +448,22 @@ class ZipFile implements \Countable, \ArrayAccess, \Iterator
         }
 
         $allowSymlink = (bool) $options[ZipOptions::EXTRACT_SYMLINKS];
+        $destDirRealPath = realpath($destDir);
 
         foreach ($symlinks as $linkPath => $target) {
+            if (
+                $allowSymlink
+                && \DIRECTORY_SEPARATOR !== '\\'
+                && ($destDirRealPath === false
+                    || !FilesUtil::isSymlinkTargetInsideRoot($target, $linkPath, $destDirRealPath))
+            ) {
+                // A symlink target that resolves outside the extraction
+                // directory is rejected (issue #101). The entry is skipped
+                // the same way as a failed symlink.
+                unset($extractedEntries[$linkPath]);
+                continue;
+            }
+
             if (!FilesUtil::symlink($target, $linkPath, $allowSymlink)) {
                 unset($extractedEntries[$linkPath]);
             }
@@ -494,10 +492,8 @@ class ZipFile implements \Countable, \ArrayAccess, \Iterator
      *                                    If null, then auto choosing method.
      *
      * @throws ZipException
-     *
-     * @return ZipFile
      */
-    public function addFromString(string $entryName, string $contents, ?int $compressionMethod = null, $setTime = true): self
+    public function addFromString(string $entryName, string $contents, ?int $compressionMethod = null): self
     {
         $entryName = $this->normalizeEntryName($entryName);
 
@@ -521,7 +517,7 @@ class ZipFile implements \Countable, \ArrayAccess, \Iterator
         $zipEntry->setCreatedOS(ZipPlatform::OS_UNIX);
         $zipEntry->setExtractedOS(ZipPlatform::OS_UNIX);
         $zipEntry->setUnixMode(0100644);
-        if ($setTime) $zipEntry->setTime(time());
+        $zipEntry->setTime(time());
 
         $this->addZipEntry($zipEntry);
 
@@ -575,8 +571,6 @@ class ZipFile implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param ?string $entryName
-     *
      * @throws ZipException
      */
     public function addSplFile(\SplFileInfo $file, ?string $entryName = null, array $options = []): ZipEntry
@@ -592,7 +586,7 @@ class ZipFile implements \Countable, \ArrayAccess, \Iterator
         $options += $defaultOptions;
 
         if (!$file->isReadable()) {
-            throw new InvalidArgumentException(sprintf('File %s is not readable', $file->getPathname()));
+            throw new InvalidArgumentException(\sprintf('File %s is not readable', $file->getPathname()));
         }
 
         if ($entryName === null) {
@@ -694,8 +688,6 @@ class ZipFile implements \Countable, \ArrayAccess, \Iterator
      *                                       If null, then auto choosing method.
      *
      * @throws ZipException
-     *
-     * @return ZipFile
      */
     public function addFile(string $filename, ?string $entryName = null, ?int $compressionMethod = null): self
     {
@@ -722,13 +714,11 @@ class ZipFile implements \Countable, \ArrayAccess, \Iterator
      *                                    If null, then auto choosing method.
      *
      * @throws ZipException
-     *
-     * @return ZipFile
      */
     public function addFromStream($stream, string $entryName, ?int $compressionMethod = null): self
     {
         if (!\is_resource($stream)) {
-            throw new InvalidArgumentException('Stream is not resource');
+            throw new InvalidArgumentException('Stream is not a resource');
         }
 
         $entryName = $this->normalizeEntryName($entryName);
@@ -777,8 +767,6 @@ class ZipFile implements \Countable, \ArrayAccess, \Iterator
      * Add an empty directory in the zip archive.
      *
      * @throws ZipException
-     *
-     * @return ZipFile
      */
     public function addEmptyDir(string $dirName): self
     {
@@ -801,7 +789,7 @@ class ZipFile implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * Add directory not recursively to the zip archive.
+     * Add a directory to the zip archive without recursion.
      *
      * @param string   $inputDir          Input directory
      * @param string   $localPath         add files to this directory, or the root
@@ -812,8 +800,6 @@ class ZipFile implements \Countable, \ArrayAccess, \Iterator
      *                                    If null, then auto choosing method.
      *
      * @throws ZipException
-     *
-     * @return ZipFile
      */
     public function addDir(string $inputDir, string $localPath = '/', ?int $compressionMethod = null): self
     {
@@ -822,7 +808,7 @@ class ZipFile implements \Countable, \ArrayAccess, \Iterator
         }
 
         if (!is_dir($inputDir)) {
-            throw new InvalidArgumentException(sprintf('The "%s" directory does not exist.', $inputDir));
+            throw new InvalidArgumentException(\sprintf('The "%s" directory does not exist.', $inputDir));
         }
         $inputDir = rtrim($inputDir, '/\\') . \DIRECTORY_SEPARATOR;
 
@@ -832,7 +818,7 @@ class ZipFile implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * Add recursive directory to the zip archive.
+     * Add a directory recursively to the zip archive.
      *
      * @param string   $inputDir          Input directory
      * @param string   $localPath         add files to this directory, or the root
@@ -843,8 +829,6 @@ class ZipFile implements \Countable, \ArrayAccess, \Iterator
      *                                    If null, then auto choosing method.
      *
      * @throws ZipException
-     *
-     * @return ZipFile
      *
      * @see ZipCompressionMethod::STORED
      * @see ZipCompressionMethod::DEFLATED
@@ -857,7 +841,7 @@ class ZipFile implements \Countable, \ArrayAccess, \Iterator
         }
 
         if (!is_dir($inputDir)) {
-            throw new InvalidArgumentException(sprintf('The "%s" directory does not exist.', $inputDir));
+            throw new InvalidArgumentException(\sprintf('The "%s" directory does not exist.', $inputDir));
         }
         $inputDir = rtrim($inputDir, '/\\') . \DIRECTORY_SEPARATOR;
 
@@ -878,8 +862,6 @@ class ZipFile implements \Countable, \ArrayAccess, \Iterator
      *                                     If null, then auto choosing method.
      *
      * @throws ZipException
-     *
-     * @return ZipFile
      *
      * @see ZipCompressionMethod::STORED
      * @see ZipCompressionMethod::DEFLATED
@@ -945,7 +927,6 @@ class ZipFile implements \Countable, \ArrayAccess, \Iterator
      *
      * @throws ZipException
      *
-     * @return ZipFile
      * @sse https://en.wikipedia.org/wiki/Glob_(programming) Glob pattern syntax
      */
     public function addFilesFromGlob(
@@ -972,8 +953,6 @@ class ZipFile implements \Countable, \ArrayAccess, \Iterator
      *
      * @throws ZipException
      *
-     * @return ZipFile
-     *
      * @sse https://en.wikipedia.org/wiki/Glob_(programming) Glob pattern syntax
      */
     private function addGlob(
@@ -988,7 +967,7 @@ class ZipFile implements \Countable, \ArrayAccess, \Iterator
         }
 
         if (!is_dir($inputDir)) {
-            throw new InvalidArgumentException(sprintf('The "%s" directory does not exist.', $inputDir));
+            throw new InvalidArgumentException(\sprintf('The "%s" directory does not exist.', $inputDir));
         }
 
         if (empty($globPattern)) {
@@ -1023,7 +1002,6 @@ class ZipFile implements \Countable, \ArrayAccess, \Iterator
      *
      * @throws ZipException
      *
-     * @return ZipFile
      * @sse https://en.wikipedia.org/wiki/Glob_(programming) Glob pattern syntax
      */
     public function addFilesFromGlobRecursive(
@@ -1048,8 +1026,6 @@ class ZipFile implements \Countable, \ArrayAccess, \Iterator
      *                                    If null, then auto choosing method.
      *
      * @throws ZipException
-     *
-     * @return ZipFile
      *
      * @internal param bool $recursive Recursive search
      */
@@ -1076,8 +1052,6 @@ class ZipFile implements \Countable, \ArrayAccess, \Iterator
      *                                    If null, then auto choosing method.
      *
      * @throws ZipException
-     *
-     * @return ZipFile
      */
     private function addRegex(
         string $inputDir,
@@ -1095,7 +1069,7 @@ class ZipFile implements \Countable, \ArrayAccess, \Iterator
         }
 
         if (!is_dir($inputDir)) {
-            throw new InvalidArgumentException(sprintf('The "%s" directory does not exist.', $inputDir));
+            throw new InvalidArgumentException(\sprintf('The "%s" directory does not exist.', $inputDir));
         }
         $inputDir = rtrim($inputDir, '/\\') . \DIRECTORY_SEPARATOR;
 
@@ -1111,8 +1085,6 @@ class ZipFile implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param ?int $compressionMethod
-     *
      * @throws ZipException
      */
     private function doAddFiles(
@@ -1158,8 +1130,6 @@ class ZipFile implements \Countable, \ArrayAccess, \Iterator
      *
      * @throws ZipException
      *
-     * @return ZipFile
-     *
      * @internal param bool $recursive Recursive search
      */
     public function addFilesFromRegexRecursive(
@@ -1172,9 +1142,9 @@ class ZipFile implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * Add array data to archive.
-     * Keys is local names.
-     * Values is contents.
+     * Add array data to the archive.
+     * Keys are local names.
+     * Values are contents.
      *
      * @param array $mapData associative array for added to zip
      */
@@ -1192,8 +1162,6 @@ class ZipFile implements \Countable, \ArrayAccess, \Iterator
      * @param string $newName new entry name
      *
      * @throws ZipException
-     *
-     * @return ZipFile
      */
     public function rename(string $oldName, string $newName): self
     {
@@ -1213,8 +1181,6 @@ class ZipFile implements \Countable, \ArrayAccess, \Iterator
      * @param string $entryName zip Entry name
      *
      * @throws ZipEntryNotFoundException if entry not found
-     *
-     * @return ZipFile
      */
     public function deleteFromName(string $entryName): self
     {
@@ -1232,7 +1198,6 @@ class ZipFile implements \Countable, \ArrayAccess, \Iterator
      *
      * @param string $globPattern Glob pattern
      *
-     * @return ZipFile
      * @sse https://en.wikipedia.org/wiki/Glob_(programming) Glob pattern syntax
      */
     public function deleteFromGlob(string $globPattern): self
@@ -1250,8 +1215,6 @@ class ZipFile implements \Countable, \ArrayAccess, \Iterator
      * Delete entries by regex pattern.
      *
      * @param string $regexPattern Regex pattern
-     *
-     * @return ZipFile
      */
     public function deleteFromRegex(string $regexPattern): self
     {
@@ -1265,8 +1228,6 @@ class ZipFile implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * Delete all entries.
-     *
-     * @return ZipFile
      */
     public function deleteAll(): self
     {
@@ -1277,8 +1238,6 @@ class ZipFile implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * Set compression level for new entries.
-     *
-     * @return ZipFile
      *
      * @see ZipCompressionLevel::NORMAL
      * @see ZipCompressionLevel::SUPER_FAST
@@ -1296,8 +1255,6 @@ class ZipFile implements \Countable, \ArrayAccess, \Iterator
 
     /**
      * @throws ZipException
-     *
-     * @return ZipFile
      *
      * @see ZipCompressionLevel::NORMAL
      * @see ZipCompressionLevel::SUPER_FAST
@@ -1320,8 +1277,6 @@ class ZipFile implements \Countable, \ArrayAccess, \Iterator
      *
      * @throws ZipException
      *
-     * @return ZipFile
-     *
      * @see ZipCompressionMethod::STORED
      * @see ZipCompressionMethod::DEFLATED
      * @see ZipCompressionMethod::BZIP2
@@ -1337,11 +1292,9 @@ class ZipFile implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * Set password to all input encrypted entries.
+     * Set the password for reading all encrypted entries.
      *
      * @param string $password Password
-     *
-     * @return ZipFile
      */
     public function setReadPassword(string $password): self
     {
@@ -1351,13 +1304,11 @@ class ZipFile implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * Set password to concrete input entry.
+     * Set the password for reading a specific entry.
      *
      * @param string $password Password
      *
      * @throws ZipException
-     *
-     * @return ZipFile
      */
     public function setReadPasswordEntry(string $entryName, string $password): self
     {
@@ -1373,8 +1324,6 @@ class ZipFile implements \Countable, \ArrayAccess, \Iterator
      * @param int|null $encryptionMethod Encryption method
      *
      * @throws ZipEntryNotFoundException
-     *
-     * @return ZipFile
      */
     public function setPassword(string $password, ?int $encryptionMethod = ZipEncryptionMethod::WINZIP_AES_256): self
     {
@@ -1388,13 +1337,9 @@ class ZipFile implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * Sets a new password of an entry defined by its name.
-     *
-     * @param ?int $encryptionMethod
+     * Sets a new password for an entry identified by its name.
      *
      * @throws ZipException
-     *
-     * @return ZipFile
      */
     public function setPasswordEntry(string $entryName, string $password, ?int $encryptionMethod = null): self
     {
@@ -1407,8 +1352,6 @@ class ZipFile implements \Countable, \ArrayAccess, \Iterator
      * Disable encryption for all entries that are already in the archive.
      *
      * @throws ZipEntryNotFoundException
-     *
-     * @return ZipFile
      */
     public function disableEncryption(): self
     {
@@ -1421,8 +1364,6 @@ class ZipFile implements \Countable, \ArrayAccess, \Iterator
      * Disable encryption of an entry defined by its name.
      *
      * @throws ZipEntryNotFoundException
-     *
-     * @return ZipFile
      */
     public function disableEncryptionEntry(string $entryName): self
     {
@@ -1432,9 +1373,7 @@ class ZipFile implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * Undo all changes done in the archive.
-     *
-     * @return ZipFile
+     * Undo all changes made to the archive.
      */
     public function unchangeAll(): self
     {
@@ -1444,9 +1383,7 @@ class ZipFile implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * Undo change archive comment.
-     *
-     * @return ZipFile
+     * Undo changes to the archive comment.
      */
     public function unchangeArchiveComment(): self
     {
@@ -1456,11 +1393,9 @@ class ZipFile implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * Revert all changes done to an entry with the given name.
+     * Revert all changes made to an entry with the given name.
      *
      * @param string|ZipEntry $entry Entry name or ZipEntry
-     *
-     * @return ZipFile
      */
     public function unchangeEntry($entry): self
     {
@@ -1475,8 +1410,6 @@ class ZipFile implements \Countable, \ArrayAccess, \Iterator
      * @param string $filename Output filename
      *
      * @throws ZipException
-     *
-     * @return ZipFile
      */
     public function saveAsFile(string $filename): self
     {
@@ -1513,7 +1446,7 @@ class ZipFile implements \Countable, \ArrayAccess, \Iterator
                 unlink($tempFilename);
             }
 
-            throw new ZipException(sprintf('Cannot move %s to %s', $tempFilename, $filename));
+            throw new ZipException(\sprintf('Cannot move %s to %s', $tempFilename, $filename));
         }
 
         if ($reopen) {
@@ -1529,13 +1462,11 @@ class ZipFile implements \Countable, \ArrayAccess, \Iterator
      * @param resource $handle Output stream resource
      *
      * @throws ZipException
-     *
-     * @return ZipFile
      */
     public function saveAsStream($handle): self
     {
         if (!\is_resource($handle)) {
-            throw new InvalidArgumentException('handle is not resource');
+            throw new InvalidArgumentException('handle is not a resource');
         }
 
         $this->writeZipToStream($handle);
@@ -1577,8 +1508,6 @@ class ZipFile implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * @param ?string $mimeType
-     *
      * @throws ZipException
      */
     private function getOutputData(string $outputFilename, ?string $mimeType = null, bool $attachment = true): array
@@ -1640,7 +1569,7 @@ class ZipFile implements \Countable, \ArrayAccess, \Iterator
         bool $attachment = true
     ): ResponseInterface {
         @trigger_error(
-            sprintf(
+            \sprintf(
                 'Method %s is deprecated. Replace to %s::%s',
                 __METHOD__,
                 __CLASS__,
@@ -1759,7 +1688,7 @@ class ZipFile implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * Close zip archive and release input stream.
+     * Close the zip archive and release the input stream.
      */
     public function close(): void
     {
@@ -1775,8 +1704,6 @@ class ZipFile implements \Countable, \ArrayAccess, \Iterator
      * Save and reopen zip archive.
      *
      * @throws ZipException
-     *
-     * @return ZipFile
      */
     public function rewrite(): self
     {
@@ -1918,7 +1845,7 @@ class ZipFile implements \Countable, \ArrayAccess, \Iterator
     }
 
     /**
-     * Whether a offset exists.
+     * Whether an offset exists.
      *
      * @see http://php.net/manual/en/arrayaccess.offsetexists.php
      *

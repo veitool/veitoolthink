@@ -86,9 +86,6 @@ class ExtraFieldsCollection implements \ArrayAccess, \Countable, \Iterator
         }
     }
 
-    /**
-     * @param ExtraFieldsCollection $collection
-     */
     public function addCollection(self $collection): void
     {
         $this->addAll($collection->collection);
@@ -135,7 +132,7 @@ class ExtraFieldsCollection implements \ArrayAccess, \Countable, \Iterator
     }
 
     /**
-     * Whether a offset exists.
+     * Whether an offset exists.
      *
      * @see http://php.net/manual/en/arrayaccess.offsetexists.php
      *

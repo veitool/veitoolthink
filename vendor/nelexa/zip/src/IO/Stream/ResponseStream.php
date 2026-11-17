@@ -14,7 +14,7 @@ namespace PhpZip\IO\Stream;
 use Psr\Http\Message\StreamInterface;
 
 /**
- * Implement PSR Message Stream.
+ * Implements a PSR-7 message stream.
  */
 class ResponseStream implements StreamInterface
 {
@@ -92,17 +92,15 @@ class ResponseStream implements StreamInterface
 
     /**
      * {@inheritDoc}
-     *
-     * @noinspection PhpMissingReturnTypeInspection
      */
     public function getMetadata($key = null)
     {
         if ($this->stream === null) {
-            return $key ? null : [];
+            return $key === null ? [] : null;
         }
         $meta = stream_get_meta_data($this->stream);
 
-        return $meta[$key] ?? null;
+        return $key === null ? $meta : ($meta[$key] ?? null);
     }
 
     /**
@@ -173,9 +171,18 @@ class ResponseStream implements StreamInterface
         return null;
     }
 
-    public function tell()
+    public function tell(): int
     {
-        return $this->stream ? ftell($this->stream) : false;
+        if ($this->stream === null) {
+            throw new \RuntimeException('Stream is detached');
+        }
+        $position = ftell($this->stream);
+
+        if ($position === false) {
+            throw new \RuntimeException('Unable to determine stream position');
+        }
+
+        return $position;
     }
 
     /**
@@ -213,11 +220,19 @@ class ResponseStream implements StreamInterface
     /**
      * {@inheritDoc}
      */
-    public function write($string)
+    public function write($string): int
     {
+        if ($this->stream === null || !$this->writable) {
+            throw new \RuntimeException('Stream is not writable');
+        }
         $this->size = null;
+        $written = fwrite($this->stream, $string);
 
-        return $this->stream !== null && $this->writable ? fwrite($this->stream, $string) : false;
+        if ($written === false) {
+            throw new \RuntimeException('Unable to write to stream');
+        }
+
+        return $written;
     }
 
     /**
@@ -233,7 +248,12 @@ class ResponseStream implements StreamInterface
      */
     public function read($length): string
     {
-        return $this->stream !== null && $this->readable ? fread($this->stream, $length) : '';
+        if ($this->stream === null || !$this->readable) {
+            return '';
+        }
+        $buffer = fread($this->stream, $length);
+
+        return $buffer === false ? '' : $buffer;
     }
 
     /**
@@ -244,7 +264,12 @@ class ResponseStream implements StreamInterface
      */
     public function getContents(): string
     {
-        return $this->stream ? stream_get_contents($this->stream) : '';
+        if ($this->stream === null) {
+            return '';
+        }
+        $contents = stream_get_contents($this->stream);
+
+        return $contents === false ? '' : $contents;
     }
 
     /**

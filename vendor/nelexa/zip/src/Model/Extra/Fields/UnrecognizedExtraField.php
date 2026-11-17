@@ -51,12 +51,10 @@ final class UnrecognizedExtraField implements ZipExtraField
      *
      * @param string        $buffer the buffer to read data from
      * @param ZipEntry|null $entry  optional zip entry
-     *
-     * @return UnrecognizedExtraField
      */
     public static function unpackLocalFileData(string $buffer, ?ZipEntry $entry = null): self
     {
-        throw new RuntimeException('Unsupport parse');
+        throw new RuntimeException('Parsing is not supported for unrecognized extra fields.');
     }
 
     /**
@@ -64,12 +62,10 @@ final class UnrecognizedExtraField implements ZipExtraField
      *
      * @param string        $buffer the buffer to read data from
      * @param ZipEntry|null $entry  optional zip entry
-     *
-     * @return UnrecognizedExtraField
      */
     public static function unpackCentralDirData(string $buffer, ?ZipEntry $entry = null): self
     {
-        throw new RuntimeException('Unsupport parse');
+        throw new RuntimeException('Parsing is not supported for unrecognized extra fields.');
     }
 
     /**

@@ -81,13 +81,13 @@ class ZipReader
                 || (isset($meta['uri']) && is_dir($meta['uri']))
             )
         ) {
-            throw new InvalidArgumentException('Directory stream not supported');
+            throw new InvalidArgumentException('Directory streams are not supported');
         }
 
         $seekable = $meta['seekable'];
 
         if (!$seekable) {
-            throw new InvalidArgumentException('Resource does not support seekable.');
+            throw new InvalidArgumentException('The resource is not seekable.');
         }
         $this->size = fstat($inStream)['size'];
         $this->inStream = $inStream;
@@ -194,7 +194,7 @@ class ZipReader
             && unpack('V', fread($this->inStream, 4))[1] === ZipConstants::ZIP64_END_CD_LOC
         ) {
             if (!$this->isZip64Support()) {
-                throw new ZipException('ZIP64 not supported this archive.');
+                throw new ZipException('ZIP64 is not supported for this archive.');
             }
 
             $positionECD = $this->findZip64ECDPosition();
@@ -297,9 +297,9 @@ class ZipReader
         }
 
         [
-//            'size' => $size,
-//            'versionMadeBy' => $versionMadeBy,
-//            'extractVersion' => $extractVersion,
+            //            'size' => $size,
+            //            'versionMadeBy' => $versionMadeBy,
+            //            'extractVersion' => $extractVersion,
             'diskNo' => $diskNo,
             'cdDiskNo' => $cdDiskNo,
             'cdEntriesDisk' => $cdEntriesDisk,
@@ -612,7 +612,7 @@ class ZipReader
         fseek($this->inStream, $offsetLocalHeader);
 
         if (unpack('V', fread($this->inStream, 4))[1] !== ZipConstants::LOCAL_FILE_HEADER) {
-            throw new ZipException(sprintf('%s (expected Local File Header)', $entry->getName()));
+            throw new ZipException(\sprintf('%s (expected Local File Header)', $entry->getName()));
         }
 
         fseek($this->inStream, $offsetLocalHeader + ZipConstants::LFH_FILENAME_LENGTH_POS);
@@ -647,7 +647,7 @@ class ZipReader
 
                 if ($extraField === null) {
                     throw new ZipException(
-                        sprintf(
+                        \sprintf(
                             'Extra field 0x%04x (WinZip-AES Encryption) expected for compression method %d',
                             WinZipAesExtraField::HEADER_ID,
                             $zipEntry->getCompressionMethod()
@@ -696,7 +696,7 @@ class ZipReader
     public function copyUncompressedDataToStream(ZipSourceFileData $zipFileData, $outStream): void
     {
         if (!\is_resource($outStream)) {
-            throw new InvalidArgumentException('outStream is not resource');
+            throw new InvalidArgumentException('outStream is not a resource');
         }
 
         $entry = $zipFileData->getSourceEntry();
@@ -706,7 +706,7 @@ class ZipReader
 //        }
 
         if ($entry->isStrongEncryption()) {
-            throw new ZipException('Not support encryption zip.');
+            throw new ZipException('Strong encryption is not supported.');
         }
 
         $compressionMethod = $entry->getCompressionMethod();
@@ -720,7 +720,7 @@ class ZipReader
 
         if ($isEncrypted) {
             if ($entry->getPassword() === null) {
-                throw new ZipException('Can not password from entry ' . $entry->getName());
+                throw new ZipException('Cannot get the password for entry ' . $entry->getName());
             }
 
             if (ZipEncryptionMethod::isWinZipAesMethod($entry->getEncryptionMethod())) {
@@ -729,7 +729,7 @@ class ZipReader
 
                 if ($winZipAesExtra === null) {
                     throw new ZipException(
-                        sprintf('WinZip AES must contain the extra field %s', WinZipAesExtraField::HEADER_ID)
+                        \sprintf('WinZip AES must contain the extra field %s', WinZipAesExtraField::HEADER_ID)
                     );
                 }
                 $compressionMethod = $winZipAesExtra->getCompressionMethod();
@@ -796,7 +796,7 @@ class ZipReader
 
             default:
                 throw new ZipException(
-                    sprintf(
+                    \sprintf(
                         '%s (compression method %d (%s) is not supported)',
                         $entry->getName(),
                         $compressionMethod,
@@ -811,13 +811,31 @@ class ZipReader
         $chunkSize = 8192;
 
         try {
+            // PHP 8.4+ emits warnings (and PHP 8.5+ notices) from stream filters,
+            // e.g. "fread(): zlib: data error" when a decryption filter produced
+            // garbage. Convert these diagnostics into ZipException so that every
+            // PHP version reports a uniform failure.
+            set_error_handler(
+                static function (int $errorNumber, string $errorString) use ($entry): bool {
+                    throw new ZipException(
+                        \sprintf(
+                            'Error reading the contents of entry "%s". %s',
+                            $entry->getName(),
+                            $errorString
+                        ),
+                        $errorNumber
+                    );
+                },
+                \E_WARNING | \E_USER_WARNING | \E_NOTICE | \E_USER_NOTICE
+            );
+
             if ($skipCheckCrc) {
                 while ($offset < $limit) {
                     $length = min($chunkSize, $limit - $offset);
                     $buffer = fread($this->inStream, $length);
 
                     if ($buffer === false) {
-                        throw new ZipException(sprintf('Error reading the contents of entry "%s".', $entry->getName()));
+                        throw new ZipException(\sprintf('Error reading the contents of entry "%s".', $entry->getName()));
                     }
                     fwrite($outStream, $buffer);
                     $offset += $length;
@@ -830,7 +848,7 @@ class ZipReader
                     $buffer = fread($this->inStream, $length);
 
                     if ($buffer === false) {
-                        throw new ZipException(sprintf('Error reading the contents of entry "%s".', $entry->getName()));
+                        throw new ZipException(\sprintf('Error reading the contents of entry "%s".', $entry->getName()));
                     }
                     fwrite($outStream, $buffer);
                     hash_update($contextHash, $buffer);
@@ -844,6 +862,8 @@ class ZipReader
                 }
             }
         } finally {
+            restore_error_handler();
+
             for ($i = \count($filters); $i > 0; $i--) {
                 stream_filter_remove($filters[$i - 1]);
             }

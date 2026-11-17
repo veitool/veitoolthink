@@ -44,7 +44,7 @@ class ZipFileData implements ZipData
     public function getDataAsStream()
     {
         if (!$this->file->isReadable()) {
-            throw new ZipException(sprintf('The %s file is no longer readable.', $this->file->getPathname()));
+            throw new ZipException(\sprintf('The %s file is no longer readable.', $this->file->getPathname()));
         }
 
         return fopen($this->file->getPathname(), 'rb');
@@ -58,7 +58,7 @@ class ZipFileData implements ZipData
     public function getDataAsString(): string
     {
         if (!$this->file->isReadable()) {
-            throw new ZipException(sprintf('The %s file is no longer readable.', $this->file->getPathname()));
+            throw new ZipException(\sprintf('The %s file is no longer readable.', $this->file->getPathname()));
         }
 
         return file_get_contents($this->file->getPathname());

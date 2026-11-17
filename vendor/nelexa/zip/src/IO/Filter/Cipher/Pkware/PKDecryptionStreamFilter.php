@@ -15,7 +15,7 @@ use PhpZip\Exception\ZipAuthenticationException;
 use PhpZip\Model\ZipEntry;
 
 /**
- * Decryption PKWARE Traditional Encryption.
+ * PKWARE traditional encryption decryption filter.
  */
 class PKDecryptionStreamFilter extends \php_user_filter
 {
@@ -78,6 +78,7 @@ class PKDecryptionStreamFilter extends \php_user_filter
      * Decryption filter.
      *
      * @todo USE FFI in php 7.4
+     *
      * @noinspection PhpDocSignatureInspection
      *
      * @param mixed $in

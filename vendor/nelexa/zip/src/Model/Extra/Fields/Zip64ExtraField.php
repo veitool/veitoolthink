@@ -60,12 +60,9 @@ final class Zip64ExtraField implements ZipExtraField
     /**
      * Populate data from this array as if it was in local file data.
      *
-     * @param string    $buffer the buffer to read data from
-     * @param ?ZipEntry $entry
+     * @param string $buffer the buffer to read data from
      *
      * @throws ZipException on error
-     *
-     * @return Zip64ExtraField
      */
     public static function unpackLocalFileData(string $buffer, ?ZipEntry $entry = null): self
     {
@@ -96,12 +93,9 @@ final class Zip64ExtraField implements ZipExtraField
     /**
      * Populate data from this array as if it was in central directory data.
      *
-     * @param string    $buffer the buffer to read data from
-     * @param ?ZipEntry $entry
+     * @param string $buffer the buffer to read data from
      *
      * @throws ZipException
-     *
-     * @return Zip64ExtraField
      */
     public static function unpackCentralDirData(string $buffer, ?ZipEntry $entry = null): self
     {

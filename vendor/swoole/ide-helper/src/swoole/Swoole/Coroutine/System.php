@@ -66,8 +66,8 @@ class System
      *                     - code: The exit code of the command. 0 typically means the command finished successfully.
      *                     - signal: The signal number that terminated the command, or 0 if it exited normally.
      * @see https://www.php.net/shell_exec The built-in PHP function \shell_exec(), which serves a similar purpose but blocks the whole process.
-     * @alias This method has an alias of \Swoole\Coroutine::exec().
      * @see \Swoole\Coroutine::exec()
+     * @alias This method has an alias of \Swoole\Coroutine::exec().
      */
     public static function exec(string $command, bool $get_error_stream = false): array|false
     {
@@ -85,8 +85,8 @@ class System
      * @return bool TRUE once the time is up; FALSE if $seconds is less than 0.001, or if the coroutine is cancelled
      *              while sleeping.
      * @see https://www.php.net/sleep The built-in PHP function \sleep(), which blocks the whole process.
-     * @alias This method has an alias of \Swoole\Coroutine::sleep().
      * @see \Swoole\Coroutine::sleep()
+     * @alias This method has an alias of \Swoole\Coroutine::sleep().
      */
     public static function sleep(float $seconds): bool
     {
@@ -124,8 +124,8 @@ class System
      *                     was passed through to the underlying system call and simply produced no useful result;
      *                     since Swoole 6.2.1, it is rejected upfront with a \ValueError instead.)
      * @see https://man7.org/linux/man-pages/man3/statvfs.3.html The C function statvfs(3) wrapped by this method.
-     * @alias This method has an alias of \Swoole\Coroutine::statvfs().
      * @see \Swoole\Coroutine::statvfs()
+     * @alias This method has an alias of \Swoole\Coroutine::statvfs().
      */
     public static function statvfs(string $path): array
     {
@@ -203,8 +203,8 @@ class System
      *                     - signal: The signal number that terminated the child process, or 0 if it exited normally.
      * @see https://www.php.net/pcntl_wait The built-in PHP function \pcntl_wait(), which serves a similar purpose but blocks the whole process.
      * @see \Swoole\Coroutine\System::waitPid()
-     * @alias This method has an alias of \Swoole\Coroutine::wait().
      * @see \Swoole\Coroutine::wait()
+     * @alias This method has an alias of \Swoole\Coroutine::wait().
      * @since 4.5.0
      */
     public static function wait(float $timeout = -1): array|false
@@ -228,8 +228,8 @@ class System
      *                     - signal: The signal number that terminated the child process, or 0 if it exited normally.
      * @see https://www.php.net/pcntl_waitpid The built-in PHP function \pcntl_waitpid(), which serves a similar purpose but blocks the whole process.
      * @see \Swoole\Coroutine\System::wait()
-     * @alias This method has an alias of \Swoole\Coroutine::waitPid().
      * @see \Swoole\Coroutine::waitPid()
+     * @alias This method has an alias of \Swoole\Coroutine::waitPid().
      * @since 4.5.0
      */
     public static function waitPid(int $pid, float $timeout = -1): array|false
@@ -239,8 +239,16 @@ class System
     /**
      * Wait for given signal(s) with a timeout.
      *
+     * While the method is waiting, Swoole handles the given signals itself. Since Swoole 6.2.5, once the method returns,
+     * each signal gets back the handler it had before the call (e.g., the one Swoole installs for SIGTERM in the worker
+     * processes of a server); before 6.2.5, the signals were left with no handler at all once the method returned, even
+     * one Swoole had been handling internally before the call.
+     *
      * @param int|array<int> $signals An integer or an array of integers representing the signal number(s).
-     *                                Before Swoole 6.0.0, only integer is supported.
+     *                                Before Swoole 6.0.0, only integer is supported. Since Swoole 6.2.5, the whole list
+     *                                is checked before any signal is listened to, so an invalid entry makes the method
+     *                                fail without touching the valid ones; before 6.2.5, the valid signals listed ahead
+     *                                of the invalid one were left half registered.
      * @param float $timeout The timeout value in seconds. Minimum value is 0.001. -1 means no timeout.
      * @return int|false Returns the signal number received on success. Returns FALSE on failure, e.g., when none of
      *                   the given signals arrives within the given timeout; a warning is raised as well when a

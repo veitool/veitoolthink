@@ -16,7 +16,7 @@ use PhpZip\Model\Extra\ZipExtraField;
 use PhpZip\Model\ZipEntry;
 
 /**
- * A common base class for Unicode extra information extra fields.
+ * A common base class for the Info-ZIP Unicode path and comment extra fields.
  */
 abstract class AbstractUnicodeExtraField implements ZipExtraField
 {
@@ -81,7 +81,7 @@ abstract class AbstractUnicodeExtraField implements ZipExtraField
         ] = unpack('Cversion/Vcrc32', $buffer);
 
         if ($version !== self::DEFAULT_VERSION) {
-            throw new ZipException(sprintf('Unsupported version [%d] for Unicode path extra data.', $version));
+            throw new ZipException(\sprintf('Unsupported version [%d] for Unicode path extra data.', $version));
         }
 
         $unicodeValue = substr($buffer, 5);

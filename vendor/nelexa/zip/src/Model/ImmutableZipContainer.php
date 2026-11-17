@@ -21,7 +21,6 @@ class ImmutableZipContainer implements \Countable
 
     /**
      * @param ZipEntry[] $entries
-     * @param ?string    $archiveComment
      */
     public function __construct(array $entries, ?string $archiveComment = null)
     {

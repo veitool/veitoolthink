@@ -42,6 +42,7 @@ return array(
     'Psr\\Container\\' => array($vendorDir . '/psr/container/src'),
     'Psr\\Clock\\' => array($vendorDir . '/psr/clock/src'),
     'PhpZip\\' => array($vendorDir . '/nelexa/zip/src'),
+    'PhpOffice\\WMF\\' => array($vendorDir . '/phpoffice/wmf/src/WMF'),
     'PhpOffice\\PhpWord\\' => array($vendorDir . '/phpoffice/phpword/src/PhpWord'),
     'PhpOffice\\PhpSpreadsheet\\' => array($vendorDir . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet'),
     'PhpOffice\\Math\\' => array($vendorDir . '/phpoffice/math/src/Math'),

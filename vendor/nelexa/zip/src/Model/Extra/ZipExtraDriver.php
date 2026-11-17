@@ -31,6 +31,7 @@ final class ZipExtraDriver
 {
     /**
      * @var array<int, string>
+     *
      * @psalm-var array<int, class-string<ZipExtraField>>
      */
     private static array $implementations = [
@@ -58,7 +59,7 @@ final class ZipExtraDriver
     {
         if (!is_a($extraField, ZipExtraField::class, true)) {
             throw new InvalidArgumentException(
-                sprintf(
+                \sprintf(
                     '$extraField "%s" is not implements interface %s',
                     (string) $extraField,
                     ZipExtraField::class

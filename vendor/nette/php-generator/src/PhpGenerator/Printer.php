@@ -362,6 +362,7 @@ class Printer
 
 	private function printConstant(Constant $const): string
 	{
+		$const->validate();
 		$def = ($const->isFinal() ? 'final ' : '')
 			. ($const->getVisibility() ? $const->getVisibility() . ' ' : '')
 			. 'const '
@@ -477,6 +478,7 @@ class Printer
 
 		$simple = true;
 		foreach ($hooks as $type => $hook) {
+			$hook->validate();
 			$simple = $simple && ($hook->isAbstract() || $isInterface);
 			$hooks[$type] = $this->printDocComment($hook)
 				. $this->printAttributes($hook->getAttributes())

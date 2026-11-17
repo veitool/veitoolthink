@@ -107,15 +107,13 @@ final class WinZipAesExtraField implements ZipExtraField
 
     /**
      * @throws ZipUnsupportMethodException
-     *
-     * @return WinZipAesExtraField
      */
     public static function create(ZipEntry $entry): self
     {
         $keyStrength = array_search($entry->getEncryptionMethod(), self::MAP_KEY_STRENGTH_METHODS, true);
 
         if ($keyStrength === false) {
-            throw new InvalidArgumentException('Not support encryption method ' . $entry->getEncryptionMethod());
+            throw new InvalidArgumentException('Unsupported encryption method ' . $entry->getEncryptionMethod());
         }
 
         // WinZip 11 will continue to use AE-2, with no CRC, for very small files
@@ -152,12 +150,9 @@ final class WinZipAesExtraField implements ZipExtraField
     /**
      * Populate data from this array as if it was in local file data.
      *
-     * @param string    $buffer the buffer to read data from
-     * @param ?ZipEntry $entry
+     * @param string $buffer the buffer to read data from
      *
      * @throws ZipException on error
-     *
-     * @return WinZipAesExtraField
      */
     public static function unpackLocalFileData(string $buffer, ?ZipEntry $entry = null): self
     {
@@ -165,7 +160,7 @@ final class WinZipAesExtraField implements ZipExtraField
 
         if ($size !== self::DATA_SIZE) {
             throw new ZipException(
-                sprintf(
+                \sprintf(
                     'WinZip AES Extra data invalid size: %d. Must be %d',
                     $size,
                     self::DATA_SIZE
@@ -182,7 +177,7 @@ final class WinZipAesExtraField implements ZipExtraField
 
         if ($vendorId !== self::VENDOR_ID) {
             throw new ZipException(
-                sprintf(
+                \sprintf(
                     'Vendor id invalid: %d. Must be %d',
                     $vendorId,
                     self::VENDOR_ID
@@ -196,12 +191,9 @@ final class WinZipAesExtraField implements ZipExtraField
     /**
      * Populate data from this array as if it was in central directory data.
      *
-     * @param string    $buffer the buffer to read data from
-     * @param ?ZipEntry $entry
+     * @param string $buffer the buffer to read data from
      *
      * @throws ZipException
-     *
-     * @return WinZipAesExtraField
      */
     public static function unpackCentralDirData(string $buffer, ?ZipEntry $entry = null): self
     {
@@ -259,8 +251,8 @@ final class WinZipAesExtraField implements ZipExtraField
     {
         if (!\in_array($vendorVersion, self::ALLOW_VENDOR_VERSIONS, true)) {
             throw new InvalidArgumentException(
-                sprintf(
-                    'Unsupport WinZip AES vendor version: %d',
+                \sprintf(
+                    'Unsupported WinZip AES vendor version: %d',
                     $vendorVersion
                 )
             );
@@ -288,8 +280,8 @@ final class WinZipAesExtraField implements ZipExtraField
     {
         if (!isset(self::ENCRYPTION_STRENGTHS[$keyStrength])) {
             throw new InvalidArgumentException(
-                sprintf(
-                    'Key strength %d not support value. Allow values: %s',
+                \sprintf(
+                    'Invalid key strength %d. Allowed values: %s',
                     $keyStrength,
                     implode(', ', array_keys(self::ENCRYPTION_STRENGTHS))
                 )
@@ -345,7 +337,7 @@ final class WinZipAesExtraField implements ZipExtraField
 
     public function __toString(): string
     {
-        return sprintf(
+        return \sprintf(
             '0x%04x WINZIP AES: VendorVersion=%d KeyStrength=0x%02x CompressionMethod=%s',
             __CLASS__,
             $this->vendorVersion,

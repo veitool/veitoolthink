@@ -19,7 +19,7 @@ namespace PhpZip\Util;
 final class MathUtil
 {
     /**
-     * Cast to signed int 32-bit.
+     * Cast to a signed 32-bit integer.
      */
     public static function toSignedInt32(int $int): int
     {

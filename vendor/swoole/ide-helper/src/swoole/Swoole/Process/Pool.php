@@ -82,7 +82,8 @@ class Pool
      * The constructor.
      *
      * A process pool can be created in PHP CLI mode only, and at most one process pool can be created in a process. It
-     * can't be created when a \Swoole\Server object exists. An \Error is thrown out when any of these rules is broken.
+     * can't be created when a \Swoole\Server object exists. An \Error is thrown out when any of these rules is broken,
+     * and (since Swoole 6.2.4) also when the constructor is called a second time on the same object.
      *
      * Coroutine support doesn't have to be enabled when creating the process pool. It can be enabled later by calling
      * method \Swoole\Process\Pool::set([\Swoole\Constant::OPTION_ENABLE_COROUTINE => true]).
@@ -106,7 +107,10 @@ class Pool
      * @param int $ipc_type One of the four IPC modes described above. When coroutine support is enabled, it must be
      *                      either SWOOLE_IPC_NONE or SWOOLE_IPC_UNIXSOCK; otherwise, an \Error is thrown out.
      * @param int $msgqueue_key Key of the System V message queue. It's used only when $ipc_type is
-     *                          SWOOLE_IPC_MSGQUEUE.
+     *                          SWOOLE_IPC_MSGQUEUE. Since Swoole 6.2.4, a key that doesn't fit in the operating
+     *                          system's key type (a 32-bit integer, so anything below -2147483648 or above
+     *                          4294967295) makes the constructor throw a \Swoole\Exception; before 6.2.4, such a key
+     *                          was silently truncated.
      * @param bool $enable_coroutine Support coroutine or not in the worker processes. Default to false. When enabled,
      *                               a callback function has to be registered for event onWorkerStart, and event
      *                               onMessage is dispatched only when $ipc_type is SWOOLE_IPC_UNIXSOCK.
@@ -142,7 +146,10 @@ class Pool
      *     otherwise, method \Swoole\Process\Pool::start() fails with a warning logged.
      *   - \Swoole\Constant::OPTION_MAX_PACKAGE_SIZE (int): Maximum size of a message a worker process can receive, in
      *     bytes. Default to 2097152 (2 MB). In IPC mode SWOOLE_IPC_SOCKET, a connection sending a larger package is
-     *     closed.
+     *     closed. Since Swoole 6.2.5, a value below 1 is raised to 1 and a value above 4294967295 is lowered to
+     *     4294967295, and in IPC mode SWOOLE_IPC_MSGQUEUE the option is ignored altogether, since a message queue has
+     *     its own fixed limit of 65536 bytes per message; before 6.2.5, the value was stored unchecked, and for a
+     *     message queue pool it was accepted although the queue's own limit applied regardless.
      *   - \Swoole\Constant::OPTION_MAX_WAIT_TIME (int): Number of seconds the master process waits for a worker
      *     process to quit gracefully, when shutting down or reloading the pool. Default to 3. The master process sends
      *     a SIGTERM signal to the worker processes first, then force kills the ones still alive after the given number
@@ -337,7 +344,7 @@ class Pool
      * @see \Swoole\Process\Pool::on()
      * @see \Swoole\Process\Pool::shutdown()
      */
-    public function start()
+    public function start(): ?false
     {
     }
 

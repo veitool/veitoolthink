@@ -29,7 +29,7 @@ class Crc32Exception extends ZipException
     public function __construct(string $name, int $expected, int $actual)
     {
         parent::__construct(
-            sprintf(
+            \sprintf(
                 '%s (expected CRC32 value 0x%x, but is actually 0x%x)',
                 $name,
                 $expected,

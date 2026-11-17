@@ -28,7 +28,7 @@ final class Extractor
 
 	public function __construct(string $code)
 	{
-		if (!class_exists(ParserFactory::class)) {
+		if (!class_exists(PhpParser\PhpVersion::class)) { // exists since php-parser 5.0
 			throw new Nette\NotSupportedException("PHP-Parser is required to load method bodies, install package 'nikic/php-parser' 5.0 or newer.");
 		}
 
@@ -55,22 +55,38 @@ final class Extractor
 	}
 
 
+	private function findClassNode(string $className): ?Node\Stmt\ClassLike
+	{
+		$node = (new NodeFinder)->findFirst(
+			$this->statements,
+			fn(Node $node) => $node instanceof Node\Stmt\ClassLike && $node->namespacedName?->toString() === $className,
+		);
+		assert($node === null || $node instanceof Node\Stmt\ClassLike);
+		return $node;
+	}
+
+
+	private function findFunctionNode(string $name): ?Node\Stmt\Function_
+	{
+		$node = (new NodeFinder)->findFirst(
+			$this->statements,
+			fn(Node $node) => $node instanceof Node\Stmt\Function_ && $node->namespacedName?->toString() === $name,
+		);
+		assert($node === null || $node instanceof Node\Stmt\Function_);
+		return $node;
+	}
+
+
 	/** @return array<string, string> */
 	public function extractMethodBodies(string $className): array
 	{
-		$nodeFinder = new NodeFinder;
-		$classNode = $nodeFinder->findFirst(
-			$this->statements,
-			fn(Node $node) => $node instanceof Node\Stmt\ClassLike
-				&& $node->namespacedName !== null
-				&& $node->namespacedName->toString() === $className,
-		);
+		$classNode = $this->findClassNode($className);
 		if (!$classNode) {
 			return [];
 		}
 
 		$res = [];
-		foreach ($nodeFinder->findInstanceOf($classNode, Node\Stmt\ClassMethod::class) as $methodNode) {
+		foreach ($classNode->getMethods() as $methodNode) { // avoids methods of nested anonymous classes
 			if ($methodNode->stmts) {
 				$res[$methodNode->name->toString()] = $this->getReformattedContents($methodNode->stmts, 2);
 			}
@@ -87,19 +103,13 @@ final class Extractor
 			return [];
 		}
 
-		$nodeFinder = new NodeFinder;
-		$classNode = $nodeFinder->findFirst(
-			$this->statements,
-			fn(Node $node) => $node instanceof Node\Stmt\ClassLike
-				&& $node->namespacedName !== null
-				&& $node->namespacedName->toString() === $className,
-		);
+		$classNode = $this->findClassNode($className);
 		if (!$classNode) {
 			return [];
 		}
 
 		$res = [];
-		foreach ($nodeFinder->findInstanceOf($classNode, Node\Stmt\Property::class) as $propertyNode) {
+		foreach ($classNode->getProperties() as $propertyNode) { // avoids properties of nested anonymous classes
 			foreach ($propertyNode->props as $propNode) {
 				$propName = $propNode->name->toString();
 				foreach ($propertyNode->hooks as $hookNode) {
@@ -117,13 +127,8 @@ final class Extractor
 
 	public function extractFunctionBody(string $name): string
 	{
-		$functionNode = (new NodeFinder)->findFirst(
-			$this->statements,
-			fn(Node $node) => $node instanceof Node\Stmt\Function_
-				&& $node->namespacedName !== null
-				&& $node->namespacedName->toString() === $name,
-		);
-		assert($functionNode instanceof Node\Stmt\Function_);
+		$functionNode = $this->findFunctionNode($name);
+		assert($functionNode !== null);
 
 		return $this->getReformattedContents($functionNode->stmts, 1);
 	}
@@ -250,9 +255,13 @@ final class Extractor
 	{
 		$phpFile = new PhpFile;
 
+		$firstStmt = $this->statements[0] ?? null;
+		if ($firstStmt instanceof Node\Stmt\Declare_ && !$firstStmt->getDocComment()) {
+			$firstStmt = $this->statements[1] ?? null;
+		}
+
 		if (
-			($firstStmt = $this->statements[0] ?? null)
-			&& ($firstStmt = $firstStmt instanceof Node\Stmt\Declare_ ? $this->statements[1] ?? null : $firstStmt)
+			$firstStmt
 			&& !$firstStmt instanceof Node\Stmt\ClassLike
 			&& !$firstStmt instanceof Node\Stmt\Function_
 		) {

@@ -58,7 +58,7 @@ return array(
     'Nette\\PhpGenerator\\Property' => $vendorDir . '/nette/php-generator/src/PhpGenerator/Property.php',
     'Nette\\PhpGenerator\\PropertyAccessMode' => $vendorDir . '/nette/php-generator/src/PhpGenerator/enums.php',
     'Nette\\PhpGenerator\\PropertyHook' => $vendorDir . '/nette/php-generator/src/PhpGenerator/PropertyHook.php',
-    'Nette\\PhpGenerator\\PropertyHookType' => $vendorDir . '/nette/php-generator/src/PhpGenerator/enums.php',
+    'Nette\\PhpGenerator\\PropertyHookType' => $vendorDir . '/nette/php-generator/src/compatibility.php',
     'Nette\\PhpGenerator\\PsrPrinter' => $vendorDir . '/nette/php-generator/src/PhpGenerator/PsrPrinter.php',
     'Nette\\PhpGenerator\\TraitType' => $vendorDir . '/nette/php-generator/src/PhpGenerator/TraitType.php',
     'Nette\\PhpGenerator\\TraitUse' => $vendorDir . '/nette/php-generator/src/PhpGenerator/TraitUse.php',

@@ -16,7 +16,7 @@ use PhpZip\Model\ZipEntry;
 use PhpZip\ZipFile;
 
 /**
- * The class contains a streaming resource with new content added to the ZIP archive.
+ * Holds a stream resource with new content to be added to the ZIP archive.
  */
 class ZipNewData implements ZipData
 {
@@ -35,6 +35,7 @@ class ZipNewData implements ZipData
 
     /**
      * @param string|resource $data Raw string data or resource
+     *
      * @noinspection PhpMissingParamTypeInspection
      */
     public function __construct(ZipEntry $zipEntry, $data)
@@ -69,7 +70,7 @@ class ZipNewData implements ZipData
     public function getDataAsStream()
     {
         if (!\is_resource($this->stream)) {
-            throw new \LogicException(sprintf('Resource has been closed (entry=%s).', $this->zipEntry->getName()));
+            throw new \LogicException(\sprintf('Resource has been closed (entry=%s).', $this->zipEntry->getName()));
         }
 
         return $this->stream;

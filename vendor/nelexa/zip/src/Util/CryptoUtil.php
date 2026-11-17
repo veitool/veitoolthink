@@ -33,6 +33,7 @@ final class CryptoUtil
     {
         if (\extension_loaded('openssl')) {
             $numBits = \strlen($key) * 8;
+
             /** @noinspection PhpComposerExtensionStubsInspection */
             return openssl_decrypt($data, 'AES-' . $numBits . '-CTR', $key, \OPENSSL_RAW_DATA, $iv);
         }
@@ -53,6 +54,7 @@ final class CryptoUtil
     {
         if (\extension_loaded('openssl')) {
             $numBits = \strlen($key) * 8;
+
             /** @noinspection PhpComposerExtensionStubsInspection */
             return openssl_encrypt($data, 'AES-' . $numBits . '-CTR', $key, \OPENSSL_RAW_DATA, $iv);
         }

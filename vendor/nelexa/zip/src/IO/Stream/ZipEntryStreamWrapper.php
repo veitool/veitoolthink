@@ -119,7 +119,7 @@ final class ZipEntryStreamWrapper
         $zipData = $zipEntry->getData();
 
         if ($zipData === null) {
-            throw new ZipException(sprintf('No data for zip entry "%s"', $zipEntry->getName()));
+            throw new ZipException(\sprintf('No data for zip entry "%s"', $zipEntry->getName()));
         }
         $this->fp = $zipData->getDataAsStream();
 

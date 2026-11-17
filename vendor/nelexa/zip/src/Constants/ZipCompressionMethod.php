@@ -87,7 +87,7 @@ final class ZipCompressionMethod
     public static function checkSupport(int $compressionMethod): void
     {
         if (!\in_array($compressionMethod, self::getSupportMethods(), true)) {
-            throw new ZipUnsupportMethodException(sprintf(
+            throw new ZipUnsupportMethodException(\sprintf(
                 'Compression method %d (%s) is not supported.',
                 $compressionMethod,
                 self::getCompressionMethodName($compressionMethod)

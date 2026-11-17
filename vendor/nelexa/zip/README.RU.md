@@ -4,7 +4,6 @@
 
 [![Packagist Version](https://img.shields.io/packagist/v/nelexa/zip.svg)](https://packagist.org/packages/nelexa/zip)
 [![Packagist Downloads](https://img.shields.io/packagist/dt/nelexa/zip.svg?color=%23ff007f)](https://packagist.org/packages/nelexa/zip)
-[![Code Coverage](https://scrutinizer-ci.com/g/Ne-Lexa/php-zip/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/Ne-Lexa/php-zip/?branch=master)
 [![Build Status](https://github.com/Ne-Lexa/php-zip/workflows/build/badge.svg)](https://github.com/Ne-Lexa/php-zip/actions)
 [![License](https://img.shields.io/packagist/l/nelexa/zip.svg)](https://github.com/Ne-Lexa/php-zip/blob/master/LICENSE)
 
@@ -65,7 +64,7 @@
   + Установка метода шифрования для всех или для отдельных записей в архиве.
 
 ### Требования
-- `PHP` 7.4 или ^8.0 (предпочтительно 64-bit).
+- `PHP` 7.4, 8.0 - 8.5 (предпочтительно 64-bit). Библиотека тестируется на PHP 7.4, 8.0, 8.1, 8.2, 8.3, 8.4 и 8.5 на Linux, macOS и Windows.
 - Опционально php-расширение `bzip2` для поддержки BZIP2 компрессии.
 - Опционально php-расширение `openssl` для `WinZip Aes Encryption` шифрования.
 
@@ -774,7 +773,7 @@ $zipFile->outputAsPsr7Response($response, $outputFilename, $mimeType);
 ```php
 $response = $zipFile->outputAsSymfonyResponse($outputFilename);
 ```
-Вы можете установить Mime-Type:
+Вы можете установить MIME-тип:
 ```php
 $mimeType = 'application/zip';
 $response = $zipFile->outputAsSymfonyResponse($outputFilename, $mimeType);

@@ -124,13 +124,16 @@ class Event
      *
      * This function works similarly to statement "setTimeout(callback, 0)" in JavaScript.
      *
+     * Swoole itself declares the return type as bool (that's what reflection reports), but the method never returns
+     * false, so the stub declares it as true.
+     *
      * @param callable $callback The callback to be executed.
      * @return true This method always returns true.
      * @alias This method has an alias function \swoole_event_defer().
      * @see \swoole_event_defer()
      * @see \Swoole\Timer::after() Add a timer that only runs once after the specified number of milliseconds.
      */
-    public static function defer(callable $callback): bool
+    public static function defer(callable $callback): true
     {
     }
 

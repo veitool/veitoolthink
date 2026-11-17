@@ -93,6 +93,7 @@ class ComposerStaticInitd011e134d1acc4431ea1478829c15198
             'Psr\\Container\\' => 14,
             'Psr\\Clock\\' => 10,
             'PhpZip\\' => 7,
+            'PhpOffice\\WMF\\' => 14,
             'PhpOffice\\PhpWord\\' => 18,
             'PhpOffice\\PhpSpreadsheet\\' => 25,
             'PhpOffice\\Math\\' => 15,
@@ -292,6 +293,10 @@ class ComposerStaticInitd011e134d1acc4431ea1478829c15198
         array (
             0 => __DIR__ . '/..' . '/nelexa/zip/src',
         ),
+        'PhpOffice\\WMF\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/phpoffice/wmf/src/WMF',
+        ),
         'PhpOffice\\PhpWord\\' =>
         array (
             0 => __DIR__ . '/..' . '/phpoffice/phpword/src/PhpWord',
@@ -436,7 +441,7 @@ class ComposerStaticInitd011e134d1acc4431ea1478829c15198
         'Nette\\PhpGenerator\\Property' => __DIR__ . '/..' . '/nette/php-generator/src/PhpGenerator/Property.php',
         'Nette\\PhpGenerator\\PropertyAccessMode' => __DIR__ . '/..' . '/nette/php-generator/src/PhpGenerator/enums.php',
         'Nette\\PhpGenerator\\PropertyHook' => __DIR__ . '/..' . '/nette/php-generator/src/PhpGenerator/PropertyHook.php',
-        'Nette\\PhpGenerator\\PropertyHookType' => __DIR__ . '/..' . '/nette/php-generator/src/PhpGenerator/enums.php',
+        'Nette\\PhpGenerator\\PropertyHookType' => __DIR__ . '/..' . '/nette/php-generator/src/compatibility.php',
         'Nette\\PhpGenerator\\PsrPrinter' => __DIR__ . '/..' . '/nette/php-generator/src/PhpGenerator/PsrPrinter.php',
         'Nette\\PhpGenerator\\TraitType' => __DIR__ . '/..' . '/nette/php-generator/src/PhpGenerator/TraitType.php',
         'Nette\\PhpGenerator\\TraitUse' => __DIR__ . '/..' . '/nette/php-generator/src/PhpGenerator/TraitUse.php',

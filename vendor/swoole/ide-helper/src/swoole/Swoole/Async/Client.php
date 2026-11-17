@@ -119,8 +119,23 @@ class Client extends \Swoole\Client
      * connection attempt with the event loop and returns immediately. The result is delivered later through the
      * "connect" or "error" callbacks registered via Async\Client::on().
      *
+     * Before the attempt is even started, the method fails (with a warning, or a fatal error for the missing-callback
+     * cases) when the host is empty, when the port is out of range for a TCP client, when the client is already
+     * connected, when the "receive" callback is missing, or when a stream (TCP/Unix stream) client is missing any of
+     * the "connect", "error", or "close" callbacks. Those callbacks are optional for UDP clients.
+     *
      * {@inheritDoc}
+     * @param string $host Server host name or IP address (or socket path for Unix domain sockets). Host names are
+     *                     resolved asynchronously.
+     * @param int $port Server port. Not needed for Unix domain sockets.
+     * @param float $timeout Connection timeout in seconds. Default: 0.5 seconds.
+     * @param int $sock_flag Extra connection flag, passed through unchanged to the underlying client; see the parent
+     *                       method \Swoole\Client::connect() for its meaning.
+     * @return bool TRUE if the connection attempt was started (the outcome is reported later through the callbacks);
+     *              FALSE if it couldn't be started at all (see above), or if the underlying connect call failed
+     *              immediately (e.g., DNS resolution failed), in which case property $errCode is updated accordingly.
      * @see \Swoole\Async\Client::on()
+     * @see \Swoole\Client::$errCode
      */
     public function connect(string $host, int $port = 0, float $timeout = 0.5, int $sock_flag = 0): bool
     {
@@ -230,19 +245,27 @@ class Client extends \Swoole\Client
     /**
      * Register a callback for one of the client's events.
      *
-     * @param string $event_name Name of the event to listen for. It must be one of the following (case-insensitive):
-     *                           - "connect"     Fired when the connection to the server has been established.
-     *                           - "receive"     Fired when data is received from the server.
-     *                           - "close"       Fired when the connection is closed.
-     *                           - "error"       Fired when the connection attempt fails.
-     *                           - "bufferFull"  Fired when the send buffer is full.
-     *                           - "bufferEmpty" Fired when the send buffer has been drained.
-     *                           Any other name triggers a warning and makes the method return FALSE.
+     * Note: the Swoole extension names the first parameter $host (even though it holds an event name), so that's the
+     * name to use when passing it as a named argument, e.g., $client->on(host: 'connect', callback: $fn). This stub
+     * used to name it $event_name, as "on(string $event_name, callable $callback): bool"; it now declares
+     * "on(string $host, callable $callback): bool", matching what the Swoole extension itself declares.
+     *
+     * @param string $host Name of the event to listen for. It must be one of the following (case-insensitive):
+     *                     - "connect"     Fired when the connection to the server has been established.
+     *                     - "receive"     Fired when data is received from the server.
+     *                     - "close"       Fired when the connection is closed.
+     *                     - "error"       Fired when the connection attempt fails.
+     *                     - "bufferFull"  Fired when the send buffer is full.
+     *                     - "bufferEmpty" Fired when the send buffer has been drained.
+     *                     Any other name triggers a warning and makes the method return FALSE. Note that a
+     *                     name is matched against the leading part of each event name above, in the order
+     *                     listed, so a shortened name is accepted too (e.g., "conn" registers the "connect"
+     *                     callback, and an empty string does as well).
      * @param callable $callback The callback to run when the event fires.
      * @return bool TRUE if the callback was registered; FALSE for an unknown event name. NULL comes back instead
      *              (with a warning raised) when $callback isn't actually callable.
      */
-    public function on(string $event_name, callable $callback): bool
+    public function on(string $host, callable $callback): bool
     {
     }
 }

@@ -92,15 +92,13 @@ final class NewUnixExtraField implements ZipExtraField
      * @param ZipEntry|null $entry  optional zip entry
      *
      * @throws ZipException
-     *
-     * @return NewUnixExtraField
      */
     public static function unpackLocalFileData(string $buffer, ?ZipEntry $entry = null): self
     {
         $length = \strlen($buffer);
 
         if ($length < 3) {
-            throw new ZipException(sprintf('X7875_NewUnix length is too short, only %s bytes', $length));
+            throw new ZipException(\sprintf('X7875_NewUnix length is too short, only %s bytes', $length));
         }
         $offset = 0;
         [
@@ -124,8 +122,6 @@ final class NewUnixExtraField implements ZipExtraField
      * @param ZipEntry|null $entry  optional zip entry
      *
      * @throws ZipException
-     *
-     * @return NewUnixExtraField
      */
     public static function unpackCentralDirData(string $buffer, ?ZipEntry $entry = null): self
     {
@@ -173,7 +169,7 @@ final class NewUnixExtraField implements ZipExtraField
         ];
 
         if (!isset($format[$size])) {
-            throw new ZipException(sprintf('Invalid size bytes: %d', $size));
+            throw new ZipException(\sprintf('Invalid size bytes: %d', $size));
         }
 
         return unpack($format[$size], $data)[1];
@@ -206,7 +202,7 @@ final class NewUnixExtraField implements ZipExtraField
 
     public function __toString(): string
     {
-        return sprintf(
+        return \sprintf(
             '0x%04x NewUnix: UID=%d GID=%d',
             self::HEADER_ID,
             $this->uid,

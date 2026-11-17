@@ -84,8 +84,6 @@ final class ApkAlignmentExtraField implements ZipExtraField
      * @param ZipEntry|null $entry  optional zip entry
      *
      * @throws ZipException
-     *
-     * @return ApkAlignmentExtraField
      */
     public static function unpackLocalFileData(string $buffer, ?ZipEntry $entry = null): self
     {
@@ -114,8 +112,6 @@ final class ApkAlignmentExtraField implements ZipExtraField
      * @param ZipEntry|null $entry  optional zip entry
      *
      * @throws ZipException on error
-     *
-     * @return ApkAlignmentExtraField
      */
     public static function unpackCentralDirData(string $buffer, ?ZipEntry $entry = null): self
     {
@@ -146,7 +142,7 @@ final class ApkAlignmentExtraField implements ZipExtraField
 
     public function __toString(): string
     {
-        return sprintf(
+        return \sprintf(
             '0x%04x APK Alignment: Multiple=%d Padding=%d',
             self::HEADER_ID,
             $this->multiple,

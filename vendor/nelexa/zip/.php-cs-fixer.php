@@ -959,7 +959,9 @@ $rules = [
     'object_operator_without_whitespace' => true,
 
     // Literal octal must be in `0o` notation.
-    'octal_notation' => true,
+    // Disabled: the `0o` notation requires PHP 8.1+, but the library
+    // still supports PHP 7.4 and 8.0 at runtime.
+    'octal_notation' => false,
 
     /*
      * Operators - when multiline - must always be at the beginning or
@@ -1296,7 +1298,9 @@ $rules = [
      * docblock, inheritdocs) will not be fixed. [3] Manual actions are
      * required if inherited signatures are not properly documented.
      */
-    'phpdoc_to_param_type' => true,
+    // Disabled: the generated parameter types may include `mixed`
+    // (PHP 8.0+), but the library still supports PHP 7.4 at runtime.
+    'phpdoc_to_param_type' => false,
 
     /*
      * EXPERIMENTAL: Takes `@var` annotation of non-mixed types and
@@ -1322,7 +1326,9 @@ $rules = [
      * docblock, inheritdocs) will not be fixed. [3] Manual actions are
      * required if inherited signatures are not properly documented.
      */
-    'phpdoc_to_return_type' => true,
+    // Disabled: the generated return types may include `mixed`, `static`
+    // or `never` (PHP 8.0+), but the library still supports PHP 7.4.
+    'phpdoc_to_return_type' => false,
 
     /*
      * PHPDoc should start and end with content, excluding the very

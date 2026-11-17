@@ -8,8 +8,19 @@ use Swoole\Coroutine\Socket;
 use Swoole\WebSocket\Frame;
 
 /**
- * The HTTP Response class.
+ * The HTTP response to send back to the client of a Swoole HTTP server.
  *
+ * Objects of this class are created by Swoole and passed to the "Request" event callback of a \Swoole\Http\Server
+ * (or \Swoole\WebSocket\Server), or to a handler registered through method \Swoole\Coroutine\Http\Server::handle(),
+ * together with the \Swoole\Http\Request object being answered. Use methods like status(), header(), and cookie() to
+ * build the response, then finish it with method end() (or stream it with write(), or serve a file with sendfile()).
+ * A response can be finished once only; after that, method isWritable() returns FALSE.
+ *
+ * A Response object served by a coroutine HTTP server can also be upgraded to a WebSocket connection (methods
+ * upgrade(), push(), and recv()), and a connection can be handed over elsewhere with methods detach() and create().
+ *
+ * @see \Swoole\Http\Request
+ * @see \Swoole\Http\Server
  * @not-serializable Objects of this class cannot be serialized.
  */
 class Response
@@ -95,6 +106,8 @@ class Response
      * $server->start();
      * ```
      *
+     * @return bool TRUE if the response can still be written to; FALSE once the response has been ended, the
+     *              connection has been detached, or the object is no longer bound to a live request.
      * @see \Swoole\Http\Response::end()
      * @see \Swoole\Http\Response::detach()
      * @since 4.6.0
@@ -324,6 +337,11 @@ class Response
     /**
      * Add a trailer to the HTTP response.
      *
+     * Trailers are sent after the response body, when method Response::end() is called. Since Swoole 6.2.5, over HTTP/2
+     * they are also delivered for a response whose body was sent in pieces with method Response::write() and then
+     * finished with an end() call carrying no content; before 6.2.5, the stream was marked as finished before the
+     * trailers of such a response went out, so clients didn't see them.
+     *
      * @param string $key Name of the trailer field. It must be less than 128 bytes in length.
      * @param string|null $value Value of the trailer field. When NULL is given, the field is recorded without a value.
      *                           Although Swoole declares this parameter as a non-nullable string, NULL is accepted at
@@ -332,6 +350,8 @@ class Response
      *              - Name of the trailer field is too long.
      *              - The server has finished processing the request and sending the response.
      *              - The underlying HTTP connection has been detached.
+     * @see \Swoole\Http\Response::write()
+     * @see \Swoole\Http\Response::end()
      */
     public function trailer(string $key, ?string $value): bool
     {
@@ -348,7 +368,11 @@ class Response
      *   - now:    public function ping(string $data = ''): bool
      *
      * @param string $data Payload to put in the PING frame, which the remote peer is expected to echo back in its PONG
-     *                     frame. It is used on WebSocket connections only, and is ignored on HTTP/2 connections.
+     *                     frame. It is used on WebSocket connections only, and is ignored on HTTP/2 connections. On a
+     *                     WebSocket connection it must not exceed 125 bytes, as the WebSocket protocol requires of
+     *                     control frames: since Swoole 6.2.4, a longer payload makes the method fail with FALSE
+     *                     returned and function \swoole_last_error() reporting SWOOLE_ERROR_WEBSOCKET_PACK_FAILED
+     *                     (before 6.2.4, an invalid frame was sent out instead).
      * @return bool Return TRUE on success; return FALSE when failed, or when the connection is neither an HTTP/2 nor a
      *              WebSocket connection.
      * @see \Swoole\Http\Response::disconnect()
@@ -445,7 +469,9 @@ class Response
      *
      * @param string|null $content The content to be sent to the client. If method Response::write() has been called
      *                             before, the content is sent as the last chunk of the response body.
-     * @return bool Return TRUE on success, or FALSE when failed.
+     * @return bool Return TRUE on success, or FALSE when failed (e.g., when the content is larger than the output buffer
+     *              as described above, or, since Swoole 6.2.4, when the trailer headers of a chunked response can't be
+     *              sent; before 6.2.4, that last failure went unreported and TRUE was returned).
      * @see \Swoole\Http\Response::sendfile()
      * @see \Swoole\Http\Response::write()
      * @see \Swoole\Constant::OPTION_BUFFER_OUTPUT_SIZE
@@ -571,7 +597,9 @@ class Response
      *                    SWOOLE_WEBSOCKET_OPCODE_TEXT, and can't be greater than SWOOLE_WEBSOCKET_OPCODE_PONG.
      * @param int $flags A bitmask of the SWOOLE_WEBSOCKET_FLAG_* constants. It defaults to SWOOLE_WEBSOCKET_FLAG_FIN,
      *                   marking the frame as the final fragment of a message.
-     * @return bool Return TRUE on success, or FALSE when failed.
+     * @return bool Return TRUE on success, or FALSE when failed (e.g., since Swoole 6.2.4, when a control frame
+     *              (close, ping, or pong) isn't marked final or carries more than 125 bytes of payload, which the
+     *              WebSocket protocol forbids).
      * @see \Swoole\Http\Response::upgrade()
      * @see \Swoole\WebSocket\Frame
      * @since 4.4.0
@@ -590,7 +618,7 @@ class Response
      * @return Frame|string|false
      *                            Returns a \Swoole\WebSocket\Frame object when succeeds.
      *                            Returns an empty string when the HTTP connection is closed.
-     *                            Returns FALSE when error happens. Use method \swoole_last_error() to get error code.
+     *                            Returns FALSE when error happens. Use function \swoole_last_error() to get error code.
      * @see \Swoole\Constant::OPTION_SOCKET_READ_TIMEOUT
      * @see \Swoole\WebSocket\Frame
      * @see \swoole_last_error()

@@ -54,9 +54,6 @@ class ZipContainer extends ImmutableZipContainer
         $this->entries[$entry->getName()] = $entry;
     }
 
-    /**
-     * @param string|ZipEntry $entry
-     */
     public function deleteEntry($entry): bool
     {
         $entry = $entry instanceof ZipEntry ? $entry->getName() : (string) $entry;
@@ -71,8 +68,8 @@ class ZipContainer extends ImmutableZipContainer
     }
 
     /**
-     * @param string|ZipEntry $old
-     * @param string|ZipEntry $new
+     * @param mixed $old
+     * @param mixed $new
      *
      * @throws ZipException
      *
@@ -84,7 +81,7 @@ class ZipContainer extends ImmutableZipContainer
         $new = $new instanceof ZipEntry ? $new->getName() : (string) $new;
 
         if (isset($this->entries[$new])) {
-            throw new InvalidArgumentException('New entry name ' . $new . ' is exists.');
+            throw new InvalidArgumentException('New entry name "' . $new . '" already exists.');
         }
 
         $entry = $this->getEntry($old);
@@ -97,7 +94,7 @@ class ZipContainer extends ImmutableZipContainer
     }
 
     /**
-     * @param string|ZipEntry $entryName
+     * @param mixed $entryName
      *
      * @throws ZipEntryNotFoundException
      */
@@ -112,9 +109,6 @@ class ZipContainer extends ImmutableZipContainer
         throw new ZipEntryNotFoundException($entryName);
     }
 
-    /**
-     * @param string|ZipEntry $entryName
-     */
     public function getEntryOrNull($entryName): ?ZipEntry
     {
         $entryName = $entryName instanceof ZipEntry ? $entryName->getName() : (string) $entryName;
@@ -122,9 +116,6 @@ class ZipContainer extends ImmutableZipContainer
         return $this->entries[$entryName] ?? null;
     }
 
-    /**
-     * @param string|ZipEntry $entryName
-     */
     public function hasEntry($entryName): bool
     {
         $entryName = $entryName instanceof ZipEntry ? $entryName->getName() : (string) $entryName;
@@ -170,7 +161,7 @@ class ZipContainer extends ImmutableZipContainer
     }
 
     /**
-     * Undo all changes done in the archive.
+     * Undo all changes made to the archive.
      */
     public function unchangeAll(): void
     {
@@ -197,7 +188,7 @@ class ZipContainer extends ImmutableZipContainer
     }
 
     /**
-     * Revert all changes done to an entry with the given name.
+     * Revert all changes made to an entry with the given name.
      *
      * @param string|ZipEntry $entry Entry name or ZipEntry
      */
@@ -218,7 +209,7 @@ class ZipContainer extends ImmutableZipContainer
     }
 
     /**
-     * Entries sort by name.
+     * Sort entries by name using the given comparison function.
      *
      * Example:
      * ```php
@@ -233,7 +224,7 @@ class ZipContainer extends ImmutableZipContainer
     }
 
     /**
-     * Entries sort by entry.
+     * Sort entries using the given comparison function.
      *
      * Example:
      * ```php
@@ -253,7 +244,7 @@ class ZipContainer extends ImmutableZipContainer
             $length = \strlen($archiveComment);
 
             if ($length > 0xFFFF) {
-                throw new InvalidArgumentException('Length comment out of range');
+                throw new InvalidArgumentException('Comment length out of range');
             }
         }
         $this->archiveComment = $archiveComment;
@@ -266,8 +257,6 @@ class ZipContainer extends ImmutableZipContainer
 
     /**
      * Specify a password for extracting files.
-     *
-     * @param ?string $password
      */
     public function setReadPassword(?string $password): void
     {
@@ -296,8 +285,6 @@ class ZipContainer extends ImmutableZipContainer
     }
 
     /**
-     * @param ?string $writePassword
-     *
      * @throws ZipEntryNotFoundException
      */
     public function setWritePassword(?string $writePassword): void
@@ -316,7 +303,7 @@ class ZipContainer extends ImmutableZipContainer
     }
 
     /**
-     * @param string|ZipEntry $entryName
+     * @param mixed $entryName
      *
      * @throws ZipEntryNotFoundException
      */

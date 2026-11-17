@@ -61,8 +61,8 @@ class IgnoreFilesRecursiveFilterIterator extends \RecursiveFilterIterator
     }
 
     /**
-     * @return IgnoreFilesRecursiveFilterIterator
      * @psalm-suppress UndefinedInterfaceMethod
+     *
      * @noinspection PhpPossiblePolymorphicInvocationInspection
      */
     public function getChildren(): self

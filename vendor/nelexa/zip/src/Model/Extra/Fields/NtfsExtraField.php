@@ -56,9 +56,6 @@ final class NtfsExtraField implements ZipExtraField
         $this->createNtfsTime = $createNtfsTime;
     }
 
-    /**
-     * @return NtfsExtraField
-     */
     public static function create(
         \DateTimeInterface $modifyDateTime,
         \DateTimeInterface $accessDateTime,
@@ -88,13 +85,11 @@ final class NtfsExtraField implements ZipExtraField
      * @param ZipEntry|null $entry  optional zip entry
      *
      * @throws ZipException
-     *
-     * @return NtfsExtraField
      */
     public static function unpackLocalFileData(string $buffer, ?ZipEntry $entry = null): self
     {
         if (\PHP_INT_SIZE === 4) {
-            throw new ZipException('not supported for php-32bit');
+            throw new ZipException('NTFS timestamps are not supported in 32-bit PHP.');
         }
 
         $buffer = substr($buffer, 4);
@@ -131,8 +126,6 @@ final class NtfsExtraField implements ZipExtraField
      * @param ZipEntry|null $entry  optional zip entry
      *
      * @throws ZipException
-     *
-     * @return NtfsExtraField
      */
     public static function unpackCentralDirData(string $buffer, ?ZipEntry $entry = null): self
     {
@@ -253,7 +246,7 @@ final class NtfsExtraField implements ZipExtraField
     public static function ntfsTimeToDateTime(int $ntfsTime): \DateTimeInterface
     {
         $timestamp = self::ntfsTimeToTimestamp($ntfsTime);
-        $dateTime = \DateTimeImmutable::createFromFormat('U.u', sprintf('%.6f', $timestamp));
+        $dateTime = \DateTimeImmutable::createFromFormat('U.u', \sprintf('%.6f', $timestamp));
 
         if ($dateTime === false) {
             throw new InvalidArgumentException('Cannot create date/time object for timestamp ' . $timestamp);

@@ -83,8 +83,6 @@ final class JarMarkerExtraField implements ZipExtraField
      * @param ZipEntry|null $entry  optional zip entry
      *
      * @throws ZipException on error
-     *
-     * @return JarMarkerExtraField
      */
     public static function unpackLocalFileData(string $buffer, ?ZipEntry $entry = null): self
     {
@@ -102,8 +100,6 @@ final class JarMarkerExtraField implements ZipExtraField
      * @param ZipEntry|null $entry  optional zip entry
      *
      * @throws ZipException on error
-     *
-     * @return JarMarkerExtraField
      */
     public static function unpackCentralDirData(string $buffer, ?ZipEntry $entry = null): self
     {
@@ -112,6 +108,6 @@ final class JarMarkerExtraField implements ZipExtraField
 
     public function __toString(): string
     {
-        return sprintf('0x%04x Jar Marker', self::HEADER_ID);
+        return \sprintf('0x%04x Jar Marker', self::HEADER_ID);
     }
 }

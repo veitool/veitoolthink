@@ -102,8 +102,6 @@ final class OldUnixExtraField implements ZipExtraField
      *
      * @param string        $buffer the buffer to read data from
      * @param ZipEntry|null $entry  optional zip entry
-     *
-     * @return OldUnixExtraField
      */
     public static function unpackLocalFileData(string $buffer, ?ZipEntry $entry = null): self
     {
@@ -135,8 +133,6 @@ final class OldUnixExtraField implements ZipExtraField
      *
      * @param string        $buffer the buffer to read data from
      * @param ZipEntry|null $entry  optional zip entry
-     *
-     * @return OldUnixExtraField
      */
     public static function unpackCentralDirData(string $buffer, ?ZipEntry $entry = null): self
     {

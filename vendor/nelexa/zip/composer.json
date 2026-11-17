@@ -22,8 +22,8 @@
     "require": {
         "php": "^7.4 || ^8.0",
         "ext-zlib": "*",
-        "psr/http-message": "*",
-        "symfony/finder": "*"
+        "psr/http-message": "^1.0 || ^2.0",
+        "symfony/finder": "^5.4 || ^6.0 || ^7.0 || ^8.0"
     },
     "require-dev": {
         "ext-iconv": "*",
@@ -32,12 +32,12 @@
         "ext-fileinfo": "*",
         "ext-xml": "*",
         "ext-dom": "*",
-        "guzzlehttp/psr7": "^1.6",
+        "guzzlehttp/psr7": "^2.0",
         "phpunit/phpunit": "^9",
         "symfony/var-dumper": "*",
         "friendsofphp/php-cs-fixer": "^3.4.0",
         "vimeo/psalm": "^4.6",
-        "symfony/http-foundation": "*"
+        "symfony/http-foundation": "^5.4 || ^6.0 || ^7.0 || ^8.0"
     },
     "autoload": {
         "psr-4": {

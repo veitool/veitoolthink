@@ -103,8 +103,6 @@ final class AsiExtraField implements ZipExtraField
      * @param ZipEntry|null $entry  optional zip entry
      *
      * @throws Crc32Exception
-     *
-     * @return AsiExtraField
      */
     public static function unpackLocalFileData(string $buffer, ?ZipEntry $entry = null): self
     {
@@ -113,7 +111,7 @@ final class AsiExtraField implements ZipExtraField
         $realChecksum = crc32($buffer);
 
         if ($givenChecksum !== $realChecksum) {
-            throw new Crc32Exception('Asi Unix Extra Filed Data', $givenChecksum, $realChecksum);
+            throw new Crc32Exception('Asi Unix Extra Field Data', $givenChecksum, $realChecksum);
         }
 
         [
@@ -138,8 +136,6 @@ final class AsiExtraField implements ZipExtraField
      * @param ZipEntry|null $entry  optional zip entry
      *
      * @throws Crc32Exception
-     *
-     * @return AsiExtraField
      */
     public static function unpackCentralDirData(string $buffer, ?ZipEntry $entry = null): self
     {
@@ -273,7 +269,7 @@ final class AsiExtraField implements ZipExtraField
 
     public function __toString(): string
     {
-        return sprintf(
+        return \sprintf(
             '0x%04x ASI: Mode=%o UID=%d GID=%d Link="%s',
             self::HEADER_ID,
             $this->mode,

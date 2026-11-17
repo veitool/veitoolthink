@@ -12,7 +12,7 @@ declare(strict_types=1);
 namespace PhpZip\Exception;
 
 /**
- * Thrown if there is an issue when reading or writing an encrypted ZIP file
+ * Thrown when reading or writing an encrypted ZIP file fails.
  * or entry.
  */
 class ZipCryptoException extends ZipException

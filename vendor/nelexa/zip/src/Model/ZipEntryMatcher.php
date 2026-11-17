@@ -26,8 +26,6 @@ class ZipEntryMatcher implements \Countable
 
     /**
      * @param string|ZipEntry|string[]|ZipEntry[] $entries
-     *
-     * @return ZipEntryMatcher
      */
     public function add($entries): self
     {
@@ -57,7 +55,6 @@ class ZipEntryMatcher implements \Countable
     }
 
     /**
-     * @return ZipEntryMatcher
      * @noinspection PhpUnusedParameterInspection
      */
     public function match(string $regexp): self
@@ -75,9 +72,6 @@ class ZipEntryMatcher implements \Countable
         return $this;
     }
 
-    /**
-     * @return ZipEntryMatcher
-     */
     public function all(): self
     {
         $this->matches = array_map(
@@ -89,17 +83,16 @@ class ZipEntryMatcher implements \Countable
     }
 
     /**
-     * Callable function for all select entries.
+     * Call a function for all selected entries.
      *
      * Callable function signature:
-     * function(string $entryName){}
+     * function (string $entryName): void
      */
     public function invoke(callable $callable): void
     {
         if (!empty($this->matches)) {
             array_walk(
                 $this->matches,
-                /** @param string $entryName */
                 static function (string $entryName) use ($callable): void {
                     $callable($entryName);
                 }
@@ -116,7 +109,6 @@ class ZipEntryMatcher implements \Countable
     {
         array_walk(
             $this->matches,
-            /** @param string $entryName */
             function (string $entryName): void {
                 $this->zipContainer->deleteEntry($entryName);
             }
@@ -125,16 +117,12 @@ class ZipEntryMatcher implements \Countable
     }
 
     /**
-     * @param ?string $password
-     * @param ?int    $encryptionMethod
-     *
      * @throws ZipEntryNotFoundException
      */
     public function setPassword(?string $password, ?int $encryptionMethod = null): void
     {
         array_walk(
             $this->matches,
-            /** @param string $entryName */
             function (string $entryName) use ($password, $encryptionMethod): void {
                 $entry = $this->zipContainer->getEntry($entryName);
 
@@ -152,7 +140,6 @@ class ZipEntryMatcher implements \Countable
     {
         array_walk(
             $this->matches,
-            /** @param string $entryName */
             function (string $entryName) use ($encryptionMethod): void {
                 $entry = $this->zipContainer->getEntry($entryName);
 
